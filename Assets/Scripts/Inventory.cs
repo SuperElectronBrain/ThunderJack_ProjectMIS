@@ -1,9 +1,12 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 
@@ -29,13 +32,14 @@ public class Inventory : MonoBehaviour
 	private List<Item> SelectedItems = new List<Item>();
 
 	[SerializeField] private InventoryInitializeData InitializeData;
+	[HideInInspector] public UnityEvent ItemSelectEvent = new UnityEvent();
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		if(InitializeData != null)
 		{
-			Items = InitializeData.Items;
+			Items = new List<Item>(InitializeData.Items);
 		}
 
 		Canvas canvas = FindObjectOfType<Canvas>();
@@ -135,6 +139,8 @@ public class Inventory : MonoBehaviour
 									}
 								}
 								SelectedItems[value] = temp;
+
+								ItemSelectEvent.Invoke();
 							});
 						}
 					}
@@ -200,9 +206,77 @@ public class Inventory : MonoBehaviour
 		return new List<Item>(Items);
 	}
 
+	public void SelectionReset()
+	{
+		for (int i = 0; i < SelectedItems.Count; i = i + 1)
+		{
+			Item temp = SelectedItems[i];
+			temp.ItemAmount = 0;
+			SelectedItems[i] = temp;
+		}
+	}
+
 	public List<Item> GetSelectedItems()
 	{
 		return new List<Item>(SelectedItems);
+	}
+
+	public void RefreshInventory()
+	{
+		int count = 0;
+		if (Items.Count <= ItemPanel.transform.childCount)
+		{
+			count = Items.Count;
+		}
+		else if (Items.Count > ItemPanel.transform.childCount)
+		{
+			count = ItemPanel.transform.childCount;
+		}
+
+		for (int i = 0; i < ItemPanel.transform.childCount; i = i + 1)
+		{
+			Button button = ItemPanel.transform.GetChild(i).GetComponent<Button>();
+			Image image = ItemPanel.transform.GetChild(i).GetComponent<Image>();
+			Image selectionCounter = null;
+			TextMeshProUGUI text = null;
+			if (button != null)
+			{
+				for (int j = 0; j < button.transform.childCount; j = j + 1)
+				{
+					text = button.transform.GetChild(j).GetComponent<TextMeshProUGUI>();
+					if (text != null) { break; }
+				}
+				for (int j = 0; j < button.transform.childCount; j = j + 1)
+				{
+					selectionCounter = button.transform.GetChild(j).GetComponent<Image>();
+					if (selectionCounter != null) { selectionCounter.gameObject.SetActive(false); break; }
+				}
+			}
+
+			if (image != null)
+			{
+				if (i < count)
+				{
+					image.enabled = true;
+				}
+				else if (i >= count)
+				{
+					image.enabled = false;
+				}
+			}
+			if (text != null)
+			{
+				if (i < count)
+				{
+					text.enabled = true;
+					text.text = Items[i].ItemCode + " " + Items[i].ItemAmount;
+				}
+				else if (i >= count)
+				{
+					text.enabled = false;
+				}
+			}
+		}
 	}
 
 	public void DisplayItems(bool param)
@@ -216,60 +290,7 @@ public class Inventory : MonoBehaviour
 					InventoryPanel.SetActive(true);
 				}
 
-				int count = 0;
-				if (Items.Count <= ItemPanel.transform.childCount)
-				{
-					count = Items.Count;
-				}
-				else if (Items.Count > ItemPanel.transform.childCount)
-				{
-					count = ItemPanel.transform.childCount;
-				}
-
-				for (int i = 0; i < ItemPanel.transform.childCount; i = i + 1)
-				{
-					Button button = ItemPanel.transform.GetChild(i).GetComponent<Button>();
-					Image image = ItemPanel.transform.GetChild(i).GetComponent<Image>();
-					Image counter = null;
-					TextMeshProUGUI text = null;
-					if (button != null)
-					{
-						for (int j = 0; j < button.transform.childCount; j = j + 1)
-						{
-							text = button.transform.GetChild(j).GetComponent<TextMeshProUGUI>();
-							if(text != null) { break; }
-						}
-						for (int j = 0; j < button.transform.childCount; j = j + 1)
-						{
-							counter = button.transform.GetChild(j).GetComponent<Image>();
-							if (counter != null) { counter.gameObject.SetActive(false);  break; }
-						}
-					}
-
-					if (image != null)
-					{
-						if (i < count)
-						{
-							image.enabled = true;
-						}
-						else if (i >= count)
-						{
-							image.enabled = false;
-						}
-					}
-					if (text != null)
-					{
-						if (i < count)
-						{
-							text.enabled = true;
-							text.text = Items[i].ItemCode + " " + Items[i].ItemAmount;
-						}
-						else if (i >= count)
-						{
-							text.enabled = false;
-						}
-					}
-				}
+				RefreshInventory();
 			}
 			else if(param == false)
 			{
@@ -277,6 +298,7 @@ public class Inventory : MonoBehaviour
 				{
 					InventoryPanel.SetActive(false);
 				}
+				SelectionReset();
 			}
 		}
 	}

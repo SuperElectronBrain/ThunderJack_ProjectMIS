@@ -6,15 +6,15 @@ using static UnityEngine.GraphicsBuffer;
 
 public class CameraController : MonoBehaviour
 {
-	[SerializeField] private float MoveSpeed = 10.0f;
-	[SerializeField] private float MouseMoveSpeed = 100.0f;
-	[SerializeField] private float Distance = 5.0f;
-	[SerializeField] private float Angle = 15.0f;
-	[SerializeField] private float ZoomSpeed = 1000.0f;
+	[SerializeField] private float moveSpeed = 10.0f;
+	[SerializeField] private float mouseMoveSpeed = 100.0f;
+	[SerializeField] private float distance = 5.0f;
+	[SerializeField] private float angle = 15.0f;
+	[SerializeField] private float zoomSpeed = 1000.0f;
 
 	//public GameObject mousePointingTarget;
-	[HideInInspector] public GameObject CameraTarget;
-	private Vector3 CameraPosition;
+	[HideInInspector] public GameObject cameraTarget;
+	private Vector3 cameraPosition;
 
 	// Start is called before the first frame update
 	void Start()
@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
 			SetCameraTarget(playerCharacter.gameObject);
 		}
 
-		CameraPosition = transform.position;
+		cameraPosition = transform.position;
 	}
 
 	// Update is called once per frame
@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
 	private void FixedUpdate()
 	{
 		float DeltaTime = Time.fixedDeltaTime;
-		transform.position = Vector3.Lerp(transform.position, CameraPosition, MoveSpeed * DeltaTime);
+		transform.position = Vector3.Lerp(transform.position, cameraPosition, moveSpeed * DeltaTime);
 	}
 
 	GameObject MouseTargeting()
@@ -54,12 +54,12 @@ public class CameraController : MonoBehaviour
 			return null;
 		}
 
-		Vector3 MousePosition = Input.mousePosition;
-		MousePosition.z = Camera.main.farClipPlane;
-		MousePosition = Camera.main.ScreenToWorldPoint(MousePosition);
+		Vector3 mousePosition = Input.mousePosition;
+		mousePosition.z = Camera.main.farClipPlane;
+		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
 		RaycastHit hit;
-		if (Physics.Raycast(transform.position, MousePosition, out hit, Mathf.Infinity) == true)
+		if (Physics.Raycast(transform.position, mousePosition, out hit, Mathf.Infinity) == true)
 		{
 			SetCameraTarget(hit.transform.gameObject);
 			return hit.transform.gameObject;
@@ -73,53 +73,53 @@ public class CameraController : MonoBehaviour
 
 	void CameraMovement(float DeltaTime)
 	{
-		float MouseScroll = Input.GetAxis("Mouse ScrollWheel");
-		if (MouseScroll != 0.0f)
+		float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+		if (mouseScroll != 0.0f)
 		{
-			Distance = Distance - (MouseScroll * DeltaTime * ZoomSpeed);
+			distance = distance - (mouseScroll * DeltaTime * zoomSpeed);
 
-			if (Distance < 0.0f)
+			if (distance < 0.0f)
 			{
-				MouseScroll = MouseScroll + (Distance / (DeltaTime * ZoomSpeed));
-				Distance = 0.0f;
+				mouseScroll = mouseScroll + (distance / (DeltaTime * zoomSpeed));
+				distance = 0.0f;
 			}
 
-			float RadAngle = Angle * Mathf.Deg2Rad;
-			CameraPosition = CameraPosition + (new Vector3(0.0f, -MouseScroll * Mathf.Sin(RadAngle), MouseScroll * Mathf.Cos(RadAngle)) * DeltaTime * ZoomSpeed);
+			float radAngle = angle * Mathf.Deg2Rad;
+			cameraPosition = cameraPosition + (new Vector3(0.0f, -mouseScroll * Mathf.Sin(radAngle), mouseScroll * Mathf.Cos(radAngle)) * DeltaTime * zoomSpeed);
 		}
 
-		if(CameraTarget == null)
+		if(cameraTarget == null)
 		{
-			float HorizontalMove = Input.GetAxis("Horizontal");
-			float VerticalMove = Input.GetAxis("Vertical");
+			float horizontalMove = Input.GetAxis("Horizontal");
+			float verticalMove = Input.GetAxis("Vertical");
 
-			if (HorizontalMove != 0.0f || VerticalMove != 0.0f)
+			if (horizontalMove != 0.0f || verticalMove != 0.0f)
 			{
-				CameraPosition = CameraPosition + (new Vector3(HorizontalMove, 0.0f, VerticalMove) * DeltaTime * MoveSpeed);
+				cameraPosition = cameraPosition + (new Vector3(horizontalMove, 0.0f, verticalMove) * DeltaTime * moveSpeed);
 			}
 
-			float MouseMoveX = Input.GetAxis("Mouse X");
-			float MouseMoveY = Input.GetAxis("Mouse Y");
+			float mouseMoveX = Input.GetAxis("Mouse X");
+			float mouseMoveY = Input.GetAxis("Mouse Y");
 
 			if (Input.GetMouseButton(0) == true)
 			{
-				CameraPosition = CameraPosition + (new Vector3(-MouseMoveX, 0.0f, -MouseMoveY) * DeltaTime * MouseMoveSpeed);
+				cameraPosition = cameraPosition + (new Vector3(-mouseMoveX, 0.0f, -mouseMoveY) * DeltaTime * mouseMoveSpeed);
 			}
 		}
-		else if(CameraTarget != null)
+		else if(cameraTarget != null)
 		{
-			CameraPosition = CameraTarget.transform.position + new Vector3(0.0f, Distance * Mathf.Sin(Angle * Mathf.Deg2Rad), -Distance * Mathf.Cos(Angle * Mathf.Deg2Rad));
+			cameraPosition = cameraTarget.transform.position + new Vector3(0.0f, distance * Mathf.Sin(angle * Mathf.Deg2Rad), -distance * Mathf.Cos(angle * Mathf.Deg2Rad));
 		}
 	}
 
-	void SetCameraTarget(GameObject Target)
+	void SetCameraTarget(GameObject target)
 	{
-		CameraTarget = Target;
-		transform.rotation = Quaternion.Euler(Angle, 0.0f, 0.0f);
-		float RadAngle = Angle * Mathf.Deg2Rad;
-		if(Target != null)
+		cameraTarget = target;
+		transform.rotation = Quaternion.Euler(angle, 0.0f, 0.0f);
+		float radAngle = angle * Mathf.Deg2Rad;
+		if(target != null)
 		{
-			CameraPosition = CameraTarget.transform.position + new Vector3(0.0f, Distance * Mathf.Sin(RadAngle), -Distance * Mathf.Cos(RadAngle));
+			cameraPosition = cameraTarget.transform.position + new Vector3(0.0f, distance * Mathf.Sin(radAngle), -distance * Mathf.Cos(radAngle));
 		}
 	}
 }

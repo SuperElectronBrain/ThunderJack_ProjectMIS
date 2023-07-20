@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-	[SerializeField] [Range(0, 100)] private float Speed = 5.0f;
-	[SerializeField] private float JumpForce = 250.0f;
-	private float HorizontalMove = 0.0f;
-	private float VerticalMove = 0.0f;
-	private float Jump = 0.0f;
+	[SerializeField] [Range(0, 100)] private float speed = 5.0f;
+	[SerializeField] private float jumpForce = 250.0f;
+	private float horizontalMove = 0.0f;
+	private float verticalMove = 0.0f;
+	private float jump = 0.0f;
 	//private bool IsJumpable = true;
-	private int JumpCount = 1;
+	private int jumpCount = 1;
 
 	private Rigidbody rd;
 	private CameraController cameraCon;
@@ -40,13 +40,13 @@ public class PlayerCharacter : MonoBehaviour
 
 	void KeyInput()
 	{
-		HorizontalMove = Input.GetAxis("Horizontal");
-		VerticalMove = Input.GetAxis("Vertical");
+		horizontalMove = Input.GetAxis("Horizontal");
+		verticalMove = Input.GetAxis("Vertical");
 
-		if (Input.GetAxisRaw("Horizontal") == 0.0f) { HorizontalMove = 0.0f; }
-		if (Input.GetAxisRaw("Vertical") == 0.0f) { VerticalMove = 0.0f; }
+		if (Input.GetAxisRaw("Horizontal") == 0.0f) { horizontalMove = 0.0f; }
+		if (Input.GetAxisRaw("Vertical") == 0.0f) { verticalMove = 0.0f; }
 
-		Jump = Input.GetAxisRaw("Jump");
+		jump = Input.GetAxisRaw("Jump");
 
 		//if (Input.GetKeyDown(KeyCode.Space) == true) { JumpKey = true; }
 		//else if (Input.GetKeyUp(KeyCode.Space) == true) { JumpKey = false; }
@@ -56,20 +56,20 @@ public class PlayerCharacter : MonoBehaviour
 	{
 		if(cameraCon != null)
 		{
-			if (cameraCon.CameraTarget == this.gameObject)
+			if (cameraCon.cameraTarget == this.gameObject)
 			{
-				if (HorizontalMove != 0 || VerticalMove != 0)
+				if (horizontalMove != 0 || verticalMove != 0)
 				{
 					//rd.AddForce(new Vector3(HorizontalMove, 0.0f, VerticalMove) * DeltaTime * Speed);
-					transform.Translate(new Vector3(HorizontalMove, 0.0f, VerticalMove) * DeltaTime * Speed);
+					transform.Translate(new Vector3(horizontalMove, 0.0f, verticalMove) * DeltaTime * speed);
 				}
 
-				if (Jump != 0)
+				if (jump != 0)
 				{
-					if (JumpCount > 0)
+					if (jumpCount > 0)
 					{
-						rd.AddForce(Vector3.up * JumpForce);
-						JumpCount = JumpCount - 1;
+						rd.AddForce(Vector3.up * jumpForce);
+						jumpCount = jumpCount - 1;
 					} 
 				}
 			}
@@ -81,7 +81,7 @@ public class PlayerCharacter : MonoBehaviour
 		if(collision.gameObject != gameObject)
 		{
 			//IsJumpable = true;
-			JumpCount = 1;
+			jumpCount = 1;
 		}
 	}
 
