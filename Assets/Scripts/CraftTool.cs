@@ -40,24 +40,24 @@ public class CraftTool : MonoBehaviour
 						{
 							if (recipeBook != null)
 							{
-								List<Item> selectedItems = inventory.GetSelectedItems();
+								List<SelectedItem> selectedItems = inventory.GetSelectedItems();
 								List<Item> items = inventory.GetItems();
-								string compareString0 = "";
+								string compareString0 = ".";
 
 								for(int i = 0; i < selectedItems.Count; i = i + 1)
 								{
 									if (selectedItems[i].ItemAmount > 0)
 									{
-										compareString0 = compareString0 + items[i].ItemCode + ".";
+										compareString0 = compareString0 + items[i].itemCode + ".";
 									}
 								}
 
 								for(int i = 0; i < recipeBook.Recipes.Count; i = i + 1)
 								{
-									string compareString1 = "";
+									string compareString1 = ".";
 									for (int j = 0; j < recipeBook.Recipes[i].ingredients.Count; j = j + 1)
 									{
-										compareString1 = compareString1 + recipeBook.Recipes[i].ingredients[j].ItemCode + ".";
+										compareString1 = compareString1 + recipeBook.Recipes[i].ingredients[j].itemCode + ".";
 									}
 
 									if(compareString0 == compareString1)
@@ -66,7 +66,7 @@ public class CraftTool : MonoBehaviour
 										{
 											if (selectedItems[j].ItemAmount > 0)
 											{
-												inventory.PopItem(items[j].ItemCode, selectedItems[j].ItemAmount);
+												inventory.PopItem(items[j].itemCode, selectedItems[j].ItemAmount);
 											}
 										}
 										inventory.SelectionReset();
@@ -104,7 +104,7 @@ public class CraftTool : MonoBehaviour
 		if (inventory != null)
 		{
 			int count = 0;
-			List<Item> selectedItems = inventory.GetSelectedItems();
+			List<SelectedItem> selectedItems = inventory.GetSelectedItems();
 			List<Item> items = inventory.GetItems();
 			for (int i = 0; i < (ItemPanel.transform.childCount < selectedItems.Count ? ItemPanel.transform.childCount : selectedItems.Count); i = i + 1)
 			{
@@ -125,7 +125,7 @@ public class CraftTool : MonoBehaviour
 					}
 					if (text != null)
 					{
-						text.text = items[i].ItemCode + " " + selectedItems[i].ItemAmount;
+						text.text = items[i].itemCode + " " + selectedItems[i].ItemAmount;
 					}
 
 					count = count + 1;
@@ -152,7 +152,7 @@ public class CraftTool : MonoBehaviour
 				if (inventory != null)
 				{
 					inventory.DisplayItems(true);
-					inventory.ItemSelectEvent.AddListener(ItemSelectEvent);
+					inventory.itemSelectEvent.AddListener(ItemSelectEvent);
 				}
 				if (CraftPanel != null)
 				{
@@ -174,7 +174,7 @@ public class CraftTool : MonoBehaviour
 					if (inventory != null)
 					{
 						inventory.DisplayItems(false);
-						inventory.ItemSelectEvent.RemoveListener(ItemSelectEvent);
+						inventory.itemSelectEvent.RemoveListener(ItemSelectEvent);
 					}
 
 					if (CraftPanel != null)

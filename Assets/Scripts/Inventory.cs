@@ -10,36 +10,72 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 
+public enum ItemCode
+{
+	None = 0,
+
+	Ruby,
+	Sapphire,
+	Topaz,
+	Diamond,
+	Spinel,
+
+	Ring,
+	Necklace,
+	Bangle,
+	Earring,
+	Pin,
+	Brooch,
+
+	RubyRing,
+	RubyNecklace,
+
+	Money = 1000,
+}
+
+
 [Serializable]
 public struct Item
 {
-	[SerializeField] public int ItemCode;
+	[SerializeField] public ItemCode itemCode;
 	[SerializeField] public int ItemAmount;
 
-	public Item(int itemCode = 0, int itemAmount = 0)
+	public Item(ItemCode p_itemCode = ItemCode.None, int p_itemAmount = 0)
 	{
-		ItemCode = itemCode;
-		ItemAmount = itemAmount;
+		itemCode = p_itemCode;
+		ItemAmount = p_itemAmount;
+	}
+}
+
+public struct SelectedItem
+{
+	[SerializeField] public int itemCode;
+	[SerializeField] public int ItemAmount;
+
+	public SelectedItem(int p_itemCode = 0, int p_itemAmount = 0)
+	{
+		itemCode = p_itemCode;
+		ItemAmount = p_itemAmount;
 	}
 }
 
 public class Inventory : MonoBehaviour
 {
 	[SerializeField] private GameObject InventoryPanelPrefab;
-	private GameObject InventoryPanel;
-	private GameObject ItemPanel;
-	private List<Item> Items = new List<Item>();
-	private List<Item> SelectedItems = new List<Item>();
+	private GameObject inventoryPanel;
+	private GameObject itemPanel;
+	private List<Item> items = new List<Item>();
+	private List<SelectedItem> selectedItems = new List<SelectedItem>();
 
 	[SerializeField] private InventoryInitializeData InitializeData;
-	[HideInInspector] public UnityEvent ItemSelectEvent = new UnityEvent();
+	[HideInInspector] public UnityEvent itemSelectEvent = new UnityEvent();
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		if(InitializeData != null)
 		{
-			Items = new List<Item>(InitializeData.Items);
+			items = new List<Item>(InitializeData.Items);
 		}
 
 		Canvas canvas = FindObjectOfType<Canvas>();
@@ -47,20 +83,20 @@ public class Inventory : MonoBehaviour
 		{
 			if (InventoryPanelPrefab != null)
 			{
-				InventoryPanel = Instantiate(InventoryPanelPrefab, canvas.transform);
-				InventoryPanel.SetActive(false);
+				inventoryPanel = Instantiate(InventoryPanelPrefab, canvas.transform);
+				inventoryPanel.SetActive(false);
 
-				FlexibleGridLayout ItemPanelLayout = InventoryPanel.GetComponent<FlexibleGridLayout>();
+				FlexibleGridLayout ItemPanelLayout = inventoryPanel.GetComponent<FlexibleGridLayout>();
 				if(ItemPanelLayout == null)
 				{
-					for(int i = 0; i < InventoryPanel.transform.childCount; i = i + 1)
+					for(int i = 0; i < inventoryPanel.transform.childCount; i = i + 1)
 					{
-						ItemPanelLayout = InventoryPanel.transform.GetChild(i).GetComponent<FlexibleGridLayout>();
+						ItemPanelLayout = inventoryPanel.transform.GetChild(i).GetComponent<FlexibleGridLayout>();
 						if(ItemPanelLayout == null)
 						{
-							for (int j = 0; j < InventoryPanel.transform.GetChild(i).childCount; j = j + 1)
+							for (int j = 0; j < inventoryPanel.transform.GetChild(i).childCount; j = j + 1)
 							{
-								ItemPanelLayout = InventoryPanel.transform.GetChild(i).GetChild(j).GetComponent<FlexibleGridLayout>();
+								ItemPanelLayout = inventoryPanel.transform.GetChild(i).GetChild(j).GetComponent<FlexibleGridLayout>();
 								if (ItemPanelLayout != null)
 								{
 									break;
@@ -77,11 +113,11 @@ public class Inventory : MonoBehaviour
 
 				if(ItemPanelLayout != null)
 				{
-					ItemPanel = ItemPanelLayout.gameObject;
+					itemPanel = ItemPanelLayout.gameObject;
 
-					for(int i = 0; i < ItemPanel.transform.childCount; i = i + 1)
+					for(int i = 0; i < itemPanel.transform.childCount; i = i + 1)
 					{
-						Button button = ItemPanel.transform.GetChild(i).GetComponent<Button>();
+						Button button = itemPanel.transform.GetChild(i).GetComponent<Button>();
 						if (button != null)
 						{
 							Image image = null;
@@ -101,17 +137,17 @@ public class Inventory : MonoBehaviour
 							}
 
 
-							SelectedItems.Add(new Item(i, 0));
+							selectedItems.Add(new SelectedItem(i, 0));
 							int value = i;
 							button.onClick.AddListener(() => 
 							{
-								Item temp = SelectedItems[value];
+								SelectedItem temp = selectedItems[value];
 								if(Input.GetMouseButtonDown(0) == true || Input.GetMouseButton(0) == true || Input.GetMouseButtonUp(0) == true)
 								{
 									temp.ItemAmount = temp.ItemAmount + 1;
-									if (temp.ItemAmount > Items[value].ItemAmount)
+									if (temp.ItemAmount > items[value].ItemAmount)
 									{
-										temp.ItemAmount = Items[value].ItemAmount;
+										temp.ItemAmount = items[value].ItemAmount;
 									}
 								}
 								if(Input.GetMouseButtonDown(1) == true || Input.GetMouseButton(1) == true || Input.GetMouseButtonUp(1) == true)
@@ -138,9 +174,9 @@ public class Inventory : MonoBehaviour
 										image.gameObject.SetActive(false);
 									}
 								}
-								SelectedItems[value] = temp;
+								selectedItems[value] = temp;
 
-								ItemSelectEvent.Invoke();
+								itemSelectEvent.Invoke();
 							});
 						}
 					}
@@ -154,89 +190,89 @@ public class Inventory : MonoBehaviour
 	{
 		if(Input.GetKeyDown(KeyCode.E))
 		{
-			DisplayItems(!InventoryPanel.activeSelf);
+			DisplayItems(!inventoryPanel.activeSelf);
 		}
 	}
 
 	public void AddItem(Item value)
 	{
-		for (int i = 0; i < Items.Count; i = i + 1)
+		for (int i = 0; i < items.Count; i = i + 1)
 		{
-			if (Items[i].ItemCode == value.ItemCode)
+			if (items[i].itemCode == value.itemCode)
 			{
-				Item temp = Items[i];
+				Item temp = items[i];
 				temp.ItemAmount = temp.ItemAmount + value.ItemAmount;
-				Items[i] = temp;
+				items[i] = temp;
 
 				return;
 			}
 		}
 
-		Items.Add(value);
-		Items.Sort((a, b) => { return (a.ItemCode < b.ItemCode) ? -1 : 1; });
+		items.Add(value);
+		items.Sort((a, b) => { return (a.itemCode < b.itemCode) ? -1 : 1; });
 	}
 
-	public Item PopItem(int ItemCode, int ItemAmount) 
+	public Item PopItem(ItemCode itemCode, int ItemAmount) 
 	{
-		for (int i = 0; i < Items.Count; i = i + 1)
+		for (int i = 0; i < items.Count; i = i + 1)
 		{
-			if (Items[i].ItemCode == ItemCode)
+			if (items[i].itemCode == itemCode)
 			{
-				Item temp = Items[i];
+				Item temp = items[i];
 
 				if(temp.ItemAmount <= ItemAmount)
 				{
-					Items.RemoveAt(i);
-					return new Item(ItemCode, temp.ItemAmount);
+					items.RemoveAt(i);
+					return new Item(itemCode, temp.ItemAmount);
 				}
 				else if(temp.ItemAmount > ItemAmount)
 				{
 					temp.ItemAmount = temp.ItemAmount - ItemAmount;
-					Items[i] = temp;
-					return new Item(ItemCode, ItemAmount);
+					items[i] = temp;
+					return new Item(itemCode, ItemAmount);
 				}
 			}
 		}
 
-		return new Item(ItemCode, 0);
+		return new Item(itemCode, 0);
 	}
 
 	public List<Item> GetItems() 
 	{
-		return new List<Item>(Items);
+		return new List<Item>(items);
 	}
 
 	public void SelectionReset()
 	{
-		for (int i = 0; i < SelectedItems.Count; i = i + 1)
+		for (int i = 0; i < selectedItems.Count; i = i + 1)
 		{
-			Item temp = SelectedItems[i];
+			SelectedItem temp = selectedItems[i];
 			temp.ItemAmount = 0;
-			SelectedItems[i] = temp;
+			selectedItems[i] = temp;
 		}
 	}
 
-	public List<Item> GetSelectedItems()
+	public List<SelectedItem> GetSelectedItems()
 	{
-		return new List<Item>(SelectedItems);
+		return new List<SelectedItem>(selectedItems);
 	}
 
 	public void RefreshInventory()
 	{
 		int count = 0;
-		if (Items.Count <= ItemPanel.transform.childCount)
+		if (items.Count <= itemPanel.transform.childCount)
 		{
-			count = Items.Count;
+			count = items.Count;
 		}
-		else if (Items.Count > ItemPanel.transform.childCount)
+		else if (items.Count > itemPanel.transform.childCount)
 		{
-			count = ItemPanel.transform.childCount;
+			count = itemPanel.transform.childCount;
 		}
 
-		for (int i = 0; i < ItemPanel.transform.childCount; i = i + 1)
+		for (int i = 0; i < itemPanel.transform.childCount; i = i + 1)
 		{
-			Button button = ItemPanel.transform.GetChild(i).GetComponent<Button>();
-			Image image = ItemPanel.transform.GetChild(i).GetComponent<Image>();
+			Button button = itemPanel.transform.GetChild(i).GetComponent<Button>();
+			Image image = itemPanel.transform.GetChild(i).GetComponent<Image>();
 			Image selectionCounter = null;
 			TextMeshProUGUI text = null;
 			if (button != null)
@@ -269,7 +305,7 @@ public class Inventory : MonoBehaviour
 				if (i < count)
 				{
 					text.enabled = true;
-					text.text = Items[i].ItemCode + " " + Items[i].ItemAmount;
+					text.text = items[i].itemCode + " " + items[i].ItemAmount;
 				}
 				else if (i >= count)
 				{
@@ -281,22 +317,22 @@ public class Inventory : MonoBehaviour
 
 	public void DisplayItems(bool param)
 	{
-		if (InventoryPanel != null)
+		if (inventoryPanel != null)
 		{
 			if(param == true)
 			{
-				if (InventoryPanel.activeSelf == false)
+				if (inventoryPanel.activeSelf == false)
 				{
-					InventoryPanel.SetActive(true);
+					inventoryPanel.SetActive(true);
 				}
 
 				RefreshInventory();
 			}
 			else if(param == false)
 			{
-				if (InventoryPanel.activeSelf == true)
+				if (inventoryPanel.activeSelf == true)
 				{
-					InventoryPanel.SetActive(false);
+					inventoryPanel.SetActive(false);
 				}
 				SelectionReset();
 			}
