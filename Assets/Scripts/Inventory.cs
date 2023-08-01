@@ -38,52 +38,55 @@ public enum ItemCode
 public struct Item
 {
 	[SerializeField] public ItemCode itemCode;
-	[SerializeField] public int ItemAmount;
+	[SerializeField] public int itemAmount;
 
 	public Item(ItemCode p_itemCode = ItemCode.None, int p_itemAmount = 0)
 	{
 		itemCode = p_itemCode;
-		ItemAmount = p_itemAmount;
+		itemAmount = p_itemAmount;
 	}
 }
 
 public struct SelectedItem
 {
 	[SerializeField] public int itemCode;
-	[SerializeField] public int ItemAmount;
+	[SerializeField] public int itemAmount;
 
 	public SelectedItem(int p_itemCode = 0, int p_itemAmount = 0)
 	{
 		itemCode = p_itemCode;
-		ItemAmount = p_itemAmount;
+		itemAmount = p_itemAmount;
 	}
 }
 
 public class Inventory : MonoBehaviour
 {
-	[SerializeField] private GameObject InventoryPanelPrefab;
-	private GameObject inventoryPanel;
-	private GameObject itemPanel;
 	private List<Item> items = new List<Item>();
 	private List<SelectedItem> selectedItems = new List<SelectedItem>();
+	[SerializeField] private GameObject inventoryPanelPrefab;
+	private GameObject inventoryPanel;
+	private GameObject itemPanel;
+	[SerializeField] private GameObject moneyPanelPrefab;
+	private GameObject moneyPanel;
+	private TextMeshProUGUI moneyText;
 
-	[SerializeField] private InventoryInitializeData InitializeData;
+	[SerializeField] private InventoryInitializeData initializeData;
 	[HideInInspector] public UnityEvent itemSelectEvent = new UnityEvent();
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		if(InitializeData != null)
+		if(initializeData != null)
 		{
-			items = new List<Item>(InitializeData.Items);
+			items = new List<Item>(initializeData.Items);
 		}
 
 		Canvas canvas = FindObjectOfType<Canvas>();
 		if (canvas != null)
 		{
-			if (InventoryPanelPrefab != null)
+			if (inventoryPanelPrefab != null)
 			{
-				inventoryPanel = Instantiate(InventoryPanelPrefab, canvas.transform);
+				inventoryPanel = Instantiate(inventoryPanelPrefab, canvas.transform);
 				inventoryPanel.SetActive(false);
 
 				FlexibleGridLayout ItemPanelLayout = inventoryPanel.GetComponent<FlexibleGridLayout>();
@@ -144,32 +147,32 @@ public class Inventory : MonoBehaviour
 								SelectedItem temp = selectedItems[value];
 								if(Input.GetMouseButtonDown(0) == true || Input.GetMouseButton(0) == true || Input.GetMouseButtonUp(0) == true)
 								{
-									temp.ItemAmount = temp.ItemAmount + 1;
-									if (temp.ItemAmount > items[value].ItemAmount)
+									temp.itemAmount = temp.itemAmount + 1;
+									if (temp.itemAmount > items[value].itemAmount)
 									{
-										temp.ItemAmount = items[value].ItemAmount;
+										temp.itemAmount = items[value].itemAmount;
 									}
 								}
 								if(Input.GetMouseButtonDown(1) == true || Input.GetMouseButton(1) == true || Input.GetMouseButtonUp(1) == true)
 								{
-									temp.ItemAmount = temp.ItemAmount - 1;
-									if(temp.ItemAmount < 0)
+									temp.itemAmount = temp.itemAmount - 1;
+									if(temp.itemAmount < 0)
 									{
-										temp.ItemAmount = 0;
+										temp.itemAmount = 0;
 									}
 								}
 
 								if(image != null)
 								{
-									if(temp.ItemAmount > 0)
+									if(temp.itemAmount > 0)
 									{
 										image.gameObject.SetActive(true);
 										if(text != null)
 										{
-											text.text = temp.ItemAmount + "";
+											text.text = temp.itemAmount + "";
 										}
 									}
-									else if(temp.ItemAmount <= 0)
+									else if(temp.itemAmount <= 0)
 									{
 										image.gameObject.SetActive(false);
 									}
@@ -182,7 +185,28 @@ public class Inventory : MonoBehaviour
 					}
 				}
 			}
+
+			if (moneyPanelPrefab != null)
+			{
+				moneyPanel = Instantiate(moneyPanelPrefab, canvas.transform);
+				moneyPanel.SetActive(true);
+
+				moneyText = UniversalFunctions.GetChildOfType<TextMeshProUGUI>(moneyPanel);
+				if (moneyText == null)
+				{
+					for(int i = 0; i < moneyPanel.transform.childCount; i = i + 1)
+					{
+						moneyText = UniversalFunctions.GetChildOfType<TextMeshProUGUI>(moneyPanel.transform.GetChild(i));
+						if (moneyText != null)
+						{
+							break;
+						}
+					}
+				}
+			}
 		}
+
+		RefreshInventory();
 	}
 
 	// Update is called once per frame
@@ -201,7 +225,7 @@ public class Inventory : MonoBehaviour
 			if (items[i].itemCode == value.itemCode)
 			{
 				Item temp = items[i];
-				temp.ItemAmount = temp.ItemAmount + value.ItemAmount;
+				temp.itemAmount = temp.itemAmount + value.itemAmount;
 				items[i] = temp;
 
 				return;
@@ -220,20 +244,20 @@ public class Inventory : MonoBehaviour
 			{
 				Item temp = items[i];
 
-				if(temp.ItemAmount <= ItemAmount)
+				if(temp.itemAmount <= ItemAmount)
 				{
 					items.RemoveAt(i);
-					return new Item(itemCode, temp.ItemAmount);
+					return new Item(itemCode, temp.itemAmount);
 				}
-				else if(temp.ItemAmount > ItemAmount)
+				else if(temp.itemAmount > ItemAmount)
 				{
-					temp.ItemAmount = temp.ItemAmount - ItemAmount;
+					temp.itemAmount = temp.itemAmount - ItemAmount;
 					items[i] = temp;
 					return new Item(itemCode, ItemAmount);
 				}
 			}
 		}
-
+		
 		return new Item(itemCode, 0);
 	}
 
@@ -247,7 +271,7 @@ public class Inventory : MonoBehaviour
 		for (int i = 0; i < selectedItems.Count; i = i + 1)
 		{
 			SelectedItem temp = selectedItems[i];
-			temp.ItemAmount = 0;
+			temp.itemAmount = 0;
 			selectedItems[i] = temp;
 		}
 	}
@@ -255,6 +279,29 @@ public class Inventory : MonoBehaviour
 	public List<SelectedItem> GetSelectedItems()
 	{
 		return new List<SelectedItem>(selectedItems);
+	}
+
+	public void UpdateMoney()
+	{
+		if(moneyPanel != null)
+		{
+			int count = 0;
+			for (int i = 0; i < items.Count; i = i + 1)
+			{
+				if (items[i].itemCode == ItemCode.Money)
+				{
+					moneyText.text = items[i].itemAmount + "";
+					count = count + 1;
+
+					break;
+				}
+			}
+
+			if (count <= 0)
+			{
+				moneyText.text = "0";
+			}
+		}
 	}
 
 	public void RefreshInventory()
@@ -305,7 +352,7 @@ public class Inventory : MonoBehaviour
 				if (i < count)
 				{
 					text.enabled = true;
-					text.text = items[i].itemCode + " " + items[i].ItemAmount;
+					text.text = items[i].itemCode + " " + items[i].itemAmount;
 				}
 				else if (i >= count)
 				{
@@ -313,6 +360,8 @@ public class Inventory : MonoBehaviour
 				}
 			}
 		}
+
+		UpdateMoney();
 	}
 
 	public void DisplayItems(bool param)

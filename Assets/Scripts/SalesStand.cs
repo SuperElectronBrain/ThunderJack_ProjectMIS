@@ -44,7 +44,7 @@ public class SalesStand : MonoBehaviour
 							string compareString0 = ".";
 							for (int i = 0; i < selectedItems.Count; i = i + 1)
 							{
-								if (selectedItems[i].ItemAmount > 0)
+								if (selectedItems[i].itemAmount > 0)
 								{
 									compareString0 = compareString0 + items[i].itemCode + ".";
 								}
@@ -61,9 +61,9 @@ public class SalesStand : MonoBehaviour
 							{
 								for (int i = 0; i < selectedItems.Count; i = i + 1)
 								{
-									if (selectedItems[i].ItemAmount > 0)
+									if (selectedItems[i].itemAmount > 0)
 									{
-										inventory.PopItem(items[i].itemCode, selectedItems[i].ItemAmount);
+										inventory.PopItem(items[i].itemCode, selectedItems[i].itemAmount);
 									}
 								}
 								inventory.SelectionReset();
@@ -117,7 +117,7 @@ public class SalesStand : MonoBehaviour
 			List<Item> items = inventory.GetItems();
 			for (int i = 0; i < selectedItems.Count; i = i + 1)
 			{
-				if (selectedItems[i].ItemAmount > 0)
+				if (selectedItems[i].itemAmount > 0)
 				{
 					if(count < SalesItemPanel.transform.childCount)
 					{
@@ -136,7 +136,7 @@ public class SalesStand : MonoBehaviour
 						}
 						if (text != null)
 						{
-							text.text = items[i].itemCode + " " + selectedItems[i].ItemAmount;
+							text.text = items[i].itemCode + " " + selectedItems[i].itemAmount;
 						}
 					}
 					count = count + 1;
@@ -179,7 +179,7 @@ public class SalesStand : MonoBehaviour
 					}
 					if (text != null)
 					{
-						text.text = needs[i].need.itemCode + " " + needs[i].need.ItemAmount;
+						text.text = needs[i].need.itemCode + " " + needs[i].need.itemAmount;
 					}
 				}
 			}

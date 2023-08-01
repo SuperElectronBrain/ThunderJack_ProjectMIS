@@ -58,8 +58,17 @@ public class CameraController : MonoBehaviour
 		mousePosition.z = Camera.main.farClipPlane;
 		mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
+		bool bTemp = false;
 		RaycastHit hit;
 		if (Physics.Raycast(transform.position, mousePosition, out hit, Mathf.Infinity) == true)
+		{
+			if(hit.transform.gameObject.GetComponent<Character>() != null)
+			{
+				bTemp = true;
+			}
+		}
+
+		if (bTemp == true)
 		{
 			SetCameraTarget(hit.transform.gameObject);
 			return hit.transform.gameObject;

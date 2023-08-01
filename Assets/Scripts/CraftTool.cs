@@ -46,7 +46,7 @@ public class CraftTool : MonoBehaviour
 
 								for(int i = 0; i < selectedItems.Count; i = i + 1)
 								{
-									if (selectedItems[i].ItemAmount > 0)
+									if (selectedItems[i].itemAmount > 0)
 									{
 										compareString0 = compareString0 + items[i].itemCode + ".";
 									}
@@ -64,9 +64,9 @@ public class CraftTool : MonoBehaviour
 									{
 										for (int j = 0; j < selectedItems.Count; j = j + 1)
 										{
-											if (selectedItems[j].ItemAmount > 0)
+											if (selectedItems[j].itemAmount > 0)
 											{
-												inventory.PopItem(items[j].itemCode, selectedItems[j].ItemAmount);
+												inventory.PopItem(items[j].itemCode, selectedItems[j].itemAmount);
 											}
 										}
 										inventory.SelectionReset();
@@ -108,7 +108,7 @@ public class CraftTool : MonoBehaviour
 			List<Item> items = inventory.GetItems();
 			for (int i = 0; i < (ItemPanel.transform.childCount < selectedItems.Count ? ItemPanel.transform.childCount : selectedItems.Count); i = i + 1)
 			{
-				if (selectedItems[i].ItemAmount > 0)
+				if (selectedItems[i].itemAmount > 0)
 				{
 					if(ItemPanel.transform.GetChild(count).gameObject.activeSelf == false)
 					{
@@ -125,7 +125,7 @@ public class CraftTool : MonoBehaviour
 					}
 					if (text != null)
 					{
-						text.text = items[i].itemCode + " " + selectedItems[i].ItemAmount;
+						text.text = items[i].itemCode + " " + selectedItems[i].itemAmount;
 					}
 
 					count = count + 1;
