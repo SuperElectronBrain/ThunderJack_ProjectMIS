@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_watershader
-  m_Shader: {fileID: -6465566751694194690, guid: 41559ab7612b5554787e6e2bf0d434a6, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: d63742cb2ed011d4386e585c84f90b7e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -77,7 +77,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Reflect_texture:
-        m_Texture: {fileID: 2800000, guid: 2d5422e9459944e4a858939d56165d90, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -128,14 +128,15 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Depth_power: 0.13
+    - _Depth_length: 0.9
+    - _Depth_power: -0.06
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _Foam_power: 36.1
-    - _Foam_size: 488.7
+    - _Foam_power: 38.2
+    - _Foam_size: 50
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -145,12 +146,12 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Reflect_depth: 1.12
-    - _Reflect_strangth: 0.76
-    - _Ripple_density: 164.4
-    - _Ripple_power: 34.6
-    - _Ripple_speed: 1.29
-    - _Shear_power: 0.292
+    - _Reflect_depth: 1.46
+    - _Reflect_strangth: 0.522
+    - _Ripple_density: 469
+    - _Ripple_power: 300
+    - _Ripple_speed: 0.025
+    - _Shear_power: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -192,12 +193,13 @@ Material:
     - Color_E4D3495B: {r: 0.05098039, g: 0.1921569, b: 0.4352941, a: 0.4823529}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0, g: 0.7695222, b: 1, a: 1}
+    - _Depth_color: {r: 0.2688679, g: 1, b: 0.57866955, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Foam_color: {r: 1, g: 1, b: 1, a: 0}
     - _Foam_intensity: {r: 1, g: 0.3066038, b: 0.3066038, a: 0}
-    - _Ripple_color: {r: 0.21537916, g: 0.6278466, b: 0.8301887, a: 1}
+    - _Ripple_color: {r: 0.6839622, g: 0.8953251, b: 1, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _Water_color: {r: 0.089622594, g: 0.6875778, b: 1, a: 0}
+    - _Water_color: {r: 0, g: 0.96862745, b: 1, a: 0}
     - _bottom: {r: 0, g: 0.42956018, b: 1, a: 0}
     - _foamcolor: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 0}
     - _foamsclae: {r: -2.19, g: -22.61, b: 0, a: 0}
