@@ -8,10 +8,10 @@ using static UnityEditor.Progress;
 public struct Need
 {
 	[SerializeField] public Item need;
-    [SerializeField] public Item reward;
+	[SerializeField] public Item reward;
 
-    public Need(Item p_Need, Item p_Reward)
-    {
+	public Need(Item p_Need, Item p_Reward)
+	{
 		need = p_Need;
 		reward = p_Reward;
 	}
@@ -19,35 +19,35 @@ public struct Need
 
 public class Customer : Character
 {
-    [SerializeField] private List<Need> needs = new List<Need>();
+	[SerializeField] private List<Need> needs = new List<Need>();
 
 	// Start is called before the first frame update
 	void Start()
-    {
+	{
 
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	// Update is called once per frame
+	void Update()
+	{
+		
+	}
 
-    public List<Need> GetNeeds()
-    {
-        return new List<Need>(needs);
-    }
+	public List<Need> GetNeeds()
+	{
+		return new List<Need>(needs);
+	}
 
-    public void CompleteNeed(ItemCode p_Need)
-    {
-        for(int i = 0; i < needs.Count; i = i + 1)
-        {
-            if (needs[i].need.itemCode == p_Need)
+	public void CompleteNeed(ItemCode p_Need)
+	{
+		for(int i = 0; i < needs.Count; i = i + 1)
+		{
+			if (needs[i].need.itemCode == p_Need)
 			{
 				needs.RemoveAt(i);
 
-                break;
+				break;
 			}
-        }
-    }
+		}
+	}
 }

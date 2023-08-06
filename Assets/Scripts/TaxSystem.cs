@@ -10,16 +10,16 @@ public class TaxSystem : MonoBehaviour
 	private TextMeshProUGUI paymentText;
 	private Inventory playerInventory;
 
-    [SerializeField] private float paymentCycle = 300.0f;
-    private float currentTime = 0.0f;
+	[SerializeField] private float paymentCycle = 300.0f;
+	private float currentTime = 0.0f;
 	[SerializeField] private int paymentMoney = 100;
 
 	// Start is called before the first frame update
 	void Start()
-    {
+	{
 		PlayerCharacter playerCharacter = FindObjectOfType<PlayerCharacter>();
 		if (playerCharacter != null)
-        {
+		{
 			playerInventory = playerCharacter.GetComponent<Inventory>();
 		}
 
@@ -30,12 +30,12 @@ public class TaxSystem : MonoBehaviour
 			{
 				paymentPanel = Instantiate(paymentPanelPrefab, canvas.transform);
 
-				paymentText = UniversalFunctions.GetChildOfType<TextMeshProUGUI>(paymentPanel);
+				paymentText = UniFunc.GetChildOfType<TextMeshProUGUI>(paymentPanel);
 				if(paymentText == null)
 				{
 					for(int i = 0; i < paymentPanel.transform.childCount; i = i + 1)
 					{
-						paymentText = UniversalFunctions.GetChildOfType<TextMeshProUGUI>(paymentPanel.transform.GetChild(i));
+						paymentText = UniFunc.GetChildOfType<TextMeshProUGUI>(paymentPanel.transform.GetChild(i));
 						if (paymentText != null)
 						{
 							break;
@@ -46,10 +46,10 @@ public class TaxSystem : MonoBehaviour
 		}
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        float DeltaTime = Time.deltaTime;
+	// Update is called once per frame
+	void Update()
+	{
+		float DeltaTime = Time.deltaTime;
 
 
 		currentTime = currentTime + DeltaTime;
@@ -58,12 +58,12 @@ public class TaxSystem : MonoBehaviour
 			paymentText.text = (int)(paymentCycle - currentTime) + "";
 		}
 		if (currentTime > paymentCycle)
-        {
+		{
 			PaymentExecution();
 
 			currentTime = 0;
 		}
-    }
+	}
 
 	private void PaymentExecution()
 	{

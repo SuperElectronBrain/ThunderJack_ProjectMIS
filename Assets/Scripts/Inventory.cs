@@ -89,51 +89,51 @@ public class Inventory : MonoBehaviour
 				inventoryPanel = Instantiate(inventoryPanelPrefab, canvas.transform);
 				inventoryPanel.SetActive(false);
 
-				FlexibleGridLayout ItemPanelLayout = inventoryPanel.GetComponent<FlexibleGridLayout>();
-				if(ItemPanelLayout == null)
+				FlexibleGridLayout t_ItemPanelLayout = inventoryPanel.GetComponent<FlexibleGridLayout>();
+				if(t_ItemPanelLayout == null)
 				{
 					for(int i = 0; i < inventoryPanel.transform.childCount; i = i + 1)
 					{
-						ItemPanelLayout = inventoryPanel.transform.GetChild(i).GetComponent<FlexibleGridLayout>();
-						if(ItemPanelLayout == null)
+						t_ItemPanelLayout = inventoryPanel.transform.GetChild(i).GetComponent<FlexibleGridLayout>();
+						if(t_ItemPanelLayout == null)
 						{
 							for (int j = 0; j < inventoryPanel.transform.GetChild(i).childCount; j = j + 1)
 							{
-								ItemPanelLayout = inventoryPanel.transform.GetChild(i).GetChild(j).GetComponent<FlexibleGridLayout>();
-								if (ItemPanelLayout != null)
+								t_ItemPanelLayout = inventoryPanel.transform.GetChild(i).GetChild(j).GetComponent<FlexibleGridLayout>();
+								if (t_ItemPanelLayout != null)
 								{
 									break;
 								}
 							}
 						}
 
-						if(ItemPanelLayout != null)
+						if(t_ItemPanelLayout != null)
 						{
 							break;
 						}
 					}
 				}
 
-				if(ItemPanelLayout != null)
+				if(t_ItemPanelLayout != null)
 				{
-					itemPanel = ItemPanelLayout.gameObject;
+					itemPanel = t_ItemPanelLayout.gameObject;
 
 					for(int i = 0; i < itemPanel.transform.childCount; i = i + 1)
 					{
-						Button button = itemPanel.transform.GetChild(i).GetComponent<Button>();
-						if (button != null)
+						Button t_Button = itemPanel.transform.GetChild(i).GetComponent<Button>();
+						if (t_Button != null)
 						{
-							Image image = null;
-							TextMeshProUGUI text = null;
-							for (int j = 0; j < button.transform.childCount; j = j + 1)
+							Image t_Image = null;
+							TextMeshProUGUI t_Text = null;
+							for (int j = 0; j < t_Button.transform.childCount; j = j + 1)
 							{
-								image = button.transform.GetChild(j).GetComponent<Image>();
-								if (image != null) 
+								t_Image = t_Button.transform.GetChild(j).GetComponent<Image>();
+								if (t_Image != null) 
 								{
-									for (int k = 0; k < image.transform.childCount; k = k + 1)
+									for (int k = 0; k < t_Image.transform.childCount; k = k + 1)
 									{
-										text = image.transform.GetChild(k).GetComponent<TextMeshProUGUI>();
-										if (text != null) { break; }
+										t_Text = t_Image.transform.GetChild(k).GetComponent<TextMeshProUGUI>();
+										if (t_Text != null) { break; }
 									}
 									break;
 								}
@@ -142,42 +142,42 @@ public class Inventory : MonoBehaviour
 
 							selectedItems.Add(new SelectedItem(i, 0));
 							int value = i;
-							button.onClick.AddListener(() => 
+							t_Button.onClick.AddListener(() => 
 							{
-								SelectedItem temp = selectedItems[value];
+								SelectedItem t_SelectItem = selectedItems[value];
 								if(Input.GetMouseButtonDown(0) == true || Input.GetMouseButton(0) == true || Input.GetMouseButtonUp(0) == true)
 								{
-									temp.itemAmount = temp.itemAmount + 1;
-									if (temp.itemAmount > items[value].itemAmount)
+									t_SelectItem.itemAmount = t_SelectItem.itemAmount + 1;
+									if (t_SelectItem.itemAmount > items[value].itemAmount)
 									{
-										temp.itemAmount = items[value].itemAmount;
+										t_SelectItem.itemAmount = items[value].itemAmount;
 									}
 								}
 								if(Input.GetMouseButtonDown(1) == true || Input.GetMouseButton(1) == true || Input.GetMouseButtonUp(1) == true)
 								{
-									temp.itemAmount = temp.itemAmount - 1;
-									if(temp.itemAmount < 0)
+									t_SelectItem.itemAmount = t_SelectItem.itemAmount - 1;
+									if(t_SelectItem.itemAmount < 0)
 									{
-										temp.itemAmount = 0;
+										t_SelectItem.itemAmount = 0;
 									}
 								}
 
-								if(image != null)
+								if(t_Image != null)
 								{
-									if(temp.itemAmount > 0)
+									if(t_SelectItem.itemAmount > 0)
 									{
-										image.gameObject.SetActive(true);
-										if(text != null)
+										t_Image.gameObject.SetActive(true);
+										if(t_Text != null)
 										{
-											text.text = temp.itemAmount + "";
+											t_Text.text = t_SelectItem.itemAmount + "";
 										}
 									}
-									else if(temp.itemAmount <= 0)
+									else if(t_SelectItem.itemAmount <= 0)
 									{
-										image.gameObject.SetActive(false);
+										t_Image.gameObject.SetActive(false);
 									}
 								}
-								selectedItems[value] = temp;
+								selectedItems[value] = t_SelectItem;
 
 								itemSelectEvent.Invoke();
 							});
@@ -191,12 +191,12 @@ public class Inventory : MonoBehaviour
 				moneyPanel = Instantiate(moneyPanelPrefab, canvas.transform);
 				moneyPanel.SetActive(true);
 
-				moneyText = UniversalFunctions.GetChildOfType<TextMeshProUGUI>(moneyPanel);
+				moneyText = UniFunc.GetChildOfType<TextMeshProUGUI>(moneyPanel);
 				if (moneyText == null)
 				{
 					for(int i = 0; i < moneyPanel.transform.childCount; i = i + 1)
 					{
-						moneyText = UniversalFunctions.GetChildOfType<TextMeshProUGUI>(moneyPanel.transform.GetChild(i));
+						moneyText = UniFunc.GetChildOfType<TextMeshProUGUI>(moneyPanel.transform.GetChild(i));
 						if (moneyText != null)
 						{
 							break;
@@ -212,59 +212,86 @@ public class Inventory : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if(Input.GetKeyDown(KeyCode.E))
+		float DeltaTime = Time.deltaTime;
+
+		if (Input.GetKeyDown(KeyCode.E))
 		{
 			DisplayItems(!inventoryPanel.activeSelf);
 		}
 	}
 
-	public void AddItem(Item value)
+	public void AddItem(Item p_Item)
 	{
+		int count = 0;
 		for (int i = 0; i < items.Count; i = i + 1)
 		{
-			if (items[i].itemCode == value.itemCode)
+			if (items[i].itemCode == p_Item.itemCode)
 			{
 				Item temp = items[i];
-				temp.itemAmount = temp.itemAmount + value.itemAmount;
+				temp.itemAmount = temp.itemAmount + p_Item.itemAmount;
 				items[i] = temp;
 
-				return;
+				count = count + 1;
+				break;
 			}
 		}
 
-		items.Add(value);
-		items.Sort((a, b) => { return (a.itemCode < b.itemCode) ? -1 : 1; });
-	}
+		if(count < 1)
+		{
+			items.Add(p_Item);
+			items.Sort((a, b) => { return (a.itemCode < b.itemCode) ? -1 : 1; });
+		}
 
-	public Item PopItem(ItemCode itemCode, int ItemAmount) 
+		RefreshInventory();
+	}
+	public void AddItem(ItemCode p_ItemCode, int p_ItemAmount) { AddItem(new Item(p_ItemCode, p_ItemAmount)); }
+
+	public Item PopItem(ItemCode p_ItemCode, int p_ItemAmount) 
 	{
 		for (int i = 0; i < items.Count; i = i + 1)
 		{
-			if (items[i].itemCode == itemCode)
+			if (items[i].itemCode == p_ItemCode)
 			{
 				Item temp = items[i];
 
-				if(temp.itemAmount <= ItemAmount)
+				if(temp.itemAmount <= p_ItemAmount)
 				{
 					items.RemoveAt(i);
-					return new Item(itemCode, temp.itemAmount);
+					return new Item(p_ItemCode, temp.itemAmount);
 				}
-				else if(temp.itemAmount > ItemAmount)
+				else if(temp.itemAmount > p_ItemAmount)
 				{
-					temp.itemAmount = temp.itemAmount - ItemAmount;
+					temp.itemAmount = temp.itemAmount - p_ItemAmount;
 					items[i] = temp;
-					return new Item(itemCode, ItemAmount);
+					return new Item(p_ItemCode, p_ItemAmount);
 				}
 			}
 		}
 		
-		return new Item(itemCode, 0);
+		return new Item(p_ItemCode, 0);
 	}
+	public Item PopItem(Item p_Item) { return PopItem(p_Item.itemCode, p_Item.itemAmount); }
 
 	public List<Item> GetItems() 
 	{
 		return new List<Item>(items);
 	}
+
+	public bool FindItem(ItemCode p_ItemCode, int p_ItemAmount)
+	{
+		for (int i = 0; i < items.Count; i = i + 1)
+		{
+			if (items[i].itemCode == p_ItemCode)
+			{
+				if(items[i].itemAmount >= p_ItemAmount)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	public bool FindItem(Item p_Item) { return FindItem(p_Item.itemCode, p_Item.itemAmount); }
 
 	public void SelectionReset()
 	{
