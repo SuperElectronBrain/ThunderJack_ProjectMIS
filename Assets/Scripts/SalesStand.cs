@@ -27,13 +27,13 @@ public class SalesStand : MonoBehaviour
 				SalesPanel = Instantiate(SalesPanelPrefab, canvas.transform);
 				SalesPanel.SetActive(false);
 
-				FlexibleGridLayout ItemPanelLayout = UniFunc.GetChildOfType<FlexibleGridLayout>(SalesPanel);
+				FlexibleGridLayout ItemPanelLayout = UniFunc.GetChildComponent<FlexibleGridLayout>(SalesPanel);
 				if (ItemPanelLayout != null)
 				{
 					SalesItemPanel = ItemPanelLayout.gameObject;
 				}
 
-				Button button = UniFunc.GetChildOfType<Button>(SalesPanel);
+				Button button = UniFunc.GetChildComponent<Button>(SalesPanel);
 				{
 					button.onClick.AddListener(() => 
 					{
@@ -91,7 +91,7 @@ public class SalesStand : MonoBehaviour
 				NeedsPanel = Instantiate(NeedsPanelPrefab, canvas.transform);
 				NeedsPanel.SetActive(false);
 
-				FlexibleGridLayout ItemPanelLayout = UniFunc.GetChildOfType<FlexibleGridLayout>(NeedsPanel);
+				FlexibleGridLayout ItemPanelLayout = UniFunc.GetChildComponent<FlexibleGridLayout>(NeedsPanel);
 				if (ItemPanelLayout != null)
 				{
 					NeedsItemPanel = ItemPanelLayout.gameObject;
@@ -130,7 +130,7 @@ public class SalesStand : MonoBehaviour
 						TextMeshProUGUI text = null;
 						if (image != null)
 						{
-							text = UniFunc.GetChildOfType<TextMeshProUGUI>(SalesItemPanel.transform.GetChild(count));
+							text = UniFunc.GetChildComponent<TextMeshProUGUI>(SalesItemPanel.transform.GetChild(count));
 
 							//
 						}
@@ -173,7 +173,7 @@ public class SalesStand : MonoBehaviour
 					TextMeshProUGUI text = null;
 					if (image != null)
 					{
-						text = UniFunc.GetChildOfType<TextMeshProUGUI>(NeedsItemPanel.transform.GetChild(i));
+						text = UniFunc.GetChildComponent<TextMeshProUGUI>(NeedsItemPanel.transform.GetChild(i));
 
 						//
 					}

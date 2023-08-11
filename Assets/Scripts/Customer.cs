@@ -17,7 +17,7 @@ public struct Need
 	}
 }
 
-public class Customer : Character
+public class Customer : MonoBehaviour
 {
 	[SerializeField] private List<Need> needs = new List<Need>();
 

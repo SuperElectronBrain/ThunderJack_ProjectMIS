@@ -47,7 +47,7 @@ public class UniFunc : MonoBehaviour
 	/// <returns></returns>
 	public static GameObject GetChildOfName(GameObject go, string p_Name) { return GetChildOfName(go.transform, p_Name); }
 
-	public static T GetChildOfType<T>(Transform go) where T : Object
+	public static T GetChildComponent<T>(Transform go) where T : Object
 	{
 		if (go != null)
 		{
@@ -64,9 +64,9 @@ public class UniFunc : MonoBehaviour
 		return null;
 	}
 
-	public static T GetChildOfType<T>(GameObject go) where T : Object { return GetChildOfType<T>(go.transform); }
+	public static T GetChildComponent<T>(GameObject go) where T : Object { return GetChildComponent<T>(go.transform); }
 
-	public static List<T> GetChildsOfType<T>(Transform go) where T : Object
+	public static List<T> GetChildsComponent<T>(Transform go) where T : Object
 	{
 		List<T> tempList = null;
 
@@ -88,5 +88,5 @@ public class UniFunc : MonoBehaviour
 		return tempList;
 	}
 
-	public static List<T> GetChildsOfType<T>(GameObject go) where T : Object { return GetChildsOfType<T>(go.transform); }
+	public static List<T> GetChildsComponent<T>(GameObject go) where T : Object { return GetChildsComponent<T>(go.transform); }
 }

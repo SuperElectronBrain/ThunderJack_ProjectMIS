@@ -93,7 +93,7 @@ public class CEOSystem : MonoBehaviour
 				EmployPanel = Instantiate(EmployPanelPrefab, canvas.transform);
 				EmployPanel.SetActive(false);
 
-				List<Button> t_Buttons = UniFunc.GetChildsOfType<Button>(EmployPanel);
+				List<Button> t_Buttons = UniFunc.GetChildsComponent<Button>(EmployPanel);
 				if (t_Buttons != null)
 				{
 					for (int i = 0; i < t_Buttons.Count; i = i + 1)

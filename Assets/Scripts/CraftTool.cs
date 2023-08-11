@@ -25,13 +25,13 @@ public class CraftTool : MonoBehaviour
 				CraftPanel = Instantiate(CraftPanelPrefab, canvas.transform);
 				CraftPanel.SetActive(false);
 
-				FlexibleGridLayout ItemPanelLayout = UniFunc.GetChildOfType<FlexibleGridLayout>(CraftPanel);
+				FlexibleGridLayout ItemPanelLayout = UniFunc.GetChildComponent<FlexibleGridLayout>(CraftPanel);
 				if(ItemPanelLayout != null)
 				{
 					ItemPanel = ItemPanelLayout.gameObject;
 				}
 
-				Button button = UniFunc.GetChildOfType<Button>(CraftPanel);
+				Button button = UniFunc.GetChildComponent<Button>(CraftPanel);
 				if(button != null)
 				{
 					button.onClick.AddListener(()=>
@@ -119,7 +119,7 @@ public class CraftTool : MonoBehaviour
 					TextMeshProUGUI text = null;
 					if (image != null)
 					{
-						text = UniFunc.GetChildOfType<TextMeshProUGUI>(ItemPanel.transform.GetChild(count));
+						text = UniFunc.GetChildComponent<TextMeshProUGUI>(ItemPanel.transform.GetChild(count));
 
 						//
 					}

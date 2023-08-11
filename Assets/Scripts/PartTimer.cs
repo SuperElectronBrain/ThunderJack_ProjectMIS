@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PartTimer : Character
+public class PartTimer : MonoBehaviour
 {
 	[HideInInspector] private Character master;
 	private Inventory masterInventory;

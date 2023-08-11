@@ -191,12 +191,12 @@ public class Inventory : MonoBehaviour
 				moneyPanel = Instantiate(moneyPanelPrefab, canvas.transform);
 				moneyPanel.SetActive(true);
 
-				moneyText = UniFunc.GetChildOfType<TextMeshProUGUI>(moneyPanel);
+				moneyText = UniFunc.GetChildComponent<TextMeshProUGUI>(moneyPanel);
 				if (moneyText == null)
 				{
 					for(int i = 0; i < moneyPanel.transform.childCount; i = i + 1)
 					{
-						moneyText = UniFunc.GetChildOfType<TextMeshProUGUI>(moneyPanel.transform.GetChild(i));
+						moneyText = UniFunc.GetChildComponent<TextMeshProUGUI>(moneyPanel.transform.GetChild(i));
 						if (moneyText != null)
 						{
 							break;

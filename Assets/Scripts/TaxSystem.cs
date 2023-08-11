@@ -30,12 +30,12 @@ public class TaxSystem : MonoBehaviour
 			{
 				paymentPanel = Instantiate(paymentPanelPrefab, canvas.transform);
 
-				paymentText = UniFunc.GetChildOfType<TextMeshProUGUI>(paymentPanel);
+				paymentText = UniFunc.GetChildComponent<TextMeshProUGUI>(paymentPanel);
 				if(paymentText == null)
 				{
 					for(int i = 0; i < paymentPanel.transform.childCount; i = i + 1)
 					{
-						paymentText = UniFunc.GetChildOfType<TextMeshProUGUI>(paymentPanel.transform.GetChild(i));
+						paymentText = UniFunc.GetChildComponent<TextMeshProUGUI>(paymentPanel.transform.GetChild(i));
 						if (paymentText != null)
 						{
 							break;
