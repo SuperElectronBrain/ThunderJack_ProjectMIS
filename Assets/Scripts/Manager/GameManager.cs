@@ -9,6 +9,11 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     Transform Player;
 
+    [SerializeField]
+    DataBase_Character characterDB;
+    [SerializeField]
+    Dialogue dialogue;
+
     public void ChangeCameraView(CameraView newCameraView, CameraSetup newSetup)
     {
         cameraMove.ChangeCameraView(newCameraView, newSetup);
@@ -17,6 +22,28 @@ public class GameManager : Singleton<GameManager>
     public Transform GetPlayerTransform()
     {
         return Player;
+    }
+
+    public bool isTimePasses;
+
+    public void StartConversation(string loadDialogue, Character npc)
+    {
+        dialogue.InitDialogue(loadDialogue);
+    }
+
+    public string GetCharacterName(int characterId)
+    {
+        return characterDB.GetCharacterName(characterId);
+    }
+
+    public Character GetCharacter(int characterId)
+    {
+        return characterDB.GetCharacter(characterId);
+    }
+
+    public int GetCharacterCount()
+    {
+        return characterDB.GetCharacterCount();
     }
 }
 
@@ -28,5 +55,10 @@ public class Tools
         Vector3 targetVector = targetObj.position;
 
         return Vector2.Distance(new Vector2(myVector.x, myVector.z), new Vector2(targetVector.x, targetVector.z));
+    }
+
+    public static int IntParse(object data)
+    {
+        return int.Parse(data.ToString());
     }
 }
