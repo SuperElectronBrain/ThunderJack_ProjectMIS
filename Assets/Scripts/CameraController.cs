@@ -62,7 +62,7 @@ public class CameraController : MonoBehaviour
 		RaycastHit hit;
 		if (Physics.Raycast(transform.position, mousePosition, out hit, Mathf.Infinity) == true)
 		{
-			if(hit.transform.gameObject.GetComponent<Character>() != null)
+			if (hit.transform.gameObject.GetComponent<Character>() != null)
 			{
 				bTemp = true;
 			}
