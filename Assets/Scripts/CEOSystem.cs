@@ -149,12 +149,15 @@ public class CEOSystem : MonoBehaviour
 				{
 					if (hit.transform.gameObject.GetComponent<NonPlayerCharacter>() != null)
 					{
-						if (EmployPanel.activeSelf == false)
+						if(hit.transform.gameObject.GetComponent<NPCShop>() == null)
 						{
-							EmployPanel.SetActive(true);
+							if (EmployPanel.activeSelf == false)
+							{
+								EmployPanel.SetActive(true);
+							}
+							focusingTarget = hit.transform.gameObject.GetComponent<NonPlayerCharacter>();
 						}
-						focusingTarget = hit.transform.gameObject.GetComponent<NonPlayerCharacter>();
-
+						
 						PartTimer t_PartTimer = hit.transform.gameObject.GetComponent<PartTimer>();
 						if (t_PartTimer != null)
 						{

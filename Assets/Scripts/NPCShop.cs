@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPCShop : MonoBehaviour
 {
-	[SerializeField] List<Need> SalesItems = new List<Need>();
+	[SerializeField] List<Need> salesItems = new List<Need>();
 
     // Start is called before the first frame update
     void Start()
@@ -17,4 +17,9 @@ public class NPCShop : MonoBehaviour
     {
         
     }
+
+	public List<Need> GetSalesItems()
+	{
+		return new List<Need>(salesItems);
+	}
 }
