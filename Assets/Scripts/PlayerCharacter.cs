@@ -1,95 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerCharacter : Character
 {
-	[SerializeField] [Range(0, 100)] private float speed = 5.0f;
-	[SerializeField] private float jumpForce = 250.0f;
-	private float horizontalMove = 0.0f;
-	private float verticalMove = 0.0f;
-	private float jump = 0.0f;
-	//private bool IsJumpable = true;
-	private int jumpCount = 1;
-
-	private Rigidbody rd;
-	private CameraController cameraCon;
+	private CameraController m_CameraCon;
+	private CapsuleCollider m_Collider;
 
 	// Start is called before the first frame update
-	void Start()
+	protected override void Start()
 	{
-		rd = gameObject.GetComponent<Rigidbody>();
-		if(rd == null) { rd = gameObject.AddComponent<Rigidbody>(); }
-		cameraCon = Camera.main.gameObject.GetComponent<CameraController>();
+		base.Start();
+
+		m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
+		m_Collider = m_CameraCon.GetComponent<CapsuleCollider>();
 	}
 
 	// Update is called once per frame
-	void Update()
-	{
-		float DeltaTime = Time.deltaTime;
+	//protected override void Update()
+	//{
+	//	base.Update();
+	//	float DeltaTime = Time.deltaTime;
+	//}
 
-		KeyInput();
+	//protected override void FixedUpdate()
+	//{
+	//	base.FixedUpdate();
+	//	float DeltaTime = Time.fixedDeltaTime;
+	//}
+
+	protected override void KeyInput()
+	{
+		m_HorizontalMove = Input.GetAxis("Horizontal");
+		m_VerticalMove = Input.GetAxis("Vertical");
+		if (Input.GetAxisRaw("Horizontal") == 0.0f) { m_HorizontalMove = 0.0f; }
+		if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
+
+		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
 	}
 
-	private void FixedUpdate()
+	protected override void Jump()
 	{
-		float DeltaTime = Time.fixedDeltaTime;
+		base.Jump();
 
-		Movement(DeltaTime);
-	}
-
-	void KeyInput()
-	{
-		horizontalMove = Input.GetAxis("Horizontal");
-		verticalMove = Input.GetAxis("Vertical");
-
-		if (Input.GetAxisRaw("Horizontal") == 0.0f) { horizontalMove = 0.0f; }
-		if (Input.GetAxisRaw("Vertical") == 0.0f) { verticalMove = 0.0f; }
-
-		jump = Input.GetAxisRaw("Jump");
-
-		//if (Input.GetKeyDown(KeyCode.Space) == true) { JumpKey = true; }
-		//else if (Input.GetKeyUp(KeyCode.Space) == true) { JumpKey = false; }
-	}
-
-	void Movement(float DeltaTime)
-	{
-		if(cameraCon != null)
+		RaycastHit hit;
+		Vector3 t_Point = m_Collider != null ? transform.up * ((m_Collider.height / 2) - m_Collider.radius) : transform.position;
+		if (Physics.CapsuleCast(t_Point, -t_Point, m_Collider != null ? m_Collider.radius : transform.localScale.x / 2, transform.forward, out hit, Mathf.Infinity) == true)
 		{
-			if (cameraCon.cameraTarget == this.gameObject)
+			if (hit.transform.gameObject != gameObject)
 			{
-				if (horizontalMove != 0 || verticalMove != 0)
-				{
-					//rd.AddForce(new Vector3(HorizontalMove, 0.0f, VerticalMove) * DeltaTime * Speed);
-					transform.Translate(new Vector3(horizontalMove, 0.0f, verticalMove) * DeltaTime * speed);
-				}
-
-				if (jump != 0)
-				{
-					if (jumpCount > 0)
-					{
-						rd.AddForce(Vector3.up * jumpForce);
-						jumpCount = jumpCount - 1;
-					} 
-				}
+				m_Rigidbody.AddForce(Vector3.up * jumpForce);
 			}
 		}
 	}
 
-	private void OnCollisionEnter(Collision collision)
-	{
-		if(collision.gameObject != gameObject)
-		{
-			//IsJumpable = true;
-			jumpCount = 1;
-		}
-	}
+	//protected override void HorizontalMove(float DeltaTime)
+	//{
+	//	base.HorizontalMove(DeltaTime);
+	//}
 
-	//private void OnCollisionExit(Collision collision)
-	//{ 
-	//	if(collision.gameObject != gameObject)
-	//	{
-	//		IsJumpable = false;
-	//	} 
+	//protected override void VerticalMove(float DeltaTime)
+	//{
+	//	base.VerticalMove(DeltaTime);
 	//}
 }
