@@ -13,6 +13,13 @@ public class NPC : Character
     [SerializeField]
     private State<NPC>[] states;
 
+    NPC_Move npcMove;
+
+    private void Start()
+    {
+        npcMove = GetComponent<NPC_Move>();
+    }
+
     protected virtual void Update()
     {
 

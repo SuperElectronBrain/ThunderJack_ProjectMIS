@@ -7,11 +7,6 @@ public enum AnimationType
     Default, Smile, Angry, Sad, Last
 }
 
-public enum Location
-{
-    Shop, Road
-}
-
 /*[System.Serializable]
 public class CharacterDialogue
 {

@@ -24,6 +24,10 @@ public class TimeTable : MonoBehaviour
                 if (tData[npcName].ToString() != string.Empty)
                 {
                     Debug.Log(npcName + " : " + h + ":" + m + " : " + (tData[npcName].ToString()));
+                    if (npcTimeTable.TryAdd(id, new()) == false)
+                        npcTimeTable[id].timeTableData.Add(GameTime.Instance.GetTimeIdx(h, m), (Location)Tools.IntParse(tData[npcName]));
+                    else
+                        npcTimeTable[id].timeTableData.Add(GameTime.Instance.GetTimeIdx(h, m), (Location)Tools.IntParse(tData[npcName]));
                 }                    
             }
             
@@ -37,22 +41,27 @@ public class TimeTable : MonoBehaviour
                 h = 0;
             
         }
-        //npcTimeTable.Add(1,)
+
+        GameTime.Instance.timeEvent += WorkDistribution;
     }
 
-    // Update is called once per frame
-    void Update()
+    void WorkDistribution()
     {
-        
+        for (int id = 1; id < GameManager.Instance.GetCharacterCount(); id++)
+        {
+            var locationIdx = npcTimeTable[id].timeTableData[GameTime.Instance.GetTimeIdx()];
+            Debug.Log(locationIdx);
+            GameManager.Instance.GetCharacter(id).GetComponent<NPC_Move>().SetDestination(LocationManager.Instance.GetLocationPosition(locationIdx));
+        }
     }
 
-    public NPCBehaviour GetMyBehaviour(int characterId, int timeIdx)
+/*    public NPCBehaviour GetMyBehaviour(int characterId, int timeIdx)
     {
-        return npcTimeTable[characterId].timeTableData[timeIdx];
-    }
+        //return npcTimeTable[characterId].timeTableData[timeIdx];
+    }*/
 }
 
 public class TimeTableData
 {
-    public Dictionary<int, NPCBehaviour> timeTableData;
+    public Dictionary<int, Location> timeTableData = new();
 }

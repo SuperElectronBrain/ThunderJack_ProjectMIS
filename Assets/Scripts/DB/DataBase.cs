@@ -17,6 +17,8 @@ public class DataBase : Singleton<DataBase>
     {
         dataDic = new Dictionary<string, TextAsset>();
 
+        database = Resources.LoadAll<TextAsset>("DataSheet");
+
         foreach (var data in database)
         {
             dataDic.Add(data.name, data);
@@ -51,12 +53,6 @@ public class DataBase : Singleton<DataBase>
 
             text = reader.ReadLine();
         }
-
-/*        for (int i = 0; i < list.Count; i++)
-        {
-            for (int j = 0; j < row.Length; j++)
-                print(list[i][row[j]]);
-        }*/
 
         return list;
     }

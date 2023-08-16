@@ -18,14 +18,19 @@ public class NPC_Move : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Vector3 randomPos = transform.position + Random.insideUnitSphere * 10;
+            Vector3 destinationPos = transform.position + Random.insideUnitSphere * 10;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if(Physics.Raycast(ray, out RaycastHit hit))
             {
-                agent.SetDestination(randomPos);
+                agent.SetDestination(destinationPos);
             }
         }
+    }
+
+    public void SetDestination(Vector3 destinationPos)
+    {
+        agent.SetDestination(destinationPos);
     }
 }

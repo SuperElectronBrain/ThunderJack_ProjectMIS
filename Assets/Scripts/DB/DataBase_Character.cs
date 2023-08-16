@@ -36,7 +36,8 @@ public class DataBase_Character : MonoBehaviour
             if (charId == 0)
                 characterPrefab = playerPrefab;
 
-            var c = Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Character>();
+            var c = Instantiate(characterPrefab, GameManager.Instance.GetSpawnPos(), Quaternion.identity).GetComponent<Character>();
+            c.name = GameManager.Instance.GetCharacterName(charId);
 
             characterDB.Add(charId, c);
         }

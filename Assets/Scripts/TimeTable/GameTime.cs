@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameTime : Singleton<GameTime>
 {
@@ -17,36 +18,60 @@ public class GameTime : Singleton<GameTime>
     [SerializeField]
     float timer = 0;
 
+    public UnityAction timeEvent;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance.isTimePasses)
+        Timer();
+    }
+
+    public void Timer()
+    {
+        if (GameManager.Instance.isTimePasses)
         {
             timer += Time.deltaTime;
 
-            if(timer >= gameTime2RealTime * 60)
+            if (timer >= gameTime2RealTime * 60)
             {
                 timer = 0;
                 minute += 10;
 
-                if(minute >= 60)
+                if (minute >= 60)
                 {
                     minute = 0;
                     hour++;
 
-                    if(hour >= 24)
+                    if (hour >= 24)
                     {
                         hour = 0;
                         day++;
                     }
                 }
+
+                timeEvent?.Invoke();
             }
         }
+    }
+
+    public string GetTime()
+    {
+        return hour + ":" + minute;
+    }
+
+    public int GetTimeIdx(int h, int m)
+    {
+        return h * 6 + m / 10;
+    }
+
+    public int GetTimeIdx()
+    {
+        return hour * 6 + minute / 10; 
     }
 }

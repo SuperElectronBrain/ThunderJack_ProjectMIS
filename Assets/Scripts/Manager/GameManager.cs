@@ -8,6 +8,8 @@ public class GameManager : Singleton<GameManager>
     CameraMove cameraMove;
     [SerializeField]
     Transform Player;
+    [SerializeField]
+    Transform spawnPos;
 
     [SerializeField]
     DataBase_Character characterDB;
@@ -44,6 +46,11 @@ public class GameManager : Singleton<GameManager>
     public int GetCharacterCount()
     {
         return characterDB.GetCharacterCount();
+    }
+
+    public Vector3 GetSpawnPos()
+    {
+        return spawnPos.position;
     }
 }
 
