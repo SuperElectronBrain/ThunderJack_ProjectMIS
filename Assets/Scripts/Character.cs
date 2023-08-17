@@ -46,7 +46,7 @@ public class Character : MonoBehaviour
 
 			Vector3 t_ModelingScale = m_SD.transform.localScale;
 			if (m_HorizontalMove > 0) { t_ModelingScale.x = -0.2f; }
-			else { t_ModelingScale.x = 0.2f; }
+			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 0.2f; }
 			m_SD.transform.localScale = t_ModelingScale;
 		}
 
