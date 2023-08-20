@@ -12,9 +12,9 @@ public class CEOSystem : MonoBehaviour
 	private GameObject EmployPanel;
 	[SerializeField] private GameObject partTimerPanelPrefab;
 	private GameObject partTimerPanel;
-	private List<PartTimer> partTimers = new List<PartTimer>();
+	private List<PartTimerComponent> partTimers = new List<PartTimerComponent>();
 	private PlayerCharacter playerCharacter;
-	private Character focusingTarget = null;
+	private CharacterBase focusingTarget = null;
 
 	// Start is called before the first frame update
 	void Start()
@@ -158,7 +158,7 @@ public class CEOSystem : MonoBehaviour
 							focusingTarget = hit.transform.gameObject.GetComponent<NonPlayerCharacter>();
 						}
 						
-						PartTimer t_PartTimer = hit.transform.gameObject.GetComponent<PartTimer>();
+						PartTimerComponent t_PartTimer = hit.transform.gameObject.GetComponent<PartTimerComponent>();
 						if (t_PartTimer != null)
 						{
 							for (int i = 0; i < partTimers.Count; i = i + 1)
@@ -190,7 +190,7 @@ public class CEOSystem : MonoBehaviour
 
 	}
 
-	public void AddPartTimer(PartTimer p_PartTimer)
+	public void AddPartTimer(PartTimerComponent p_PartTimer)
 	{
 		int count = 0;
 		for (int i = 0; i < partTimers.Count; i = i + 1)
@@ -225,17 +225,17 @@ public class CEOSystem : MonoBehaviour
 			}
 		}
 	}
-	public void AddPartTimer(Character p_Character)
+	public void AddPartTimer(CharacterBase p_Character)
 	{
-		PartTimer t_PartTimer = p_Character.GetComponent<PartTimer>();
+		PartTimerComponent t_PartTimer = p_Character.GetComponent<PartTimerComponent>();
 		if (t_PartTimer == null) 
 		{
-			t_PartTimer = p_Character.AddComponent<PartTimer>();
+			t_PartTimer = p_Character.AddComponent<PartTimerComponent>();
 		}
 		AddPartTimer(t_PartTimer);
 	}
 
-	public void RemovePartTimer(PartTimer p_PartTimer)
+	public void RemovePartTimer(PartTimerComponent p_PartTimer)
 	{
 		if (p_PartTimer != null)
 		{
@@ -253,8 +253,8 @@ public class CEOSystem : MonoBehaviour
 		}
 	}
 
-	public void RemovePartTimer(Character p_Character) 
+	public void RemovePartTimer(CharacterBase p_Character) 
 	{
-		RemovePartTimer(p_Character.GetComponent<PartTimer>());
+		RemovePartTimer(p_Character.GetComponent<PartTimerComponent>());
 	}
 }

@@ -4,9 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PartTimer : MonoBehaviour
+public class PartTimerComponent : MonoBehaviour
 {
-	[HideInInspector] private Character master;
+	[HideInInspector] private CharacterBase master;
 	private Inventory masterInventory;
 	public ItemCode productionItem = ItemCode.RubyRing;
 	[SerializeField] private RecipeBook recipeBook;
@@ -44,7 +44,7 @@ public class PartTimer : MonoBehaviour
 		}
 	}
 
-	public void SetMaster(Character p_Master)
+	public void SetMaster(CharacterBase p_Master)
 	{
 		master = p_Master;
 		if (p_Master != null)

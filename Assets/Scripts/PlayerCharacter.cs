@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Progress;
 
-public class PlayerCharacter : Character
+public class PlayerCharacter : CharacterBase
 {
 	private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
