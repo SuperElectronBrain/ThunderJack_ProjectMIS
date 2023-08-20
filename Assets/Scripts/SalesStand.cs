@@ -75,7 +75,10 @@ public class SalesStand : MonoBehaviour
 
 								for (int i = 0; i < needs.Count; i = i + 1)
 								{
-									inventory.AddItem(needs[i].reward);
+									for(int j = 0; j < needs[i].rewards.Count; j = j + 1)
+									{
+										inventory.AddItem(needs[i].rewards[j]);
+									}
 									customer.CompleteNeed(needs[i].need.itemCode);
 								}
 

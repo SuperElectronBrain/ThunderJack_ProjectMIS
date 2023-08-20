@@ -45,8 +45,8 @@ public class Character : MonoBehaviour
 			m_SD.transform.rotation = Quaternion.Euler(t_ModelingRotation);
 
 			Vector3 t_ModelingScale = m_SD.transform.localScale;
-			if (m_HorizontalMove > 0) { t_ModelingScale.x = -0.2f; }
-			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 0.2f; }
+			if (m_HorizontalMove > 0) { t_ModelingScale.x = t_ModelingScale.x > 0 ? -t_ModelingScale.x : t_ModelingScale.x; }
+			else if (m_HorizontalMove < 0) { t_ModelingScale.x = t_ModelingScale.x < 0 ? -t_ModelingScale.x : t_ModelingScale.x; }
 			m_SD.transform.localScale = t_ModelingScale;
 		}
 

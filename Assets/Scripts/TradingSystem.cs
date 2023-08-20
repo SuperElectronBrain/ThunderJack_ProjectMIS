@@ -42,37 +42,41 @@ public class TradingSystem : MonoBehaviour
 					{
 						RefreshSalesPanel = () =>
 						{
-							List<Item> t_Items = new List<Item>();
+							List<Item> t_CostItems = new List<Item>();
 							if (m_NPCShop != null)
 							{
 								for (int i = 0; i < selectedItems.Count; i = i + 1)
 								{
 									if (selectedItems[i].itemAmount > 0)
 									{
-										Item t_CostItem = m_NPCShop.GetSalesItems()[i].reward;
-
-										int count = 0;
-										for (int j = 0; j < t_Items.Count; j = j + 1)
+										List<Item> t_Costs = m_NPCShop.GetSalesItems()[i].costs;
+										for(int j = 0; j < t_Costs.Count; j = j + 1)
 										{
-											if (t_Items[j].itemCode == t_CostItem.itemCode)
-											{
-												Item t_Item = t_Items[j];
-												t_Item.itemAmount = t_Item.itemAmount + (t_CostItem.itemAmount * selectedItems[i].itemAmount);
-												t_Items[j] = t_Item;
+											t_CostItems = UniFunc.AddItem(t_CostItems, new Item(t_Costs[j].itemCode, t_Costs[j].itemAmount * selectedItems[i].itemAmount));
 
-												count = count + 1;
-												break;
-											}
+											//int count = 0;
+											//for (int k = 0; k < t_CostItems.Count; k = k + 1)
+											//{
+											//	if (t_CostItems[k].itemCode == t_Costs[j].itemCode)
+											//	{
+											//		Item t_Item = t_CostItems[k];
+											//		t_Item.itemAmount = t_Item.itemAmount + (t_Costs[j].itemAmount * selectedItems[i].itemAmount);
+											//		t_CostItems[k] = t_Item;
+											//
+											//		count = count + 1;
+											//		break;
+											//	}
+											//}
+											//
+											//if (count < 1) { t_CostItems.Add(new Item(t_Costs[j].itemCode, t_Costs[j].itemAmount * selectedItems[i].itemAmount)); }
 										}
-
-										if (count < 1) { t_Items.Add(new Item(t_CostItem.itemCode, t_CostItem.itemAmount * selectedItems[i].itemAmount)); }
 									}
 								}
 							}
 
 							for (int i = 0; i < t_Images.Count; i = i + 1)
 							{
-								if (i < t_Items.Count)
+								if (i < t_CostItems.Count)
 								{
 									if (t_Images[i].gameObject.activeSelf == false)
 									{
@@ -82,10 +86,10 @@ public class TradingSystem : MonoBehaviour
 									TextMeshProUGUI t_Text = UniFunc.GetChildComponent<TextMeshProUGUI>(t_Images[i].gameObject);
 									if (t_Text != null)
 									{
-										t_Text.text = t_Items[i].itemCode + " " + t_Items[i].itemAmount;
+										t_Text.text = t_CostItems[i].itemCode + " " + t_CostItems[i].itemAmount;
 									}
 								}
-								else if (i >= t_Items.Count)
+								else if (i >= t_CostItems.Count)
 								{
 									if(t_Images[i].gameObject.activeSelf == true)
 									{
@@ -103,59 +107,82 @@ public class TradingSystem : MonoBehaviour
 				{
 					t_Button.onClick.AddListener(() => 
 					{
-						List<Item> t_Items = new List<Item>();
+						List<Item> t_CostItems = new List<Item>();
 						if (m_NPCShop != null)
+						{
+							for (int i = 0; i < selectedItems.Count; i = i + 1)
 							{
-								for (int i = 0; i < selectedItems.Count; i = i + 1)
+								if (selectedItems[i].itemAmount > 0)
 								{
-									if (selectedItems[i].itemAmount > 0)
+									List<Item> t_Costs = m_NPCShop.GetSalesItems()[i].costs;
+									for (int j = 0; j < t_Costs.Count; j = j + 1)
 									{
-										Item t_CostItem = m_NPCShop.GetSalesItems()[i].reward;
+										t_CostItems = UniFunc.AddItem(t_CostItems, new Item(t_Costs[j].itemCode, t_Costs[j].itemAmount * selectedItems[i].itemAmount));
 
-										int count = 0;
-										for (int j = 0; j < t_Items.Count; j = j + 1)
-										{
-											if (t_Items[j].itemCode == t_CostItem.itemCode)
-											{
-												Item t_Item = t_Items[j];
-												t_Item.itemAmount = t_Item.itemAmount + (t_CostItem.itemAmount * selectedItems[i].itemAmount);
-												t_Items[j] = t_Item;
-
-												count = count + 1;
-												break;
-											}
-										}
-
-										if (count < 1) { t_Items.Add(new Item(t_CostItem.itemCode, t_CostItem.itemAmount * selectedItems[i].itemAmount)); }
+										//int count = 0;
+										//for (int k = 0; k < t_CostItems.Count; k = k + 1)
+										//{
+										//	if (t_CostItems[k].itemCode == t_Costs[j].itemCode)
+										//	{
+										//		Item t_Item = t_CostItems[k];
+										//		t_Item.itemAmount = t_Item.itemAmount + (t_Costs[j].itemAmount * selectedItems[i].itemAmount);
+										//		t_CostItems[k] = t_Item;
+										//
+										//		count = count + 1;
+										//		break;
+										//	}
+										//}
+										//
+										//if (count < 1) { t_CostItems.Add(new Item(t_Costs[j].itemCode, t_Costs[j].itemAmount * selectedItems[i].itemAmount)); }
 									}
 								}
 							}
+						}
 
 						if(inventory != null)
 						{
 							int count = 0;
-							for(int i = 0; i < t_Items.Count; i = i + 1)
+							for(int i = 0; i < t_CostItems.Count; i = i + 1)
 							{
-								if(inventory.FindItem(t_Items[i]) == false)
+								if(inventory.FindItem(t_CostItems[i]) == false)
 								{
 									count = count + 1;
 									break;
 								}
 							}
 
+							for (int i = 0; i < selectedItems.Count; i = i + 1)
+							{
+								if (selectedItems[i].itemAmount > 0)
+								{
+									List<Item> t_UnlockConditions = m_NPCShop.GetSalesItems()[i].unlockConditions;
+									for (int j = 0; j < t_UnlockConditions.Count; j = j + 1)
+									{
+										if(t_UnlockConditions[j].itemCode != ItemCode.None)
+										{
+											if (inventory.FindItem(t_UnlockConditions[j]) == false)
+											{
+												count = count + 1;
+												break;
+											}
+										}
+									}
+								}
+							}
+
 							if(count < 1)
 							{
-								for (int i = 0; i < t_Items.Count; i = i + 1)
+								for (int i = 0; i < t_CostItems.Count; i = i + 1)
 								{
-									inventory.PopItem(t_Items[i]);
+									inventory.PopItem(t_CostItems[i]);
 								}
 
-								List<Need> t_SalesItems = m_NPCShop.GetSalesItems();
+								List<SalesItem> t_SalesItems = m_NPCShop.GetSalesItems();
 								for (int i = 0; i < selectedItems.Count; i = i + 1)
 								{
 									if (selectedItems[i].itemAmount > 0)
 									{
-										inventory.AddItem(t_SalesItems[i].need.itemCode, t_SalesItems[i].need.itemAmount * selectedItems[i].itemAmount);
+										inventory.AddItem(t_SalesItems[i].reward.itemCode, t_SalesItems[i].reward.itemAmount * selectedItems[i].itemAmount);
 									}
 								}
 
@@ -186,15 +213,15 @@ public class TradingSystem : MonoBehaviour
 					{
 						RefreshTradingPanel = () =>
 						{
-							List<Need> t_Needs = null;
+							List<SalesItem> t_SalesItems = null;
 							if (m_NPCShop != null)
 							{
-								t_Needs = m_NPCShop.GetSalesItems();
+								t_SalesItems = m_NPCShop.GetSalesItems();
 							}
 
 							for (int i = 0; i < t_Buttons.Count; i = i + 1)
 							{
-								if(i < (t_Needs != null ? t_Needs.Count : 0))
+								if(i < (t_SalesItems != null ? t_SalesItems.Count : 0))
 								{
 									if (t_Buttons[i].gameObject.activeSelf == false)
 									{
@@ -207,7 +234,7 @@ public class TradingSystem : MonoBehaviour
 									{
 										if (t_Text != null)
 										{
-											t_Text.text = t_Needs[i].need.itemCode + " " + t_Needs[i].need.itemAmount;
+											t_Text.text = t_SalesItems[i].reward.itemCode + " " + t_SalesItems[i].reward.itemAmount;
 										}
 									}
 
@@ -306,9 +333,9 @@ public class TradingSystem : MonoBehaviour
 		}
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
+	// Update is called once per frame
+	void Update()
+	{
 		float DeltaTime = Time.deltaTime;
 
 		if (Input.GetMouseButtonDown(0) == true)

@@ -161,8 +161,8 @@ MonoBehaviour:
   - need:
       itemCode: 12
       itemAmount: 1
-    reward:
-      itemCode: 1000
+    rewards:
+    - itemCode: 1000
       itemAmount: 100
 --- !u!54 &50910147
 Rigidbody:
@@ -2075,24 +2075,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   salesItems:
-  - need:
+  - reward:
       itemCode: 1
       itemAmount: 1
-    reward:
-      itemCode: 1000
+    costs:
+    - itemCode: 1000
       itemAmount: 10
-  - need:
+    unlockConditions: []
+  - reward:
       itemCode: 6
       itemAmount: 1
-    reward:
-      itemCode: 1000
+    costs:
+    - itemCode: 1000
       itemAmount: 20
-  - need:
+    unlockConditions: []
+  - reward:
       itemCode: 7
       itemAmount: 1
-    reward:
-      itemCode: 1000
+    costs:
+    - itemCode: 1000
       itemAmount: 30
+    unlockConditions: []
 --- !u!114 &1120058454
 MonoBehaviour:
   m_ObjectHideFlags: 0
