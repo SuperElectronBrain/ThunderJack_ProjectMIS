@@ -14,11 +14,14 @@ public class GameTime : Singleton<GameTime>
 
     [SerializeField]
     int gameTime2RealTime;
+    [SerializeField]
+    float gameSpeed;
 
     [SerializeField]
     float timer = 0;
 
     public UnityAction timeEvent;
+    public UnityAction dayEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +39,7 @@ public class GameTime : Singleton<GameTime>
     {
         if (GameManager.Instance.isTimePasses)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime * gameSpeed;
 
             if (timer >= gameTime2RealTime * 60)
             {
@@ -52,6 +55,8 @@ public class GameTime : Singleton<GameTime>
                     {
                         hour = 0;
                         day++;
+
+                        dayEvent?.Invoke();
                     }
                 }
 
@@ -63,6 +68,21 @@ public class GameTime : Singleton<GameTime>
     public string GetTime()
     {
         return hour + ":" + minute;
+    }
+
+    public int GetHour()
+    {
+        return hour;
+    }
+
+    public int GetMinute()
+    {
+        return minute;
+    }
+
+    public float GetGameSpeed()
+    {
+        return (gameTime2RealTime * 60) / gameSpeed;
     }
 
     public int GetTimeIdx(int h, int m)

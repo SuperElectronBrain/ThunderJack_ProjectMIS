@@ -23,7 +23,6 @@ public class TimeTable : MonoBehaviour
                 string npcName = GameManager.Instance.GetCharacterName(id);
                 if (tData[npcName].ToString() != string.Empty)
                 {
-                    Debug.Log(npcName + " : " + h + ":" + m + " : " + (tData[npcName].ToString()));
                     if (npcTimeTable.TryAdd(id, new()) == false)
                         npcTimeTable[id].timeTableData.Add(GameTime.Instance.GetTimeIdx(h, m), (Location)Tools.IntParse(tData[npcName]));
                     else
