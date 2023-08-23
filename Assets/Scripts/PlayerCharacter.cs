@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Splines;
 using static UnityEditor.Progress;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerCharacter : CharacterBase
 {
 	private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
+	//[SerializeField] private SplineContainer m_SplineContainer;
+	//public GameObject m_Temporary;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -14,15 +19,22 @@ public class PlayerCharacter : CharacterBase
 		base.Start();
 
 		m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
-		m_Collider = m_CameraCon.GetComponent<CapsuleCollider>();
+		m_Collider = gameObject.GetComponent<CapsuleCollider>();
+
+		//transform.position = SplineUtility.EvaluatePosition(m_SplineContainer.Spline, 1.0f);
 	}
 
 	// Update is called once per frame
-	//protected override void Update()
-	//{
-	//	base.Update();
-	//	float DeltaTime = Time.deltaTime;
-	//}
+	protected override void Update()
+	{
+		base.Update();
+		float DeltaTime = Time.deltaTime;
+
+		//NativeSpline t_SplinePath = new NativeSpline(new SplinePath<Spline>(m_SplineContainer.Splines), m_SplineContainer.transform.localToWorldMatrix);
+		//SplineUtility.GetNearestPoint(t_SplinePath, transform.position, out float3 t_Point, out float t_t);
+		//m_Temporary.transform.position = t_Point;
+		//m_Temporary.transform.rotation = Quaternion.LookRotation(Vector3.Normalize(m_SplineContainer.EvaluateTangent(t_SplinePath, t_t)), m_SplineContainer.EvaluateUpVector(t_SplinePath, t_t));
+	}
 
 	//protected override void FixedUpdate()
 	//{
@@ -64,4 +76,13 @@ public class PlayerCharacter : CharacterBase
 	//{
 	//	base.VerticalMove(DeltaTime);
 	//}
+
+	protected override void OnTriggerEnter(Collider collision)
+	{
+		m_CPAComponent = collision.gameObject.GetComponent<CameraPresetAreaComponent>();
+		if (m_CPAComponent != null)
+		{
+			m_CPAComponent.m_PlayerCharacter = this;
+		}
+	}
 }

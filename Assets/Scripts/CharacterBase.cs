@@ -2,11 +2,14 @@ using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CharacterBase : MonoBehaviour
 {
 	[SerializeField][Range(0, 100)] protected float speed = 5.0f;
 	[SerializeField] protected float jumpForce = 250.0f;
+	[HideInInspector] public Vector3 m_HorizontalMoveDirection;
+	[HideInInspector] public Vector3 m_VerticalMoveDirection;
 	protected float m_HorizontalMove = 0.0f;
 	protected float m_VerticalMove = 0.0f;
 	private Vector3 m_PrevPosition;
@@ -16,10 +19,13 @@ public class CharacterBase : MonoBehaviour
 	protected Rigidbody m_Rigidbody;
     [SerializeField] protected GameObject m_SD;
     protected Animator m_Animator;
+	[HideInInspector] public CameraPresetAreaComponent m_CPAComponent;
 
 	// Start is called before the first frame update
 	protected virtual void Start()
     {
+		m_HorizontalMoveDirection = Vector3.right;
+		m_VerticalMoveDirection = Vector3.forward;
 		m_PrevPosition = transform.position;
 
 		m_MainCamera = Camera.main;
@@ -61,6 +67,10 @@ public class CharacterBase : MonoBehaviour
 	{
 		float DeltaTime = Time.fixedDeltaTime;
 
+		if(m_CPAComponent != null)
+		{
+			SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward);
+		}
 		HorizontalMove(DeltaTime);
 		VerticalMove(DeltaTime);
 
@@ -82,13 +92,24 @@ public class CharacterBase : MonoBehaviour
 
 	protected virtual void HorizontalMove(float DeltaTime)
 	{
-		transform.Translate(new Vector3(m_HorizontalMove, 0.0f, 0.0f) * DeltaTime * speed);
+		//transform.Translate(new Vector3(m_HorizontalMove, 0.0f, 0.0f) * DeltaTime * speed);
+		transform.Translate(m_HorizontalMoveDirection * m_HorizontalMove * DeltaTime * speed);
 	}
 
 	protected virtual void VerticalMove(float DeltaTime)
 	{
-		transform.Translate(new Vector3(0.0f, 0.0f, m_VerticalMove) * DeltaTime * speed);
+		//transform.Translate(new Vector3(0.0f, 0.0f, m_VerticalMove) * DeltaTime * speed);
+		transform.Translate(m_VerticalMoveDirection * m_VerticalMove * DeltaTime * speed);
 	}
+
+	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection, Vector3 p_VerticalMoveDirection)
+	{
+		m_HorizontalMoveDirection = p_HorizontalMoveDirection;
+		m_VerticalMoveDirection = p_VerticalMoveDirection;
+	}
+
+	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection) { SetMoveDirection(p_HorizontalMoveDirection, Vector3.right); }
+	public void SetMoveDirection() { SetMoveDirection(Vector3.forward, Vector3.right); }
 
 	protected virtual void OnCollisionEnter(Collision collision)
 	{
@@ -97,6 +118,24 @@ public class CharacterBase : MonoBehaviour
 			if (m_Animator != null)
 			{
 				m_Animator.SetTrigger("Landing");
+			}
+		}
+	}
+
+	protected virtual void OnTriggerEnter(Collider collision)
+	{
+		m_CPAComponent = collision.gameObject.GetComponent<CameraPresetAreaComponent>();
+	}
+
+	protected virtual void OnTriggerExit(Collider collision)
+	{
+		CameraPresetAreaComponent t_CPAComponent = collision.gameObject.GetComponent<CameraPresetAreaComponent>();
+		if (t_CPAComponent != null)
+		{
+			if(t_CPAComponent == m_CPAComponent)
+			{
+				m_CPAComponent.m_PlayerCharacter = null;
+				m_CPAComponent = null;
 			}
 		}
 	}
