@@ -9,7 +9,8 @@ public class Portal : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		if(gameObject.GetComponent<Renderer>() == true)
+		gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+		if (gameObject.GetComponent<Renderer>() == true)
 		{
 			gameObject.GetComponent<Renderer>().enabled = false;
 		}
