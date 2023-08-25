@@ -343,10 +343,11 @@ public class TradingSystem : MonoBehaviour
 			if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() == false)
 			{
 				m_NPCShop = null;
-				
+
 				Vector3 mousePosition = Input.mousePosition;
-				mousePosition.z = Camera.main.farClipPlane;
-				mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+				//mousePosition.z = Camera.main.farClipPlane;
+				//mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+				mousePosition = Camera.main.ScreenPointToRay(mousePosition).direction;
 
 				RaycastHit hit;
 				if (Physics.Raycast(Camera.main.transform.position, mousePosition, out hit, Mathf.Infinity) == true)
@@ -357,7 +358,7 @@ public class TradingSystem : MonoBehaviour
 					}
 				}
 
-				if(m_NPCShop != null)
+				if (m_NPCShop != null)
 				{
 					if (TradingPanel != null)
 					{

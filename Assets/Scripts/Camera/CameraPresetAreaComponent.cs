@@ -30,9 +30,10 @@ public class CameraPresetAreaComponent : MonoBehaviour
 	[HideInInspector] public PlayerCharacter m_PlayerCharacter;
 
 	// Start is called before the first frame update
-	//void Start()
-	//{
-	//}
+	void Start()
+	{
+		gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+	}
 
 	// Update is called once per frame
 	//void Update()

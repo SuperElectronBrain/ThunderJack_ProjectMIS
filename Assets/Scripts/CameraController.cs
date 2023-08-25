@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
 	[SerializeField] private float angle = 15.0f;
 	//[SerializeField] private float zoomSpeed = 1000.0f;
 
-	[SerializeField] private SplineContainer m_SplineContainer;
+	//[SerializeField] private SplineContainer m_SplineContainer;
 	//public GameObject mousePointingTarget;
 	[HideInInspector] public GameObject cameraTarget;
 	private PlayerCharacter m_PlayerCharacter;
