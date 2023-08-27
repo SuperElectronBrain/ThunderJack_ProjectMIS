@@ -31,6 +31,7 @@ public enum ItemCode
 	RubyNecklace,
 
 	Money = 1000,
+	Honor,
 }
 
 

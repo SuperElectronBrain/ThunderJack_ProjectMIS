@@ -8,12 +8,12 @@ using static UnityEditor.Progress;
 public struct Need
 {
 	[SerializeField] public Item need;
-	[SerializeField] public Item reward;
+	[SerializeField] public List<Item> rewards;
 
-	public Need(Item p_Need, Item p_Reward)
+	public Need(Item p_Need, Item[] p_Rewards)
 	{
 		need = p_Need;
-		reward = p_Reward;
+		rewards = new List<Item>(p_Rewards);
 	}
 }
 

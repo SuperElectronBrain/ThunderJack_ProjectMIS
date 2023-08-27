@@ -1,95 +1,88 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Splines;
+using static UnityEditor.Progress;
+using static UnityEngine.GraphicsBuffer;
 
-public class PlayerCharacter : Character
+public class PlayerCharacter : CharacterBase
 {
-	[SerializeField] [Range(0, 100)] private float speed = 5.0f;
-	[SerializeField] private float jumpForce = 250.0f;
-	private float horizontalMove = 0.0f;
-	private float verticalMove = 0.0f;
-	private float jump = 0.0f;
-	//private bool IsJumpable = true;
-	private int jumpCount = 1;
-
-	private Rigidbody rd;
-	private CameraController cameraCon;
+	private CameraController m_CameraCon;
+	private CapsuleCollider m_Collider;
+	//[SerializeField] private SplineContainer m_SplineContainer;
+	//public GameObject m_Temporary;
 
 	// Start is called before the first frame update
-	void Start()
+	protected override void Start()
 	{
-		rd = gameObject.GetComponent<Rigidbody>();
-		if(rd == null) { rd = gameObject.AddComponent<Rigidbody>(); }
-		cameraCon = Camera.main.gameObject.GetComponent<CameraController>();
+		base.Start();
+
+		m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
+		m_Collider = gameObject.GetComponent<CapsuleCollider>();
+
+		//transform.position = SplineUtility.EvaluatePosition(m_SplineContainer.Spline, 1.0f);
 	}
 
 	// Update is called once per frame
-	void Update()
+	protected override void Update()
 	{
+		base.Update();
 		float DeltaTime = Time.deltaTime;
 
-		KeyInput();
+		//NativeSpline t_SplinePath = new NativeSpline(new SplinePath<Spline>(m_SplineContainer.Splines), m_SplineContainer.transform.localToWorldMatrix);
+		//SplineUtility.GetNearestPoint(t_SplinePath, transform.position, out float3 t_Point, out float t_t);
+		//m_Temporary.transform.position = t_Point;
+		//m_Temporary.transform.rotation = Quaternion.LookRotation(Vector3.Normalize(m_SplineContainer.EvaluateTangent(t_SplinePath, t_t)), m_SplineContainer.EvaluateUpVector(t_SplinePath, t_t));
 	}
 
-	private void FixedUpdate()
-	{
-		float DeltaTime = Time.fixedDeltaTime;
+	//protected override void FixedUpdate()
+	//{
+	//	base.FixedUpdate();
+	//	float DeltaTime = Time.fixedDeltaTime;
+	//}
 
-		Movement(DeltaTime);
+	protected override void KeyInput()
+	{
+		m_HorizontalMove = Input.GetAxis("Horizontal");
+		m_VerticalMove = Input.GetAxis("Vertical");
+		if (Input.GetAxisRaw("Horizontal") == 0.0f) { m_HorizontalMove = 0.0f; }
+		if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
+
+		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
 	}
 
-	void KeyInput()
+	protected override void Jump()
 	{
-		horizontalMove = Input.GetAxis("Horizontal");
-		verticalMove = Input.GetAxis("Vertical");
+		base.Jump();
 
-		if (Input.GetAxisRaw("Horizontal") == 0.0f) { horizontalMove = 0.0f; }
-		if (Input.GetAxisRaw("Vertical") == 0.0f) { verticalMove = 0.0f; }
-
-		jump = Input.GetAxisRaw("Jump");
-
-		//if (Input.GetKeyDown(KeyCode.Space) == true) { JumpKey = true; }
-		//else if (Input.GetKeyUp(KeyCode.Space) == true) { JumpKey = false; }
-	}
-
-	void Movement(float DeltaTime)
-	{
-		if(cameraCon != null)
+		RaycastHit hit;
+		Vector3 t_Point = m_Collider != null ? transform.up * ((m_Collider.height / 2) - m_Collider.radius) : transform.position;
+		if (Physics.CapsuleCast(t_Point, -t_Point, m_Collider != null ? m_Collider.radius : transform.localScale.x / 2, transform.forward, out hit, Mathf.Infinity) == true)
 		{
-			if (cameraCon.cameraTarget == this.gameObject)
+			if (hit.transform.gameObject != gameObject)
 			{
-				if (horizontalMove != 0 || verticalMove != 0)
-				{
-					//rd.AddForce(new Vector3(HorizontalMove, 0.0f, VerticalMove) * DeltaTime * Speed);
-					transform.Translate(new Vector3(horizontalMove, 0.0f, verticalMove) * DeltaTime * speed);
-				}
-
-				if (jump != 0)
-				{
-					if (jumpCount > 0)
-					{
-						rd.AddForce(Vector3.up * jumpForce);
-						jumpCount = jumpCount - 1;
-					} 
-				}
+				m_Rigidbody.AddForce(Vector3.up * jumpForce);
 			}
 		}
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	//protected override void HorizontalMove(float DeltaTime)
+	//{
+	//	base.HorizontalMove(DeltaTime);
+	//}
+
+	//protected override void VerticalMove(float DeltaTime)
+	//{
+	//	base.VerticalMove(DeltaTime);
+	//}
+
+	protected override void OnTriggerEnter(Collider collision)
 	{
-		if(collision.gameObject != gameObject)
+		m_CPAComponent = collision.gameObject.GetComponent<CameraPresetAreaComponent>();
+		if (m_CPAComponent != null)
 		{
-			//IsJumpable = true;
-			jumpCount = 1;
+			m_CPAComponent.m_PlayerCharacter = this;
 		}
 	}
-
-	//private void OnCollisionExit(Collision collision)
-	//{ 
-	//	if(collision.gameObject != gameObject)
-	//	{
-	//		IsJumpable = false;
-	//	} 
-	//}
 }
