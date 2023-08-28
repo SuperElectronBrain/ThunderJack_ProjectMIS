@@ -99,6 +99,21 @@ public class CraftTool : MonoBehaviour
 		
 	}
 
+	private void OnDisable()
+	{
+		if (inventory != null)
+		{
+			inventory.DisplayItems(false);
+			inventory.itemSelectEvent.RemoveListener(ItemSelectEvent);
+		}
+
+		if (CraftPanel != null)
+		{
+			CraftPanel.SetActive(false);
+		}
+	}
+
+
 	private void ItemSelectEvent()
 	{
 		if (inventory != null)

@@ -109,6 +109,21 @@ public class SalesStand : MonoBehaviour
         
     }
 
+	private void OnDisable()
+	{
+		if (inventory != null)
+		{
+			inventory.DisplayItems(false);
+			inventory.itemSelectEvent.RemoveListener(ItemSelectEvent);
+			inventory = null;
+
+			DisplaySalesPanel(false);
+			DisplayNeedsPanel(false);
+			HideChilds(SalesItemPanel.transform);
+			HideChilds(NeedsItemPanel.transform);
+		}
+	}
+
 	private void ItemSelectEvent()
 	{
 		if (inventory != null)

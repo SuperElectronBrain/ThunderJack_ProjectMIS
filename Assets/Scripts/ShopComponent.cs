@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopComponent : MonoBehaviour
 {
@@ -19,6 +20,19 @@ public class ShopComponent : MonoBehaviour
 			{
 				ShopPanel = Instantiate(ShopPanelPrefab, canvas.transform);
 				ShopPanel.SetActive(false);
+
+				GameObject t_GameObject = UniFunc.GetChildOfName(ShopPanel, "StartButton");
+				if(t_GameObject != null)
+				{
+					Button t_Button = t_GameObject.GetComponent<Button>();
+					if (t_Button != null)
+					{
+						t_Button.onClick.AddListener(() => 
+						{
+							UnityEngine.SceneManagement.SceneManager.LoadScene(m_SceneName);
+						});
+					}
+				}
 			}
 		}
 	}
