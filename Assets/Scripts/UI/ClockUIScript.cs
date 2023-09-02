@@ -71,24 +71,21 @@ public class ClockUIScript : MonoBehaviour
 	{
 		float DeltaTime = Time.deltaTime;
 
-		ProgressTime(DeltaTime);
+		if (bProgressTime == true) { ProgressTime(DeltaTime); }
 		RefreshClock();
 	}
 
 	private void ProgressTime(float p_DeltaTime)
 	{
-		if(bProgressTime == true)
+		m_CurrentTime = m_CurrentTime + (p_DeltaTime / m_TimeSpeed);
+		if (m_CurrentTime >= m_MaxTime)
 		{
-			m_CurrentTime = m_CurrentTime + (p_DeltaTime / m_TimeSpeed);
-			if (m_CurrentTime >= m_MaxTime)
+			m_CurrentTime = m_CurrentTime - m_MaxTime;
+			CurrentDay = CurrentDay + 1;
+			m_CurrentWeekday = m_CurrentWeekday + 1;
+			if (m_CurrentWeekday >= m_MaxWeekday)
 			{
-				m_CurrentTime = m_CurrentTime - m_MaxTime;
-				CurrentDay = CurrentDay + 1;
-				m_CurrentWeekday = m_CurrentWeekday + 1;
-				if(m_CurrentWeekday >= m_MaxWeekday)
-				{
-					m_CurrentWeekday = 0;
-				}
+				m_CurrentWeekday = 0;
 			}
 		}
 	}
