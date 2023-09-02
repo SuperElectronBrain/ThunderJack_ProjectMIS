@@ -38,13 +38,13 @@ public class AddressableManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+/*        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             var index = gameObjects.Count - 1;
 
             Addressables.ReleaseInstance(gameObjects[index]);
             gameObjects.RemoveAt(index);
-        }
+        }*/
     }
 
     public T LoadObject<T>(string loadObjectName)

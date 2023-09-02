@@ -20,9 +20,6 @@ public class GameTime : MonoBehaviour
     [SerializeField]
     float timer = 0;
 
-    public UnityAction timeEvent;
-    public UnityAction dayEvent;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -54,11 +51,11 @@ public class GameTime : MonoBehaviour
                     hour = 0;
                     day++;
 
-                    dayEvent?.Invoke();
+                    EventManager.Publish(EventType.Day);
                 }
             }
 
-            timeEvent?.Invoke();
+            EventManager.Publish(EventType.hour);
         }
     }
 

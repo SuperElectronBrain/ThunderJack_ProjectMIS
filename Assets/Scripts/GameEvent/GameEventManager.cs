@@ -33,7 +33,7 @@ public class GameEventManager : MonoBehaviour
             );
         }
 
-            GameManager.Instance.GameTime.dayEvent += NewDayEvent;
+        EventManager.Subscribe(EventType.Day, NewDayEvent);
     }
 
     // Update is called once per frame

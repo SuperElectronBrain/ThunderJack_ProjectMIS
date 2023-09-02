@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum NPCBehaviour
 {
@@ -20,15 +21,20 @@ public class NPC : Character
     [SerializeField]
     BehaviourData curBehaviourData;
 
+    float intimacy;
+
     bool isMeet;
     bool isNear;
 
     NPC_Move npcMove;
 
+    public NavMeshAgent agent;
+    public Vector3 destinationPos;
+
     private void Start()
     {
         fsm = new();
-        npcMove = GetComponent<NPC_Move>();
+        agent = GetComponent<NavMeshAgent>();
         states = new State<NPC>[((int)NPCBehaviour.Last)];
 
         states[((int)NPCBehaviour.Idle)] = GetComponent<IdleState>();
@@ -46,6 +52,12 @@ public class NPC : Character
     protected virtual void Update()
     {
         fsm.StateUpdate();
+    }
+
+    public void StartConversation()
+    {
+        Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
+        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");
     }
 
     public void SetCurBehaviourData(BehaviourData newBehaviourData)

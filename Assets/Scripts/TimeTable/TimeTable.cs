@@ -12,9 +12,7 @@ public class TimeTable : MonoBehaviour
         npcTimeTable = new Dictionary<int, TimeTableData>();
 
         var timeTable = GameManager.Instance.DataBase.Parser("Time_Table_Day1");
-
-        
-
+       
         var behaviourMaster = GameManager.Instance.BehaviourMaster;
 
         foreach (var tData in timeTable)
@@ -47,7 +45,7 @@ public class TimeTable : MonoBehaviour
             }
         }
 
-        GameManager.Instance.GameTime.timeEvent += WorkDistribution;
+        EventManager.Subscribe(EventType.hour, WorkDistribution);
     }
 
     void WorkDistribution()
@@ -62,10 +60,15 @@ public class TimeTable : MonoBehaviour
         }
     }
 
-/*    public NPCBehaviour GetMyBehaviour(int characterId, int timeIdx)
+    /*    public NPCBehaviour GetMyBehaviour(int characterId, int timeIdx)
+        {
+            //return npcTimeTable[characterId].timeTableData[timeIdx];
+        }*/
+
+    private void OnDestroy()
     {
-        //return npcTimeTable[characterId].timeTableData[timeIdx];
-    }*/
+        EventManager.Unsubscribe(EventType.hour, WorkDistribution);
+    }
 }
 
 public class TimeTableData

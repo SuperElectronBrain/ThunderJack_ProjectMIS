@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
     string dialogueName;
     //CharacterDialogue characterDialogue;
     [SerializeField]
-    CharacterData characterData;
+    protected CharacterData characterData;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +38,7 @@ public class Character : MonoBehaviour
 
     public void Conversation()
     {
-        GameManager.Instance.StartConversation(dialogueName, this);
+        //GameManager.Instance.StartConversation(dialogueName, this);
     }
 
     public void PlayAnimation(AnimationType newAnimationType)

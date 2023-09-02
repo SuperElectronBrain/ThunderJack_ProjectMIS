@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public enum EventType
 {
-    None
+    None, hour, Day, Dialog, End
 }
 
 public class EventManager
@@ -14,9 +14,7 @@ public class EventManager
 
     public static void Subscribe(EventType eventType, UnityAction listner)
     {
-        UnityEvent e;
-
-        if (events.TryGetValue(eventType, out e))
+        if (events.TryGetValue(eventType, out UnityEvent e))
             e.AddListener(listner);
         else
         {
@@ -28,17 +26,13 @@ public class EventManager
 
     public static void Unsubscribe(EventType eventType, UnityAction listner)
     {
-        UnityEvent e;
-
-        if (events.TryGetValue(eventType, out e))
+        if (events.TryGetValue(eventType, out UnityEvent e))
             e.RemoveListener(listner);
     }
 
     public static void Publish(EventType eventType)
     {
-        UnityEvent e;
-
-        if (events.TryGetValue(eventType, out e))
+        if (events.TryGetValue(eventType, out UnityEvent e))
             e.Invoke();
     }
 }

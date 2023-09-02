@@ -21,7 +21,6 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     ItemManager itemManager;
 
-
     [Header("Time")]
     [SerializeField]
     GameTime gameTime;
@@ -36,7 +35,10 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     Dialogue dialogue;
-    
+
+    [SerializeField]
+    NPC npc;
+
     public DataBase DataBase { get { return dataBase; } }
     public DataBase_Character CharacterDB { get { return characterDB; } }
     public GameTime GameTime { get { return gameTime; } }
@@ -44,15 +46,19 @@ public class GameManager : Singleton<GameManager>
     public ItemManager ItemManager { get { return itemManager; } }
     public BehaviourMaster BehaviourMaster { get { return behaviourMaster; } }
     public LocationManager LocationManager { get { return locationManager; } }
+    public Dialogue Dialogue { get { return dialogue; } }
 
     private void Start()
     {
         
-    }
+    }    
 
-    public void StartConversation(string loadDialogue, Character npc)
+    private void Update()
     {
-        dialogue.InitDialogue(loadDialogue);
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            npc.StartConversation();
+        }
     }
 
     public Vector3 GetSpawnPos()
