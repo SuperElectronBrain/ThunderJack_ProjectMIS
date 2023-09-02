@@ -32,7 +32,7 @@ public class Dialogue : MonoBehaviour
 
     public void InitDialogue(string newDialogue)
     {
-        var dialogue = DataBase.Instance.Parser(newDialogue);
+        var dialogue = GameManager.Instance.DataBase.Parser(newDialogue);
 
         foreach (var dict in dialogue)
         {
@@ -58,15 +58,15 @@ public class Dialogue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+/*        if(Input.GetKeyDown(KeyCode.Space))
         {
-            DialogueBox.Instance.SetName(DataBase.Instance.GetCharacterName(dialogueList[dialogueIdx].Character_ID));
+            DialogueBox.Instance.SetName(GameManager.Instance.DataBase.GetCharacterName(dialogueList[dialogueIdx].Character_ID));
             DialogueBox.Instance.SetDialog(dialogueList[dialogueIdx].Text_Script);
             //Character.Instance.PlayAnimation((AnimationType)dialogueList[dialogueIdx].Animation_ID);
             GameManager.Instance.GetCharacter(dialogueList[dialogueIdx].Character_ID).PlayAnimation((AnimationType)dialogueList[dialogueIdx].Animation_ID);
 
             dialogueIdx = dialogueList[dialogueIdx].Text_Next;
-        }
+        }*/
     }
 
     public void EndDialogue()

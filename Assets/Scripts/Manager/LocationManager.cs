@@ -2,42 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Location
+public enum LocationName
 {
-    Shop, Town, Park, Home
+    Shop, Town, Park
 }
 
-public class LocationManager : Singleton<LocationManager>
+public class LocationManager : MonoBehaviour
 {
     [SerializeField]
-    Transform location_Shop;
-    [SerializeField]
-    Transform location_Town;
-    [SerializeField]
-    Transform location_Park;
-    [SerializeField]
-    Transform location_Home;
+    List<LocationData> locationList;
+    Dictionary<string, LocationData> locationData;
 
-    public Vector3 GetLocationPosition(Location location)
+    // Start is called before the first frame update
+    void Start()
     {
-        Vector3 locationPos = Vector3.zero;
+        locationData = new Dictionary<string, LocationData>();
 
-        switch (location)
+        foreach (var location in locationList)
         {
-            case Location.Shop:
-                locationPos = location_Shop.position;
-                break;
-            case Location.Town:
-                locationPos = location_Town.position;
-                break;
-            case Location.Park:
-                locationPos = location_Park.position;
-                break;
-            case Location.Home:
-                locationPos = location_Home.position;
-                break;
+            locationData.Add(location.name, location);
         }
+    }
 
-        return locationPos;
+    public Vector3 GetLocationPosition(int locationName)
+    {
+        Debug.Log(((LocationName)locationName).ToString() + " : " + locationData[((LocationName)locationName).ToString()].locationTransform);
+        return locationData[((LocationName)locationName).ToString()].locationTransform;
     }
 }

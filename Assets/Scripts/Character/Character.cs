@@ -21,6 +21,8 @@ public class Character : MonoBehaviour
     [SerializeField]
     string dialogueName;
     //CharacterDialogue characterDialogue;
+    [SerializeField]
+    CharacterData characterData;
 
     // Start is called before the first frame update
     void Start()
@@ -57,5 +59,10 @@ public class Character : MonoBehaviour
     public Location GetLocation()
     {
         return curLocation;
+    }
+
+    public void SetCharacterData(CharacterData cd)
+    {
+        characterData = cd;
     }
 }

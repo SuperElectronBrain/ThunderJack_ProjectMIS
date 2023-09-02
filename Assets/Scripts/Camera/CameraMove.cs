@@ -93,8 +93,8 @@ public class CameraMove : MonoBehaviour
 
         while(true)
         {
-            curCameraOffset = Vector3.Lerp(newSetup.Position, thisOffset, Tools.GetDistance(GameManager.Instance.GetPlayerTransform(), newSetup.TargetObj.transform) / newSetup.Distance.x);
-            curCameraRotation = Vector3.Lerp(newSetup.Rotation, thisRotation, Tools.GetDistance(GameManager.Instance.GetPlayerTransform(), newSetup.TargetObj.transform) / newSetup.Distance.x);
+/*            curCameraOffset = Vector3.Lerp(newSetup.Position, thisOffset, Tools.GetDistance(GameManager.Instance.GetPlayerTransform(), newSetup.TargetObj.transform) / newSetup.Distance.x);
+            curCameraRotation = Vector3.Lerp(newSetup.Rotation, thisRotation, Tools.GetDistance(GameManager.Instance.GetPlayerTransform(), newSetup.TargetObj.transform) / newSetup.Distance.x);*/
 
             yield return null;
         }

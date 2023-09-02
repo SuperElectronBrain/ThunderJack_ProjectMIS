@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EventType
+public enum GameEventType
 {
     None, CustomerF, CustomerA, CustomerE, CustomerW, Fame, OrePrice, Collect ,Tax, VisitRate
 }
@@ -17,7 +17,7 @@ public class GameEventManager : MonoBehaviour
     {
         gameEventData = new Dictionary<string, EventData>();
 
-        var eventData = DataBase.Instance.Parser("Random_Event_DataTable");
+        var eventData = GameManager.Instance.DataBase.Parser("Random_Event_DataTable");
 
         foreach (var e in eventData)
         {
@@ -33,7 +33,7 @@ public class GameEventManager : MonoBehaviour
             );
         }
 
-            GameTime.Instance.dayEvent += NewDayEvent;
+            GameManager.Instance.GameTime.dayEvent += NewDayEvent;
     }
 
     // Update is called once per frame
@@ -42,29 +42,29 @@ public class GameEventManager : MonoBehaviour
         
     }
 
-    public void EventSetting(EventType eventType, float eventValue)
+    public void EventSetting(GameEventType eventType, float eventValue)
     {
         switch (eventType)
         {
-            case EventType.None:
+            case GameEventType.None:
                 break;
-            case EventType.CustomerF:
+            case GameEventType.CustomerF:
                 break;
-            case EventType.CustomerA:
+            case GameEventType.CustomerA:
                 break;
-            case EventType.CustomerE:
+            case GameEventType.CustomerE:
                 break;
-            case EventType.CustomerW:
+            case GameEventType.CustomerW:
                 break;
-            case EventType.Fame:
+            case GameEventType.Fame:
                 break;
-            case EventType.OrePrice:
+            case GameEventType.OrePrice:
                 break;
-            case EventType.Collect:
+            case GameEventType.Collect:
                 break;
-            case EventType.Tax:
+            case GameEventType.Tax:
                 break;
-            case EventType.VisitRate:
+            case GameEventType.VisitRate:
                 break;
         }
     }

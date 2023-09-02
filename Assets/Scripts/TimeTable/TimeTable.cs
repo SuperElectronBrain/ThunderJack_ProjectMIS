@@ -11,46 +11,54 @@ public class TimeTable : MonoBehaviour
     {
         npcTimeTable = new Dictionary<int, TimeTableData>();
 
-        var timeTable = DataBase.Instance.Parser("TimeTable");
+        var timeTable = GameManager.Instance.DataBase.Parser("Time_Table_Day1");
 
-        int h = 0;
-        int m = 10;
+        
+
+        var behaviourMaster = GameManager.Instance.BehaviourMaster;
 
         foreach (var tData in timeTable)
         {
-            for(int id = 1; id < GameManager.Instance.GetCharacterCount(); id++)
+            int h = 0;
+            int m = 10;
+
+            while(h != 24)
             {
-                string npcName = GameManager.Instance.GetCharacterName(id);
-                if (tData[npcName].ToString() != string.Empty)
+                var t = h + ":" + string.Format("{0:D2}", m);
+                //Debug.Log(GameManager.Instance.GameTime.GetTimeIdx(h, m));
+                //Debug.Log(t + " : " + tData[t]);
+                for (int id = 1; id < GameManager.Instance.CharacterDB.GetCharacterCount(); id++)
                 {
+                    string npcName = GameManager.Instance.CharacterDB.GetCharacterEgName(id);
+                    
+
                     if (npcTimeTable.TryAdd(id, new()) == false)
-                        npcTimeTable[id].timeTableData.Add(GameTime.Instance.GetTimeIdx(h, m), (Location)Tools.IntParse(tData[npcName]));
+                        npcTimeTable[id].timeTableData[GameManager.Instance.GameTime.GetTimeIdx(h, m)] = behaviourMaster.GetBehaviour(Tools.IntParse(tData[t]));
                     else
-                        npcTimeTable[id].timeTableData.Add(GameTime.Instance.GetTimeIdx(h, m), (Location)Tools.IntParse(tData[npcName]));
-                }                    
+                        npcTimeTable[id].timeTableData[GameManager.Instance.GameTime.GetTimeIdx(h, m)] = behaviourMaster.GetBehaviour(Tools.IntParse(tData[t]));
+                }
+
+                m += 10;
+                if (m == 60)
+                {
+                    h++;
+                    m = 0;
+                }
             }
-            
-            m += 10;
-            if (m == 60)
-            {
-                h++;
-                m = 0;
-            }
-            if(h == 24)
-                h = 0;
-            
         }
 
-        GameTime.Instance.timeEvent += WorkDistribution;
+        GameManager.Instance.GameTime.timeEvent += WorkDistribution;
     }
 
     void WorkDistribution()
     {
-        for (int id = 1; id < GameManager.Instance.GetCharacterCount(); id++)
+        for (int id = 1; id < GameManager.Instance.CharacterDB.GetCharacterCount(); id++)
         {
-            var locationIdx = npcTimeTable[id].timeTableData[GameTime.Instance.GetTimeIdx()];
+            var locationIdx = GameManager.Instance.GameTime.GetTimeIdx();
+            //npcTimeTable[id].timeTableData[locationIdx];
             Debug.Log(locationIdx);
-            GameManager.Instance.GetCharacter(id).GetComponent<NPC_Move>().SetDestination(LocationManager.Instance.GetLocationPosition(locationIdx));
+            //GameManager.Instance.GetCharacter(id).
+            GameManager.Instance.CharacterDB.GetCharacter(id).GetComponent<NPC_Move>().SetDestination(GameManager.Instance.LocationManager.GetLocationPosition(locationIdx));
         }
     }
 
@@ -62,5 +70,6 @@ public class TimeTable : MonoBehaviour
 
 public class TimeTableData
 {
-    public Dictionary<int, Location> timeTableData = new();
+    public BehaviourData[] timeTableData = new BehaviourData[144];
+    //public Dictionary<int, BehaviourData> timeTableData = new();
 }

@@ -18,7 +18,6 @@ public class CameraChangeLocation : MonoBehaviour
     {
         if (!collision.CompareTag("Character")) return;
         Debug.Log("¿‘¿Â");
-        GameManager.Instance.ChangeCameraView(cameraView, cameraSetup);
     }
 
     private void OnTriggerExit(Collider collision)
