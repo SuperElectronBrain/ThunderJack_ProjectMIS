@@ -46,6 +46,11 @@ public class Character : MonoBehaviour
         animator.Play(newAnimationType.ToString());
     }
 
+    public void PlayAnimation(int newAnimationType)
+    {
+        //animator.Play(((AnimationType)newAnimationType).ToString());
+    }
+
     public void SetLocation(Location newLocation)
     {
         curLocation = newLocation;

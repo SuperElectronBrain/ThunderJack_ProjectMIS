@@ -63,6 +63,26 @@ public class NPC : Character
     public void SetCurBehaviourData(BehaviourData newBehaviourData)
     {
         curBehaviourData = newBehaviourData;
+
+        ChangeStateFromBehaviour();
+    }
+
+    void ChangeStateFromBehaviour()
+    {
+        switch(curBehaviourData.actionType)
+        {
+            case 1:
+                PlayAnimation(((BehaviourType1)curBehaviourData).actionGoal);
+                break;
+            case 2:
+                destinationPos = ((BehaviourType2)curBehaviourData).actionGoal.position;
+                ChangeState(NPCBehaviour.Move);
+                break;
+            case 3:
+                destinationPos = ((BehaviourType2)curBehaviourData).actionGoal.position;
+                ChangeState(NPCBehaviour.Move);
+                break;
+        }
     }
 
     public void ChangeState(NPCBehaviour newBehaviour)

@@ -37,7 +37,7 @@ public class BehaviourMaster : MonoBehaviour
                     {
                         actionName = behaviour["Action_Name"].ToString(),
                         actionType = actionType,
-                        //actionGoal = Tools.IntParse(behaviour["Action_Goal"])
+                        //actionGoal = GameManager.Instance.LocationManager.
                     };
                     break;
                 case 3:
