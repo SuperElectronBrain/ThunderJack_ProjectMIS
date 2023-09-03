@@ -22,7 +22,7 @@ public class AutoBuildManager : MonoBehaviour
 
         options.scenes = scenes.ToArray();
         //options.locationPathName = "Build/Build_Ver" + version++ + ".exe";
-        options.locationPathName = "D\\test.exe";
+        options.locationPathName = "Build/Build_Ver" + version + ".exe";
         options.target = BuildTarget.StandaloneWindows64;
         var result = BuildPipeline.BuildPlayer(options);
 
