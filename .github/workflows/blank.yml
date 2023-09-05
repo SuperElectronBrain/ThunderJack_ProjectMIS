@@ -1,0 +1,43 @@
+name: Merge to Main
+
+on: 
+  push:
+    branches-ignore:
+    - main, build, master
+    
+jobs:
+  discord_notification:
+    runs-on: ubuntu-latest
+
+    steps:    
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+
+      - name: Auto Merge
+        run: |
+          git config --global user.email "test@C.I"
+          git config --global user.name "CI"
+          git remote update
+          git checkout build          
+          git pull --unshallow
+          git merge --no-ff ${{ github.event.ref }}
+          git push
+
+      - name: Send Discord Notification
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{
+            "content": "성공"
+          }' $DISCORD_WEBHOOK
+
+      - name: Send Discord fail
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{
+            "content": "실패"
+          }' $DISCORD_WEBHOOK
