@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
+using System;
 
 public class AutoBuildManager : MonoBehaviour
 {
-    static int version = 1;
     [MenuItem("Build/Build")]
     public static void AutoBuild()
     {
@@ -22,7 +22,10 @@ public class AutoBuildManager : MonoBehaviour
 
         options.scenes = scenes.ToArray();
         //options.locationPathName = "Build/Build_Ver" + version++ + ".exe";
-        options.locationPathName = "Build/Build_Ver" + version + ".exe";
+
+        DateTime date = DateTime.Now;
+
+        options.locationPathName = "../../Build\\MIS_Build\\Build_" + string.Format("{0:D2}", date.Month) + string.Format("{0:D2}", date.Day) + ".exe";
         options.target = BuildTarget.StandaloneWindows64;
         var result = BuildPipeline.BuildPlayer(options);
 
