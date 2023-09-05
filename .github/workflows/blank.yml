@@ -3,7 +3,7 @@ name: Merge to Main
 on: 
   push:
     branches-ignore:
-    - main, build, master
+    - main, build, master, dev
     
 jobs:
   discord_notification:
@@ -12,7 +12,6 @@ jobs:
     steps:    
       - name: Checkout Repository
         uses: actions/checkout@v2
-
 
       - name: Auto Merge
         run: |
