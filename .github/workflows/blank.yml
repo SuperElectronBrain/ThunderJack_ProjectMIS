@@ -15,6 +15,7 @@ jobs:
 
       - name: Auto Merge
         run: |
+          git config --list
           git config --global user.email "test@C.I"
           git config --global user.name "CI"
           git remote update
