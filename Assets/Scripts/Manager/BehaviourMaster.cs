@@ -45,7 +45,7 @@ public class BehaviourMaster : MonoBehaviour
                     {
                         actionName = behaviour["Action_Name"].ToString(),
                         actionType = actionType,
-                        //actionGoal = Tools.IntParse(behaviour["Action_Goal"])
+                        actionGoal = GameManager.Instance.LocationManager.GetLocationPosition(1)
                     };
                     break;
             }
@@ -78,5 +78,5 @@ public class BehaviourType1 : BehaviourData
 [System.Serializable]
 public class BehaviourType2 : BehaviourData
 {
-    public Transform actionGoal;
+    public Vector3 actionGoal;
 }

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public enum EventType
 {
-    None, hour, Day, Dialog, End
+    None, hour, Day, Dialog, GuestEntry, End
 }
 
 public class EventManager

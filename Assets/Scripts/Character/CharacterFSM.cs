@@ -8,7 +8,7 @@ public class CharacterFSM<T> where T : class
     State<T> curState;
     State<T> prevState;
 
-    public void InitEnemy(T entitiy, State<T> state)
+    public void InitNPC(T entitiy, State<T> state)
     {
         this.entity = entitiy;
         curState = state;

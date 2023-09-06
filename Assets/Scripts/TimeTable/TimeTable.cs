@@ -44,7 +44,7 @@ public class TimeTable : MonoBehaviour
 
         }       
         EventManager.Subscribe(EventType.hour, WorkDistribution);
-        EventManager.Publish(EventType.hour);
+        //EventManager.Publish(EventType.hour);
     }
 
     void WorkDistribution()
