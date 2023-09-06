@@ -1,0 +1,29 @@
+name: Auto Build
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: 0 12 * * *
+    
+jobs:
+  run_Build:
+    runs-on: ubuntu-latest
+
+    steps:    
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Unity
+        uses: game-ci/unity-builder@v3
+        with:
+          unity-version: 2022.3.4f1
+
+      - name: Build Unity project
+        run: |
+          # Unity.exe --quit -batchmode -buildTarget Win64 -projectPath "D:\Build_Project\ThunderJack_ProjectMIS" -executeMethod AutoBuildManager.AutoBuild
+
+      - name: Upload Build Result
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build-Artifact
+          path: D/Builds/A # 

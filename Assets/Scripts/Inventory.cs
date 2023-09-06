@@ -8,7 +8,6 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public enum ItemCode
 {

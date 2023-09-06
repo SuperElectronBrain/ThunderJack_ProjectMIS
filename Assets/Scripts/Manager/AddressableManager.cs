@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using System.Threading.Tasks;
 
-public class AddressableManager : Singleton<AddressableManager>
+public class AddressableManager : MonoBehaviour
 {
     [SerializeField]
     AssetLabelReference labelReference;
@@ -37,24 +38,25 @@ public class AddressableManager : Singleton<AddressableManager>
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+/*        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             var index = gameObjects.Count - 1;
-            // InstantiateAsync <-> ReleaseInstance
-            // Destroy함수로써 ref count가 0이면 메모리 상의 에셋을 언로드한다.
+
             Addressables.ReleaseInstance(gameObjects[index]);
             gameObjects.RemoveAt(index);
-        }
+        }*/
     }
 
     public T LoadObject<T>(string loadObjectName)
     {
         T returnObject = default;
-        /*Addressables.LoadAssetAsync<T>(loadObjectName).Completed += (handle) =>
-        {
-            returnObject = handle.Result;
-        };*/
+
+        //임시임 확실히 버그인지 알 수 있는 이미지로 바꿀 것
+        if (Addressables.LoadResourceLocationsAsync(loadObjectName, typeof(object)).IsValid())
+            loadObjectName = "Stone";
+
         var op = Addressables.LoadAssetAsync<T>(loadObjectName);
+
         returnObject = op.WaitForCompletion();
 
         return returnObject;

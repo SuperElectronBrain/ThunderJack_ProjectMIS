@@ -5,47 +5,60 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField]
-    CameraMove cameraMove;
-    [SerializeField]
-    Transform Player;
+    public readonly Transform Player;
     [SerializeField]
     Transform spawnPos;
 
+    [Header("DB")]
+    [SerializeField]
+    DataBase dataBase;
     [SerializeField]
     DataBase_Character characterDB;
+
+    [Header("Item")]
+    [SerializeField]
+    AddressableManager addressableManager;
+    [SerializeField]
+    ItemManager itemManager;
+
+    [Header("Time")]
+    [SerializeField]
+    GameTime gameTime;
+
+    [Header("Behaviour")]
+    [SerializeField]
+    BehaviourMaster behaviourMaster;
+
+    [Header("Location")]
+    [SerializeField]
+    LocationManager locationManager;
+
     [SerializeField]
     Dialogue dialogue;
 
-    public void ChangeCameraView(CameraView newCameraView, CameraSetup newSetup)
+    [SerializeField]
+    NPC npc;
+
+    public DataBase DataBase { get { return dataBase; } }
+    public DataBase_Character CharacterDB { get { return characterDB; } }
+    public GameTime GameTime { get { return gameTime; } }
+    public AddressableManager AddressableManager { get { return addressableManager; } }
+    public ItemManager ItemManager { get { return itemManager; } }
+    public BehaviourMaster BehaviourMaster { get { return behaviourMaster; } }
+    public LocationManager LocationManager { get { return locationManager; } }
+    public Dialogue Dialogue { get { return dialogue; } }
+
+    private void Start()
     {
-        cameraMove.ChangeCameraView(newCameraView, newSetup);
+        
     }    
 
-    public Transform GetPlayerTransform()
+    private void Update()
     {
-        return Player;
-    }
-
-    public bool isTimePasses;
-
-    public void StartConversation(string loadDialogue, Character npc)
-    {
-        dialogue.InitDialogue(loadDialogue);
-    }
-
-    public string GetCharacterName(int characterId)
-    {
-        return characterDB.GetCharacterName(characterId);
-    }
-
-    public Character GetCharacter(int characterId)
-    {
-        return characterDB.GetCharacter(characterId);
-    }
-
-    public int GetCharacterCount()
-    {
-        return characterDB.GetCharacterCount();
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            npc.StartConversation();
+        }
     }
 
     public Vector3 GetSpawnPos()
@@ -56,6 +69,11 @@ public class GameManager : Singleton<GameManager>
 
 public class Tools
 {
+    public static Transform GetPlayerTransform()
+    {
+        return GameManager.Instance.Player;
+    }
+
     public static float GetDistance(Transform myObj, Transform targetObj)
     {
         Vector3 myVector = myObj.position;
@@ -67,5 +85,10 @@ public class Tools
     public static int IntParse(object data)
     {
         return int.Parse(data.ToString());
+    }
+
+    public static float FloatParse(object data)
+    {
+        return float.Parse(data.ToString());
     }
 }
