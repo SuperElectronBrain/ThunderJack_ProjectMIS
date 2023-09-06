@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
-using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
 
 public class PlayerCharacter : CharacterBase
