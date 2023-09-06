@@ -26,7 +26,8 @@ public class LocationManager : MonoBehaviour
 
     public Vector3 GetLocationPosition(int locationName)
     {
-        Debug.Log(((LocationName)locationName).ToString() + " : " + locationData[((LocationName)locationName).ToString()].locationTransform);
-        return locationData[((LocationName)locationName).ToString()].locationTransform;
+        //Debug.Log(((LocationName)locationName).ToString() + " : " + locationData[((LocationName)locationName).ToString()].locationTransform);
+        //return locationData[((LocationName)locationName).ToString()].locationTransform;
+        return locationList[locationName].locationTransform;
     }
 }
