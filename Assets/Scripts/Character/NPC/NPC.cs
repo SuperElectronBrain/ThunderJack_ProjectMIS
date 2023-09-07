@@ -51,8 +51,7 @@ public class NPC : Character
 
         fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
 
-        InitDay();
-        
+        InitDay();        
     }
 
     public void InitDay()
@@ -64,11 +63,16 @@ public class NPC : Character
     {
         fsm.StateUpdate();
 
-        if(Input.GetKeyDown(KeyCode.Alpha6))
+        if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             curInteractionObj = gameObject;
             StartConversation();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            ChangeState(NPCBehaviour.Move);
+        }
+
     }
 
     public void StartConversation()
@@ -98,6 +102,7 @@ public class NPC : Character
                 break;
             case 3:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
+                Debug.Log(((BehaviourType2)curBehaviourData).actionGoal);
                 ChangeState(NPCBehaviour.Move);
                 break;
         }

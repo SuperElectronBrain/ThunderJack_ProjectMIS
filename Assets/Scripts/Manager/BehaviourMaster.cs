@@ -45,7 +45,7 @@ public class BehaviourMaster : MonoBehaviour
                     {
                         actionName = behaviour["Action_Name"].ToString(),
                         actionType = actionType,
-                        actionGoal = GameManager.Instance.LocationManager.GetLocationPosition(1)
+                        actionGoal = GameManager.Instance.LocationManager.GetLocationPosition(Random.Range(0, 9))
                     };
                     break;
             }

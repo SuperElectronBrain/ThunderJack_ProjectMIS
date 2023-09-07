@@ -30,7 +30,7 @@ public class CharacterFSM<T> where T : class
         {
             curState.Execute(entity);
             curState.OnTransition(entity);
-        }            
+        }
     }
 
     public State<T> GetPrevState()
