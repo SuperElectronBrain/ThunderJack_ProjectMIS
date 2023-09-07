@@ -4,7 +4,6 @@ using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
-using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
 
 //public interface IHitable

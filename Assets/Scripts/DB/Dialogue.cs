@@ -22,6 +22,10 @@ public class Dialogue : MonoBehaviour
 
     public List<DialogueData> dialogueList = new();
 
+    [SerializeField]
+    DialogueBox dialogBox;
+
+    [SerializeField]
     int dialogueIdx = 0;
 
     // Start is called before the first frame update
@@ -32,7 +36,7 @@ public class Dialogue : MonoBehaviour
 
     public void InitDialogue(string newDialogue)
     {
-        var dialogue = DataBase.Instance.Parser(newDialogue);
+        var dialogue = GameManager.Instance.DataBase.Parser(newDialogue);
 
         foreach (var dict in dialogue)
         {
@@ -44,33 +48,55 @@ public class Dialogue : MonoBehaviour
                     Text_ID = int.Parse(dict["Text_ID"].ToString()),
                     Character_ID = charId,
                     Animation_ID = int.Parse(dict["Animation_ID"].ToString()),
-                    Text_Type = int.Parse(dict["Text_Type"].ToString()),
-                    Fame_Grade = int.Parse(dict["Fame_Grade"].ToString()),
-                    Text_Day = int.Parse(dict["Text_Day"].ToString()),
+                    //Text_Type = int.Parse(dict["Text_Type"].ToString()),
+                    //Fame_Grade = int.Parse(dict["Fame_Grade"].ToString()),
+                    //Text_Day = int.Parse(dict["Text_Day"].ToString()),
                     Text_Rate = float.Parse(dict["Text_Rate"].ToString()),
                     Text_Script = dict["Text_Script"].ToString(),
                     Text_Next = int.Parse(dict["Text_Next"].ToString())
                 }
             );
         }
+
+        StartCoroutine(StartConversation());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator StartConversation()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        NextDialog();
+        dialogBox.ShowDialogBox();
+        while (!dialogueIdx.Equals(-1))
         {
-            DialogueBox.Instance.SetName(DataBase.Instance.GetCharacterName(dialogueList[dialogueIdx].Character_ID));
-            DialogueBox.Instance.SetDialog(dialogueList[dialogueIdx].Text_Script);
-            //Character.Instance.PlayAnimation((AnimationType)dialogueList[dialogueIdx].Animation_ID);
-            GameManager.Instance.GetCharacter(dialogueList[dialogueIdx].Character_ID).PlayAnimation((AnimationType)dialogueList[dialogueIdx].Animation_ID);
-
-            dialogueIdx = dialogueList[dialogueIdx].Text_Next;
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                NextDialog();
+            }
+            yield return null;
         }
+        while(true)
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                dialogBox.ShowDialogBox(false);
+                EndDialogue();
+                yield break;
+            }
+            yield return null;
+        }        
+    }
+
+    void NextDialog()
+    {
+        var dData = dialogueList[dialogueIdx];
+        dialogBox.SetName(GameManager.Instance.CharacterDB.GetCharacterName(dData.Character_ID));
+        dialogBox.SetDialog(dData.Text_Script);
+        Debug.Log(dData.Text_Script);
+        dialogueIdx = dData.Text_Next;
     }
 
     public void EndDialogue()
     {
+        dialogueIdx = 0;
         dialogueList.Clear();
     }
 }

@@ -8,8 +8,7 @@ public enum CharacterCode
 }
 public class DataBase_Character : MonoBehaviour
 {
-    public Dictionary<int, string> characterNameDB = new();
-    public Dictionary<int, Character> characterDB = new();
+    public Dictionary<int, CharacterData> characterDB = new();
 
     public GameObject npcPrefab;
     public GameObject playerPrefab;
@@ -20,16 +19,17 @@ public class DataBase_Character : MonoBehaviour
     string characterId;
     [SerializeField]
     string characterName;
+    [SerializeField]
+    string characterEgName;
 
     // Start is called before the first frame update
     void Start()
     {
-        var cList = DataParser.dataParser(parsingData);
+        var cList = GameManager.Instance.DataBase.Parser(parsingData);
 
         foreach (var character in cList)
         {
             int charId = int.Parse(character[characterId].ToString());
-            characterNameDB.Add(charId, character[characterName].ToString());
 
             GameObject characterPrefab = npcPrefab;
 
@@ -37,24 +37,59 @@ public class DataBase_Character : MonoBehaviour
                 characterPrefab = playerPrefab;
 
             var c = Instantiate(characterPrefab, GameManager.Instance.GetSpawnPos(), Quaternion.identity).GetComponent<Character>();
-            c.name = GameManager.Instance.GetCharacterName(charId);
-
-            characterDB.Add(charId, c);
+           
+            characterDB.Add(charId, new CharacterData
+            {
+                characterName = character[characterName].ToString(),
+                characterEgName = character[characterEgName].ToString(),
+                character = c
+            }
+            );
+            c.SetCharacterData(characterDB[charId]);
+            c.name = GetCharacterName(charId);
         }
     }
 
     public string GetCharacterName(int characterID)
     {
-        return characterNameDB[characterID];
+        return characterDB[characterID].characterName;
+    }
+
+    public string GetCharacterEgName(int characterID)
+    {
+        return characterDB[characterID].characterEgName;
     }
 
     public Character GetCharacter(int characterID)
     {
-        return characterDB[characterID];
+        return characterDB[characterID].character;
+    }
+
+    /// <summary>
+    /// null Check ÈÄ »ç¿ë
+    /// </summary>
+    /// <param name="charcterID"></param>
+    /// <returns></returns>
+    public NPC GetNPC(int charcterID)
+    {
+        NPC npc = null;
+
+        npc = (characterDB[charcterID].character as NPC);
+
+        return npc;
+
     }
 
     public int GetCharacterCount()
     {
         return characterDB.Count;
     }
+}
+
+[System.Serializable]
+public class CharacterData
+{
+    public string characterName;
+    public string characterEgName;
+    public Character character;
 }

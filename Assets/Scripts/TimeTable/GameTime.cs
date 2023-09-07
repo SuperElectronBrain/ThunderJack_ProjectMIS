@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameTime : Singleton<GameTime>
+public class GameTime : MonoBehaviour
 {
     [SerializeField]
     int day = 1;
@@ -20,9 +20,6 @@ public class GameTime : Singleton<GameTime>
     [SerializeField]
     float timer = 0;
 
-    public UnityAction timeEvent;
-    public UnityAction dayEvent;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -37,31 +34,28 @@ public class GameTime : Singleton<GameTime>
 
     public void Timer()
     {
-        if (GameManager.Instance.isTimePasses)
+        timer += Time.deltaTime * gameSpeed;
+
+        if (timer >= gameTime2RealTime * 60)
         {
-            timer += Time.deltaTime * gameSpeed;
+            timer = 0;
+            minute += 10;
 
-            if (timer >= gameTime2RealTime * 60)
+            if (minute >= 60)
             {
-                timer = 0;
-                minute += 10;
+                minute = 0;
+                hour++;
 
-                if (minute >= 60)
+                if (hour >= 24)
                 {
-                    minute = 0;
-                    hour++;
+                    hour = 0;
+                    day++;
 
-                    if (hour >= 24)
-                    {
-                        hour = 0;
-                        day++;
-
-                        dayEvent?.Invoke();
-                    }
+                    EventManager.Publish(EventType.Day);
                 }
-
-                timeEvent?.Invoke();
             }
+
+            EventManager.Publish(EventType.hour);
         }
     }
 

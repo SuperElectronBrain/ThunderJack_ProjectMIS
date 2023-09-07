@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DialogueBox : MonoBehaviour
 {
@@ -9,14 +10,6 @@ public class DialogueBox : MonoBehaviour
     Text nameText;
     [SerializeField]
     Text dialogBox;
-
-    static DialogueBox instance;
-    public static DialogueBox Instance { get { return instance; } }
-
-    private void Awake()
-    {
-        instance = this;
-    }
 
     public void SetName(string newName)
     {
@@ -26,5 +19,10 @@ public class DialogueBox : MonoBehaviour
     public void SetDialog(string newDialog)
     {
         dialogBox.text = newDialog;
+    }
+
+    public void ShowDialogBox(bool isActive = true)
+    {
+        gameObject.SetActive(isActive);
     }
 }

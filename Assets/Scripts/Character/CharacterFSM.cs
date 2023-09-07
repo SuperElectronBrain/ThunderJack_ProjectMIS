@@ -6,8 +6,9 @@ public class CharacterFSM<T> where T : class
 {
     T entity;
     State<T> curState;
+    State<T> prevState;
 
-    public void InitEnemy(T entitiy, State<T> state)
+    public void InitNPC(T entitiy, State<T> state)
     {
         this.entity = entitiy;
         curState = state;
@@ -16,6 +17,7 @@ public class CharacterFSM<T> where T : class
 
     public void ChangeState(State<T> newState)
     {
+        prevState = curState;
         if(curState != null)
             curState.Exit(entity);
         curState = newState;
@@ -29,5 +31,10 @@ public class CharacterFSM<T> where T : class
             curState.Execute(entity);
             curState.OnTransition(entity);
         }            
+    }
+
+    public State<T> GetPrevState()
+    {
+        return prevState;
     }
 }

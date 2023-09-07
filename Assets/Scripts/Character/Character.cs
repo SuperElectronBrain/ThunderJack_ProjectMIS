@@ -21,6 +21,8 @@ public class Character : MonoBehaviour
     [SerializeField]
     string dialogueName;
     //CharacterDialogue characterDialogue;
+    [SerializeField]
+    protected CharacterData characterData;
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +38,17 @@ public class Character : MonoBehaviour
 
     public void Conversation()
     {
-        GameManager.Instance.StartConversation(dialogueName, this);
+        //GameManager.Instance.StartConversation(dialogueName, this);
     }
 
     public void PlayAnimation(AnimationType newAnimationType)
     {
         animator.Play(newAnimationType.ToString());
+    }
+
+    public void PlayAnimation(int newAnimationType)
+    {
+        //animator.Play(((AnimationType)newAnimationType).ToString());
     }
 
     public void SetLocation(Location newLocation)
@@ -57,5 +64,10 @@ public class Character : MonoBehaviour
     public Location GetLocation()
     {
         return curLocation;
+    }
+
+    public void SetCharacterData(CharacterData cd)
+    {
+        characterData = cd;
     }
 }
