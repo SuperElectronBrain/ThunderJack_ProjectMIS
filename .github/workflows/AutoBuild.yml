@@ -8,6 +8,14 @@ on:
 jobs:
   run_Build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Unity project가 Root가 아니면 경로 입력
+        projectPath:
+          - D:/Build_Project/ThunderJack_ProjectMIS
+        # 사용중인 Unity version
+        unityVersion:
+          - 2022.3.4f1
 
     steps:            
       - name: Checkout Repository
@@ -17,8 +25,8 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: Windows
-          projectPath: test-project
+          targetPlatform: auto
+          projectPath: D:/Build_Project/ThunderJack_ProjectMIS
 
       - uses: actions/upload-artifact@v2
         with:
