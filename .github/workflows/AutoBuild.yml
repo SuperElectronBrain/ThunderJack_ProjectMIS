@@ -30,6 +30,11 @@ jobs:
 
       - name: Build Unity Project
         run: |
+          git config --global user.email "test@C.I"
+          git config --global user.name "CI"
+          git remote update
+          git checkout build          
+          git pull --unshallow
           -quit -batchmode -buildTarget Win64 -projectPath ${{ matrix.projectPath }} -executeMethod AutoBuildManager.AutoBuild
 
       - uses: actions/upload-artifact@v2
