@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Unity
-        uses: game-ci/setup-unity@v1
+        uses: game-ci/unity-builder@v3
         with:
           unityVersion: ${{ matrix.unityVersion }}
         env:
