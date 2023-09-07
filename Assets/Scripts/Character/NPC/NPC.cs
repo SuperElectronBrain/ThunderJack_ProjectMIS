@@ -102,6 +102,7 @@ public class NPC : Character
                 break;
             case 3:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
+                destinationPos = LocationManager.GetLocationRandomPosition(destinationPos);
                 Debug.Log(((BehaviourType2)curBehaviourData).actionGoal);
                 ChangeState(NPCBehaviour.Move);
                 break;

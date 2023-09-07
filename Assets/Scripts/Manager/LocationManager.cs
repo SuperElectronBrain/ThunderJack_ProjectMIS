@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum LocationName
 {
@@ -35,5 +36,15 @@ public class LocationManager : MonoBehaviour
         //return locationData[((LocationName)locationName).ToString()].locationTransform;
         Debug.Log(locationList[locationName].gameObject.name + " " + locationList[locationName].locationTransform);
         return locationList[locationName].locationTransform;
+    }
+
+    public static Vector3 GetLocationRandomPosition(Vector3 locationPos)
+    {
+        int layer = 1 << NavMesh.GetAreaFromName("Road");
+        Vector3 randomPos = Random.insideUnitSphere * 10;
+        randomPos += locationPos;
+
+        NavMesh.SamplePosition(randomPos, out NavMeshHit navHit, 10, layer);
+        return navHit.position;
     }
 }
