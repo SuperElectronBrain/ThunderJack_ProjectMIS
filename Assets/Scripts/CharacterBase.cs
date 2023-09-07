@@ -30,7 +30,7 @@ public class CharacterBase : MonoBehaviour
 
 		m_MainCamera = Camera.main;
 		m_Rigidbody = gameObject.GetComponent<Rigidbody>();
-		if (m_Rigidbody == null) { m_Rigidbody = gameObject.AddComponent<Rigidbody>(); }
+		//if (m_Rigidbody == null) { m_Rigidbody = gameObject.AddComponent<Rigidbody>(); }
 		m_Animator = gameObject.GetComponent<Animator>();
 	}
 
