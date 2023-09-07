@@ -10,23 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Unity project가 Root가 아니면 경로 입력
         projectPath:
           - D:/Build_Project/ThunderJack_ProjectMIS
-        # 사용중인 Unity version
         unityVersion:
           - 2022.3.4f1
 
     steps:            
       - name: Checkout Repository
         uses: actions/checkout@v2
+
+      - name: Set up Unity
+        uses: game-ci/setup-unity@v1
+        with:
+          unityVersion: ${{ matrix.unityVersion }}
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: auto
-          projectPath: D:/Build_Project/ThunderJack_ProjectMIS
+
+      - name: Build Unity Project
+        run: |
+          -quit -batchmode -buildTarget Win64 -projectPath ${{ matrix.projectPath }} -executeMethod AutoBuildManager.AutoBuild
 
       - uses: actions/upload-artifact@v2
         with:
