@@ -36,13 +36,14 @@ public class NPC : Character
 
     public NavMeshAgent agent;
     public Vector3 destinationPos;
+    public GameObject curInteractionObj;
 
     private void Start()
     {
         fsm = new();
         skAni = GetComponent<SkeletonAnimation>();
         agent = GetComponent<NavMeshAgent>();
-        states = new State<NPC>[((int)NPCBehaviour.Last)];
+        states = new State<NPC>[((int)NPCBehaviour.Last) - 1];
 
         states[((int)NPCBehaviour.Idle)] = GetComponent<IdleState>();
         states[((int)NPCBehaviour.Move)] = GetComponent<MoveState>();
@@ -62,12 +63,19 @@ public class NPC : Character
     protected virtual void Update()
     {
         fsm.StateUpdate();
+
+        if(Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            curInteractionObj = gameObject;
+            StartConversation();
+        }
     }
 
     public void StartConversation()
     {
         Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
         GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");
+        
     }
 
     public void SetCurBehaviourData(BehaviourData newBehaviourData)
@@ -123,10 +131,23 @@ public class LookDir
         else
             isFront = false;
 
-
         if (Mathf.Abs(velocity.x) >= Mathf.Abs(velocity.z))
             isSideWalk = true;
         else
             isSideWalk = false;
+    }
+    public void SetDir(Vector3 myPos, Vector3 targetPos)
+    {
+        if (myPos.x <= targetPos.x)
+            isRight = true;
+        else
+            isRight = false;
+
+        if (myPos.z >= targetPos.z)
+            isFront = true;
+        else
+            isFront = false;
+
+        isSideWalk = false;
     }
 }

@@ -12,10 +12,13 @@ public class MoveState : State<NPC>
     public override void Execute(NPC entity)
     {
         entity.lookDir.SetDir(entity.agent.velocity);
-       
-        if(entity.lookDir.isFront)
-        {
-            if(entity.lookDir.isSideWalk)
+
+        var scaleX = entity.lookDir.isRight ? -1 : 1;
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * scaleX, transform.localScale.y, transform.localScale.z);
+        
+        if (entity.lookDir.isFront)
+        {                
+            if (entity.lookDir.isSideWalk)
                 entity.SkAni.AnimationName = "FRONT_Walk2";
             else
                 entity.SkAni.AnimationName = "FRONT_Walk1";
