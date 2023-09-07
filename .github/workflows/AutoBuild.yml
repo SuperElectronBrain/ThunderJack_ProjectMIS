@@ -24,6 +24,15 @@ jobs:
                   path: Library
                   key: Library-${{ matrix.targetPlatform }}
                   restore-keys: Library-
+                  
+            - name: Auto Merge
+              run: |
+                git config --global user.email "test@C.I"
+                git config --global user.name "CI"
+                git remote update
+                git checkout build          
+                git pull --unshallow
+                
             - uses: game-ci/unity-builder@v2
               env:
                   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -33,3 +42,23 @@ jobs:
               with:
                   name: Build-${{ matrix.targetPlatform }}
                   path: build/${{ matrix.targetPlatform }}
+
+            - name: Send Discord Notification
+              if: success()
+              env:
+                DISCORD_WEBHOOK: ${{ secrets.DISCORD_BUILD }}
+              run: |
+                curl -X POST -H "Content-Type: application/json" -d '{
+                  "content": "빌드의 요정의 선물이 도착하였습니다."
+                  "username": "빌드의 요정 김영훈"
+                }' $DISCORD_WEBHOOK
+      
+            - name: Send Discord fail
+              if: failure()
+              env:
+                DISCORD_WEBHOOK: ${{ secrets.DISCORD_BUILD }}
+              run: |
+                curl -X POST -H "Content-Type: application/json" -d '{
+                  "content": "김영훈이 빌드를 방해했습니다."
+                  "username": "빌드 발해꾼 김영훈"
+                }' $DISCORD_WEBHOOK
