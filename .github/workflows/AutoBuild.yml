@@ -43,13 +43,18 @@ jobs:
                   name: Build-${{ matrix.targetPlatform }}
                   path: build/${{ matrix.targetPlatform }}
 
+            - name: Create Artifact Link
+              id: artifact
+              run: echo "::set-output name=link::$(echo ${{ github.run_id }})/artifacts/build"
+
             - name: Send Discord Notification
               if: success()
               env:
                 DISCORD_WEBHOOK: ${{ secrets.DISCORD_BUILD }}
               run: |
+                artifact_link="https://github.com/${{ github.repository }}/actions/runs/${{ steps.artifact.outputs.link }}"
                 curl -X POST -H "Content-Type: application/json" -d '{
-                  "content": "빌드의 요정의 선물이 도착하였습니다."
+                  "content": "빌드의 요정의 선물이 도착하였습니다.",
                   "username": "빌드의 요정 김영훈"
                 }' $DISCORD_WEBHOOK
       
@@ -58,7 +63,8 @@ jobs:
               env:
                 DISCORD_WEBHOOK: ${{ secrets.DISCORD_BUILD }}
               run: |
+                artifact_link="https://github.com/${{ github.repository }}/actions/runs/${{ steps.artifact.outputs.link }}"
                 curl -X POST -H "Content-Type: application/json" -d '{
-                  "content": "김영훈이 빌드를 방해했습니다."
+                  "content": "김영훈이 빌드를 방해했습니다.",
                   "username": "빌드 발해꾼 김영훈"
                 }' $DISCORD_WEBHOOK
