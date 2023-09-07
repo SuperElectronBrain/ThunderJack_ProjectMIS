@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 using static UnityEditor.Progress;
 using static UnityEngine.GraphicsBuffer;
 
+//public interface IHitable
+//{
+//	void OnMouseHit(GameObject go);
+//}
+
 public class PlayerCharacter : CharacterBase
 {
+	private ItemCode m_GrabItem = 0;
+
 	private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
-	//[SerializeField] private SplineContainer m_SplineContainer;
-	//public GameObject m_Temporary;
+	[HideInInspector] public GameObject m_HitObject;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -20,8 +27,6 @@ public class PlayerCharacter : CharacterBase
 
 		m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
-
-		//transform.position = SplineUtility.EvaluatePosition(m_SplineContainer.Spline, 1.0f);
 	}
 
 	// Update is called once per frame
@@ -30,10 +35,6 @@ public class PlayerCharacter : CharacterBase
 		base.Update();
 		float DeltaTime = Time.deltaTime;
 
-		//NativeSpline t_SplinePath = new NativeSpline(new SplinePath<Spline>(m_SplineContainer.Splines), m_SplineContainer.transform.localToWorldMatrix);
-		//SplineUtility.GetNearestPoint(t_SplinePath, transform.position, out float3 t_Point, out float t_t);
-		//m_Temporary.transform.position = t_Point;
-		//m_Temporary.transform.rotation = Quaternion.LookRotation(Vector3.Normalize(m_SplineContainer.EvaluateTangent(t_SplinePath, t_t)), m_SplineContainer.EvaluateUpVector(t_SplinePath, t_t));
 	}
 
 	//protected override void FixedUpdate()
@@ -44,12 +45,64 @@ public class PlayerCharacter : CharacterBase
 
 	protected override void KeyInput()
 	{
-		m_HorizontalMove = Input.GetAxis("Horizontal");
-		m_VerticalMove = Input.GetAxis("Vertical");
+		if (Camera.main.orthographic == false)
+		{
+			m_HorizontalMove = Input.GetAxis("Horizontal");
+			m_VerticalMove = Input.GetAxis("Vertical");
+		}
 		if (Input.GetAxisRaw("Horizontal") == 0.0f) { m_HorizontalMove = 0.0f; }
 		if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
 
 		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
+		
+		if (Input.GetMouseButtonDown(0) == true)
+		{
+			if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() == false)
+			{
+				Vector3 t_MousePosition = Vector3.zero;
+				if(Camera.main.orthographic == false)
+				{
+					t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+					if (Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity) == true)
+					{ OnClickHit(hit); }
+					else
+					{ OnClickMiss(); }
+				}
+				else if(Camera.main.orthographic == true)
+				{
+					t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+					RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
+					if (hit2D == true)
+					{ OnClickHit2D(hit2D); }
+					else
+					{ OnClickMiss2D(); }
+				}
+			}
+		}
+		if (Input.GetMouseButtonUp(0) == true)
+		{
+			if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() == false)
+			{
+				Vector3 t_MousePosition = Vector3.zero;
+				if (Camera.main.orthographic == false)
+				{
+					t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+					if (Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity) == true)
+					{ OnReleaseHit(hit); }
+					else
+					{ OnReleaseMiss(); }
+				}
+				else if (Camera.main.orthographic == true)
+				{
+					t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+					RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
+					if (hit2D == true)
+					{ OnReleaseHit2D(hit2D); }
+					else
+					{ OnReleaseMiss2D(); }
+				}
+			}
+		}
 	}
 
 	protected override void Jump()
@@ -62,7 +115,10 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (hit.transform.gameObject != gameObject)
 			{
-				m_Rigidbody.AddForce(Vector3.up * jumpForce);
+				if(m_Rigidbody != null)
+				{
+					m_Rigidbody.AddForce(Vector3.up * jumpForce);
+				}
 			}
 		}
 	}
@@ -84,5 +140,94 @@ public class PlayerCharacter : CharacterBase
 		{
 			m_CPAComponent.m_PlayerCharacter = this;
 		}
+	}
+
+	//3DHit
+
+	protected virtual void OnClickHit(RaycastHit hit)
+	{
+		m_HitObject = hit.transform.gameObject;
+
+		MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
+		if (t_MillStoneHandle != null)
+		{
+			UniFunc.GetParentComponent<MillStone>(t_MillStoneHandle.gameObject).bProgress = true;
+		}
+
+		MeasurCup t_MeasurCup = hit.transform.GetComponent<MeasurCup>();
+		if (t_MeasurCup != null)
+		{
+			t_MeasurCup.m_IsMouseGrab = true;
+		}
+	}
+	protected virtual void OnClickMiss()
+	{
+		m_HitObject = null;
+	}
+
+	protected virtual void OnReleaseHit(RaycastHit hit)
+	{
+		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
+		if (t_MillStone != null)
+		{
+			if(t_MillStone.M_Input == 0)
+			{
+				t_MillStone.M_Input = m_GrabItem;
+				t_MillStone.M_Progress = 1.0f;
+			}
+		}
+	}
+
+	protected virtual void OnReleaseMiss()
+	{
+		m_HitObject = null;
+	}
+
+	//2DHit
+
+	protected virtual void OnClickHit2D(RaycastHit2D hit)
+	{
+		m_HitObject = hit.transform.gameObject;
+
+		MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
+		if (t_MillStoneHandle != null)
+		{
+			MillStone t_MillStone = UniFunc.GetParentComponent<MillStone>(t_MillStoneHandle.gameObject);
+			if (t_MillStone != null)
+			{
+				t_MillStone.bProgress = true;
+			}
+		}
+
+		MeasurCup t_MeasurCup = hit.transform.GetComponent<MeasurCup>();
+		if (t_MeasurCup != null)
+		{
+			//if (t_MeasurCup.m_Progress >= 1.0f)
+			//{
+				t_MeasurCup.m_IsMouseGrab = true;
+			//}
+		}
+	}
+
+	protected virtual void OnClickMiss2D()
+	{
+		m_HitObject = null;
+	}
+
+	protected virtual void OnReleaseHit2D(RaycastHit2D hit)
+	{
+		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
+		if (t_MillStone != null)
+		{
+			if (t_MillStone.M_Input == 0)
+			{
+				t_MillStone.M_Input = m_GrabItem;
+			}
+		}
+	}
+
+	protected virtual void OnReleaseMiss2D()
+	{
+		m_HitObject = null;
 	}
 }

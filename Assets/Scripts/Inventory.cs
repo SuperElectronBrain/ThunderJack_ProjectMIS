@@ -35,6 +35,12 @@ public enum ItemCode
 }
 
 
+//public class AdvencedItem
+//{
+//	[SerializeField] public ItemCode itemCode;
+//	[SerializeField] public List<ItemCode> Components;
+//}
+
 [Serializable]
 public struct Item
 {
