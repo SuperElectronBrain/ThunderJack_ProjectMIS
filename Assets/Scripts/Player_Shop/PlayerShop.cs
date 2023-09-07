@@ -8,12 +8,24 @@ public class PlayerShop : MonoBehaviour
     PlayerShop_Sales sales;
     [SerializeField]
     DialogueBox dialogBox;
+    Inventory inventory;
+
+    [SerializeField]
+    int entryWeight;
+    [SerializeField]
+    int[] weightValue = new int[10];
+    [SerializeField]
+    int idx = 0;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         guest = GetComponent<PlayerShop_Guest>();
         sales = GetComponent<PlayerShop_Sales>();
+
+        inventory = GameObject.FindObjectOfType<Inventory>();
+        EventManager.Subscribe(EventType.Minute, GuestCheck);
     }
 
     // Update is called once per frame
@@ -37,6 +49,20 @@ public class PlayerShop : MonoBehaviour
         StartCoroutine(Waiting());
     }    
 
+    void GuestCheck()
+    {
+        if(entryWeight >= Random.Range(0, 100))
+        {
+            idx = 0;
+            entryWeight = weightValue[idx];
+            EntryGuset();
+        }
+        else
+        {
+            entryWeight = weightValue[++idx];
+        }
+    }
+
     public void LeavingGuest()
     {
 
@@ -48,6 +74,11 @@ public class PlayerShop : MonoBehaviour
         dialogBox.ShowDialogBox(false);
         yield return new WaitForSeconds(5f);
         LeavingGuest();
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe(EventType.Minute, GuestCheck);
     }
 
     /// <summary>

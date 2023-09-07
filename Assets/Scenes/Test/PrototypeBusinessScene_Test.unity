@@ -2784,6 +2784,7 @@ GameObject:
   - component: {fileID: 1131807231}
   - component: {fileID: 1131807234}
   - component: {fileID: 1131807235}
+  - component: {fileID: 1131807236}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -2822,7 +2823,7 @@ MonoBehaviour:
   characterDB: {fileID: 0}
   addressableManager: {fileID: 1131807235}
   itemManager: {fileID: 1131807234}
-  gameTime: {fileID: 0}
+  gameTime: {fileID: 1131807236}
   behaviourMaster: {fileID: 0}
   locationManager: {fileID: 0}
   dialogue: {fileID: 0}
@@ -2854,8 +2855,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c86adb652be775f4d860e15685d68dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  basicItemData: []
+  shopItemList: []
   gemRecipes: []
-  list: []
   itemA: 0
   ItemB: 0
 --- !u!114 &1131807235
@@ -2879,6 +2881,24 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   gameObjects: []
   canvas: {fileID: 0}
+--- !u!114 &1131807236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131807230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41bbd9592cf8dd1459824133c4cd0f46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  day: 1
+  hour: 0
+  minute: 10
+  gameTime2RealTime: 1
+  gameSpeed: 1
+  timer: 0
 --- !u!1 &1178186980
 GameObject:
   m_ObjectHideFlags: 0
@@ -3404,6 +3424,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogBox: {fileID: 379914190}
+  entryWeight: 10
+  weightValue: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
+  idx: 0
 --- !u!1 &1358426211
 GameObject:
   m_ObjectHideFlags: 0
