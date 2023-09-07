@@ -31,7 +31,7 @@ jobs:
                 git config --global user.name "CI"
                 git remote update
                 git checkout build          
-                git pull --unshallow
+                git pull
                 
             - uses: game-ci/unity-builder@v2
               env:
