@@ -8,7 +8,10 @@ public class PlayerShop : MonoBehaviour
     PlayerShop_Sales sales;
     [SerializeField]
     DialogueBox dialogBox;
+    [SerializeField]
     Inventory inventory;
+
+    //큐로 게스트 만들기
 
     [SerializeField]
     int entryWeight;
