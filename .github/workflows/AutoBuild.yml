@@ -60,6 +60,7 @@ jobs:
                 avatar_url: "https://cdn.discordapp.com/attachments/1147907186400448605/1149615882432168026/6_-removebg-preview.png"
       
             - name: Send Discord fail
+              uses: sarisia/actions-status-discord@v1
               if: failure()
               with:      
                 webhook: ${{ secrets.DISCORD_BUILD }}
