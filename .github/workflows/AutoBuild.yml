@@ -48,22 +48,27 @@ jobs:
               run: echo "::set-output name=link::$(echo ${{ github.run_id }})"
 
             - name: Send Discord Notification
+              uses: sarisia/actions-status-discord@v1
               if: success()
               env:
                 DISCORD_WEBHOOK: ${{ secrets.DISCORD_BUILD }}
-              run: |
-                artifact_link="https://github.com/${{ github.repository }}/actions/runs/${{ steps.artifact.outputs.link }}"
-                curl -X POST -H "Content-Type: application/json" -d '{
-                  "content": "빌드의 요정의 선물이 도착하였습니다.\n다운로드 링크: '"$artifact_link"'",
-                  "username": "빌드의 요정 김영훈"
-                }' $DISCORD_WEBHOOK
+              with:      
+                webhook: ${{ secrets.DISCORD_WEBHOOK }}
+                nodetail: true
+                description: "빌드의 요정의 선물이 도착했습니다."
+                username: "빌드의 요정 김영훈"
+                color: "#FF0000"
+                url: "https://github.com/${{ github.repository }}/actions/runs/${{ steps.artifact.outputs.link }}"
+                avatar_url: "https://cdn.discordapp.com/attachments/1147907186400448605/1149615882432168026/6_-removebg-preview.png"
       
             - name: Send Discord fail
               if: failure()
               env:
                 DISCORD_WEBHOOK: ${{ secrets.DISCORD_BUILD }}
-              run: |
-                curl -X POST -H "Content-Type: application/json" -d '{
-                  "content": "김영훈이 빌드를 방해했습니다."
-                  "username": "빌드 발해꾼 김영훈"
-                }' $DISCORD_WEBHOOK
+              with:      
+                webhook: ${{ secrets.DISCORD_WEBHOOK }}
+                nodetail: true
+                description: "방해꾼이 빌드를 방해했습니다."
+                username: "빌드 방해꾼 김영훈"
+                color: "#ff0000"
+                avatar_url: "https://cdn.discordapp.com/attachments/1147907186400448605/1149615498431037540/4_-removebg-preview.png"
