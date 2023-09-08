@@ -4,24 +4,41 @@ using UnityEngine;
 
 public class ConversationState : State<NPC>
 {
+    bool isTalking;
     public override void Enter(NPC entity)
     {
-        throw new System.NotImplementedException();
+        entity.lookDir.SetDir(transform.position, entity.curInteractionObj.transform.position);
+
+        var scaleX = entity.lookDir.isRight ? -1 : 1;
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * scaleX, transform.localScale.y, transform.localScale.z);
+
+        if (entity.lookDir.isFront)
+            entity.SkAni.AnimationName = "FRONT";
+        else
+            entity.SkAni.AnimationName = "BACK";
+
+        EventManager.Subscribe(EventType.EndConversation, EndConversation);
     }
 
     public override void Execute(NPC entity)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void Exit(NPC entity)
     {
-        throw new System.NotImplementedException();
+        EventManager.Unsubscribe(EventType.EndConversation, EndConversation);
     }
 
     public override void OnTransition(NPC entity)
     {
-        throw new System.NotImplementedException();
+        if (!isTalking)
+            entity.ChangeState(NPCBehaviour.Idle);
+    }
+
+    void EndConversation()
+    {
+        isTalking = false;
     }
 }
 

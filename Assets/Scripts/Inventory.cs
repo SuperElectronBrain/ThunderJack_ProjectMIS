@@ -8,7 +8,6 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public enum ItemCode
 {
@@ -34,6 +33,12 @@ public enum ItemCode
 	Honor,
 }
 
+
+//public class AdvencedItem
+//{
+//	[SerializeField] public ItemCode itemCode;
+//	[SerializeField] public List<ItemCode> Components;
+//}
 
 [Serializable]
 public struct Item

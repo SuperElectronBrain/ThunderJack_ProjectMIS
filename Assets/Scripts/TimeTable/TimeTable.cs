@@ -42,9 +42,9 @@ public class TimeTable : MonoBehaviour
                 m = 0;
             }
 
-        }       
-        EventManager.Subscribe(EventType.hour, WorkDistribution);
-        EventManager.Publish(EventType.hour);
+        }
+        EventManager.Subscribe(EventType.Minute, WorkDistribution);
+        //EventManager.Publish(EventType.hour);
     }
 
     void WorkDistribution()
@@ -53,7 +53,6 @@ public class TimeTable : MonoBehaviour
         {
             var timeIdx = GameManager.Instance.GameTime.GetTimeIdx();
             //npcTimeTable[id].timeTableData[locationIdx];
-            Debug.Log(timeIdx);
             //GameManager.Instance.GetCharacter(id).           
             //GameManager.Instance.CharacterDB.GetCharacter(id).GetComponent<NPC_Move>().SetDestination(GameManager.Instance.LocationManager.GetLocationPosition(locationIdx));
             ((NPC)GameManager.Instance.CharacterDB.GetCharacter(id)).SetCurBehaviourData(npcTimeTable[id - 1].timeTableData[timeIdx]);
@@ -67,7 +66,7 @@ public class TimeTable : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventManager.Unsubscribe(EventType.hour, WorkDistribution);
+        EventManager.Unsubscribe(EventType.Minute, WorkDistribution);
     }
 
     private void Awake()

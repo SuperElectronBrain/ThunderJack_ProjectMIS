@@ -1,10 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class UniFunc : MonoBehaviour
 {
+	public static T GetParentComponent<T>(Transform go) where T : Object
+	{
+		Transform t_Parent = go.parent;
+		T t_ParentComponent = null;
+		int count = 0;
+		while(count < 1)
+		{
+			if(t_Parent == null)
+			{
+				count = count + 1;
+				break;
+			}
+			else
+			{
+				t_ParentComponent = t_Parent.GetComponent<T>();
+			}
+
+			if (t_ParentComponent != null)
+			{
+				count = count + 1;
+				break;
+			}
+			else 
+			{
+				t_Parent = t_Parent.parent;
+			}
+		}
+
+		return t_ParentComponent;
+	}
+
+	public static T GetParentComponent<T>(GameObject go) where T : Object { return GetParentComponent<T>(go.transform); }
+
 	/// <summary>
 	/// Do not using on Update.
 	/// </summary>

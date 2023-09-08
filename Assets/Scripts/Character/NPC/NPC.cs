@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Spine.Unity;
 
 public enum NPCBehaviour
 {
@@ -21,6 +22,11 @@ public class NPC : Character
     [SerializeField]
     BehaviourData curBehaviourData;
 
+    SkeletonAnimation skAni;
+    public SkeletonAnimation SkAni { get { return skAni; } }
+
+    public LookDir lookDir = new();
+
     float intimacy;
 
     bool isMeet;
@@ -30,18 +36,22 @@ public class NPC : Character
 
     public NavMeshAgent agent;
     public Vector3 destinationPos;
+    public GameObject curInteractionObj;
 
     private void Start()
     {
         fsm = new();
+        skAni = GetComponent<SkeletonAnimation>();
         agent = GetComponent<NavMeshAgent>();
-        states = new State<NPC>[((int)NPCBehaviour.Last)];
+        states = new State<NPC>[((int)NPCBehaviour.Last) - 1];
 
         states[((int)NPCBehaviour.Idle)] = GetComponent<IdleState>();
         states[((int)NPCBehaviour.Move)] = GetComponent<MoveState>();
         states[((int)NPCBehaviour.Conversation)] = GetComponent<ConversationState>();
 
-        InitDay();
+        fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
+
+        InitDay();        
     }
 
     public void InitDay()
@@ -52,12 +62,24 @@ public class NPC : Character
     protected virtual void Update()
     {
         fsm.StateUpdate();
+
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            curInteractionObj = gameObject;
+            StartConversation();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            ChangeState(NPCBehaviour.Move);
+        }
+
     }
 
     public void StartConversation()
     {
         Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
         GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");
+        
     }
 
     public void SetCurBehaviourData(BehaviourData newBehaviourData)
@@ -75,11 +97,13 @@ public class NPC : Character
                 PlayAnimation(((BehaviourType1)curBehaviourData).actionGoal);
                 break;
             case 2:
-                destinationPos = ((BehaviourType2)curBehaviourData).actionGoal.position;
+                destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
                 ChangeState(NPCBehaviour.Move);
                 break;
             case 3:
-                destinationPos = ((BehaviourType2)curBehaviourData).actionGoal.position;
+                destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
+                destinationPos = LocationManager.GetLocationRandomPosition(destinationPos);
+                Debug.Log(((BehaviourType2)curBehaviourData).actionGoal);
                 ChangeState(NPCBehaviour.Move);
                 break;
         }
@@ -90,5 +114,46 @@ public class NPC : Character
         prevBehaviour = curBehaviour;        
         fsm.ChangeState(states[(int)newBehaviour]);
         curBehaviour = newBehaviour;
+    }
+}
+
+[System.Serializable]
+public class LookDir
+{
+    public bool isFront;
+    public bool isRight;
+    public bool isSideWalk;
+
+    public void SetDir(Vector3 velocity)
+    {
+        
+        if (velocity.x >= 0)
+            isRight = true;
+        else
+            isRight = false;
+
+        if(velocity.z <= 0)
+            isFront = true;
+        else
+            isFront = false;
+
+        if (Mathf.Abs(velocity.x) >= Mathf.Abs(velocity.z))
+            isSideWalk = true;
+        else
+            isSideWalk = false;
+    }
+    public void SetDir(Vector3 myPos, Vector3 targetPos)
+    {
+        if (myPos.x <= targetPos.x)
+            isRight = true;
+        else
+            isRight = false;
+
+        if (myPos.z >= targetPos.z)
+            isFront = true;
+        else
+            isFront = false;
+
+        isSideWalk = false;
     }
 }
