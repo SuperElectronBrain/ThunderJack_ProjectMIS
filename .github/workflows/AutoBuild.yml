@@ -47,7 +47,7 @@ jobs:
               id: artifact
               run: echo "::set-output name=link::$(echo ${{ github.run_id }})"
 
-            - name: Send Discord Notification
+            - name: Send Discord success
               uses: sarisia/actions-status-discord@v1
               if: success()
               with:      
