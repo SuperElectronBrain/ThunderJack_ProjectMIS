@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public enum EventType
 {
-    None, hour, Day, Dialog, End
+    None, Minute, hour, Day, Dialog, GuestEntry, EndConversation, SalesSuccess, SalesFailure, End
 }
 
 public class EventManager
@@ -33,6 +33,6 @@ public class EventManager
     public static void Publish(EventType eventType)
     {
         if (events.TryGetValue(eventType, out UnityEvent e))
-            e.Invoke();
+            e?.Invoke();
     }
 }
