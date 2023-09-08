@@ -50,10 +50,8 @@ jobs:
             - name: Send Discord Notification
               uses: sarisia/actions-status-discord@v1
               if: success()
-              env:
-                DISCORD_WEBHOOK: ${{ secrets.DISCORD_BUILD }}
               with:      
-                webhook: ${{ secrets.DISCORD_WEBHOOK }}
+                webhook: ${{ secrets.DISCORD_BUILD }}
                 nodetail: true
                 description: "빌드의 요정의 선물이 도착했습니다."
                 username: "빌드의 요정 김영훈"
@@ -63,10 +61,8 @@ jobs:
       
             - name: Send Discord fail
               if: failure()
-              env:
-                DISCORD_WEBHOOK: ${{ secrets.DISCORD_BUILD }}
               with:      
-                webhook: ${{ secrets.DISCORD_WEBHOOK }}
+                webhook: ${{ secrets.DISCORD_BUILD }}
                 nodetail: true
                 description: "방해꾼이 빌드를 방해했습니다."
                 username: "빌드 방해꾼 김영훈"
