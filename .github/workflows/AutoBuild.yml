@@ -56,7 +56,7 @@ jobs:
                 description: "빌드의 요정의 선물이 도착했습니다."
                 username: "빌드의 요정 김영훈"
                 color: "#FF0000"
-                url: "https://github.com/${{ github.repository }}/actions/runs/${{ steps.artifact.outputs.link }}"
+                #url: "https://github.com/${{ github.repository }}/actions/runs/${{ steps.artifact.outputs.link }}"
                 avatar_url: "https://cdn.discordapp.com/attachments/1147907186400448605/1149615882432168026/6_-removebg-preview.png"
       
             - name: Send Discord fail
