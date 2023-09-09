@@ -11,15 +11,13 @@ public class ItemManager : MonoBehaviour
 {
     Dictionary<int, JewelryItemData> jewelryItemData;
     Dictionary<int, BasicItemData> materialItemData;
+    [SerializeField]
     List<BasicItemData> basicItemData;
-    Dictionary<int, BasicItemData> allItemData;
+    [SerializeField]
+    List<ShopItemData> shopItemList;
 
     [SerializeField]
     List<GemRecipe> gemRecipes;
-
-    //delete
-    [SerializeField]
-    List<BasicItemData> list = new(); 
 
     [SerializeField]
     int itemA, ItemB;
@@ -30,6 +28,7 @@ public class ItemManager : MonoBehaviour
         LoadItemData();
         LoadMaterialElement();
         LoadGemRecipe();
+        LoadShopItemData();
     }
 
     //Load Material Element
@@ -75,7 +74,7 @@ public class ItemManager : MonoBehaviour
         foreach (var ir in itemRecipe)
         {
             int itemType = Tools.IntParse(ir["Item_Type"]);
-            Sprite resourceImage = GameManager.Instance.AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
+            Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
 
             switch (itemType)
             {
@@ -91,18 +90,6 @@ public class ItemManager : MonoBehaviour
                         itemText = ir["Item_Text"].ToString()
                     }
                     );
-                    //delete
-                    list.Add(
-                        new JewelryItemData
-                        {
-                            itemID = Tools.IntParse(ir["Item_ID"]),
-                            itemNameEg = ir["Material_Name_EG"].ToString(),
-                            itemNameKo = ir["Item_Name_KO"].ToString(),
-                            itemType = (ItemType)Tools.IntParse(ir["Item_Type"]),
-                            itemResourceImage = resourceImage,
-                            itemText = ir["Item_Text"].ToString()
-                        }
-                        );
                     break;
                 case (int)ItemType.Materials:
                     basicItemData.Add(
@@ -116,18 +103,6 @@ public class ItemManager : MonoBehaviour
                         itemText = ir["Item_Text"].ToString(),
                     }
                     );
-                    //delete
-                    list.Add(
-                        new MaterialItemData
-                        {
-                            itemID = Tools.IntParse(ir["Item_ID"]),
-                            itemNameEg = ir["Material_Name_EG"].ToString(),
-                            itemNameKo = ir["Item_Name_KO"].ToString(),
-                            itemType = (ItemType)Tools.IntParse(ir["Item_Type"]),
-                            itemResourceImage = resourceImage,
-                            itemText = ir["Item_Text"].ToString(),     
-                        }
-                        );
                     break;
                 default:
                     basicItemData.Add(
@@ -141,18 +116,6 @@ public class ItemManager : MonoBehaviour
                         itemText = ir["Item_Text"].ToString()
                     }
                     );
-                    //delete
-                    list.Add(
-                        new BasicItemData
-                        {
-                            itemID = Tools.IntParse(ir["Item_ID"]),
-                            itemNameEg = ir["Material_Name_EG"].ToString(),
-                            itemNameKo = ir["Item_Name_KO"].ToString(),
-                            itemType = (ItemType)Tools.IntParse(ir["Item_Type"]),
-                            itemResourceImage = resourceImage,
-                            itemText = ir["Item_Text"].ToString()
-                        }
-                        );
                     break;
             }
         }
@@ -185,6 +148,27 @@ public class ItemManager : MonoBehaviour
         }
     }
     #endregion
+
+    public void LoadShopItemData()
+    {
+        shopItemList = new();
+
+        var shopItemData = GameManager.Instance.DataBase.Parser("Shop_Master");
+
+        foreach(var item in shopItemData)
+        {
+            shopItemList.Add(
+                new ShopItemData
+                {
+                    itemId = Tools.IntParse(item["Item_ID"]),
+                    buyValue = Tools.IntParse(item["Buy_Value"]),
+                    sellValue = Tools.IntParse(item["Sell_Value"]),
+                    shopType = Tools.IntParse(item["Shop_Type"]),
+                    shopRate = Tools.FloatParse(item["Shop_Rate"])
+                }
+                );
+        }
+    }
 
 
     public int GetCombinationItem(int item1, int item2)
@@ -224,6 +208,11 @@ public class ItemManager : MonoBehaviour
     public string GetItemText(int itemID)
     {
         return basicItemData[itemID - 1].itemText;
+    }
+
+    public List<GemRecipe> GetGemRecipe()
+    {
+        return gemRecipes;
     }
 }
 
@@ -287,4 +276,14 @@ public class GemRecipe
     public float materialPercent1;
     public float materialPercent2;
     public float materialPercent3;
+}
+
+[System.Serializable]
+public class ShopItemData
+{
+    public int itemId;
+    public int buyValue;
+    public int sellValue;
+    public int shopType;
+    public float shopRate;
 }

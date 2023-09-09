@@ -53,9 +53,11 @@ public class GameTime : MonoBehaviour
 
                     EventManager.Publish(EventType.Day);
                 }
+
+                EventManager.Publish(EventType.hour);
             }
 
-            EventManager.Publish(EventType.hour);
+            EventManager.Publish(EventType.Minute);
         }
     }
 
