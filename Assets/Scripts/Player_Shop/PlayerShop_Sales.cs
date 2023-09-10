@@ -26,11 +26,29 @@ public class PlayerShop_Sales : MonoBehaviour
                 }
                 );
         }
+        EventManager.Subscribe(EventType.SalesSuccess, SalesSuccess);
+        EventManager.Subscribe(EventType.SalesFailure, SalesFailure);
     }
 
     public RequestData GetRequestData(int guestId)
     {
         return requestList[guestId];
+    }
+
+    void SalesSuccess()
+    {
+        
+    }
+
+    void SalesFailure()
+    {
+
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe(EventType.SalesSuccess, SalesSuccess);
+        EventManager.Unsubscribe(EventType.SalesFailure, SalesFailure);
     }
 }
 

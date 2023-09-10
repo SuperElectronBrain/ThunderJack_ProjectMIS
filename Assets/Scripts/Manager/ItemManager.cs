@@ -15,14 +15,9 @@ public class ItemManager : MonoBehaviour
     List<BasicItemData> basicItemData;
     [SerializeField]
     List<ShopItemData> shopItemList;
-    Dictionary<int, BasicItemData> allItemData;
 
     [SerializeField]
     List<GemRecipe> gemRecipes;
-
-    //delete
-    [SerializeField]
-    List<BasicItemData> list = new(); 
 
     [SerializeField]
     int itemA, ItemB;
@@ -79,7 +74,7 @@ public class ItemManager : MonoBehaviour
         foreach (var ir in itemRecipe)
         {
             int itemType = Tools.IntParse(ir["Item_Type"]);
-            Sprite resourceImage = GameManager.Instance.AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
+            Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
 
             switch (itemType)
             {
@@ -213,6 +208,11 @@ public class ItemManager : MonoBehaviour
     public string GetItemText(int itemID)
     {
         return basicItemData[itemID - 1].itemText;
+    }
+
+    public List<GemRecipe> GetGemRecipe()
+    {
+        return gemRecipes;
     }
 }
 

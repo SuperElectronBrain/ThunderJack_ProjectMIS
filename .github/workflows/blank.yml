@@ -3,7 +3,10 @@ name: Merge to Main
 on: 
   push:
     branches-ignore:
-    - main, build, master, dev
+    - main
+    - build
+    - master
+    - dev
     
 jobs:
   discord_notification:

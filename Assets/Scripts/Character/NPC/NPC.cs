@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Spine.Unity;
 
 public enum NPCBehaviour
 {
@@ -20,10 +19,7 @@ public class NPC : Character
     NPCBehaviour curBehaviour;
 
     [SerializeField]
-    BehaviourData curBehaviourData;
-
-    SkeletonAnimation skAni;
-    public SkeletonAnimation SkAni { get { return skAni; } }
+    BehaviourData curBehaviourData;    
 
     public LookDir lookDir = new();
 
@@ -38,10 +34,10 @@ public class NPC : Character
     public Vector3 destinationPos;
     public GameObject curInteractionObj;
 
-    private void Start()
+    protected override void Start()
     {
-        fsm = new();
-        skAni = GetComponent<SkeletonAnimation>();
+        base.Start();
+        fsm = new();        
         agent = GetComponent<NavMeshAgent>();
         states = new State<NPC>[((int)NPCBehaviour.Last) - 1];
 
@@ -51,8 +47,7 @@ public class NPC : Character
 
         fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
 
-        InitDay();
-        
+        InitDay();        
     }
 
     public void InitDay()
@@ -64,11 +59,16 @@ public class NPC : Character
     {
         fsm.StateUpdate();
 
-        if(Input.GetKeyDown(KeyCode.Alpha6))
+        if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             curInteractionObj = gameObject;
             StartConversation();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            ChangeState(NPCBehaviour.Move);
+        }
+
     }
 
     public void StartConversation()
@@ -90,7 +90,7 @@ public class NPC : Character
         switch(curBehaviourData.actionType)
         {
             case 1:
-                PlayAnimation(((BehaviourType1)curBehaviourData).actionGoal);
+                //PlayAnimation(((BehaviourType1)curBehaviourData).actionGoal);
                 break;
             case 2:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
@@ -98,6 +98,8 @@ public class NPC : Character
                 break;
             case 3:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
+                destinationPos = LocationManager.GetLocationRandomPosition(destinationPos);
+                Debug.Log(((BehaviourType2)curBehaviourData).actionGoal);
                 ChangeState(NPCBehaviour.Move);
                 break;
         }
