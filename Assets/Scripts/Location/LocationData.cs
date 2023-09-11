@@ -9,6 +9,6 @@ public class LocationData : MonoBehaviour
     private void Awake()
     {
         locationTransform = transform.position;
-        //gameObject.name = locationName;
+        locationName = gameObject.name;
     }
 }

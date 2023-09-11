@@ -31,13 +31,19 @@ public class CircularGuestQueue
         }
         guestQueue[maxGuestCount - 2] = temp;
 
-        guestQueue[guestCount--].ExitShop();
+        guestCount--;
+        //guestQueue[guestCount--].ExitShop();
+        if (guestCount != 0)
+            GetGuest().FirstGuest();
     }
 
-    public void EntryGuest()
-    {
-        //guestQueue[guestCount++].InitGuest("name");
-        guestQueue[guestCount++].EntryShop();
+    public void EntryGuest(GuestData newGuest, RequestData newRequest)
+    {        
+        guestQueue[guestCount].InitGuest(newGuest, newRequest);
+        guestQueue[guestCount].EntryShop();
+        if (guestCount == 0)
+            guestQueue[guestCount].FirstGuest();
+        guestCount++;
     }
 
     public bool IsFull()
@@ -57,8 +63,6 @@ public class PlayerShop : MonoBehaviour
     PlayerShop_Sales sales;
     [SerializeField]
     DialogueBox dialogBox;
-    [SerializeField]
-    Inventory inventory;    
 
     [SerializeField]
     CircularGuestQueue guestQueue;
@@ -80,8 +84,9 @@ public class PlayerShop : MonoBehaviour
         var guests = transform.GetComponentsInChildren<Guest>();
         guestQueue = new CircularGuestQueue(guests, guests.Length);
 
-        inventory = GameObject.FindObjectOfType<Inventory>();
         EventManager.Subscribe(EventType.Minute, GuestCheck);
+        EventManager.Subscribe(EventType.Dialog, ShowDialog);
+        EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
     }
 
     // Update is called once per frame
@@ -100,16 +105,19 @@ public class PlayerShop : MonoBehaviour
     public void EntryGuset()
     {        
         var newGuest = guest.GetRandomGuest();
-
         var newRequest = sales.GetRequestData(newGuest.guestId);
-        
-        dialogBox.SetName(newGuest.guestNameKo);
-        dialogBox.SetDialog(newRequest.requestScript);
+
+        guestQueue.EntryGuest(newGuest, newRequest);
+
+        //guestQueue.GetGuest().gameObject.SetActive(true);       
+    }
+
+    public void ShowDialog()
+    {
+        dialogBox.SetName(guestQueue.GetGuest().GetGuestName());
+        dialogBox.SetDialog(guestQueue.GetGuest().GetRequest());
         dialogBox.ShowDialogBox();
-        //guestQueue.GetGuest().gameObject.SetActive(true);
-        guestQueue.EntryGuest();
-        StartCoroutine(Waiting());        
-    }    
+    }
 
     void GuestCheck()
     {
@@ -131,25 +139,27 @@ public class PlayerShop : MonoBehaviour
     public void LeavingGuest()
     {
         //guestQueue.GetGuest().gameObject.SetActive(false);
-        guestQueue.ExitGuest();
-    }
-
-    IEnumerator Waiting()
-    {
-        yield return new WaitForSeconds(5f);
         dialogBox.ShowDialogBox(false);
-        LeavingGuest();
+        guestQueue.ExitGuest();        
     }
 
     public void AcceptSales()
     {
-        StopCoroutine(Waiting());
+        guestQueue.GetGuest().AcceptSales();
+        dialogBox.ShowDialogBox(false);
+    }
+
+    public void RefusalSales()
+    {
+        guestQueue.GetGuest().RefusalSales();
         dialogBox.ShowDialogBox(false);
     }
 
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventType.Minute, GuestCheck);
+        EventManager.Unsubscribe(EventType.Dialog, ShowDialog);
+        EventManager.Unsubscribe(EventType.GuestExit, LeavingGuest);
     }
 
     /// <summary>

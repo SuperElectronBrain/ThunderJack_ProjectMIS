@@ -9,8 +9,6 @@ public enum ItemType
 
 public class ItemManager : MonoBehaviour
 {
-    Dictionary<int, JewelryItemData> jewelryItemData;
-    Dictionary<int, BasicItemData> materialItemData;
     [SerializeField]
     List<BasicItemData> basicItemData;
     [SerializeField]
@@ -18,6 +16,8 @@ public class ItemManager : MonoBehaviour
 
     [SerializeField]
     List<GemRecipe> gemRecipes;
+    [SerializeField]
+    List<JewelryItemData> jewelryItemData;
 
     [SerializeField]
     int itemA, ItemB;
@@ -65,9 +65,8 @@ public class ItemManager : MonoBehaviour
     #region
     void LoadItemData()
     {
-        jewelryItemData = new();
         basicItemData = new();
-        materialItemData = new();
+        jewelryItemData = new();
 
         var itemRecipe = GameManager.Instance.DataBase.Parser("Item_Master");
 
@@ -188,8 +187,8 @@ public class ItemManager : MonoBehaviour
 
         foreach (var jewelryItem in jewelryItemData)
         {
-            if (jewelryItem.Value.itemComb1 == gem && jewelryItem.Value.itemComb2 == accessory)
-                return jewelryItem.Key;
+            if (jewelryItem.itemComb1 == gem && jewelryItem.itemComb2 == accessory)
+                return jewelryItem.itemID;
         }
 
         return -1;
@@ -214,6 +213,11 @@ public class ItemManager : MonoBehaviour
     {
         return gemRecipes;
     }
+
+    /*public int GetJewelryItemIdByComb()
+    {
+
+    }*/
 }
 
 //ItemData
@@ -235,6 +239,7 @@ public class JewelryItemData : BasicItemData
     public int itemComb1;
     public int itemComb2;   
 }
+
 [System.Serializable]
 public class MaterialItemData : BasicItemData
 {

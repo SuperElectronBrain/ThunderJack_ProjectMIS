@@ -35,7 +35,7 @@ public class MoveState : State<NPC>
     public override void Exit(NPC entity)
     {
         Debug.Log("이동완료");
-        entity.agent.ResetPath();
+        //entity.agent.ResetPath();
     }
 
     public override void OnTransition(NPC entity)
