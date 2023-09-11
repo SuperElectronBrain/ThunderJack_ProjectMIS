@@ -42,8 +42,8 @@ public class LocationManager : MonoBehaviour
     {
         //Debug.Log(((LocationName)locationName).ToString() + " : " + locationData[((LocationName)locationName).ToString()].locationTransform);
         //return locationData[((LocationName)locationName).ToString()].locationTransform;
-        Debug.Log(locationList[locationName].gameObject.name + " " + locationList[locationName].locationTransform);
-        gameObject.name = locationList[locationName].locationName;
+        //Debug.Log(locationList[locationName].gameObject.name + " " + locationList[locationName].locationTransform);
+        //gameObject.name = locationList[locationName].locationName;
         return locationList[locationName].locationTransform;
     }
 

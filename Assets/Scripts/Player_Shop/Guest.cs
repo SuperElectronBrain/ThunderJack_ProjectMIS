@@ -79,6 +79,11 @@ public class Guest : MonoBehaviour
         skAni.loop = true;
     }
 
+    public void CheckItem(int requestItemID)
+    {
+
+    }
+
     public void FirstGuest()
     {
         EventManager.Publish(EventType.Dialog);        
