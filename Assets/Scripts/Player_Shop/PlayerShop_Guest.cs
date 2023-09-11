@@ -7,7 +7,6 @@ public class PlayerShop_Guest : MonoBehaviour
     [SerializeField]
     List<GuestData> guestList = new List<GuestData>();
     
-
     // Start is called before the first frame update
     void Start()
     {

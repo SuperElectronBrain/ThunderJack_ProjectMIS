@@ -2092,7 +2092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d362741512a4b441ada23ec6d33cf33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 0
   distance: 5
   angle: 15
   cameraTarget: {fileID: 0}
@@ -3694,6 +3694,10 @@ PrefabInstance:
     - target: {fileID: 6932186443044066599, guid: 1b2d46ad08de41f4db5261c6cdbde5bc, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932186443044066599, guid: 1b2d46ad08de41f4db5261c6cdbde5bc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6932186443044066599, guid: 1b2d46ad08de41f4db5261c6cdbde5bc, type: 3}
       propertyPath: m_TagString
@@ -33306,6 +33310,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3778479943794505892, guid: df9e7191582ba2b458439fd2dfcea17b, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778479943794505892, guid: df9e7191582ba2b458439fd2dfcea17b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d106615a40c16a54a92fe93a8ec2c922, type: 2}
@@ -33363,7 +33371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4636645068014157509, guid: df9e7191582ba2b458439fd2dfcea17b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7318068606919703493, guid: df9e7191582ba2b458439fd2dfcea17b, type: 3}
       propertyPath: initialFlipX
