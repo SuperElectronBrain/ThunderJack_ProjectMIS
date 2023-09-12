@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class MeasurCup : MonoBehaviour
 {
-	public ItemCode m_Input = ItemCode.None;
+	public string m_Input = "";
 	public float m_Progress = 0.0f;
 	public float M_Progress { get { return m_Progress; } set { m_Progress = value > 1.0f ? 1.0f : (value < 0 ? 0 : value); } }
 	public float m_MaxInputPerSecond = 0.1f;
@@ -62,7 +62,7 @@ public class MeasurCup : MonoBehaviour
 				{
 					float t_Gradient = 1 - ((m_MixingBowl.transform.position - transform.position).magnitude / m_MixingBowl.m_MaxDistance);
 
-					if(m_Input != ItemCode.None)
+					if(m_Input != "")
 					{
 						if(m_Progress > 0.0f)
 						{
