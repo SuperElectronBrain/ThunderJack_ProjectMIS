@@ -145,6 +145,13 @@ public class Inventory : MonoBehaviour
 		}
 
 		m_Owner = gameObject.GetComponent<CharacterBase>();
+		if(m_Owner != null)
+		{
+			if(m_Owner.m_Inventory == null)
+			{
+				m_Owner.m_Inventory = this;
+			}
+		}
 
 		Canvas canvas = FindObjectOfType<Canvas>();
 		if (canvas != null)
@@ -440,6 +447,7 @@ public class Inventory : MonoBehaviour
 			}
 		}
 
+		RefreshInventory();
 		return t_AItem;
 	}
 	public AdvencedItem PopAItem(string p_ItemCode = "", float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
@@ -477,6 +485,7 @@ public class Inventory : MonoBehaviour
 		{
 			m_AItems[i] = new AdvencedItem(m_AItems[i].itemCode, m_AItems[i].itemProgress, m_AItems[i].itemAmount, 0);
 		}
+		RefreshInventory();
 	}
 
 	public List<SelectedItem> GetSelectedItems()

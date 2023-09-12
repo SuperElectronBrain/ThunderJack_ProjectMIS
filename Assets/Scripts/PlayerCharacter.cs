@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 using static UnityEngine.GraphicsBuffer;
@@ -185,8 +186,12 @@ public class PlayerCharacter : CharacterBase
 		{
 			if(t_MillStone.M_Input =="")
 			{
-				t_MillStone.M_Input = m_GrabItemCode;
-				t_MillStone.M_Progress = 1.0f;
+				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode, 1.0f, 1);
+				if(t_AItem.IsAddable(new AdvencedItem()) == false)
+				{
+					t_MillStone.M_Input = t_AItem.itemCode;
+					t_MillStone.m_Progress = t_AItem.itemProgress;
+				}
 			}
 		}
 	}
@@ -234,8 +239,12 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (t_MillStone.M_Input == "")
 			{
-				t_MillStone.M_Input = m_GrabItemCode;
-				t_MillStone.m_Progress = 1.0f;
+				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode, 1.0f, 1);
+				if (t_AItem.IsAddable(new AdvencedItem()) == false)
+				{
+					t_MillStone.M_Input = t_AItem.itemCode;
+					t_MillStone.m_Progress = t_AItem.itemProgress;
+				}
 			}
 		}
 	}
