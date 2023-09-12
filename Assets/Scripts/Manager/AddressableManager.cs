@@ -47,23 +47,20 @@ public class AddressableManager : MonoBehaviour
         }*/
     }
 
-    public static T LoadObject<T>(string loadObjectName)
+    public T LoadObject<T>(string loadObjectName)
     {
         T returnObject = default;
 
-        if (typeof(T) == typeof(Sprite))
-        {
-            //임시임 확실히 버그인지 알 수 있는 이미지로 바꿀 것
-            if (Addressables.LoadResourceLocationsAsync(loadObjectName, typeof(object)).IsValid())
-                loadObjectName = "Stone";
-        }        
+        //임시임 확실히 버그인지 알 수 있는 이미지로 바꿀 것
+        if (Addressables.LoadResourceLocationsAsync(loadObjectName, typeof(object)).IsValid())
+            loadObjectName = "Stone";
 
         var op = Addressables.LoadAssetAsync<T>(loadObjectName);
 
         returnObject = op.WaitForCompletion();
 
         return returnObject;
-    }
+    }    
 
     public void CreateImage(Sprite sprite)
     {

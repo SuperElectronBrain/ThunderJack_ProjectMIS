@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Spine.Unity;
 
 public enum AnimationType
 {
@@ -25,14 +24,10 @@ public class Character : MonoBehaviour
     [SerializeField]
     protected CharacterData characterData;
 
-    SkeletonAnimation skAni;
-    public SkeletonAnimation SkAni { get { return skAni; } }
-
     // Start is called before the first frame update
-    protected virtual void Start()
+    void Start()
     {
         animator= GetComponentInChildren<Animator>();
-        skAni = GetComponent<SkeletonAnimation>();
     }
 
     // Update is called once per frame
@@ -41,15 +36,20 @@ public class Character : MonoBehaviour
 
     }
 
-/*    public void PlayAnimation(AnimationType newAnimationType)
+    public void Conversation()
+    {
+        //GameManager.Instance.StartConversation(dialogueName, this);
+    }
+
+    public void PlayAnimation(AnimationType newAnimationType)
     {
         animator.Play(newAnimationType.ToString());
     }
 
     public void PlayAnimation(int newAnimationType)
     {
-        animator.Play(((AnimationType)newAnimationType).ToString());
-    }*/
+        //animator.Play(((AnimationType)newAnimationType).ToString());
+    }
 
     public void SetLocation(Location newLocation)
     {
@@ -69,11 +69,5 @@ public class Character : MonoBehaviour
     public void SetCharacterData(CharacterData cd)
     {
         characterData = cd;
-    }
-
-    public void InitCharacter(string characterInfo)
-    {
-        GetComponent<MeshRenderer>().material = AddressableManager.LoadObject<Material>(characterInfo + "_Material");
-        skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(characterInfo + "_Skeleton");
     }
 }

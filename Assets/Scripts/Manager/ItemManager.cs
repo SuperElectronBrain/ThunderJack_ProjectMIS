@@ -73,7 +73,7 @@ public class ItemManager : MonoBehaviour
         foreach (var ir in itemRecipe)
         {
             int itemType = Tools.IntParse(ir["Item_Type"]);
-            Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
+            Sprite resourceImage = GameManager.Instance.AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
 
             switch (itemType)
             {

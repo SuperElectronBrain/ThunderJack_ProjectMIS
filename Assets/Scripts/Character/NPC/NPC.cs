@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Spine.Unity;
 
 public enum NPCBehaviour
 {
@@ -19,7 +20,10 @@ public class NPC : Character
     NPCBehaviour curBehaviour;
 
     [SerializeField]
-    BehaviourData curBehaviourData;    
+    BehaviourData curBehaviourData;
+
+    SkeletonAnimation skAni;
+    public SkeletonAnimation SkAni { get { return skAni; } }
 
     public LookDir lookDir = new();
 
@@ -34,10 +38,10 @@ public class NPC : Character
     public Vector3 destinationPos;
     public GameObject curInteractionObj;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-        fsm = new();        
+        fsm = new();
+        skAni = GetComponent<SkeletonAnimation>();
         agent = GetComponent<NavMeshAgent>();
         states = new State<NPC>[((int)NPCBehaviour.Last) - 1];
 
@@ -90,7 +94,7 @@ public class NPC : Character
         switch(curBehaviourData.actionType)
         {
             case 1:
-                //PlayAnimation(((BehaviourType1)curBehaviourData).actionGoal);
+                PlayAnimation(((BehaviourType1)curBehaviourData).actionGoal);
                 break;
             case 2:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
