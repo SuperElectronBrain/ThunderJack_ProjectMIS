@@ -13,11 +13,11 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerCharacter : CharacterBase
 {
-	private ItemCode m_GrabItem = 0;
-
 	private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
 	[HideInInspector] public GameObject m_HitObject;
+	public UnityEngine.UI.Image m_GrabItemSprite;
+	public string m_GrabItemCode = "";
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -34,6 +34,10 @@ public class PlayerCharacter : CharacterBase
 		base.Update();
 		float DeltaTime = Time.deltaTime;
 
+		if((m_GrabItemSprite.gameObject != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
+		{
+			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
+		}
 	}
 
 	//protected override void FixedUpdate()
@@ -56,51 +60,54 @@ public class PlayerCharacter : CharacterBase
 		
 		if (Input.GetMouseButtonDown(0) == true)
 		{
-			if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() == false)
+			Vector3 t_MousePosition = Vector3.zero;
+			if(Camera.main.orthographic == false)
 			{
-				Vector3 t_MousePosition = Vector3.zero;
-				if(Camera.main.orthographic == false)
-				{
-					t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
-					if (Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity) == true)
-					{ OnClickHit(hit); }
-					else
-					{ OnClickMiss(); }
-				}
-				else if(Camera.main.orthographic == true)
-				{
-					t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-					RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
-					if (hit2D == true)
-					{ OnClickHit2D(hit2D); }
-					else
-					{ OnClickMiss2D(); }
-				}
+				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
+				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (result == true && bMouseOnUI == false)
+				{ OnClickHit(hit); }
+				else if(result == false || bMouseOnUI == true)
+				{ OnClickMiss(); }
+			}
+			else if(Camera.main.orthographic == true)
+			{
+				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
+				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (hit2D == true && bMouseOnUI == false)
+				{ OnClickHit2D(hit2D); }
+				else if (hit2D == false || bMouseOnUI == true)
+				{ OnClickMiss2D(); }
 			}
 		}
 		if (Input.GetMouseButtonUp(0) == true)
 		{
-			if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() == false)
+			Vector3 t_MousePosition = Vector3.zero;
+			if (Camera.main.orthographic == false)
 			{
-				Vector3 t_MousePosition = Vector3.zero;
-				if (Camera.main.orthographic == false)
-				{
-					t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
-					if (Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity) == true)
-					{ OnReleaseHit(hit); }
-					else
-					{ OnReleaseMiss(); }
-				}
-				else if (Camera.main.orthographic == true)
-				{
-					t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-					RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
-					if (hit2D == true)
-					{ OnReleaseHit2D(hit2D); }
-					else
-					{ OnReleaseMiss2D(); }
-				}
+				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
+				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (result == true && bMouseOnUI == false)
+				{ OnReleaseHit(hit); }
+				else if (result == false || bMouseOnUI == true)
+				{ OnReleaseMiss(); }
 			}
+			else if (Camera.main.orthographic == true)
+			{
+				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
+				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (hit2D == true && bMouseOnUI == false)
+				{ OnReleaseHit2D(hit2D); }
+				else if (hit2D == false || bMouseOnUI == true)
+				{ OnReleaseMiss2D(); }
+			}
+
+			m_GrabItemCode = "";
+			if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
 		}
 	}
 
@@ -150,13 +157,20 @@ public class PlayerCharacter : CharacterBase
 		MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
 		if (t_MillStoneHandle != null)
 		{
-			UniFunc.GetParentComponent<MillStone>(t_MillStoneHandle.gameObject).bProgress = true;
+			MillStone t_MillStone = UniFunc.GetParentComponent<MillStone>(t_MillStoneHandle.gameObject);
+			if (t_MillStone != null)
+			{
+				t_MillStone.bProgress = true;
+			}
 		}
 
 		MeasurCup t_MeasurCup = hit.transform.GetComponent<MeasurCup>();
 		if (t_MeasurCup != null)
 		{
-			t_MeasurCup.m_IsMouseGrab = true;
+			if (t_MeasurCup.m_Progress > 0.0f)
+			{
+				t_MeasurCup.m_IsMouseGrab = true;
+			}
 		}
 	}
 	protected virtual void OnClickMiss()
@@ -169,9 +183,9 @@ public class PlayerCharacter : CharacterBase
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
 		{
-			if(t_MillStone.M_Input == 0)
+			if(t_MillStone.M_Input =="")
 			{
-				t_MillStone.M_Input = m_GrabItem;
+				t_MillStone.M_Input = m_GrabItemCode;
 				t_MillStone.M_Progress = 1.0f;
 			}
 		}
@@ -201,10 +215,10 @@ public class PlayerCharacter : CharacterBase
 		MeasurCup t_MeasurCup = hit.transform.GetComponent<MeasurCup>();
 		if (t_MeasurCup != null)
 		{
-			//if (t_MeasurCup.m_Progress >= 1.0f)
-			//{
+			if (t_MeasurCup.m_Progress > 0.0f)
+			{
 				t_MeasurCup.m_IsMouseGrab = true;
-			//}
+			}
 		}
 	}
 
@@ -218,9 +232,10 @@ public class PlayerCharacter : CharacterBase
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
 		{
-			if (t_MillStone.M_Input == 0)
+			if (t_MillStone.M_Input == "")
 			{
-				t_MillStone.M_Input = m_GrabItem;
+				t_MillStone.M_Input = m_GrabItemCode;
+				t_MillStone.m_Progress = 1.0f;
 			}
 		}
 	}
