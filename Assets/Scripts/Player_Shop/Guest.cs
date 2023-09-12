@@ -81,7 +81,15 @@ public class Guest : MonoBehaviour
 
     public void CheckItem(int requestItemID)
     {
+        var requestItem = GameManager.Instance.ItemManager.GetRequestStuffByItemID(requestItemID);
+        Debug.Log(requestItem.requestStuff1 + " " + requestItem.requestStuff2);       
 
+        if (requestItem.requestStuff1 == request.requestStuff1 && requestItem.requestStuff2 == request.requestStuff2)
+        {
+            Debug.Log("일치");
+        }
+        else
+            Debug.Log("불일치");
     }
 
     public void FirstGuest()

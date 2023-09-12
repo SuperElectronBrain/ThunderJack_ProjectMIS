@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class CircularGuestQueue
@@ -100,16 +101,27 @@ public class PlayerShop : MonoBehaviour
         {
             guestQueue.ExitGuest();
         }
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            //itemImage.enabled = true;
+            //itemImage.sprite = AddressableManager.LoadObject<Sprite>("Aa");
+            guestQueue.GetGuest().CheckItem(itemCode);
+        }
+        else
+        {
+            //itemImage.enabled = false;
+        }
     }
+
+    public SpriteRenderer itemImage;
+    public int itemCode;
 
     public void EntryGuset()
     {        
         var newGuest = guest.GetRandomGuest();
         var newRequest = sales.GetRequestData(newGuest.guestId);
 
-        guestQueue.EntryGuest(newGuest, newRequest);
-
-        //guestQueue.GetGuest().gameObject.SetActive(true);       
+        guestQueue.EntryGuest(newGuest, newRequest);        
     }
 
     public void ShowDialog()

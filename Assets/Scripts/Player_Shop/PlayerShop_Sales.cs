@@ -52,13 +52,17 @@ public class PlayerShop_Sales : MonoBehaviour
     }
 }
 
+public class RequestStuff
+{
+    public int requestStuff1;
+    public int requestStuff2;
+}
+
 [System.Serializable]
-public class RequestData
+public class RequestData : RequestStuff
 {
     public int requestId;
     public int guestId;
     public float requestRate;
     public string requestScript;
-    public int requestStuff1;
-    public int requestStuff2;
 }
