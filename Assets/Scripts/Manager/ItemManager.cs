@@ -9,8 +9,6 @@ public enum ItemType
 
 public class ItemManager : MonoBehaviour
 {
-    Dictionary<int, JewelryItemData> jewelryItemData;
-    Dictionary<int, BasicItemData> materialItemData;
     [SerializeField]
     List<BasicItemData> basicItemData;
     [SerializeField]
@@ -18,6 +16,8 @@ public class ItemManager : MonoBehaviour
 
     [SerializeField]
     List<GemRecipe> gemRecipes;
+    [SerializeField]
+    List<JewelryItemData> jewelryItemData;
 
     [SerializeField]
     int itemA, ItemB;
@@ -65,9 +65,8 @@ public class ItemManager : MonoBehaviour
     #region
     void LoadItemData()
     {
-        jewelryItemData = new();
         basicItemData = new();
-        materialItemData = new();
+        jewelryItemData = new();
 
         var itemRecipe = GameManager.Instance.DataBase.Parser("Item_Master");
 
@@ -132,7 +131,9 @@ public class ItemManager : MonoBehaviour
 
         foreach(var recipe in gemRecipe)
         {
-            gemRecipes.Add(
+            if (Tools.IntParse(recipe["Item_Type"]) == (int)ItemType.Gem)
+            {
+                gemRecipes.Add(
                 new GemRecipe
                 {
                     //itemNameEg = recipe[]
@@ -145,6 +146,14 @@ public class ItemManager : MonoBehaviour
                     materialPercent3 = Tools.FloatParse(recipe["Make_Percent_3"])
                 }
                 );
+            }
+            else
+            {
+                int itemComb1 = Tools.IntParse(recipe["Make_Material_1"]);
+                int itemComb2 = Tools.IntParse(recipe["Make_Material_2"]);
+                ((JewelryItemData)basicItemData[Tools.IntParse(recipe["Item_ID"]) - 1]).itemComb1 = itemComb1;
+                ((JewelryItemData)basicItemData[Tools.IntParse(recipe["Item_ID"]) - 1]).itemComb2 = itemComb2;
+            }
         }
     }
     #endregion
@@ -170,26 +179,22 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-
-    public int GetCombinationItem(int item1, int item2)
+    /// <summary>
+    /// 아이템 조합식 확인 아이템 ID 반환 없으면 -1반환
+    /// </summary>
+    /// <param name="gem"></param>
+    /// <param name="accessory"></param>
+    /// <returns></returns>
+    public int GetCombinationItem(int gem, int accessory)
     {
-        int gem, accessory;
 
-        if (basicItemData[item1].itemType == ItemType.Gem)
+        foreach (var jewelryItem in basicItemData)
         {
-            gem = item1;
-            accessory = item2;
-        }            
-        else
-        {
-            gem = item2;
-            accessory = item1;
-        }
+            if (jewelryItem.itemType != ItemType.Jewelry)
+                continue;
 
-        foreach (var jewelryItem in jewelryItemData)
-        {
-            if (jewelryItem.Value.itemComb1 == gem && jewelryItem.Value.itemComb2 == accessory)
-                return jewelryItem.Key;
+            if (((JewelryItemData)jewelryItem).itemComb1 == gem && ((JewelryItemData)jewelryItem).itemComb2 == accessory)
+                return jewelryItem.itemID;
         }
 
         return -1;
@@ -214,6 +219,29 @@ public class ItemManager : MonoBehaviour
     {
         return gemRecipes;
     }
+
+    public RequestStuff GetRequestStuffByItemID(int itemID)
+    {
+        itemID--;
+        if(basicItemData[itemID] is JewelryItemData)
+        {
+            return new RequestStuff
+            {
+                requestStuff1 = ((JewelryItemData)basicItemData[itemID]).itemComb1,
+                requestStuff2 = ((JewelryItemData)basicItemData[itemID]).itemComb2
+            };
+        }
+        return new RequestStuff
+        {
+            requestStuff1 = 0,
+            requestStuff2 = 0
+        };
+    }
+
+    /*public int GetJewelryItemIdByComb()
+    {
+
+    }*/
 }
 
 //ItemData
@@ -235,6 +263,7 @@ public class JewelryItemData : BasicItemData
     public int itemComb1;
     public int itemComb2;   
 }
+
 [System.Serializable]
 public class MaterialItemData : BasicItemData
 {

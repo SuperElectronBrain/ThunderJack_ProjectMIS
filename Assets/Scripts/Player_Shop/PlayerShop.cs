@@ -1,6 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+[System.Serializable]
+public class CircularGuestQueue
+{
+    [SerializeField]
+    Guest[] guestQueue;
+    [SerializeField]
+    int maxGuestCount;
+    [SerializeField]
+    int guestCount;
+
+    public CircularGuestQueue(Guest[] guests, int maxGuestCount = 3)
+    {
+        this.maxGuestCount = maxGuestCount;
+        //guestQueue = new Guest[maxGuestCount];
+        guestQueue = guests;
+    }   
+
+    public void ExitGuest()
+    {
+        var temp = guestQueue[maxGuestCount - 1];
+        for (int i = 0; i < guestQueue.Length - 1; i++)
+        {
+            if(i == 0)
+                guestQueue[maxGuestCount - 1] = guestQueue[i];
+            else
+                guestQueue[i - 1] = guestQueue[i];
+        }
+        guestQueue[maxGuestCount - 2] = temp;
+
+        guestCount--;
+        //guestQueue[guestCount--].ExitShop();
+        if (guestCount != 0)
+            GetGuest().FirstGuest();
+    }
+
+    public void EntryGuest(GuestData newGuest, RequestData newRequest)
+    {        
+        guestQueue[guestCount].InitGuest(newGuest, newRequest);
+        guestQueue[guestCount].EntryShop();
+        if (guestCount == 0)
+            guestQueue[guestCount].FirstGuest();
+        guestCount++;
+    }
+
+    public bool IsFull()
+    {
+        return guestCount == maxGuestCount;
+    }
+
+    public Guest GetGuest()
+    {
+        return guestQueue[0];
+    }
+}
 
 public class PlayerShop : MonoBehaviour
 {
@@ -8,7 +64,9 @@ public class PlayerShop : MonoBehaviour
     PlayerShop_Sales sales;
     [SerializeField]
     DialogueBox dialogBox;
-    Inventory inventory;
+
+    [SerializeField]
+    CircularGuestQueue guestQueue;
 
     [SerializeField]
     int entryWeight;
@@ -24,34 +82,61 @@ public class PlayerShop : MonoBehaviour
         guest = GetComponent<PlayerShop_Guest>();
         sales = GetComponent<PlayerShop_Sales>();
 
-        inventory = GameObject.FindObjectOfType<Inventory>();
+        var guests = transform.GetComponentsInChildren<Guest>();
+        guestQueue = new CircularGuestQueue(guests, guests.Length);
+
         EventManager.Subscribe(EventType.Minute, GuestCheck);
+        EventManager.Subscribe(EventType.Dialog, ShowDialog);
+        EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.V))
         {
             EntryGuset();
         }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            guestQueue.ExitGuest();
+        }
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            //itemImage.enabled = true;
+            //itemImage.sprite = AddressableManager.LoadObject<Sprite>("Aa");
+            guestQueue.GetGuest().CheckItem(itemCode);
+        }
+        else
+        {
+            //itemImage.enabled = false;
+        }
     }
 
-    public void EntryGuset()
-    {
-        var newGuest = guest.GetRandomGuest();
+    public SpriteRenderer itemImage;
+    public int itemCode;
 
+    public void EntryGuset()
+    {        
+        var newGuest = guest.GetRandomGuest();
         var newRequest = sales.GetRequestData(newGuest.guestId);
-        
-        dialogBox.SetName(newGuest.guestNameKo);
-        dialogBox.SetDialog(newRequest.requestScript);
+
+        guestQueue.EntryGuest(newGuest, newRequest);        
+    }
+
+    public void ShowDialog()
+    {
+        dialogBox.SetName(guestQueue.GetGuest().GetGuestName());
+        dialogBox.SetDialog(guestQueue.GetGuest().GetRequest());
         dialogBox.ShowDialogBox();
-        StartCoroutine(Waiting());
-    }    
+    }
 
     void GuestCheck()
     {
-        if(entryWeight >= Random.Range(0, 100))
+        if (guestQueue.IsFull())
+            return;
+
+        if (entryWeight >= Random.Range(0, 100))
         {
             idx = 0;
             entryWeight = weightValue[idx];
@@ -65,20 +150,28 @@ public class PlayerShop : MonoBehaviour
 
     public void LeavingGuest()
     {
-
+        //guestQueue.GetGuest().gameObject.SetActive(false);
+        dialogBox.ShowDialogBox(false);
+        guestQueue.ExitGuest();        
     }
 
-    IEnumerator Waiting()
+    public void AcceptSales()
     {
-        yield return new WaitForSeconds(1f);
+        guestQueue.GetGuest().AcceptSales();
         dialogBox.ShowDialogBox(false);
-        yield return new WaitForSeconds(5f);
-        LeavingGuest();
+    }
+
+    public void RefusalSales()
+    {
+        guestQueue.GetGuest().RefusalSales();
+        dialogBox.ShowDialogBox(false);
     }
 
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventType.Minute, GuestCheck);
+        EventManager.Unsubscribe(EventType.Dialog, ShowDialog);
+        EventManager.Unsubscribe(EventType.GuestExit, LeavingGuest);
     }
 
     /// <summary>

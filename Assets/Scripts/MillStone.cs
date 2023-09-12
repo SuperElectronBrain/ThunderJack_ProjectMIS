@@ -1,5 +1,8 @@
+using Spine;
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class MillStone : MonoBehaviour
@@ -14,11 +17,14 @@ public class MillStone : MonoBehaviour
 
 	public MeasurCup m_MeasurCup;
 	[SerializeField] private TMPro.TextMeshPro m_ProgressText;
+	[SerializeField] private SkeletonAnimation m_SkeletonAnimation;
+	private TrackEntry trackEntry;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		m_PreviousHandlePosition = Vector3.left;
+		trackEntry = m_SkeletonAnimation.state.SetAnimation(0, "animation", false);
 	}
 
 	// Update is called once per frame
@@ -48,17 +54,29 @@ public class MillStone : MonoBehaviour
 						m_MeasurCup.m_Input = m_Input;
 						m_MeasurCup.m_Progress = m_MeasurCup.m_Progress + (t_Progress / m_MaxTurnCount);
 					}
+
+					m_SkeletonAnimation.timeScale = 1.0f;
 				}
 				else if(t_Progress < 0)
 				{
 					bProgress = false; //역회전 방지
+					m_SkeletonAnimation.timeScale = 0.0f;
+				}
+				else if(t_Progress == 0)
+				{
+					m_SkeletonAnimation.timeScale = 0.0f;
 				}
 
-				transform.rotation = Quaternion.Euler(0.0f, 0.0f, (m_Progress * m_MaxTurnCount) * 360.0f);
+				float t_AnimationProgress = (1 - m_Progress) * m_MaxTurnCount;
+				if(trackEntry != null)
+				{
+					trackEntry.TrackTime = (t_AnimationProgress - (int)t_AnimationProgress) * trackEntry.AnimationEnd;
+				}
 
-				if(m_Progress <= 0.0f)
+				if (m_Progress <= 0.0f)
 				{
 					m_Input = ItemCode.None;
+					m_SkeletonAnimation.timeScale = 0.0f;
 				}
 				m_PreviousHandlePosition = t_CurrentHandlePosition;
 			}
@@ -66,6 +84,7 @@ public class MillStone : MonoBehaviour
 		if(Input.GetMouseButtonUp(0) == true)
 		{
 			bProgress = false;
+			m_SkeletonAnimation.timeScale = 0.0f;
 		}
 
 		if (m_ProgressText != null)

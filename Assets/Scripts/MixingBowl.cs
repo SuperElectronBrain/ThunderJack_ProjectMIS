@@ -16,6 +16,7 @@ public class MixingBowl : MonoBehaviour
 	public List<Ingredient> m_Ingredients = new List<Ingredient>();
 
 	[SerializeField] private TMPro.TextMeshPro m_ProgressText;
+	[SerializeField] private List<GameObject> m_MagicCircleGraph;
 
 	// Start is called before the first frame update
 	void Start()
@@ -59,6 +60,26 @@ public class MixingBowl : MonoBehaviour
 		if(count < 1)
 		{
 			m_Ingredients.Add(new Ingredient(p_Input, p_Progress));
+		}
+
+		RefreshGraph();
+	}
+
+	private void RefreshGraph()
+	{
+		List<GemRecipe> GemRecipes = new List<GemRecipe>();//GameManager.Instance.ItemManager.GetGemRecipe();
+
+		for (int i = 0; i < GemRecipes.Count; i = i + 1)
+		{
+			for (int j = 0; j < m_Ingredients.Count; j = j + 1)
+			{
+				if (GemRecipes[i].itemNameEg == m_Ingredients[j].m_Input.ToString())
+				{
+					m_MagicCircleGraph[GemRecipes[i].material1].transform.localScale = new Vector3(1.0f, GemRecipes[i].materialPercent1 * m_Ingredients[j].m_Progress, 1.0f);
+					m_MagicCircleGraph[GemRecipes[i].material2].transform.localScale = new Vector3(1.0f, GemRecipes[i].materialPercent2 * m_Ingredients[j].m_Progress, 1.0f);
+					m_MagicCircleGraph[GemRecipes[i].material3].transform.localScale = new Vector3(1.0f, GemRecipes[i].materialPercent3 * m_Ingredients[j].m_Progress, 1.0f);
+				}
+			}
 		}
 	}
 }
