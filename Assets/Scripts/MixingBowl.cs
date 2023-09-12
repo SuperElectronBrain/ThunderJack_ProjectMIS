@@ -52,10 +52,6 @@ public class MixingBowl : MonoBehaviour
 		{
 			GemRecipes = GameManager.Instance.ItemManager.GetGemRecipe();
 		}
-		else if(GameManager.Instance.ItemManager == null)
-		{
-			Debug.Log("î");
-		}
 		if (GemRecipes != null)
 		{
 			GemRecipe t_GemRecipe = FindItemData(GameManager.Instance.ItemManager.GetGemRecipe(), p_Input);
@@ -67,6 +63,7 @@ public class MixingBowl : MonoBehaviour
 			}
 		}
 
+		/*
 		//int count = 0;
 		//for (int i = 0; i < m_Ingredients.Count; i = i + 1)
 		//{
@@ -82,6 +79,7 @@ public class MixingBowl : MonoBehaviour
 		//{
 		//	m_Ingredients.Add(new Ingredient(p_Input, p_Progress));
 		//}
+		*/
 
 		RefreshGraph();
 	}
@@ -92,6 +90,7 @@ public class MixingBowl : MonoBehaviour
 		{
 			m_MagicCircleGraph[i].transform.localScale = new Vector3(1.0f, m_Elements[i], 1.0f);
 		}
+		/*
 		//m_MagicCircleGraph[1].transform.localScale = new Vector3(1.0f, m_Elements[1], 1.0f);
 		//m_MagicCircleGraph[2].transform.localScale = new Vector3(1.0f, m_Elements[2], 1.0f);
 		//m_MagicCircleGraph[3].transform.localScale = new Vector3(1.0f, m_Elements[3], 1.0f);
@@ -111,6 +110,7 @@ public class MixingBowl : MonoBehaviour
 		//		m_MagicCircleGraph[t_GemRecipe.material3 - 1].transform.localScale = new Vector3(1.0f, t_GemRecipe.materialPercent3 * m_Ingredients[i].m_Progress, 1.0f);
 		//	}
 		//}
+		*/
 	}
 
 	public GemRecipe FindItemData(List<GemRecipe> p_GemRecipes, string p_ItemCode)

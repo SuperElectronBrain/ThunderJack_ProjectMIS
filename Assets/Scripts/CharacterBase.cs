@@ -20,6 +20,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected GameObject m_SD;
     protected Animator m_Animator;
 	[HideInInspector] public CameraPresetAreaComponent m_CPAComponent;
+	[HideInInspector] public Inventory m_Inventory;
 
 	// Start is called before the first frame update
 	protected virtual void Start()
@@ -32,6 +33,7 @@ public class CharacterBase : MonoBehaviour
 		m_Rigidbody = gameObject.GetComponent<Rigidbody>();
 		//if (m_Rigidbody == null) { m_Rigidbody = gameObject.AddComponent<Rigidbody>(); }
 		m_Animator = gameObject.GetComponent<Animator>();
+		m_Inventory = gameObject.GetComponent<Inventory>();
 	}
 
     // Update is called once per frame
