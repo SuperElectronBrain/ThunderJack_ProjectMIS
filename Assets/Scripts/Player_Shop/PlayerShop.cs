@@ -104,7 +104,7 @@ public class PlayerShop : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.N))
         {
             //itemImage.enabled = true;
-            //itemImage.sprite = AddressableManager.LoadObject<Sprite>("Aa");
+            itemImage.sprite = AddressableManager.LoadObject<Sprite>("Aa");
             guestQueue.GetGuest().CheckItem(itemCode);
         }
         else
