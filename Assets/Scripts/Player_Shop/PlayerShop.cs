@@ -87,8 +87,8 @@ public class PlayerShop : MonoBehaviour
 
         EventManager.Subscribe(EventType.Minute, GuestCheck);
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
-        //EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
-        EventManager.Subscribe(EventType.SalesFailure, LeavingGuest);
+        EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
+        //EventManager.Subscribe(EventType.SalesFailure, LeavingGuest);
     }
 
     // Update is called once per frame

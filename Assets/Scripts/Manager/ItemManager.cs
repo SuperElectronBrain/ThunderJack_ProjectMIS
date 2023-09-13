@@ -140,6 +140,7 @@ public class ItemManager : MonoBehaviour
                 new GemRecipe
                 {
                     //itemNameEg = recipe[]
+                    itemID = Tools.IntParse(recipe["Item_ID"]),
                     itemNameKo = recipe["Item_Name_Ko"].ToString(),
                     material1 = Tools.IntParse(recipe["Make_Material_1"]),
                     material2 = Tools.IntParse(recipe["Make_Material_2"]),
@@ -305,6 +306,7 @@ public class MaterialItemData : BasicItemData
 [System.Serializable]
 public class GemRecipe
 {
+    public int itemID;
     public string itemNameKo;
     public string itemNameEg;
     public int material1;
