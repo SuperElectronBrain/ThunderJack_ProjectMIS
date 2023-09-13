@@ -32,8 +32,7 @@ public class CircularGuestQueue
         }
         guestQueue[maxGuestCount - 2] = temp;
 
-        guestCount--;
-        //guestQueue[guestCount--].ExitShop();
+        guestQueue[guestCount--].ExitShop();
         if (guestCount != 0)
             GetGuest().FirstGuest();
     }
@@ -88,6 +87,7 @@ public class PlayerShop : MonoBehaviour
         EventManager.Subscribe(EventType.Minute, GuestCheck);
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
         EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
+        EventManager.Subscribe(EventType.SalesFailure, LeavingGuest);
     }
 
     // Update is called once per frame
@@ -104,7 +104,7 @@ public class PlayerShop : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.N))
         {
             //itemImage.enabled = true;
-            itemImage.sprite = AddressableManager.LoadObject<Sprite>("Aa");
+            itemImage.sprite = GameManager.Instance.ItemManager.GetItemSprite(itemCode);
             guestQueue.GetGuest().CheckItem(itemCode);
         }
         else
