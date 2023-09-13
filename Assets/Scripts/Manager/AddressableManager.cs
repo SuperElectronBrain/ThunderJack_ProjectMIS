@@ -34,18 +34,35 @@ public class AddressableManager : MonoBehaviour
                 //assetReference.InstantiateAsync(canvas.transform);
             }
         };*/
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        Addressables.InitializeAsync().WaitForCompletion();
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
-/*        if(Input.GetKeyDown(KeyCode.Alpha1))
+*//*        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             var index = gameObjects.Count - 1;
 Addressables.LoadAssetAsync<T>(loadObjectName)
             Addressables.ReleaseInstance(gameObjects[index]);
             gameObjects.RemoveAt(index);
-        }*/
+        }*//*
+    }*/
+
+    static bool AddressableNullCheck<T>(string key)
+    {
+        foreach (var l in Addressables.ResourceLocators)
+        {
+            IList<IResourceLocation> locs;
+            if (l.Locate(key, typeof(T), out locs))
+                return true;
+        }
+        return false;
     }
 
     public static T LoadObject<T>(string loadObjectName)
@@ -54,18 +71,14 @@ Addressables.LoadAssetAsync<T>(loadObjectName)
 
         if (typeof(T) == typeof(Sprite))
         {
-
-            var a = Addressables.LoadAssetAsync<T>(loadObjectName);
-
-            a.WaitForCompletion();
-
-            if (a.Status == AsyncOperationStatus.Succeeded)
+            if (!AddressableNullCheck<T>(loadObjectName))
             {
-
+                Debug.Log("실패");
+                loadObjectName = "Icon";
             }
             else
             {
-                loadObjectName = "Icon";
+                Debug.Log("성공");
             }
 
 

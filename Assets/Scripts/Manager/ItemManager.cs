@@ -31,11 +31,6 @@ public class ItemManager : MonoBehaviour
         LoadMaterialElement();
         LoadGemRecipe();
         LoadShopItemData();
-
-        foreach(var item in basicItemData)
-        {
-            Instantiate(image, g.transform).GetComponent<Image>().sprite = item.itemResourceImage;
-        }
     }
 
     //Load Material Element
@@ -67,9 +62,6 @@ public class ItemManager : MonoBehaviour
         }
     }
     #endregion
-
-    public GameObject g;
-    public GameObject image;
 
     //Load Item
     #region
