@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_TJ_TreeTest 1
-  m_Shader: {fileID: -6465566751694194690, guid: af13ace36d062b246b04d24b7d21d303, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 360f66e3a3e586f4e9c31352fb71dd71, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -42,6 +42,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Basemap:
+        m_Texture: {fileID: 2800000, guid: 57b510b335e534342b4038107039a96b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -69,6 +73,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normalmap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -112,6 +120,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _Darkness: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -119,6 +128,10 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Line_Contrast: 1
+    - _Line_Size01: 0.1
+    - _Line_Size02: 1
+    - _Line_Speed: 0.2
     - _Metallic: 0
     - _NormalSize: 0.608
     - _OcclusionStrength: 1
@@ -146,12 +159,16 @@ Material:
     - _WindNoiseSize: 0.0174
     - _WindNoiseStrength: 0.0205
     - _WindSpeed: 0.68
+    - _Wind_Position: 0.68
+    - _Wind_Power: 0.5
+    - _Wind_Range: 10
+    - _Wind_Speed: 0.4
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.97287345, g: 0.6745283, b: 1, a: 1}
     - _BigWindDirection: {r: 0.17, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.85225224, g: 0.06132078, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0, g: 0.44150934, b: 0.735849, a: 1}
     - _Shadow02Color: {r: 0.621173, g: 0.84228647, b: 0.9339623, a: 1}
