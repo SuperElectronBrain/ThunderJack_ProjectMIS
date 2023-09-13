@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEditor;
 
 public enum ItemType
 {
@@ -74,6 +76,7 @@ public class ItemManager : MonoBehaviour
         {
             int itemType = Tools.IntParse(ir["Item_Type"]);
             Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
+            Debug.Log(ir["Item_Icon_Name"].ToString());
 
             switch (itemType)
             {
@@ -137,6 +140,7 @@ public class ItemManager : MonoBehaviour
                 new GemRecipe
                 {
                     //itemNameEg = recipe[]
+                    itemID = Tools.IntParse(recipe["Item_ID"]),
                     itemNameKo = recipe["Item_Name_Ko"].ToString(),
                     material1 = Tools.IntParse(recipe["Make_Material_1"]),
                     material2 = Tools.IntParse(recipe["Make_Material_2"]),
@@ -200,6 +204,17 @@ public class ItemManager : MonoBehaviour
         return -1;
     }
 
+    public int GetItemIdByName(string itemName)
+    {
+        foreach(var item in basicItemData)
+        {
+            if (item.itemNameKo == itemName)
+                return item.itemID;
+        }
+
+        return -1;
+    }
+
     public string GetItemName(int itemID)
     {
         return basicItemData[itemID - 1].itemNameKo;
@@ -236,6 +251,11 @@ public class ItemManager : MonoBehaviour
             requestStuff1 = 0,
             requestStuff2 = 0
         };
+    }
+
+    public MaterialItemData GetMaterialItem(int itemID)
+    {
+        return (MaterialItemData)basicItemData[itemID - 1];
     }
 
     /*public int GetJewelryItemIdByComb()
@@ -297,6 +317,7 @@ public class MaterialItemData : BasicItemData
 [System.Serializable]
 public class GemRecipe
 {
+    public int itemID;
     public string itemNameKo;
     public string itemNameEg;
     public int material1;

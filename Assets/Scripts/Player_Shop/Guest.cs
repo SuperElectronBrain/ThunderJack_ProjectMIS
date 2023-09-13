@@ -18,6 +18,10 @@ public class Guest : MonoBehaviour
     float craftWaitingDuration;
     IEnumerator curWait;
 
+    bool isAccept;
+    bool isFail;
+    bool isDone;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +33,9 @@ public class Guest : MonoBehaviour
     {
         guestData = guest;
         this.request = request;
+        isAccept = false;
+        isFail = false;
+        isDone = false;
         /*skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(guest.guestNameEg);
         mr.material = AddressableManager.LoadObject<Material>(guest.guestNameEg);*/
     }
@@ -41,7 +48,8 @@ public class Guest : MonoBehaviour
 
     void WaitingForCraft()
     {
-        StartCoroutine(Waiting(craftWaitingDuration));
+        curWait = Waiting(craftWaitingDuration);
+        StartCoroutine(curWait);
     }
 
     IEnumerator Waiting(float watingDuration)
@@ -52,10 +60,10 @@ public class Guest : MonoBehaviour
 
     public void AcceptSales()
     {
-        
+        isAccept = true;
         skAni.AnimationName = "LAUGH";
         AnimationCheck();
-        //WaitingForCraft();
+        WaitingForCraft();
     }
 
     public void RefusalSales()
@@ -69,14 +77,24 @@ public class Guest : MonoBehaviour
         StopCoroutine(curWait);
         skAni.loop = false;
         skAni.AnimationState.Complete += AnimationEnd;
-        skAni.loop = true;
     }
 
     void AnimationEnd(Spine.TrackEntry te)
     {
-        ExitShop();
+        //ExitShop();        
         skAni.AnimationName = "IDLE";
         skAni.loop = true;
+        if (!isAccept || isFail)
+        {
+            EventManager.Publish(EventType.SalesFailure);
+            EventManager.Publish(EventType.GuestExit);
+        }            
+        if (isDone)
+        {
+            EventManager.Publish(EventType.SalesSuccess);
+            EventManager.Publish(EventType.GuestExit);
+        }
+        skAni.AnimationState.Complete -= AnimationEnd;
     }
 
     public void CheckItem(int requestItemID)
@@ -86,10 +104,16 @@ public class Guest : MonoBehaviour
 
         if (requestItem.requestStuff1 == request.requestStuff1 && requestItem.requestStuff2 == request.requestStuff2)
         {
-            Debug.Log("¿œƒ°");
+            isDone = true;
+            skAni.AnimationName = "LAUGH";
+            AnimationCheck();                        
         }
         else
-            Debug.Log("∫“¿œƒ°");
+        {
+            isFail = true;
+            skAni.AnimationName = "ANGRY";
+            AnimationCheck();
+        }            
     }
 
     public void FirstGuest()
@@ -116,10 +140,8 @@ public class Guest : MonoBehaviour
 
     public void ExitShop()
     {
-        skAni.AnimationState.Complete -= AnimationEnd;
         Debug.Log(gameObject.name + " º’¥‘≈¿Â");
-        StopCoroutine(curWait);
+        StopAllCoroutines();
         mr.enabled = false;        
-        EventManager.Publish(EventType.GuestExit);
     }
 }
