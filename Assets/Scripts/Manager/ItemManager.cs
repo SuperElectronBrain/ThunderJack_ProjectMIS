@@ -204,6 +204,17 @@ public class ItemManager : MonoBehaviour
         return -1;
     }
 
+    public int GetItemIdByName(string itemName)
+    {
+        foreach(var item in basicItemData)
+        {
+            if (item.itemNameKo == itemName)
+                return item.itemID;
+        }
+
+        return -1;
+    }
+
     public string GetItemName(int itemID)
     {
         return basicItemData[itemID - 1].itemNameKo;
