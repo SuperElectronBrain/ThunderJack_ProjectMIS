@@ -37,7 +37,7 @@ public enum ItemCode
 [Serializable]
 public struct AdvencedItem
 {
-	[SerializeField] public string itemCode;
+	[SerializeField] public int itemCode;
 	[SerializeField] public float itemProgress;
 	[SerializeField] public int itemAmount;
 	[SerializeField] public int selectCount;
@@ -49,7 +49,7 @@ public struct AdvencedItem
 		itemAmount = p_AdvencedItem.itemAmount;
 		selectCount = p_AdvencedItem.selectCount;
 	}
-	public AdvencedItem(string p_ItemCode = "", float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
+	public AdvencedItem(int p_ItemCode = 0, float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
 	{
 		itemCode = p_ItemCode;
 		itemProgress = p_ItemProgress;
@@ -414,7 +414,7 @@ public class Inventory : MonoBehaviour
 
 		RefreshInventory();
 	}
-	public void AddAItem(string p_ItemCode = "", float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
+	public void AddAItem(int p_ItemCode = 0, float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
 	{ AddAItem(new AdvencedItem(p_ItemCode, p_ItemProgress, p_ItemAmount, p_SelectCount)); }
 
 	public AdvencedItem PopAItem(AdvencedItem p_AItem)
@@ -450,7 +450,7 @@ public class Inventory : MonoBehaviour
 		RefreshInventory();
 		return t_AItem;
 	}
-	public AdvencedItem PopAItem(string p_ItemCode = "", float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
+	public AdvencedItem PopAItem(int p_ItemCode = 0, float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
 	{ return PopAItem(new AdvencedItem(p_ItemCode, p_ItemProgress, p_ItemAmount, p_SelectCount)); }
 
 	public List<AdvencedItem> GetAItems() { return new List<AdvencedItem>(m_AItems); }
@@ -471,7 +471,7 @@ public class Inventory : MonoBehaviour
 		}
 		return t_Bool;
 	}
-	public bool FindAItem(string p_ItemCode = "", float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
+	public bool FindAItem(int p_ItemCode = 0, float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
 	{ return FindAItem(new AdvencedItem(p_ItemCode, p_ItemProgress, p_ItemAmount, p_SelectCount)); }
 
 	public void SelectionReset()

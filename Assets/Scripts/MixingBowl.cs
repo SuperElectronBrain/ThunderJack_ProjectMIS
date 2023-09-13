@@ -1,3 +1,4 @@
+using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,14 +16,18 @@ public class MixingBowl : MonoBehaviour
 	public float m_MaxDistance = 3.0f;
 	public List<Ingredient> m_Ingredients = new List<Ingredient>();
 	public float[] m_Elements = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+	[HideInInspector] public bool m_IsMouseGrab = false;
+	[HideInInspector] public bool m_IsMouseGrabable = false;
+	private Vector3 m_OriginPosition;
 
+	[SerializeField] private Furnace m_Furnace;
 	[SerializeField] private TMPro.TextMeshPro m_ProgressText;
 	[SerializeField] private List<GameObject> m_MagicCircleGraph;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		
+		m_OriginPosition = transform.position;
 	}
 
 	// Update is called once per frame
@@ -30,36 +35,71 @@ public class MixingBowl : MonoBehaviour
 	{
 		float DeltaTime = Time.deltaTime;
 
-		if (m_ProgressText != null)
+		if (Input.GetMouseButtonUp(0) == true)
 		{
-			string t_String = "";
-			for(int i = 0; i < m_Ingredients.Count; i = i + 1)
+			if(m_Furnace != null)
 			{
-				if (m_Ingredients[i].m_Input != "")
-				{
-					t_String = t_String + m_Ingredients[i].m_Input + " " + (int)(m_Ingredients[i].m_Progress * 100.0f) + "\n";
-				}
+				for (int i = 0; i < m_Furnace.m_Elements.Length; i = i + 1) { m_Furnace.m_Elements[i] = m_Elements[i]; }
+				//m_Furnace.m_Elements = m_Elements;
+				//Debug.Log(m_Furnace.m_Elements[0] + ", " + m_Furnace.m_Elements[1] + ", " + m_Furnace.m_Elements[2] + ", " + m_Furnace.m_Elements[3] + ", " + m_Furnace.m_Elements[4] + ", " + m_Furnace.m_Elements[5]);
+				for (int i = 0; i < m_Elements.Length; i = i + 1) { m_Elements[i] = 0.0f; }
+				m_Furnace.m_bProgress = true;
+				m_IsMouseGrabable = false;
+				RefreshGraph();
 			}
 
-			m_ProgressText.text = t_String;
+			transform.position = m_OriginPosition;
+			m_IsMouseGrab = false;
 		}
+		if (m_IsMouseGrab == true)
+		{
+			Vector3 t_MousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z - Camera.main.transform.position.z));
+			transform.position = new Vector3(t_MousePosition.x, t_MousePosition.y, Camera.main.orthographic ? transform.position.z : t_MousePosition.z);
+		}
+
+		/*
+		//if (m_ProgressText != null)
+		//{
+		//	string t_String = "";
+		//	for(int i = 0; i < m_Ingredients.Count; i = i + 1)
+		//	{
+		//		if (m_Ingredients[i].m_Input != "")
+		//		{
+		//			t_String = t_String + m_Ingredients[i].m_Input + " " + (int)(m_Ingredients[i].m_Progress * 100.0f) + "\n";
+		//		}
+		//	}
+		//
+		//	m_ProgressText.text = t_String;
+		//}
+		*/
 	}
 
-	public void AddIngredient(string p_Input, float p_Progress)
+	public void AddIngredient(int p_Input, float p_Progress)
 	{
-		List<GemRecipe> GemRecipes = null;
-		if (GameManager.Instance.ItemManager != null)
+		/*
+		//List<GemRecipe> t_GemRecipes = null;
+		//if (GameManager.Instance.ItemManager != null)
+		//{
+		//	t_GemRecipes = GameManager.Instance.ItemManager.GetGemRecipe();
+		//}
+		*/
+
+		MaterialItemData t_MaterialItemData = GameManager.Instance.ItemManager.GetMaterialItem(p_Input);
+		if (t_MaterialItemData != null)
 		{
-			GemRecipes = GameManager.Instance.ItemManager.GetGemRecipe();
-		}
-		if (GemRecipes != null)
-		{
-			GemRecipe t_GemRecipe = FindItemData(GameManager.Instance.ItemManager.GetGemRecipe(), p_Input);
-			if (t_GemRecipe != null)
+			/*
+			//GemRecipe t_GemRecipe = FindItemData(GameManager.Instance.ItemManager.GetGemRecipe(), p_Input);
+
+			//Debug.Log("(" + t_GemRecipe.itemNameEg + ", " + t_GemRecipe.itemNameKo + ", " + t_GemRecipe.material1 + ", " + t_GemRecipe.material2 + ", " + t_GemRecipe.material3 + ")");
+			//Debug.Log("(" + t_MaterialItemData.itemNameEg + ", " + t_MaterialItemData.itemNameKo + ", " + t_MaterialItemData.elementType1 + ", " + t_MaterialItemData.elementType2 + ", " + t_MaterialItemData.elementType3 + ")");
+			*/
+
+			if (t_MaterialItemData != null)
 			{
-				m_Elements[t_GemRecipe.material1 - 1] = m_Elements[t_GemRecipe.material1 - 1] + (t_GemRecipe.materialPercent1 * p_Progress);
-				m_Elements[t_GemRecipe.material2 - 1] = m_Elements[t_GemRecipe.material2 - 1] + (t_GemRecipe.materialPercent2 * p_Progress);
-				m_Elements[t_GemRecipe.material3 - 1] = m_Elements[t_GemRecipe.material3 - 1] + (t_GemRecipe.materialPercent3 * p_Progress);
+				if (m_IsMouseGrabable == false) { m_IsMouseGrabable = true; }
+				m_Elements[t_MaterialItemData.elementType1 - 1] = m_Elements[t_MaterialItemData.elementType1 - 1] + (t_MaterialItemData.elementPercent1 * 0.01f * p_Progress);
+				m_Elements[t_MaterialItemData.elementType2 - 1] = m_Elements[t_MaterialItemData.elementType2 - 1] + (t_MaterialItemData.elementPercent2 * 0.01f * p_Progress);
+				m_Elements[t_MaterialItemData.elementType3 - 1] = m_Elements[t_MaterialItemData.elementType3 - 1] + (t_MaterialItemData.elementPercent3 * 0.01f * p_Progress);
 			}
 		}
 
@@ -113,30 +153,45 @@ public class MixingBowl : MonoBehaviour
 		*/
 	}
 
-	public GemRecipe FindItemData(List<GemRecipe> p_GemRecipes, string p_ItemCode)
+	private void OnTriggerEnter(Collider other)
 	{
-		GemRecipe t_GemRecipes = null;
-		for (int i = 0; i < p_GemRecipes.Count; i = i + 1)
+		Furnace t_Furnace = other.GetComponent<Furnace>();
+		if (t_Furnace != null)
 		{
-			if (p_GemRecipes[i].itemNameEg == p_ItemCode)
-			{
-				t_GemRecipes = p_GemRecipes[i];
-			}
+			m_Furnace = t_Furnace;
 		}
-
-		return t_GemRecipes;
 	}
-	public int FindItemDataIndex(List<GemRecipe> p_GemRecipes, string p_ItemCode)
+
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		int t_Index = -1;
-		for (int i = 0; i < p_GemRecipes.Count; i = i + 1)
+		Furnace t_Furnace = collision.GetComponent<Furnace>();
+		if (t_Furnace != null)
 		{
-			if (p_GemRecipes[i].itemNameEg == p_ItemCode)
+			m_Furnace = t_Furnace;
+		}
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		Furnace t_Furnace = other.GetComponent<Furnace>();
+		if (t_Furnace != null)
+		{
+			if (m_Furnace == t_Furnace)
 			{
-				t_Index = i;
+				m_Furnace = null;
 			}
 		}
+	}
 
-		return t_Index;
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		Furnace t_Furnace = collision.GetComponent<Furnace>();
+		if (t_Furnace != null)
+		{
+			if (m_Furnace == t_Furnace)
+			{
+				m_Furnace = null;
+			}
+		}
 	}
 }
