@@ -32,7 +32,8 @@ public class CircularGuestQueue
         }
         guestQueue[maxGuestCount - 2] = temp;
 
-        guestQueue[guestCount--].ExitShop();
+        guestQueue[guestCount - 1].ExitShop();
+        guestCount--;
         if (guestCount != 0)
             GetGuest().FirstGuest();
     }
@@ -86,7 +87,7 @@ public class PlayerShop : MonoBehaviour
 
         EventManager.Subscribe(EventType.Minute, GuestCheck);
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
-        EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
+        //EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
         EventManager.Subscribe(EventType.SalesFailure, LeavingGuest);
     }
 
