@@ -74,7 +74,17 @@ public class PlayerShop : MonoBehaviour
     int[] weightValue = new int[10];
     [SerializeField]
     int idx = 0;
-    
+
+    [SerializeField]
+    Text compItem;
+    [SerializeField]
+    InputField gemField;
+    [SerializeField]
+    InputField accessoryField;
+    [SerializeField]
+    Button button;
+    [SerializeField]
+    Button button2;
 
     // Start is called before the first frame update
     void Start()
@@ -94,24 +104,7 @@ public class PlayerShop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            EntryGuset();
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            guestQueue.ExitGuest();
-        }
-        if(Input.GetKeyDown(KeyCode.N))
-        {
-            //itemImage.enabled = true;
-            itemImage.sprite = GameManager.Instance.ItemManager.GetItemSprite(itemCode);
-            guestQueue.GetGuest().CheckItem(itemCode);
-        }
-        else
-        {
-            //itemImage.enabled = false;
-        }
+
     }
 
     public SpriteRenderer itemImage;
@@ -147,6 +140,20 @@ public class PlayerShop : MonoBehaviour
         {
             entryWeight = weightValue[++idx];
         }
+    }
+
+    public void HandOverItem()
+    {
+        guestQueue.GetGuest().CheckItem(itemCode);
+    }
+
+    public void MakeItem()
+    {
+        int gemId = GameManager.Instance.ItemManager.GetItemIdByName(gemField.text);
+        int accessoryId = GameManager.Instance.ItemManager.GetItemIdByName(accessoryField.text);
+
+        itemCode = GameManager.Instance.ItemManager.GetCombinationItem(gemId, accessoryId);
+        compItem.text = GameManager.Instance.ItemManager.GetItemName(itemCode);
     }
 
     public void LeavingGuest()

@@ -93,7 +93,8 @@ public class Guest : MonoBehaviour
         {
             EventManager.Publish(EventType.SalesSuccess);
             EventManager.Publish(EventType.GuestExit);
-        }            
+        }
+        skAni.AnimationState.Complete -= AnimationEnd;
     }
 
     public void CheckItem(int requestItemID)
@@ -139,7 +140,6 @@ public class Guest : MonoBehaviour
 
     public void ExitShop()
     {
-        skAni.AnimationState.Complete -= AnimationEnd;
         Debug.Log(gameObject.name + " º’¥‘≈¿Â");
         StopAllCoroutines();
         mr.enabled = false;        
