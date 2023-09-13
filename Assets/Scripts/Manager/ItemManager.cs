@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ItemType
 {
@@ -29,6 +30,11 @@ public class ItemManager : MonoBehaviour
         LoadMaterialElement();
         LoadGemRecipe();
         LoadShopItemData();
+
+        foreach(var item in basicItemData)
+        {
+            Instantiate(image, g.transform).GetComponent<Image>().sprite = item.itemResourceImage;
+        }
     }
 
     //Load Material Element
@@ -61,6 +67,9 @@ public class ItemManager : MonoBehaviour
     }
     #endregion
 
+    public GameObject g;
+    public GameObject image;
+
     //Load Item
     #region
     void LoadItemData()
@@ -74,6 +83,7 @@ public class ItemManager : MonoBehaviour
         {
             int itemType = Tools.IntParse(ir["Item_Type"]);
             Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
+            Debug.Log(ir["Item_Icon_Name"].ToString());
 
             switch (itemType)
             {
@@ -236,6 +246,11 @@ public class ItemManager : MonoBehaviour
             requestStuff1 = 0,
             requestStuff2 = 0
         };
+    }
+
+    public MaterialItemData GetMaterialItem(int itemID)
+    {
+        return (MaterialItemData)basicItemData[itemID - 1];
     }
 
     /*public int GetJewelryItemIdByComb()

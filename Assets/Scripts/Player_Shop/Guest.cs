@@ -51,8 +51,7 @@ public class Guest : MonoBehaviour
     }
 
     public void AcceptSales()
-    {
-        
+    {        
         skAni.AnimationName = "LAUGH";
         AnimationCheck();
         //WaitingForCraft();
@@ -74,7 +73,8 @@ public class Guest : MonoBehaviour
 
     void AnimationEnd(Spine.TrackEntry te)
     {
-        ExitShop();
+        //ExitShop();
+        EventManager.Publish(EventType.SalesFailure);
         skAni.AnimationName = "IDLE";
         skAni.loop = true;
     }
@@ -86,7 +86,9 @@ public class Guest : MonoBehaviour
 
         if (requestItem.requestStuff1 == request.requestStuff1 && requestItem.requestStuff2 == request.requestStuff2)
         {
-            Debug.Log("일치");
+            EventManager.Publish(EventType.SalesSuccess);
+            skAni.AnimationName = "LAUGH";
+            AnimationCheck();
         }
         else
             Debug.Log("불일치");
