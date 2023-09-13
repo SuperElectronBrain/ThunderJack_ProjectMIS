@@ -15,6 +15,7 @@ public class LocationManager : MonoBehaviour
     [SerializeField]
     List<LocationData> targetLocationList;
     Dictionary<string, LocationData> locationData;
+    Dictionary<string, LocationData> targetLocationData;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class LocationManager : MonoBehaviour
         locationData = new Dictionary<string, LocationData>();
         locationList = new();
         targetLocationList = new();
+        targetLocationData = new();
 
         foreach (var location in GameObject.FindGameObjectsWithTag("Land"))
         {
@@ -30,21 +32,30 @@ public class LocationManager : MonoBehaviour
         foreach (var location in GameObject.FindGameObjectsWithTag("TargetLocation"))
         {
             targetLocationList.Add(location.GetComponent<LocationData>());
+            
         }
 
         foreach (var location in locationList)
         {
             locationData.Add(location.name, location);
         }
+        foreach (var location in targetLocationList)
+        {
+            targetLocationData.Add(location.name, location);
+        }
     }
 
-    public Vector3 GetLocationPosition(int locationName)
+    public Vector3 GetLocationPosition(string locationName)
     {
         //Debug.Log(((LocationName)locationName).ToString() + " : " + locationData[((LocationName)locationName).ToString()].locationTransform);
-        //return locationData[((LocationName)locationName).ToString()].locationTransform;
-        //Debug.Log(locationList[locationName].gameObject.name + " " + locationList[locationName].locationTransform);
+        //return locationData[((LocationName)locationName).ToString()].locationTransform;s
         //gameObject.name = locationList[locationName].locationName;
-        return locationList[locationName].locationTransform;
+        return locationData[locationName].locationTransform;
+    }
+
+    public Vector3 GetTargetPostion(string locationName)
+    {
+        return targetLocationData[locationName].locationTransform;
     }
 
     public static Vector3 GetLocationRandomPosition(Vector3 locationPos)
