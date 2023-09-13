@@ -54,7 +54,7 @@ public class Guest : MonoBehaviour
     {        
         skAni.AnimationName = "LAUGH";
         AnimationCheck();
-        //WaitingForCraft();
+        WaitingForCraft();
     }
 
     public void RefusalSales()
@@ -68,15 +68,14 @@ public class Guest : MonoBehaviour
         StopCoroutine(curWait);
         skAni.loop = false;
         skAni.AnimationState.Complete += AnimationEnd;
-        skAni.loop = true;
     }
 
     void AnimationEnd(Spine.TrackEntry te)
     {
-        //ExitShop();
-        EventManager.Publish(EventType.SalesFailure);
+        //ExitShop();        
         skAni.AnimationName = "IDLE";
         skAni.loop = true;
+        EventManager.Publish(EventType.SalesFailure);
     }
 
     public void CheckItem(int requestItemID)
@@ -120,8 +119,8 @@ public class Guest : MonoBehaviour
     {
         skAni.AnimationState.Complete -= AnimationEnd;
         Debug.Log(gameObject.name + " º’¥‘≈¿Â");
-        StopCoroutine(curWait);
+        StopAllCoroutines();
         mr.enabled = false;        
-        EventManager.Publish(EventType.GuestExit);
+        //EventManager.Publish(EventType.GuestExit);
     }
 }

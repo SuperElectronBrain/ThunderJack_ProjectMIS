@@ -16,7 +16,7 @@ public class NPC_Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+/*        if(Input.GetMouseButtonDown(0))
         {
             Vector3 destinationPos = transform.position + Random.insideUnitSphere * 10;
 
@@ -26,7 +26,7 @@ public class NPC_Move : MonoBehaviour
             {
                 agent.SetDestination(destinationPos);
             }
-        }
+        }*/
     }
 
     public void SetDestination(Vector3 destinationPos)
