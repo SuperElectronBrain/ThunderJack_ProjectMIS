@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -33,7 +34,7 @@ public enum ItemCode
 	Honor,
 }
 
-
+[Serializable]
 public struct AdvencedItem
 {
 	[SerializeField] public string itemCode;
@@ -120,7 +121,7 @@ public class Inventory : MonoBehaviour
 {
 	private List<Item> m_Items = new List<Item>();
 	private List<SelectedItem> m_SelectedItems = new List<SelectedItem>();
-	private List<AdvencedItem> m_AItems = new List<AdvencedItem>();
+	[SerializeField]private List<AdvencedItem> m_AItems = new List<AdvencedItem>();
 	public AdvencedItem this[int index] { get { return m_AItems[index]; } set { m_AItems[index] = value; } }
 	[SerializeField] private GameObject inventoryPanelPrefab;
 	[SerializeField] private GameObject inventoryPanel;
@@ -131,6 +132,9 @@ public class Inventory : MonoBehaviour
 
 	[SerializeField] private InventoryInitializeData initializeData;
 	[HideInInspector] public UnityEvent itemSelectEvent = new UnityEvent();
+	[SerializeField] private GameObject m_InventoryUIPrefab;
+	[SerializeField] private InventoryUIScript m_InventoryUIScript;
+	public CharacterBase m_Owner;
 
 	// Start is called before the first frame update
 	void Start()
@@ -140,9 +144,34 @@ public class Inventory : MonoBehaviour
 			m_Items = new List<Item>(initializeData.Items);
 		}
 
+		m_Owner = gameObject.GetComponent<CharacterBase>();
+		if(m_Owner != null)
+		{
+			if(m_Owner.m_Inventory == null)
+			{
+				m_Owner.m_Inventory = this;
+			}
+		}
+
 		Canvas canvas = FindObjectOfType<Canvas>();
 		if (canvas != null)
 		{
+			if(m_InventoryUIPrefab != null)
+			{
+				if (m_InventoryUIScript == null)
+				{
+					m_InventoryUIScript = Instantiate(m_InventoryUIPrefab, canvas.transform).GetComponent<InventoryUIScript>();
+				}
+			}
+
+			if(m_InventoryUIScript != null)
+			{
+				m_InventoryUIScript.m_Inventory = this;
+				m_InventoryUIScript.ReFindButton();
+				m_InventoryUIScript.ReGenerateButton();
+				m_InventoryUIScript.ResetButtonAction();
+			}
+
 			if (inventoryPanelPrefab != null)
 			{
 				if(inventoryPanel == null)
@@ -283,7 +312,12 @@ public class Inventory : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			DisplayItems(!inventoryPanel.activeSelf);
+			m_InventoryUIScript.gameObject.SetActive(!m_InventoryUIScript.gameObject.activeSelf);
+
+			if(inventoryPanel != null)
+			{
+				DisplayItems(!inventoryPanel.activeSelf);
+			}
 		}
 	}
 
@@ -324,6 +358,7 @@ public class Inventory : MonoBehaviour
 				if(temp.itemAmount <= p_ItemAmount)
 				{
 					m_Items.RemoveAt(i);
+					m_Items.TrimExcess();
 					return new Item(p_ItemCode, temp.itemAmount);
 				}
 				else if(temp.itemAmount > p_ItemAmount)
@@ -394,6 +429,7 @@ public class Inventory : MonoBehaviour
 				{
 					t_AItem = new AdvencedItem(p_AItem.itemCode, p_AItem.itemProgress, m_AItems[i].itemAmount, m_AItems[i].selectCount);
 					m_AItems.RemoveAt(i);
+					m_AItems.TrimExcess();
 				}
 				else if (m_AItems[i].itemAmount > p_AItem.itemAmount)
 				{
@@ -411,6 +447,7 @@ public class Inventory : MonoBehaviour
 			}
 		}
 
+		RefreshInventory();
 		return t_AItem;
 	}
 	public AdvencedItem PopAItem(string p_ItemCode = "", float p_ItemProgress = 1.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
@@ -444,10 +481,11 @@ public class Inventory : MonoBehaviour
 			m_SelectedItems[i] = new SelectedItem(m_SelectedItems[i].itemCode, 0);
 		}
 
-		for (int i = 0; i < m_SelectedItems.Count; i = i + 1)
+		for (int i = 0; i < m_AItems.Count; i = i + 1)
 		{
 			m_AItems[i] = new AdvencedItem(m_AItems[i].itemCode, m_AItems[i].itemProgress, m_AItems[i].itemAmount, 0);
 		}
+		RefreshInventory();
 	}
 
 	public List<SelectedItem> GetSelectedItems()
@@ -480,57 +518,68 @@ public class Inventory : MonoBehaviour
 
 	public void RefreshInventory()
 	{
-		int count = 0;
-		if (m_Items.Count <= itemPanel.transform.childCount)
+		if (m_InventoryUIScript != null)
 		{
-			count = m_Items.Count;
-		}
-		else if (m_Items.Count > itemPanel.transform.childCount)
-		{
-			count = itemPanel.transform.childCount;
+			m_InventoryUIScript.m_Inventory = this;
+			m_InventoryUIScript.ReFindButton();
+			m_InventoryUIScript.ReGenerateButton();
+			m_InventoryUIScript.ResetButtonAction();
 		}
 
-		for (int i = 0; i < itemPanel.transform.childCount; i = i + 1)
+		if(itemPanel != null)
 		{
-			Button button = itemPanel.transform.GetChild(i).GetComponent<Button>();
-			Image image = itemPanel.transform.GetChild(i).GetComponent<Image>();
-			Image selectionCounter = null;
-			TextMeshProUGUI text = null;
-			if (button != null)
+			int count = 0;
+			if (m_Items.Count <= itemPanel.transform.childCount)
 			{
-				for (int j = 0; j < button.transform.childCount; j = j + 1)
-				{
-					text = button.transform.GetChild(j).GetComponent<TextMeshProUGUI>();
-					if (text != null) { break; }
-				}
-				for (int j = 0; j < button.transform.childCount; j = j + 1)
-				{
-					selectionCounter = button.transform.GetChild(j).GetComponent<Image>();
-					if (selectionCounter != null) { selectionCounter.gameObject.SetActive(false); break; }
-				}
+				count = m_Items.Count;
+			}
+			else if (m_Items.Count > itemPanel.transform.childCount)
+			{
+				count = itemPanel.transform.childCount;
 			}
 
-			if (image != null)
+			for (int i = 0; i < itemPanel.transform.childCount; i = i + 1)
 			{
-				if (i < count)
+				Button button = itemPanel.transform.GetChild(i).GetComponent<Button>();
+				Image image = itemPanel.transform.GetChild(i).GetComponent<Image>();
+				Image selectionCounter = null;
+				TextMeshProUGUI text = null;
+				if (button != null)
 				{
-					image.enabled = true;
+					for (int j = 0; j < button.transform.childCount; j = j + 1)
+					{
+						text = button.transform.GetChild(j).GetComponent<TextMeshProUGUI>();
+						if (text != null) { break; }
+					}
+					for (int j = 0; j < button.transform.childCount; j = j + 1)
+					{
+						selectionCounter = button.transform.GetChild(j).GetComponent<Image>();
+						if (selectionCounter != null) { selectionCounter.gameObject.SetActive(false); break; }
+					}
 				}
-				else if (i >= count)
+
+				if (image != null)
 				{
-					image.enabled = false;
+					if (i < count)
+					{
+						image.enabled = true;
+					}
+					else if (i >= count)
+					{
+						image.enabled = false;
+					}
 				}
-			}
-			if (text != null)
-			{
-				if (i < count)
+				if (text != null)
 				{
-					text.enabled = true;
-					text.text = m_Items[i].itemCode + " " + m_Items[i].itemAmount;
-				}
-				else if (i >= count)
-				{
-					text.enabled = false;
+					if (i < count)
+					{
+						text.enabled = true;
+						text.text = m_Items[i].itemCode + " " + m_Items[i].itemAmount;
+					}
+					else if (i >= count)
+					{
+						text.enabled = false;
+					}
 				}
 			}
 		}

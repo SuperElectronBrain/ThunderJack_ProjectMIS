@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class MillStone : MonoBehaviour
 {
-	public ItemCode m_Input = ItemCode.None;
-	public ItemCode M_Input { get { return m_Input; } set { m_Input = value; InputEvent(); } }
+	public string m_Input = "";
+	public string M_Input { get { return m_Input; } set { m_Input = value; InputEvent(); } }
 	public bool bProgress = false;
 	public float m_Progress = 0.0f;
 	public float M_Progress { get { return m_Progress; } set { m_Progress = value > 1.0f ? 1.0f : (value < 0 ? 0 : value);} }
@@ -38,7 +38,7 @@ public class MillStone : MonoBehaviour
 		}
 		if (bProgress == true)
 		{
-			if (m_Input != ItemCode.None)
+			if (m_Input != "")
 			{
 				Vector3 t_CurrentHandlePosition = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
 
@@ -51,6 +51,10 @@ public class MillStone : MonoBehaviour
 
 					if (m_MeasurCup != null)
 					{
+						if(m_MeasurCup.m_Input != m_Input)
+						{
+							m_MeasurCup.m_Progress = 0.0f;
+						}
 						m_MeasurCup.m_Input = m_Input;
 						m_MeasurCup.m_Progress = m_MeasurCup.m_Progress + (t_Progress / m_MaxTurnCount);
 					}
@@ -75,7 +79,7 @@ public class MillStone : MonoBehaviour
 
 				if (m_Progress <= 0.0f)
 				{
-					m_Input = ItemCode.None;
+					m_Input = "";
 					m_SkeletonAnimation.timeScale = 0.0f;
 				}
 				m_PreviousHandlePosition = t_CurrentHandlePosition;

@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CustomButton : Button
 {
+	[FormerlySerializedAs("onDown")]
+	[SerializeField]
+	private ButtonClickedEvent m_OnDown = new ButtonClickedEvent();
+	public ButtonClickedEvent onDown
+	{
+		get { return m_OnDown; }
+		set { m_OnDown = value; }
+	}
+
 	private void Press()
 	{
 		if (!IsActive() || !IsInteractable())
@@ -42,6 +52,12 @@ public class CustomButton : Button
 			}
 
 			EvaluateAndTransitionToSelectionState(SelectionState.Pressed);
+
+			if (IsActive() && IsInteractable())
+			{ 
+				UISystemProfilerApi.AddMarker("Button.onDown", this);
+				onDown.Invoke();
+			}
 		}
 	}
 
