@@ -8,7 +8,7 @@ public enum CharacterCode
 }
 public class DataBase_Character : MonoBehaviour
 {
-    public Dictionary<int, CharacterData> characterDB = new();
+    public List<CharacterData> characterDB = new();
 
     public GameObject npcPrefab;
     public GameObject playerPrefab;
@@ -31,38 +31,37 @@ public class DataBase_Character : MonoBehaviour
         {
             int charId = int.Parse(character[characterId].ToString());
 
-            GameObject characterPrefab = npcPrefab;
+            Character newCharacter = null;
 
             if (charId == 0)
-                characterPrefab = playerPrefab;
-
-            var c = Instantiate(characterPrefab, GameManager.Instance.GetSpawnPos(), Quaternion.identity).GetComponent<Character>();
+                continue;
+            newCharacter = Instantiate(npcPrefab, GameManager.Instance.GetSpawnPos(), Quaternion.identity).GetComponent<Character>();
            
-            characterDB.Add(charId, new CharacterData
+            characterDB.Add(new CharacterData
             {
                 characterName = character[characterName].ToString(),
                 characterEgName = character[characterEgName].ToString(),
-                character = c
+                character = newCharacter
             }
             );
-            c.SetCharacterData(characterDB[charId]);
-            c.name = GetCharacterName(charId);
+            newCharacter.SetCharacterData(characterDB[charId - 1]);
+            newCharacter.gameObject.name = GetCharacterName(charId);
         }
     }
 
     public string GetCharacterName(int characterID)
     {
-        return characterDB[characterID].characterName;
+        return characterDB[characterID - 1].characterName;
     }
 
     public string GetCharacterEgName(int characterID)
     {
-        return characterDB[characterID].characterEgName;
+        return characterDB[characterID - 1].characterEgName;
     }
 
     public Character GetCharacter(int characterID)
     {
-        return characterDB[characterID].character;
+        return characterDB[characterID - 1].character;
     }
 
     /// <summary>
@@ -74,7 +73,7 @@ public class DataBase_Character : MonoBehaviour
     {
         NPC npc = null;
 
-        npc = (characterDB[charcterID].character as NPC);
+        npc = (characterDB[charcterID - 1].character as NPC);
 
         return npc;
 
