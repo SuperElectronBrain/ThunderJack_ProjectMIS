@@ -86,7 +86,11 @@ public class InventoryUIScript : MonoBehaviour
 						if(t_Image != null)
 						{
 							t_Image.gameObject.SetActive(true);
-							t_Image.sprite = AddressableManager.LoadObject<Sprite>(t_AItems[t_Number].itemCode + "");
+
+							if (t_AItems[t_Number].itemAmount > 0)
+							{
+								t_Image.sprite = UniFunc.FindSprite(t_AItems[t_Number].itemCode + "");
+							}
 						}
 					}
 					t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "Text (TMP)");
@@ -108,10 +112,11 @@ public class InventoryUIScript : MonoBehaviour
 								PlayerCharacter t_PlayerCharacter = m_Inventory.m_Owner.gameObject.GetComponent<PlayerCharacter>();
 								if (t_PlayerCharacter != null)
 								{
-									t_PlayerCharacter.m_GrabItemCode = m_Inventory.GetAItems()[t_Number].itemCode;
+									AdvencedItem t_AItem = m_Inventory.GetAItems()[t_Number];
+									t_PlayerCharacter.m_GrabItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, t_AItem.itemAmount);
 									if(t_PlayerCharacter.m_GrabItemSprite != null)
 									{
-										t_PlayerCharacter.m_GrabItemSprite.sprite = AddressableManager.LoadObject<Sprite>(m_Inventory.GetAItems()[t_Number].itemCode + "");
+										t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(m_Inventory.GetAItems()[t_Number].itemCode + "");
 										t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
 									}
 								}

@@ -18,7 +18,7 @@ public class PlayerCharacter : CharacterBase
 	private CapsuleCollider m_Collider;
 	[HideInInspector] public GameObject m_HitObject;
 	public UnityEngine.UI.Image m_GrabItemSprite;
-	public string m_GrabItemCode = "";
+	public AdvencedItem m_GrabItemCode = new AdvencedItem();
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -107,7 +107,7 @@ public class PlayerCharacter : CharacterBase
 				{ OnReleaseMiss2D(); }
 			}
 
-			m_GrabItemCode = "";
+			m_GrabItemCode = new AdvencedItem();
 			if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
 		}
 	}
@@ -173,6 +173,24 @@ public class PlayerCharacter : CharacterBase
 				t_MeasurCup.m_IsMouseGrab = true;
 			}
 		}
+
+		MixingBowl t_MixingBowl = hit.transform.GetComponent<MixingBowl>();
+		if (t_MixingBowl != null)
+		{
+			if (t_MixingBowl.m_IsMouseGrabable == true)
+			{
+				t_MixingBowl.m_IsMouseGrab = true;
+			}
+		}
+
+		CraftedItem t_CraftedItem = hit.transform.GetComponent<CraftedItem>();
+		if (t_CraftedItem != null)
+		{
+			if (t_CraftedItem.m_IsMouseGrabable == true)
+			{
+				t_CraftedItem.m_IsMouseGrab = true;
+			}
+		}
 	}
 	protected virtual void OnClickMiss()
 	{
@@ -184,13 +202,26 @@ public class PlayerCharacter : CharacterBase
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
 		{
-			if(t_MillStone.M_Input =="")
+			if(t_MillStone.M_Input == 0)
 			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode, 1.0f, 1);
+				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 				if(t_AItem.IsAddable(new AdvencedItem()) == false)
 				{
 					t_MillStone.M_Input = t_AItem.itemCode;
 					t_MillStone.m_Progress = t_AItem.itemProgress;
+				}
+			}
+		}
+
+		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
+		if (t_AccessoryPlate != null)
+		{
+			if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == true)
+			{
+				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+				if (t_AItem.IsAddable(new AdvencedItem()) == false)
+				{
+					t_AccessoryPlate.m_Input = t_AItem;
 				}
 			}
 		}
@@ -225,6 +256,24 @@ public class PlayerCharacter : CharacterBase
 				t_MeasurCup.m_IsMouseGrab = true;
 			}
 		}
+
+		MixingBowl t_MixingBowl = hit.transform.GetComponent<MixingBowl>();
+		if (t_MixingBowl != null)
+		{
+			if (t_MixingBowl.m_IsMouseGrabable == true)
+			{
+				t_MixingBowl.m_IsMouseGrab = true;
+			}
+		}
+
+		CraftedItem t_CraftedItem = hit.transform.GetComponent<CraftedItem>();
+		if (t_CraftedItem != null)
+		{
+			if (t_CraftedItem.m_IsMouseGrabable == true)
+			{
+				t_CraftedItem.m_IsMouseGrab = true;
+			}
+		}
 	}
 
 	protected virtual void OnClickMiss2D()
@@ -237,13 +286,27 @@ public class PlayerCharacter : CharacterBase
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
 		{
-			if (t_MillStone.M_Input == "")
+			if (t_MillStone.M_Input == 0)
 			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode, 1.0f, 1);
+				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 				if (t_AItem.IsAddable(new AdvencedItem()) == false)
 				{
 					t_MillStone.M_Input = t_AItem.itemCode;
 					t_MillStone.m_Progress = t_AItem.itemProgress;
+				}
+			}
+		}
+
+		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
+		if (t_AccessoryPlate != null)
+		{
+			if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == true)
+			{
+				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+				if (t_AItem.IsAddable(new AdvencedItem()) == false)
+				{
+					t_AccessoryPlate.m_Input = t_AItem;
+					t_AccessoryPlate.RefreshPlate();
 				}
 			}
 		}
