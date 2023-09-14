@@ -58,6 +58,7 @@ public class NPC : Character
     protected virtual void Update()
     {
         fsm.StateUpdate();
+        transform.rotation = Camera.main.transform.rotation;
 
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
