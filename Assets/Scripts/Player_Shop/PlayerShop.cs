@@ -77,6 +77,7 @@ public class PlayerShop : MonoBehaviour
 
     [SerializeField]
     Text compItem;
+
     [SerializeField]
     InputField gemField;
     [SerializeField]
