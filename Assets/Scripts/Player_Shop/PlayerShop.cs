@@ -146,6 +146,7 @@ public class PlayerShop : MonoBehaviour
     public void HandOverItem()
     {
         guestQueue.GetGuest().CheckItem(itemCode);
+        itemCode = 0;
     }
 
     public void MakeItem()
