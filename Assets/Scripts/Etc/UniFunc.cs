@@ -153,7 +153,6 @@ public class UniFunc : MonoBehaviour
 	public static List<GemRecipe> FindRecipesOfElement(List<GemRecipe> p_GemRecipes, int p_OrderNumber, int p_Element)
 	{
 		List<GemRecipe> t_GemRecipes = null;
-
 		if (p_GemRecipes != null)
 		{
 			for (int i = 0; i < p_GemRecipes.Count; i = i + 1)
@@ -164,6 +163,7 @@ public class UniFunc : MonoBehaviour
 				else if (p_OrderNumber == 3) { t_Material = p_GemRecipes[i].material3; }
 				if (t_Material != -1)
 				{
+					//Debug.Log(t_Material + ", " + p_Element);
 					if (t_Material == p_Element)
 					{
 						if (t_GemRecipes == null) { t_GemRecipes = new List<GemRecipe>(); }
@@ -178,7 +178,11 @@ public class UniFunc : MonoBehaviour
 
 	public static Sprite FindSprite(string p_ItemCode)
 	{
-		if(p_ItemCode == "1")
+		if (p_ItemCode == "0")
+		{
+			return null;
+		}
+		else if (p_ItemCode == "1")
 		{
 			p_ItemCode = "Icon";
 		}

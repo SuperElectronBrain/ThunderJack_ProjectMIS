@@ -44,7 +44,15 @@ public class Furnace : MonoBehaviour
 
 		if (m_Text != null)
 		{
-			m_Text.text = (int)(m_Progress * m_ProgressPerSecond) + "";
+			if(m_Progress <= 0.0f)
+			{
+				m_Text.gameObject.SetActive(false);
+			}
+			else
+			{
+				m_Text.gameObject.SetActive(true);
+				m_Text.text = (int)(m_Progress * m_ProgressPerSecond) + "";
+			}
 		}
 	}
 

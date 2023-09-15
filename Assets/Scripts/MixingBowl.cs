@@ -95,10 +95,11 @@ public class MixingBowl : MonoBehaviour, IGrabable
 
 			if (t_MaterialItemData != null)
 			{
+				//Debug.Log("("+ t_MaterialItemData.itemID + ", " + t_MaterialItemData.itemNameKo + ", " + t_MaterialItemData.itemNameEg + ", " + t_MaterialItemData.elementType1 + ", " + t_MaterialItemData.elementType2 + ")");
 				if (m_IsGrabable == false) { m_IsGrabable = true; }
 				m_Elements[t_MaterialItemData.elementType1 - 1] = m_Elements[t_MaterialItemData.elementType1 - 1] + (t_MaterialItemData.elementPercent1 * 0.01f * p_Progress);
 				m_Elements[t_MaterialItemData.elementType2 - 1] = m_Elements[t_MaterialItemData.elementType2 - 1] + (t_MaterialItemData.elementPercent2 * 0.01f * p_Progress);
-				m_Elements[t_MaterialItemData.elementType3 - 1] = m_Elements[t_MaterialItemData.elementType3 - 1] + (t_MaterialItemData.elementPercent3 * 0.01f * p_Progress);
+				//m_Elements[t_MaterialItemData.elementType3 - 1] = m_Elements[t_MaterialItemData.elementType3 - 1] + (t_MaterialItemData.elementPercent3 * 0.01f * p_Progress);
 			}
 		}
 
