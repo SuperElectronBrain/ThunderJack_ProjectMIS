@@ -39,7 +39,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8981011757000058221
 MonoBehaviour:
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2bf906ff48741458a6a967dd234353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPos: {fileID: 0}
+  spawnPos: {fileID: 6965346322387067579}
   dataBase: {fileID: 0}
   characterDB: {fileID: 0}
   addressableManager: {fileID: 8099254540958169046}
@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locationList: []
+  targetLocationList: []
 --- !u!114 &8340670794638642892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +110,8 @@ MonoBehaviour:
   basicItemData: []
   shopItemList: []
   gemRecipes: []
+  jewelryItemData: []
+  materialItemData: []
   itemA: 0
   ItemB: 0
 --- !u!114 &8099254540958169046
@@ -175,6 +178,7 @@ MonoBehaviour:
   dialogueList: []
   dialogBox: {fileID: 0}
   dialogueIdx: 0
+  playerText: {fileID: 0}
 --- !u!114 &8735455170812927717
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -318,7 +318,7 @@ public class Inventory : MonoBehaviour
 	{
 		float DeltaTime = Time.deltaTime;
 
-		if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetKeyDown(KeyCode.I))
 		{
 			m_InventoryUIScript.gameObject.SetActive(!m_InventoryUIScript.gameObject.activeSelf);
 

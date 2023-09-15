@@ -23,7 +23,7 @@ public class ConversationState : State<NPC>
         else
             entity.SkAni.AnimationName = "BACK";
 
-        entity.StartConversation();
+        //entity.StartConversation();
         EventManager.Subscribe(EventType.EndConversation, EndConversation);
     }
 
