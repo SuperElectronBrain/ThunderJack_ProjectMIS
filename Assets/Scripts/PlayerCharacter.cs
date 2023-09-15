@@ -140,7 +140,7 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_CollisionComponent.m_Colliders[i].gameObject != gameObject)
 					{
-						CharacterBase t_CharacterBase1 = m_CollisionComponent.m_Colliders[i].gameObject.GetComponent<CharacterBase>();
+						NPC t_CharacterBase1 = m_CollisionComponent.m_Colliders[i].gameObject.GetComponent<NPC>();
 						if (t_CharacterBase1 != null)
 						{
 							float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (m_CollisionComponent.m_Colliders[i].transform.position - transform.position).normalized);
