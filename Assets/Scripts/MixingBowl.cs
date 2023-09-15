@@ -11,13 +11,13 @@ public struct Ingredient
 	public Ingredient(string p_Input, float p_Progress) { m_Input = p_Input; m_Progress = p_Progress; }
 }
 
-public class MixingBowl : MonoBehaviour
+public class MixingBowl : MonoBehaviour, IGrabable
 {
 	public float m_MaxDistance = 3.0f;
 	public List<Ingredient> m_Ingredients = new List<Ingredient>();
 	public float[] m_Elements = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-	[HideInInspector] public bool m_IsMouseGrab = false;
-	[HideInInspector] public bool m_IsMouseGrabable = false;
+	[HideInInspector] public bool m_GrabState = false; public void SetGrabState(bool p_State) { m_GrabState = p_State; }
+	[HideInInspector] public bool m_IsGrabable = false; public bool IsGrabable() { return m_IsGrabable; }
 	private Vector3 m_OriginPosition;
 
 	[SerializeField] private Furnace m_Furnace;
@@ -44,17 +44,16 @@ public class MixingBowl : MonoBehaviour
 				//Debug.Log(m_Furnace.m_Elements[0] + ", " + m_Furnace.m_Elements[1] + ", " + m_Furnace.m_Elements[2] + ", " + m_Furnace.m_Elements[3] + ", " + m_Furnace.m_Elements[4] + ", " + m_Furnace.m_Elements[5]);
 				for (int i = 0; i < m_Elements.Length; i = i + 1) { m_Elements[i] = 0.0f; }
 				m_Furnace.m_bProgress = true;
-				m_IsMouseGrabable = false;
+				m_IsGrabable = false;
 				RefreshGraph();
 			}
 
 			transform.position = m_OriginPosition;
-			m_IsMouseGrab = false;
+			m_GrabState = false;
 		}
-		if (m_IsMouseGrab == true)
+		if (m_GrabState == true)
 		{
-			Vector3 t_MousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z - Camera.main.transform.position.z));
-			transform.position = new Vector3(t_MousePosition.x, t_MousePosition.y, Camera.main.orthographic ? transform.position.z : t_MousePosition.z);
+			GrabMoving();
 		}
 
 		/*
@@ -96,10 +95,11 @@ public class MixingBowl : MonoBehaviour
 
 			if (t_MaterialItemData != null)
 			{
-				if (m_IsMouseGrabable == false) { m_IsMouseGrabable = true; }
+				//Debug.Log("("+ t_MaterialItemData.itemID + ", " + t_MaterialItemData.itemNameKo + ", " + t_MaterialItemData.itemNameEg + ", " + t_MaterialItemData.elementType1 + ", " + t_MaterialItemData.elementType2 + ")");
+				if (m_IsGrabable == false) { m_IsGrabable = true; }
 				m_Elements[t_MaterialItemData.elementType1 - 1] = m_Elements[t_MaterialItemData.elementType1 - 1] + (t_MaterialItemData.elementPercent1 * 0.01f * p_Progress);
 				m_Elements[t_MaterialItemData.elementType2 - 1] = m_Elements[t_MaterialItemData.elementType2 - 1] + (t_MaterialItemData.elementPercent2 * 0.01f * p_Progress);
-				m_Elements[t_MaterialItemData.elementType3 - 1] = m_Elements[t_MaterialItemData.elementType3 - 1] + (t_MaterialItemData.elementPercent3 * 0.01f * p_Progress);
+				//m_Elements[t_MaterialItemData.elementType3 - 1] = m_Elements[t_MaterialItemData.elementType3 - 1] + (t_MaterialItemData.elementPercent3 * 0.01f * p_Progress);
 			}
 		}
 
@@ -150,6 +150,21 @@ public class MixingBowl : MonoBehaviour
 		//		m_MagicCircleGraph[t_GemRecipe.material3 - 1].transform.localScale = new Vector3(1.0f, t_GemRecipe.materialPercent3 * m_Ingredients[i].m_Progress, 1.0f);
 		//	}
 		//}
+		*/
+	}
+
+	public void GrabMoving()
+	{
+		Vector3 t_Vector = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+		float t_Value0 = Mathf.Abs(transform.position.z - Camera.main.transform.position.z);
+		float t_VerticalAngle = Mathf.Abs(Mathf.Atan2(t_Vector.y, t_Vector.z));
+		float t_HorizontalAngle = Mathf.Abs(Mathf.Atan2(t_Vector.x, t_Vector.z));
+		float t_Value1 = Mathf.Sqrt(Mathf.Pow(Mathf.Tan(t_VerticalAngle) * t_Value0, 2) + Mathf.Pow(Mathf.Tan(t_HorizontalAngle) * t_Value0, 2));
+		transform.position = (t_Vector * Mathf.Sqrt(Mathf.Pow(t_Value0, 2) + Mathf.Pow(t_Value1, 2))) + Camera.main.transform.position;
+
+		/*
+		Vector3 t_MousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z - Camera.main.transform.position.z));
+		transform.position = new Vector3(t_MousePosition.x, t_MousePosition.y, Camera.main.orthographic ? transform.position.z : t_MousePosition.z);
 		*/
 	}
 

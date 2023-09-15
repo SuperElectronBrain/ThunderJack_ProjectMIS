@@ -7,18 +7,24 @@ using UnityEngine;
 using UnityEngine.Splines;
 using static UnityEngine.GraphicsBuffer;
 
-//public interface IHitable
-//{
-//	void OnMouseHit(GameObject go);
-//}
+public interface IGrabable
+{
+	public bool IsGrabable();
+	public void SetGrabState(bool p_State);
+	public void GrabMoving();
+	//bool m_IsMouseGrabable;
+	//bool m_IsMouseGrab;
+}
 
 public class PlayerCharacter : CharacterBase
 {
 	private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
-	[HideInInspector] public GameObject m_HitObject;
 	public UnityEngine.UI.Image m_GrabItemSprite;
 	public AdvencedItem m_GrabItemCode = new AdvencedItem();
+
+	[HideInInspector] public GameObject m_HitObject;
+	[SerializeField] private CollisionComponent m_CollisionComponent;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -27,6 +33,7 @@ public class PlayerCharacter : CharacterBase
 
 		m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
+		if (m_CollisionComponent == null) { m_CollisionComponent = UniFunc.GetChildComponent<CollisionComponent>(transform); }
 	}
 
 	// Update is called once per frame
@@ -58,54 +65,16 @@ public class PlayerCharacter : CharacterBase
 		if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
 
 		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
-		
+
+		if (Input.GetKeyDown(KeyCode.E) == true) { GetInteractableCharacter().StartConversation(); }
+
 		if (Input.GetMouseButtonDown(0) == true)
 		{
-			Vector3 t_MousePosition = Vector3.zero;
-			if(Camera.main.orthographic == false)
-			{
-				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
-				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
-				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (result == true && bMouseOnUI == false)
-				{ OnClickHit(hit); }
-				else if(result == false || bMouseOnUI == true)
-				{ OnClickMiss(); }
-			}
-			else if(Camera.main.orthographic == true)
-			{
-				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
-				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (hit2D == true && bMouseOnUI == false)
-				{ OnClickHit2D(hit2D); }
-				else if (hit2D == false || bMouseOnUI == true)
-				{ OnClickMiss2D(); }
-			}
+			DoRaycast(true);
 		}
 		if (Input.GetMouseButtonUp(0) == true)
 		{
-			Vector3 t_MousePosition = Vector3.zero;
-			if (Camera.main.orthographic == false)
-			{
-				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
-				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
-				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (result == true && bMouseOnUI == false)
-				{ OnReleaseHit(hit); }
-				else if (result == false || bMouseOnUI == true)
-				{ OnReleaseMiss(); }
-			}
-			else if (Camera.main.orthographic == true)
-			{
-				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
-				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (hit2D == true && bMouseOnUI == false)
-				{ OnReleaseHit2D(hit2D); }
-				else if (hit2D == false || bMouseOnUI == true)
-				{ OnReleaseMiss2D(); }
-			}
+			DoRaycast(false);
 
 			m_GrabItemCode = new AdvencedItem();
 			if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
@@ -140,12 +109,117 @@ public class PlayerCharacter : CharacterBase
 	//	base.VerticalMove(DeltaTime);
 	//}
 
+	public NPC GetInteractableCharacter()
+	{
+		NPC t_CharacterBase = null;
+		if (m_CollisionComponent != null)
+		{
+			float t_DotProduct = -1.0f;
+			for (int i = 0; i < m_CollisionComponent.m_Collisions.Count; i = i + 1)
+			{
+				if (m_CollisionComponent.m_Collisions[i] != null)
+				{
+					if (m_CollisionComponent.m_Collisions[i].gameObject != gameObject)
+					{
+						NPC t_CharacterBase1 = m_CollisionComponent.m_Collisions[i].gameObject.GetComponent<NPC>();
+						if (t_CharacterBase1 != null)
+						{
+							float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (m_CollisionComponent.m_Collisions[i].transform.position - transform.position).normalized);
+							if (t_DotProduct < t_DotProduct1)
+							{
+								t_DotProduct = t_DotProduct1;
+								t_CharacterBase = t_CharacterBase1;
+							}
+						}
+					}
+				}
+			}
+			for (int i = 0; i < m_CollisionComponent.m_Colliders.Count; i = i + 1)
+			{
+				if (m_CollisionComponent.m_Colliders[i] != null)
+				{
+					if (m_CollisionComponent.m_Colliders[i].gameObject != gameObject)
+					{
+						NPC t_CharacterBase1 = m_CollisionComponent.m_Colliders[i].gameObject.GetComponent<NPC>();
+						if (t_CharacterBase1 != null)
+						{
+							float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (m_CollisionComponent.m_Colliders[i].transform.position - transform.position).normalized);
+							if (t_DotProduct < t_DotProduct1)
+							{
+								t_DotProduct = t_DotProduct1;
+								t_CharacterBase = t_CharacterBase1;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return t_CharacterBase;
+	}
+
 	protected override void OnTriggerEnter(Collider collision)
 	{
 		m_CPAComponent = collision.gameObject.GetComponent<CameraPresetAreaComponent>();
 		if (m_CPAComponent != null)
 		{
 			m_CPAComponent.m_PlayerCharacter = this;
+		}
+	}
+
+	/// <summary>
+	/// MouseButtonDown = true, MouseButtonUp = false
+	/// </summary>
+	/// <param name="p_MouseDown"> MouseButtonDown = true, MouseButtonUp = false </param>
+	protected virtual void DoRaycast(bool p_MouseDown = true)
+	{
+		if(p_MouseDown == true)
+		{
+			Vector3 t_MousePosition = Vector3.zero;
+			if (Camera.main.orthographic == false)
+			{
+				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
+				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (result == true && bMouseOnUI == false)
+				{ OnClickHit(hit); }
+				else if (result == false || bMouseOnUI == true)
+				{ OnClickMiss(); }
+			}
+			else if (Camera.main.orthographic == true)
+			{
+				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
+				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (hit2D == true && bMouseOnUI == false)
+				{ OnClickHit2D(hit2D); }
+				else if (hit2D == false || bMouseOnUI == true)
+				{ OnClickMiss2D(); }
+			}
+		}
+		else if(p_MouseDown == false)
+		{
+			Vector3 t_MousePosition = Vector3.zero;
+			if (Camera.main.orthographic == false)
+			{
+				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
+				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (result == true && bMouseOnUI == false)
+				{ OnReleaseHit(hit); }
+				else if (result == false || bMouseOnUI == true)
+				{ OnReleaseMiss(); }
+			}
+			else if (Camera.main.orthographic == true)
+			{
+				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
+				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (hit2D == true && bMouseOnUI == false)
+				{ OnReleaseHit2D(hit2D); }
+				else if (hit2D == false || bMouseOnUI == true)
+				{ OnReleaseMiss2D(); }
+			}
 		}
 	}
 
@@ -165,30 +239,35 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 
-		MeasurCup t_MeasurCup = hit.transform.GetComponent<MeasurCup>();
-		if (t_MeasurCup != null)
+		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
+		if(t_AccessoryPlate != null)
 		{
-			if (t_MeasurCup.m_Progress > 0.0f)
+			if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
 			{
-				t_MeasurCup.m_IsMouseGrab = true;
+				if (t_AccessoryPlate.m_Input.itemAmount > 0)
+				{
+					if (m_GrabItemCode.IsAddable(new AdvencedItem()) == true)
+					{
+						m_Inventory.AddAItem(t_AccessoryPlate.m_Input.itemCode, t_AccessoryPlate.m_Input.itemProgress, t_AccessoryPlate.m_Input.itemAmount);
+						m_GrabItemCode = t_AccessoryPlate.m_Input;
+						if (m_GrabItemSprite != null)
+						{
+							m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
+							m_GrabItemSprite.gameObject.SetActive(true);
+						}
+						t_AccessoryPlate.m_Input = new AdvencedItem();
+						t_AccessoryPlate.RefreshPlate();
+					}
+				}
 			}
 		}
 
-		MixingBowl t_MixingBowl = hit.transform.GetComponent<MixingBowl>();
-		if (t_MixingBowl != null)
+		IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
+		if (t_GrabableObject != null)
 		{
-			if (t_MixingBowl.m_IsMouseGrabable == true)
+			if (t_GrabableObject.IsGrabable() == true)
 			{
-				t_MixingBowl.m_IsMouseGrab = true;
-			}
-		}
-
-		CraftedItem t_CraftedItem = hit.transform.GetComponent<CraftedItem>();
-		if (t_CraftedItem != null)
-		{
-			if (t_CraftedItem.m_IsMouseGrabable == true)
-			{
-				t_CraftedItem.m_IsMouseGrab = true;
+				t_GrabableObject.SetGrabState(true);
 			}
 		}
 	}
@@ -222,6 +301,38 @@ public class PlayerCharacter : CharacterBase
 				if (t_AItem.IsAddable(new AdvencedItem()) == false)
 				{
 					t_AccessoryPlate.m_Input = t_AItem;
+					t_AccessoryPlate.RefreshPlate();
+				}
+			}
+			else if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
+			{
+				if(m_GrabItemCode.IsAddable(new AdvencedItem()) == false)
+				{
+					if(t_AccessoryPlate.CraftItem(m_GrabItemCode) == true)
+					{
+						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						t_AccessoryPlate.RefreshPlate();
+
+						if (m_GrabItemSprite != null)
+						{
+							m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
+							m_GrabItemSprite.gameObject.SetActive(true);
+						}
+					}
+				}
+			}
+		}
+
+		PlayerShop t_PlayerShop = hit.transform.GetComponent<PlayerShop>();
+		if (t_PlayerShop != null) 
+		{
+			if(t_PlayerShop.itemCode == 0)
+			{
+				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+				if (t_AItem.IsAddable(new AdvencedItem()) == false)
+				{
+					t_PlayerShop.itemCode = t_AItem.itemCode;
+					t_PlayerShop.HandOverItem();
 				}
 			}
 		}
@@ -248,30 +359,12 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 
-		MeasurCup t_MeasurCup = hit.transform.GetComponent<MeasurCup>();
-		if (t_MeasurCup != null)
+		IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
+		if (t_GrabableObject != null)
 		{
-			if (t_MeasurCup.m_Progress > 0.0f)
+			if (t_GrabableObject.IsGrabable() == true)
 			{
-				t_MeasurCup.m_IsMouseGrab = true;
-			}
-		}
-
-		MixingBowl t_MixingBowl = hit.transform.GetComponent<MixingBowl>();
-		if (t_MixingBowl != null)
-		{
-			if (t_MixingBowl.m_IsMouseGrabable == true)
-			{
-				t_MixingBowl.m_IsMouseGrab = true;
-			}
-		}
-
-		CraftedItem t_CraftedItem = hit.transform.GetComponent<CraftedItem>();
-		if (t_CraftedItem != null)
-		{
-			if (t_CraftedItem.m_IsMouseGrabable == true)
-			{
-				t_CraftedItem.m_IsMouseGrab = true;
+				t_GrabableObject.SetGrabState(true);
 			}
 		}
 	}

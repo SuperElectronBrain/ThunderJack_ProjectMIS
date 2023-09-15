@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class Furnace : MonoBehaviour
 {
@@ -45,7 +44,15 @@ public class Furnace : MonoBehaviour
 
 		if (m_Text != null)
 		{
-			m_Text.text = (int)(m_Progress * m_ProgressPerSecond) + "";
+			if(m_Progress <= 0.0f)
+			{
+				m_Text.gameObject.SetActive(false);
+			}
+			else
+			{
+				m_Text.gameObject.SetActive(true);
+				m_Text.text = (int)(m_Progress * m_ProgressPerSecond) + "";
+			}
 		}
 	}
 
@@ -70,7 +77,6 @@ public class Furnace : MonoBehaviour
 			{
 				if(t_ElementPercent1 < m_Elements[i])
 				{
-					Debug.Log(m_Elements[i]);
 					t_Element1 = i + 1;
 					t_ElementPercent1 = m_Elements[i];
 				}
@@ -120,7 +126,7 @@ public class Furnace : MonoBehaviour
 			{
 				m_CraftedItem.m_CompleteItem = new AdvencedItem(t_ItemCode, 1.0f, t_ItemAmount);
 				m_CraftedItem.RefreshItemDisplay();
-				m_CraftedItem.m_IsMouseGrabable = true;
+				m_CraftedItem.m_IsGrabable = true;
 			}
 		}
 
