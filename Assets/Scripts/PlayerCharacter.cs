@@ -65,7 +65,9 @@ public class PlayerCharacter : CharacterBase
 		if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
 
 		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
-		
+
+		if (Input.GetKeyDown(KeyCode.E) == true) { GetInteractableCharacter().StartConversation(); }
+
 		if (Input.GetMouseButtonDown(0) == true)
 		{
 			DoRaycast(true);
@@ -107,9 +109,9 @@ public class PlayerCharacter : CharacterBase
 	//	base.VerticalMove(DeltaTime);
 	//}
 
-	public CharacterBase GetInteractableCharacter()
+	public NPC GetInteractableCharacter()
 	{
-		CharacterBase t_CharacterBase = null;
+		NPC t_CharacterBase = null;
 		if (m_CollisionComponent != null)
 		{
 			float t_DotProduct = -1.0f;
@@ -119,7 +121,7 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_CollisionComponent.m_Collisions[i].gameObject != gameObject)
 					{
-						CharacterBase t_CharacterBase1 = m_CollisionComponent.m_Collisions[i].gameObject.GetComponent<CharacterBase>();
+						NPC t_CharacterBase1 = m_CollisionComponent.m_Collisions[i].gameObject.GetComponent<NPC>();
 						if (t_CharacterBase1 != null)
 						{
 							float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (m_CollisionComponent.m_Collisions[i].transform.position - transform.position).normalized);
@@ -237,6 +239,29 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 
+		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
+		if(t_AccessoryPlate != null)
+		{
+			if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
+			{
+				if (t_AccessoryPlate.m_Input.itemAmount > 0)
+				{
+					if (m_GrabItemCode.IsAddable(new AdvencedItem()) == true)
+					{
+						m_Inventory.AddAItem(t_AccessoryPlate.m_Input.itemCode, t_AccessoryPlate.m_Input.itemProgress, t_AccessoryPlate.m_Input.itemAmount);
+						m_GrabItemCode = t_AccessoryPlate.m_Input;
+						if (m_GrabItemSprite != null)
+						{
+							m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
+							m_GrabItemSprite.gameObject.SetActive(true);
+						}
+						t_AccessoryPlate.m_Input = new AdvencedItem();
+						t_AccessoryPlate.RefreshPlate();
+					}
+				}
+			}
+		}
+
 		IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
 		if (t_GrabableObject != null)
 		{
@@ -276,6 +301,38 @@ public class PlayerCharacter : CharacterBase
 				if (t_AItem.IsAddable(new AdvencedItem()) == false)
 				{
 					t_AccessoryPlate.m_Input = t_AItem;
+					t_AccessoryPlate.RefreshPlate();
+				}
+			}
+			else if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
+			{
+				if(m_GrabItemCode.IsAddable(new AdvencedItem()) == false)
+				{
+					if(t_AccessoryPlate.CraftItem(m_GrabItemCode) == true)
+					{
+						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						t_AccessoryPlate.RefreshPlate();
+
+						if (m_GrabItemSprite != null)
+						{
+							m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
+							m_GrabItemSprite.gameObject.SetActive(true);
+						}
+					}
+				}
+			}
+		}
+
+		PlayerShop t_PlayerShop = hit.transform.GetComponent<PlayerShop>();
+		if (t_PlayerShop != null) 
+		{
+			if(t_PlayerShop.itemCode == 0)
+			{
+				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+				if (t_AItem.IsAddable(new AdvencedItem()) == false)
+				{
+					t_PlayerShop.itemCode = t_AItem.itemCode;
+					t_PlayerShop.HandOverItem();
 				}
 			}
 		}
