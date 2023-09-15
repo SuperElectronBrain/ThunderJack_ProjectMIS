@@ -26,13 +26,18 @@ public class Character : MonoBehaviour
     protected CharacterData characterData;
 
     SkeletonAnimation skAni;
+    [SerializeField]
+    public Transform myTransform;
+
     public SkeletonAnimation SkAni { get { return skAni; } }
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
         animator= GetComponentInChildren<Animator>();
-        skAni = GetComponent<SkeletonAnimation>();
+        skAni = GetComponentInChildren<SkeletonAnimation>();
+
+        myTransform = transform.Find("Body");
     }
 
     // Update is called once per frame

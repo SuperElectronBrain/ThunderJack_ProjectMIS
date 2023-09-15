@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public enum NPCBehaviour
 {
-    Idle, Move, Conversation, Sleep, Last
+    Idle, Move, Conversation, Greeting, Sleep, Last
 }
 
 public class NPC : Character
@@ -17,6 +18,8 @@ public class NPC : Character
     NPCBehaviour prevBehaviour;
     [SerializeField]
     NPCBehaviour curBehaviour;
+
+    public NPCBehaviour PrevBehaviour { get { return prevBehaviour; } }
 
     [SerializeField]
     BehaviourData curBehaviourData;    
@@ -34,20 +37,30 @@ public class NPC : Character
     public Vector3 destinationPos;
     public GameObject curInteractionObj;
 
+    public GameObject player;
+    
+    [SerializeField]
+    TextMeshPro dialog;
+
     protected override void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         base.Start();
         fsm = new();        
         agent = GetComponent<NavMeshAgent>();
         states = new State<NPC>[((int)NPCBehaviour.Last) - 1];
+        //dialog = GetComponentInChildren<TextMeshPro>();
 
         states[((int)NPCBehaviour.Idle)] = GetComponent<IdleState>();
         states[((int)NPCBehaviour.Move)] = GetComponent<MoveState>();
         states[((int)NPCBehaviour.Conversation)] = GetComponent<ConversationState>();
+        states[((int)NPCBehaviour.Greeting)] = GetComponent<GreetingState>();
 
         fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
 
-        InitDay();        
+        InitDay();
+
+        EventManager.Subscribe(EventType.NextDialog, TalkEnd);
     }
 
     public void InitDay()
@@ -58,25 +71,45 @@ public class NPC : Character
     protected virtual void Update()
     {
         fsm.StateUpdate();
-        transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+        myTransform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            curInteractionObj = gameObject;
-            StartConversation();
+            if(isMeet)
+            {
+                curInteractionObj = player;
+                ChangeState(NPCBehaviour.Conversation);
+            }            
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             ChangeState(NPCBehaviour.Move);
         }
+    }
 
+    public void Greeting()
+    {
+        if (isMeet)
+            return;
+
+        ChangeState(NPCBehaviour.Greeting);
     }
 
     public void StartConversation()
     {
         Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
-        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");
-        
+        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");        
+    }
+
+    public void TalkEnd()
+    {
+        dialog.gameObject.SetActive(false);
+    }
+
+    public void Talk(string talkScript)
+    {
+        dialog.gameObject.SetActive(true);
+        dialog.text = talkScript;
     }
 
     public void SetCurBehaviourData(BehaviourData newBehaviourData)
@@ -112,6 +145,29 @@ public class NPC : Character
         prevBehaviour = curBehaviour;        
         fsm.ChangeState(states[(int)newBehaviour]);
         curBehaviour = newBehaviour;
+    }
+
+
+    [SerializeField]
+    float sightRange;
+    [SerializeField]
+    bool isDebug;
+    private void OnDrawGizmos()
+    {
+        if (!isDebug)
+            return;
+        Gizmos.color = Color.green;
+
+        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange)
+        {
+            Debug.Log(gameObject.name + " Hi");
+            isMeet = true;
+        }
+        else
+            isMeet = false;
+            
+
+        Gizmos.DrawWireSphere(transform.position, sightRange);
     }
 }
 

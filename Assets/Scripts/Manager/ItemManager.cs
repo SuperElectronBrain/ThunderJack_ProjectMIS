@@ -76,7 +76,6 @@ public class ItemManager : MonoBehaviour
         {
             int itemType = Tools.IntParse(ir["Item_Type"]);
             Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
-            Debug.Log(ir["Item_Icon_Name"].ToString());
 
             switch (itemType)
             {

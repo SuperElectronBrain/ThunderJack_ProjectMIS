@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class MoveState : State<NPC>
 {
+    public Vector3 vel;
     public override void Enter(NPC entity)
     {
+        entity.agent.isStopped = false;
         entity.agent.SetDestination(entity.destinationPos);
     }
 
     public override void Execute(NPC entity)
     {
         entity.lookDir.SetDir(entity.agent.velocity);
+        vel = entity.agent.velocity;
 
         var scaleX = entity.lookDir.isRight ? -1 : 1;
-        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * scaleX, transform.localScale.y, transform.localScale.z);
+        var newScale = entity.myTransform.localScale;
+        newScale.x = Mathf.Abs(entity.myTransform.localScale.x) * scaleX;
+
+        entity.myTransform.localScale = newScale;
         
         if (entity.lookDir.isFront)
         {                
@@ -40,9 +46,9 @@ public class MoveState : State<NPC>
 
     public override void OnTransition(NPC entity)
     {
-        if (entity.agent.remainingDistance <= 0.1f)
+/*        if (entity.agent.remainingDistance <= 0.1f)
         {
             entity.ChangeState(NPCBehaviour.Idle);
-        }            
+        }            */
     }
 }
