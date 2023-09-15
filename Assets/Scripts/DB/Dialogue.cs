@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Dialogue : MonoBehaviour
 {
@@ -28,10 +29,13 @@ public class Dialogue : MonoBehaviour
     [SerializeField]
     int dialogueIdx = 0;
 
+    [SerializeField]
+    TextMeshPro playerText;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     public void InitDialogue(string newDialogue)
@@ -64,11 +68,13 @@ public class Dialogue : MonoBehaviour
     IEnumerator StartConversation()
     {
         NextDialog();
-        dialogBox.ShowDialogBox();
+        //dialogBox.ShowDialogBox();
         while (!dialogueIdx.Equals(-1))
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
+                EventManager.Publish(EventType.NextDialog);
+                playerText.gameObject.SetActive(false);
                 NextDialog();
             }
             yield return null;
@@ -77,7 +83,7 @@ public class Dialogue : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                dialogBox.ShowDialogBox(false);
+                playerText.gameObject.SetActive(false);
                 EndDialogue();
                 yield break;
             }
@@ -86,10 +92,20 @@ public class Dialogue : MonoBehaviour
     }
 
     void NextDialog()
-    {
+    {       
         var dData = dialogueList[dialogueIdx];
-        dialogBox.SetName(GameManager.Instance.CharacterDB.GetCharacterName(dData.Character_ID));
-        dialogBox.SetDialog(dData.Text_Script);
+        if (dData.Character_ID == 1)
+        {
+            playerText.gameObject.SetActive(true);
+            playerText.text = dData.Text_Script;
+        }
+        else
+        {
+            var npc = GameManager.Instance.CharacterDB.GetNPC(dData.Character_ID);
+            npc.Talk(dData.Text_Script);
+        }
+            /*dialogBox.SetName(GameManager.Instance.CharacterDB.GetCharacterName(dData.Character_ID));
+        dialogBox.SetDialog(dData.Text_Script);*/
         Debug.Log(dData.Text_Script);
         dialogueIdx = dData.Text_Next;
     }
@@ -98,5 +114,6 @@ public class Dialogue : MonoBehaviour
     {
         dialogueIdx = 0;
         dialogueList.Clear();
+        EventManager.Publish(EventType.EndConversation);
     }
 }
