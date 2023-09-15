@@ -9,22 +9,24 @@ public enum GameEventType
 
 public class GameEventManager : MonoBehaviour
 {
-    GameEvent gameEvent;
-    Dictionary<string, EventData> gameEventData;
+    GameEvent dayGameEvent;
+    [SerializeField]
+    List<EventData> gameEventData;
+    List<GameEvent> gameEventList;
+    //마을 게시판 연동
 
     // Start is called before the first frame update
     void Start()
     {
-        gameEventData = new Dictionary<string, EventData>();
+        gameEventData = new();
 
         var eventData = GameManager.Instance.DataBase.Parser("Random_Event_DataTable");
 
         foreach (var e in eventData)
         {
             var eId = (e["Event_ID"]).ToString();
-            gameEventData.Add(eId, new EventData
+            gameEventData.Add(new EventData
             {
-                eventId = eId,
                 eventName = e["Event_Name"].ToString(),
                 eventScript = e["Event_Script"].ToString(),
                 eventType = Tools.IntParse(e["Event_Type"]),
@@ -40,47 +42,18 @@ public class GameEventManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void EventSetting(GameEventType eventType, float eventValue)
-    {
-        switch (eventType)
-        {
-            case GameEventType.None:
-                break;
-            case GameEventType.CustomerF:
-                break;
-            case GameEventType.CustomerA:
-                break;
-            case GameEventType.CustomerE:
-                break;
-            case GameEventType.CustomerW:
-                break;
-            case GameEventType.Fame:
-                break;
-            case GameEventType.OrePrice:
-                break;
-            case GameEventType.Collect:
-                break;
-            case GameEventType.Tax:
-                break;
-            case GameEventType.VisitRate:
-                break;
-        }
-    }
+    }  
 
     public void NewDayEvent()
-    {      
-
-
+    {
         //EventSetting();
-        gameEvent.EventEffect();
+        dayGameEvent.EventActive();
     }
 }
 
+[System.Serializable]
 public class EventData
 {
-    public string eventId;
     public string eventName;
     public string eventScript;
     public int eventType;
