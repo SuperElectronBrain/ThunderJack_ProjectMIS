@@ -22,6 +22,9 @@ public class ItemManager : MonoBehaviour
     List<JewelryItemData> jewelryItemData;
 
     [SerializeField]
+    List<MaterialItemData> materialItemData;
+
+    [SerializeField]
     int itemA, ItemB;
 
     // Start is called before the first frame update
@@ -37,6 +40,7 @@ public class ItemManager : MonoBehaviour
     #region
     void LoadMaterialElement()
     {
+        materialItemData = new List<MaterialItemData>();
         var elementData = GameManager.Instance.DataBase.Parser("element_Master");
 
         foreach (var element in elementData)
@@ -51,14 +55,16 @@ public class ItemManager : MonoBehaviour
             newItemData += new MaterialItemData
             {
                 elementType1 = Tools.IntParse(element["element_Type_1"]),
-                elementType2 = Tools.IntParse(element["element_Type_1"]),
-                elementType3 = Tools.IntParse(element["element_Type_1"]),
+                elementType2 = Tools.IntParse(element["element_Type_2"]),
+                //elementType3 = Tools.IntParse(element["element_Type_3"]),
                 elementPercent1 = Tools.IntParse(element["Element_Percent_1"]),
                 elementPercent2 = Tools.IntParse(element["Element_Percent_2"]),
-                elementPercent3 = Tools.IntParse(element["Element_Percent_3"])
+                //elementPercent3 = Tools.IntParse(element["Element_Percent_3"])
             };
 
+            
             basicItemData[itemIdx] = newItemData;
+            materialItemData.Add(newItemData);
         }
     }
     #endregion
