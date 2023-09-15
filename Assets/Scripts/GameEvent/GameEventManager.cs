@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum GameEventType
 {
@@ -13,7 +14,16 @@ public class GameEventManager : MonoBehaviour
     [SerializeField]
     List<EventData> gameEventData;
     List<GameEvent> gameEventList;
-    //마을 게시판 연동
+    [SerializeField]
+    List<GameEventBase> gameEventListBase;
+
+    [SerializeField]
+    NoticeBoard noticeBoard;
+
+    [SerializeField]
+    int positiveEventWeight;
+    [SerializeField]
+    int negativeEventWeight;
 
     // Start is called before the first frame update
     void Start()
@@ -58,4 +68,10 @@ public class EventData
     public string eventScript;
     public int eventType;
     public int eventValue;
+}
+
+[System.Serializable]
+public class GameEventBase
+{
+    public UnityEvent gameEvent;
 }
