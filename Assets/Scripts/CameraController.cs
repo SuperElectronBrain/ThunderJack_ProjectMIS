@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
 	//[SerializeField] private SplineContainer m_SplineContainer;
 	//public GameObject mousePointingTarget;
 	[HideInInspector] public GameObject cameraTarget;
-	private PlayerCharacter m_PlayerCharacter;
+	[HideInInspector] public PlayerCharacter m_PlayerCharacter;
 	private Vector3 m_NextPosition;
 	private Quaternion m_NextRotation;
 

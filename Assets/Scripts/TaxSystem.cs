@@ -67,7 +67,7 @@ public class TaxSystem : MonoBehaviour
 
 	private void PaymentExecution()
 	{
-		playerInventory.PopItem(ItemCode.Money, paymentMoney);
+		playerInventory.PopAItem(1000, paymentMoney);
 		playerInventory.RefreshInventory();
 	}
 }
