@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class NoticeBoard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    TextMeshPro noticeName;
+    [SerializeField]
+    TextMeshPro noticeDescription;
+    SpriteRenderer noticeImage;
+
+    public void Start()
     {
-        
+        noticeName = transform.Find("Name").GetComponent<TextMeshPro>();
+        noticeDescription = transform.Find("Description").GetComponent<TextMeshPro>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetNoticeBoard(NoticeData noticeData)
     {
-        
+        noticeName.text = noticeData.noticeName;
+        noticeDescription.text = noticeData.noticeDescription;
     }
+}
+
+public class NoticeData
+{
+    public string noticeName;
+    public string noticeDescription;
+    public string noticeImage;
 }
