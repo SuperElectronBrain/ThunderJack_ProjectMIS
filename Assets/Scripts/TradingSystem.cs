@@ -144,7 +144,7 @@ public class TradingSystem : MonoBehaviour
 							int count = 0;
 							for(int i = 0; i < t_CostItems.Count; i = i + 1)
 							{
-								if(inventory.FindItem(t_CostItems[i]) == false)
+								if(inventory.FindAItem((int)t_CostItems[i].itemCode) == false)
 								{
 									count = count + 1;
 									break;
@@ -160,7 +160,7 @@ public class TradingSystem : MonoBehaviour
 									{
 										if(t_UnlockConditions[j].itemCode != ItemCode.None)
 										{
-											if (inventory.FindItem(t_UnlockConditions[j]) == false)
+											if (inventory.FindAItem((int)t_UnlockConditions[j].itemCode) == false)
 											{
 												count = count + 1;
 												break;
@@ -174,7 +174,7 @@ public class TradingSystem : MonoBehaviour
 							{
 								for (int i = 0; i < t_CostItems.Count; i = i + 1)
 								{
-									inventory.PopItem(t_CostItems[i]);
+									inventory.PopAItem((int)t_CostItems[i].itemCode);
 								}
 
 								List<SalesItem> t_SalesItems = m_NPCShop.GetSalesItems();
@@ -182,7 +182,7 @@ public class TradingSystem : MonoBehaviour
 								{
 									if (selectedItems[i].itemAmount > 0)
 									{
-										inventory.AddItem(t_SalesItems[i].reward.itemCode, t_SalesItems[i].reward.itemAmount * selectedItems[i].itemAmount);
+										inventory.AddAItem((int)t_SalesItems[i].reward.itemCode, 1.0f, t_SalesItems[i].reward.itemAmount * selectedItems[i].itemAmount);
 									}
 								}
 

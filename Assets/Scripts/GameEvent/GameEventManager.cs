@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public enum GameEventType
 {
-    None, CustomerF, CustomerA, CustomerE, CustomerW, Fame, OrePrice, Collect ,Tax, VisitRate
+    None, Fame, OrePrice, Collect , AppearDemonLord = 6
 }
 
 public class GameEventManager : MonoBehaviour
@@ -46,17 +46,35 @@ public class GameEventManager : MonoBehaviour
         }
 
         EventManager.Subscribe(EventType.Day, NewDayEvent);
+        Invoke("NewDayEvent", 1f);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Notice(NoticeData noticeData)
     {
-        
-    }  
+        noticeBoard.SetNoticeBoard(noticeData);
+    }
 
     public void NewDayEvent()
     {
-        //EventSetting();
+        /*int randomEventIdx = Random.Range(0, gameEventData.Count);
+
+        switch ((GameEventType)gameEventData[randomEventIdx].eventType)
+        {
+            case GameEventType.None:
+                break;
+            case GameEventType.Fame:
+                break;
+            case GameEventType.OrePrice:
+                dayGameEvent = new OreEvent();
+                break;
+            case GameEventType.Collect:
+                break;
+            case GameEventType.AppearDemonLord:
+                break;
+        }*/
+        dayGameEvent = new OreEvent();
+        dayGameEvent.InitEvent(this, gameEventData[7]);
+
         dayGameEvent.EventActive();
     }
 }

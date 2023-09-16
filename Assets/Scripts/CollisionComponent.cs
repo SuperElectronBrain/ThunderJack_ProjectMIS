@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CollisionComponent : MonoBehaviour
 {
 	public List<Collision> m_Collisions = new List<Collision>();
 	public List<Collider> m_Colliders = new List<Collider>();
+
+	[SerializeField] private UnityEvent m_OnCollisionEnter = new UnityEvent();
+	[SerializeField] private UnityEvent m_OnCollisionExit = new UnityEvent();
 
 	private void OnCollisionEnter(Collision collision)
 	{
@@ -20,6 +24,7 @@ public class CollisionComponent : MonoBehaviour
 		}
 
 		if(count < 1) { m_Collisions.Add(collision); }
+		m_OnCollisionEnter.Invoke();
 	}
 	private void OnCollisionExit(Collision collision) 
 	{
@@ -31,6 +36,7 @@ public class CollisionComponent : MonoBehaviour
 				break;
 			}
 		}
+		m_OnCollisionExit.Invoke();
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -46,6 +52,7 @@ public class CollisionComponent : MonoBehaviour
 		}
 
 		if (count < 1) { m_Colliders.Add(other); }
+		m_OnCollisionEnter.Invoke();
 	}
 	private void OnTriggerExit(Collider other)
 	{
@@ -57,5 +64,6 @@ public class CollisionComponent : MonoBehaviour
 				break;
 			}
 		}
+		m_OnCollisionExit.Invoke();
 	}
 }

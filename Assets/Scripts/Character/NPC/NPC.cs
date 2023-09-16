@@ -31,8 +31,6 @@ public class NPC : Character
     bool isMeet;
     bool isNear;
 
-    NPC_Move npcMove;
-
     public NavMeshAgent agent;
     public Vector3 destinationPos;
     public GameObject curInteractionObj;
@@ -42,10 +40,10 @@ public class NPC : Character
     [SerializeField]
     TextMeshPro dialog;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        base.Start();
+        base.Awake();
+        player = GameObject.FindGameObjectWithTag("Player");        
         fsm = new();        
         agent = GetComponent<NavMeshAgent>();
         states = new State<NPC>[((int)NPCBehaviour.Last) - 1];
@@ -54,8 +52,11 @@ public class NPC : Character
         states[((int)NPCBehaviour.Idle)] = GetComponent<IdleState>();
         states[((int)NPCBehaviour.Move)] = GetComponent<MoveState>();
         states[((int)NPCBehaviour.Conversation)] = GetComponent<ConversationState>();
-        states[((int)NPCBehaviour.Greeting)] = GetComponent<GreetingState>();
+        states[((int)NPCBehaviour.Greeting)] = GetComponent<GreetingState>();        
+    }
 
+    private void Start()
+    {
         fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
 
         InitDay();
@@ -98,7 +99,9 @@ public class NPC : Character
     public void StartConversation()
     {
         Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
-        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");        
+        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");
+        curInteractionObj = player;
+        ChangeState(NPCBehaviour.Conversation);
     }
 
     public void TalkEnd()

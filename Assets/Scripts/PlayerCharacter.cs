@@ -18,22 +18,26 @@ public interface IGrabable
 
 public class PlayerCharacter : CharacterBase
 {
-	private CameraController m_CameraCon;
+	//private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
 	public UnityEngine.UI.Image m_GrabItemSprite;
 	public AdvencedItem m_GrabItemCode = new AdvencedItem();
 
-	[HideInInspector] public GameObject m_HitObject;
+	//[HideInInspector] public GameObject m_HitObject;
 	[SerializeField] private CollisionComponent m_CollisionComponent;
+	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
+	[SerializeField] private PlayerCharacterUIScript m_PlayerCharacterUIScript;
 
 	// Start is called before the first frame update
 	protected override void Start()
 	{
 		base.Start();
 
-		m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
+		//m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
 		if (m_CollisionComponent == null) { m_CollisionComponent = UniFunc.GetChildComponent<CollisionComponent>(transform); }
+
+		FindPlayerCharacterUIScript();
 	}
 
 	// Update is called once per frame
@@ -42,7 +46,7 @@ public class PlayerCharacter : CharacterBase
 		base.Update();
 		float DeltaTime = Time.deltaTime;
 
-		if((m_GrabItemSprite.gameObject != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
+		if((m_GrabItemSprite != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
 		{
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
 		}
@@ -66,7 +70,14 @@ public class PlayerCharacter : CharacterBase
 
 		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
 
-		if (Input.GetKeyDown(KeyCode.E) == true) { GetInteractableCharacter().StartConversation(); }
+		if (Input.GetKeyDown(KeyCode.E) == true) { NPC t_NPC = GetInteractableCharacter(); if (t_NPC != null) { t_NPC.StartConversation(); } }
+		if (Input.GetKeyDown(KeyCode.I) == true) 
+		{ 
+			if (m_Inventory.m_InventoryUIScript != null)
+			{ 
+				m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf); 
+			}
+		}
 
 		if (Input.GetMouseButtonDown(0) == true)
 		{
@@ -158,6 +169,43 @@ public class PlayerCharacter : CharacterBase
 		return t_CharacterBase;
 	}
 
+	public void FindPlayerCharacterUIScript()
+	{
+		if (m_PlayerCharacterUIScript == null) { m_PlayerCharacterUIScript = FindObjectOfType<PlayerCharacterUIScript>(); }
+		if (m_PlayerCharacterUIScript == null)
+		{
+			Canvas canvas = FindObjectOfType<Canvas>();
+			if (canvas != null)
+			{
+				if (m_PlayerCharacterUIPrefab == null)
+				{
+					m_PlayerCharacterUIScript = Instantiate(m_PlayerCharacterUIPrefab, canvas.transform).GetComponent<PlayerCharacterUIScript>();
+				}
+			}
+		}
+
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_GrabItemSprite == null)
+			{
+				m_GrabItemSprite = m_PlayerCharacterUIScript.m_MouseGrabIcon;
+			}
+			if (m_Inventory.m_InventoryUIScript == null)
+			{
+				m_Inventory.m_InventoryUIScript = m_PlayerCharacterUIScript.m_InventoryUIScript;
+			}
+			if (m_Inventory.m_MoneyText == null)
+			{
+				m_Inventory.m_MoneyText = m_PlayerCharacterUIScript.m_MoneyText;
+			}
+			if (m_Inventory.m_HonerText == null)
+			{
+				m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
+			}
+			m_Inventory.RefreshInventory();
+		}
+	}
+
 	protected override void OnTriggerEnter(Collider collision)
 	{
 		m_CPAComponent = collision.gameObject.GetComponent<CameraPresetAreaComponent>();
@@ -227,7 +275,7 @@ public class PlayerCharacter : CharacterBase
 
 	protected virtual void OnClickHit(RaycastHit hit)
 	{
-		m_HitObject = hit.transform.gameObject;
+		//m_HitObject = hit.transform.gameObject;
 
 		MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
 		if (t_MillStoneHandle != null)
@@ -273,7 +321,7 @@ public class PlayerCharacter : CharacterBase
 	}
 	protected virtual void OnClickMiss()
 	{
-		m_HitObject = null;
+		//m_HitObject = null;
 	}
 
 	protected virtual void OnReleaseHit(RaycastHit hit)
@@ -340,14 +388,14 @@ public class PlayerCharacter : CharacterBase
 
 	protected virtual void OnReleaseMiss()
 	{
-		m_HitObject = null;
+		//m_HitObject = null;
 	}
 
 	//2DHit
 
 	protected virtual void OnClickHit2D(RaycastHit2D hit)
 	{
-		m_HitObject = hit.transform.gameObject;
+		//m_HitObject = hit.transform.gameObject;
 
 		MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
 		if (t_MillStoneHandle != null)
@@ -371,7 +419,7 @@ public class PlayerCharacter : CharacterBase
 
 	protected virtual void OnClickMiss2D()
 	{
-		m_HitObject = null;
+		//m_HitObject = null;
 	}
 
 	protected virtual void OnReleaseHit2D(RaycastHit2D hit)
@@ -407,6 +455,6 @@ public class PlayerCharacter : CharacterBase
 
 	protected virtual void OnReleaseMiss2D()
 	{
-		m_HitObject = null;
+		//m_HitObject = null;
 	}
 }
