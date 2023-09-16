@@ -8,6 +8,9 @@ public class TimeTable : MonoBehaviour
     [SerializeField]
     List<TimeTableData> npcTimeTable;
 
+    [SerializeField]
+    bool isWork;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,12 +46,22 @@ public class TimeTable : MonoBehaviour
             }
 
         }
+
+        EventManager.Subscribe(EventType.Work, Work);
         EventManager.Subscribe(EventType.Minute, WorkDistribution);
         //EventManager.Publish(EventType.hour);
     }
 
+    void Work()
+    {
+        isWork = !isWork;
+    }
+
     void WorkDistribution()
     {
+        if (isWork)
+            return;
+
         for (int id = 1; id < GameManager.Instance.CharacterDB.GetCharacterCount(); id++)
         {
             var timeIdx = GameManager.Instance.GameTime.GetTimeIdx();
