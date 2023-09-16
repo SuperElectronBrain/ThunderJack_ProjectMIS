@@ -196,7 +196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &49170745
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1591,8 +1591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14789fb8cdd5a5f4391b0b92117b01c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CraftPanelPrefab: {fileID: 4943368989670763409, guid: b79e4b36bdd95384fafadc47bd120371, type: 3}
-  recipeBook: {fileID: 11400000, guid: ed9d47df81ccd8642be73358e2f2f140, type: 2}
 --- !u!65 &204722195
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2864,6 +2862,7 @@ GameObject:
   - component: {fileID: 686882627}
   - component: {fileID: 686882626}
   - component: {fileID: 686882625}
+  - component: {fileID: 686882628}
   m_Layer: 5
   m_Name: InventoryButton
   m_TagString: Untagged
@@ -2887,11 +2886,11 @@ RectTransform:
   m_Father: {fileID: 1467006074}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 128, y: 72}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &686882625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2974,6 +2973,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686882623}
   m_CullTransparentMesh: 1
+--- !u!114 &686882628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686882623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc182befb5ba83b47bf3bbf818f96089, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &727645416
 GameObject:
   m_ObjectHideFlags: 0
