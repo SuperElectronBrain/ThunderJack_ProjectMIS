@@ -210,8 +210,9 @@ MonoBehaviour:
     itemProgress: 0
     itemAmount: 0
     selectCount: 0
-  m_HitObject: {fileID: 0}
   m_CollisionComponent: {fileID: 6007753278028999201}
+  m_PlayerCharacterUIPrefab: {fileID: 7797226417942440491, guid: 02836ee837613c9498224242273a8ed1, type: 3}
+  m_PlayerCharacterUIScript: {fileID: 0}
 --- !u!114 &3498382288381705809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,16 +226,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AItems: []
-  inventoryPanelPrefab: {fileID: 7028327810337245255, guid: 1eef3e4d39240654fb73e2ba4ccc88be, type: 3}
-  inventoryPanel: {fileID: 0}
-  moneyPanelPrefab: {fileID: 919832067807112595, guid: 5048d4f8e031522409486716e69c3a91, type: 3}
-  initializeData: {fileID: 11400000, guid: e41ed16591ed38e4089533e1321ff442, type: 2}
-  itemSelectEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_InventoryUIPrefab: {fileID: 0}
-  m_InventoryUIScript: {fileID: 0}
+  m_MoneyText: {fileID: 0}
+  m_HonerText: {fileID: 0}
   m_Owner: {fileID: 0}
+  m_InventoryUIScript: {fileID: 0}
 --- !u!114 &1735453549961857417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,8 +242,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b43f2b570472f449948dd0a457a7a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EmployPanelPrefab: {fileID: 4943368989670763409, guid: 501fd12670889b749818b82c7d747037, type: 3}
-  partTimerPanelPrefab: {fileID: 4943368989670763409, guid: 86bd5335aec7f6b4b8b0b8741ec84d8f, type: 3}
 --- !u!114 &212165627660371767
 MonoBehaviour:
   m_ObjectHideFlags: 0
