@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public enum GameEventType
 {
-    None, CustomerF, CustomerA, CustomerE, CustomerW, Fame, OrePrice, Collect ,Tax, VisitRate
+    None, Customer, Fame, OrePrice, Collect ,Tax, VisitRate
 }
 
 public class GameEventManager : MonoBehaviour
