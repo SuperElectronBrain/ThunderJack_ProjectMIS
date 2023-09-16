@@ -100,12 +100,7 @@ public class PlayerShop : MonoBehaviour
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
         EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
         //EventManager.Subscribe(EventType.SalesFailure, LeavingGuest);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        EventManager.Publish(EventType.Work);
     }
 
     public SpriteRenderer itemImage;
@@ -182,6 +177,7 @@ public class PlayerShop : MonoBehaviour
         EventManager.Unsubscribe(EventType.Minute, GuestCheck);
         EventManager.Unsubscribe(EventType.Dialog, ShowDialog);
         EventManager.Unsubscribe(EventType.GuestExit, LeavingGuest);
+        EventManager.Publish(EventType.Work);
     }
 
     /// <summary>

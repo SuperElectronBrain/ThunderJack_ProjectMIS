@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class DataBase : MonoBehaviour
+public class DataBase : Singleton<DataBase>
 {
     public Dictionary<string, TextAsset> dataDic;
     public TextAsset data;
@@ -23,6 +23,7 @@ public class DataBase : MonoBehaviour
         {
             dataDic.Add(data.name, data);
         }
+
     }
 
     public void Start()
