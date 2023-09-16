@@ -95,6 +95,9 @@
         },
         {
             "m_Id": "757bfdfb30884d24bd575a4be7c6dc63"
+        },
+        {
+            "m_Id": "b74fc7ea4c894c8b9676b3a5f7f03323"
         }
     ],
     "m_GroupDatas": [
@@ -273,6 +276,20 @@
                     "m_Id": "2e5d5e5acd9b4c7cae9a3904e347c7d9"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "b74fc7ea4c894c8b9676b3a5f7f03323"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "5a374f16f0d24bbbb0c9c3aa747fa2fb"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -2426,6 +2443,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "b74fc7ea4c894c8b9676b3a5f7f03323",
+    "m_Group": {
+        "m_Id": "8fbe18438625459888cd03b17e4c0f8d"
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -2258.000244140625,
+            "y": -1055.0,
+            "width": 139.0,
+            "height": 33.99993896484375
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "f1661564d1724b1287382cd709e0fc3d"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "e4219c31ebc444618b946d3524256cc1"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GradientMaterialSlot",
     "m_ObjectId": "b77173716a20449b96b55644e373b993",
     "m_Id": 0,
@@ -3339,6 +3392,21 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "f1661564d1724b1287382cd709e0fc3d",
+    "m_Id": 0,
+    "m_DisplayName": "noise speed",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
