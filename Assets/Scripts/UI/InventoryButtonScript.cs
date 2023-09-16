@@ -20,6 +20,7 @@ public class InventoryButtonScript : ButtonScript
 				if (t_PlayerCharacter.m_Inventory.m_InventoryUIScript != null)
 				{
 					t_PlayerCharacter.m_Inventory.m_InventoryUIScript.gameObject.SetActive(!t_PlayerCharacter.m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
+					t_PlayerCharacter.m_Inventory.RefreshInventory();
 				}
 			}
 		}

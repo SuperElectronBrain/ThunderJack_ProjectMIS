@@ -54,6 +54,11 @@ public class GameStartButtonScript : ButtonScript
 				}
 			}
 			t_PlayerCharacter.FindPlayerCharacterUIScript();
+			CameraController t_CameraController = Camera.main.GetComponent<CameraController>();
+			if (t_CameraController != null)
+			{
+				t_CameraController.m_PlayerCharacter = t_PlayerCharacter;
+			}
 		}
 
 		if(m_PlayerCharacter != null) { Destroy(m_PlayerCharacter.gameObject); }
