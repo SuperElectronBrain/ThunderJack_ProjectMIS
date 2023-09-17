@@ -32,6 +32,7 @@ public class PlayerCharacter : CharacterBase
 	protected override void Start()
 	{
 		base.Start();
+		m_UseScaleFlip = false;
 
 		//m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
