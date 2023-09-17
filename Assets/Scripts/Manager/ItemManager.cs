@@ -33,7 +33,7 @@ public class ItemManager : MonoBehaviour
         LoadItemData();
         LoadMaterialElement();
         LoadGemRecipe();
-        LoadShopItemData();
+        LoadShopItemData();  
     }
 
     //Load Material Element
