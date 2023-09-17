@@ -178,7 +178,7 @@ public class PlayerCharacter : CharacterBase
 			Canvas canvas = FindObjectOfType<Canvas>();
 			if (canvas != null)
 			{
-				if (m_PlayerCharacterUIPrefab == null)
+				if (m_PlayerCharacterUIPrefab != null)
 				{
 					m_PlayerCharacterUIScript = Instantiate(m_PlayerCharacterUIPrefab, canvas.transform).GetComponent<PlayerCharacterUIScript>();
 				}
@@ -191,19 +191,22 @@ public class PlayerCharacter : CharacterBase
 			{
 				m_GrabItemSprite = m_PlayerCharacterUIScript.m_MouseGrabIcon;
 			}
-			if (m_Inventory.m_InventoryUIScript == null)
+			if(m_Inventory != null)
 			{
-				m_Inventory.m_InventoryUIScript = m_PlayerCharacterUIScript.m_InventoryUIScript;
+				if (m_Inventory.m_InventoryUIScript == null)
+				{
+					m_Inventory.m_InventoryUIScript = m_PlayerCharacterUIScript.m_InventoryUIScript;
+				}
+				if (m_Inventory.m_MoneyText == null)
+				{
+					m_Inventory.m_MoneyText = m_PlayerCharacterUIScript.m_MoneyText;
+				}
+				if (m_Inventory.m_HonerText == null)
+				{
+					m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
+				}
+				m_Inventory.RefreshInventory();
 			}
-			if (m_Inventory.m_MoneyText == null)
-			{
-				m_Inventory.m_MoneyText = m_PlayerCharacterUIScript.m_MoneyText;
-			}
-			if (m_Inventory.m_HonerText == null)
-			{
-				m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
-			}
-			m_Inventory.RefreshInventory();
 		}
 	}
 
