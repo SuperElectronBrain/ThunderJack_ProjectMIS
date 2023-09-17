@@ -333,15 +333,21 @@ public class PlayerCharacter : CharacterBase
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
 		{
-			if(t_MillStone.M_Input == 0)
+			if (t_MillStone.SetItem(m_GrabItemCode) == true)
 			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				if(t_AItem.IsAddable(new AdvencedItem()) == false)
-				{
-					t_MillStone.M_Input = t_AItem.itemCode;
-					t_MillStone.m_Progress = t_AItem.itemProgress;
-				}
+				m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 			}
+
+			//if (t_MillStone.M_Input == 0)
+			//{
+			//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+			//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
+			//	{
+			//
+			//		t_MillStone.M_Input = t_AItem.itemCode;
+			//		t_MillStone.m_Progress = t_AItem.itemProgress;
+			//	}
+			//}
 		}
 
 		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
@@ -431,14 +437,9 @@ public class PlayerCharacter : CharacterBase
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
 		{
-			if (t_MillStone.M_Input == 0)
+			if (t_MillStone.SetItem(m_GrabItemCode) == true)
 			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				if (t_AItem.IsAddable(new AdvencedItem()) == false)
-				{
-					t_MillStone.M_Input = t_AItem.itemCode;
-					t_MillStone.m_Progress = t_AItem.itemProgress;
-				}
+				m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 			}
 		}
 
