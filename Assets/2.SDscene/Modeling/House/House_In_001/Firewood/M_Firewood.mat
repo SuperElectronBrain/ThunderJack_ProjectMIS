@@ -19,6 +19,7 @@ Material:
   - N_F_RELGI_ON
   - N_F_SS_ON
   - N_F_TRANSAFFSHA_ON
+  - _NORMALMAP
   m_InvalidKeywords:
   - N_F_TRANSAFFSHA
   - _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_OFF
@@ -30,6 +31,7 @@ Material:
   - _LIGHTFALLOFFAFFECTSHADOWT_OFF
   - _LIGIGNOYNORDIR_OFF
   - _MCIALO_OFF
+  - _METALLICSPECGLOSSMAP
   - _MIXMAINTEXTOOUTLINE_OFF
   - _MVCOL_OFF
   - _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_OFF
@@ -154,10 +156,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _alpha:
-        m_Texture: {fileID: 2800000, guid: 2b1e6cac4d8b4454881a4154214f1735, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -275,7 +273,6 @@ Material:
     - _PTexturePower: 1
     - _Parallax: 0.005
     - _PointSpotlightIntensity: 0
-    - _QueueControl: 0
     - _QueueOffset: 0
     - _RELG: 1
     - _ReceiveShadows: 1
@@ -324,7 +321,6 @@ Material:
     - _TEXMCOLINT: 1
     - _TRANSMODE: 0
     - _TexturePatternStyle: 0
-    - _Tiling: 0
     - _TransAffSha: 1
     - _TransparentThreshold: 0
     - _UseSecondaryCutout: 0
