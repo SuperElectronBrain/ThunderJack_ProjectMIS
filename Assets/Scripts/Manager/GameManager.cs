@@ -63,9 +63,12 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void ExitShop()
+    public void ExitShop()
     {
-        
+        for (int i = 1; i <= characterDB.GetCharacterCount(); i++)
+        {
+            characterDB.GetCharacter(i).transform.SetParent(null);
+        }
     }
 
     public Vector3 GetSpawnPos()
