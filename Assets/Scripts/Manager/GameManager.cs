@@ -51,24 +51,29 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-  /*      EventManager.Subscribe(EventType.Enter, EnterShop);
-        EventManager.Subscribe(EventType.Exit, ExitShop);*/
+  /*      EventManager.Subscribe(EventType.Enter, EnterShop);*/
+        EventManager.Subscribe(EventType.Exit, ExitShop);
     }
 
     public void EnterShop()
     {
         for(int i = 1; i <= characterDB.GetCharacterCount(); i++)
         {
-            characterDB.GetCharacter(i).transform.SetParent(characters);
+            characterDB.GetCharacter(i).gameObject.SetActive(false);
         }
     }
 
     public void ExitShop()
     {
+/*        Debug.Log("³ª°¨");
         for (int i = 1; i <= characterDB.GetCharacterCount(); i++)
         {
-            characterDB.GetCharacter(i).transform.SetParent(null);
-        }
+            var npc = characterDB.GetNPC(i);
+            npc.gameObject.SetActive(true);
+            npc.Relocation();
+        }*/
+
+        //Relocation()
     }
 
     public Vector3 GetSpawnPos()

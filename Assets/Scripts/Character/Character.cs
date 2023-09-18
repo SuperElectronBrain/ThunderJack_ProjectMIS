@@ -83,5 +83,5 @@ public class Character : MonoBehaviour
         //myTransform.GetComponent<MeshRenderer>().material = AddressableManager.LoadObject<Material>(characterInfo + "_Material");
         skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(characterInfo + "_Skeleton");
         skAni.Initialize(true);
-    }
+    }    
 }
