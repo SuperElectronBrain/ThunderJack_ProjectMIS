@@ -62,6 +62,7 @@ public class NPC : Character
         InitDay();
 
         EventManager.Subscribe(EventType.NextDialog, TalkEnd);
+        DontDestroyOnLoad(gameObject);
     }
 
     public void InitDay()
@@ -148,6 +149,12 @@ public class NPC : Character
         prevBehaviour = curBehaviour;        
         fsm.ChangeState(states[(int)newBehaviour]);
         curBehaviour = newBehaviour;
+    }
+
+    public void Relocation()
+    {
+        Vector3 relocationPos = LocationManager.GetLocationRandomPosition(((BehaviourType2)curBehaviourData).actionGoal);
+        transform.position = relocationPos;
     }
 
 
