@@ -5,7 +5,7 @@ using Cinemachine;
 
 public enum CamType
 {
-    Main, Conversation, Bridge, Prev
+    Main, Conversation, Area, Prev
 }
 
 public class CameraEvent : Singleton<CameraEvent>
@@ -15,7 +15,9 @@ public class CameraEvent : Singleton<CameraEvent>
     [SerializeField]
     CinemachineVirtualCamera conversationCam;
     [SerializeField]
-    CinemachineVirtualCamera mainCam;    
+    CinemachineVirtualCamera mainCam;
+    [SerializeField]
+    CinemachineVirtualCamera areaCam;
     [SerializeField]
     CinemachineVirtualCamera liveCam;
     [SerializeField]
@@ -25,6 +27,11 @@ public class CameraEvent : Singleton<CameraEvent>
     void Start()
     {
         ChangeCamera(CamType.Main);
+    }
+
+    public void SetCamera(CinemachineVirtualCamera newAreaCam)
+    {
+        areaCam = newAreaCam;
     }
 
     public void ChangeCamera(CamType camType)
@@ -40,7 +47,8 @@ public class CameraEvent : Singleton<CameraEvent>
             case CamType.Conversation:
                 ConversationCamera();                
                 break;
-            case CamType.Bridge:
+            case CamType.Area:
+                AreaCamera();
                 break;
             case CamType.Prev:
                 PrevCamera();
@@ -58,6 +66,12 @@ public class CameraEvent : Singleton<CameraEvent>
     {
         liveCam = mainCam;
         mainCam.Priority = 100;
+    }
+
+    void AreaCamera()
+    {
+        liveCam = areaCam;
+        areaCam.Priority = 100;
     }
 
     void PrevCamera()
