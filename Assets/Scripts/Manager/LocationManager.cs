@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum LocationName
+public enum NavType
 {
     Shop, Town, Park
 }
