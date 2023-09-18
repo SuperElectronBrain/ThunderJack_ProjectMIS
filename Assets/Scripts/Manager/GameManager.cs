@@ -36,8 +36,6 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     Dialogue dialogue;
 
-    [SerializeField]
-    NPC npc;
 
     public DataBase DataBase { get { return dataBase; } }
     public DataBase_Character CharacterDB { get { return characterDB; } }
@@ -48,17 +46,26 @@ public class GameManager : Singleton<GameManager>
     public LocationManager LocationManager { get { return locationManager; } }
     public Dialogue Dialogue { get { return dialogue; } }
 
+    [SerializeField]
+    Transform characters;
+
     private void Start()
     {
-        
-    }    
+  /*      EventManager.Subscribe(EventType.Enter, EnterShop);
+        EventManager.Subscribe(EventType.Exit, ExitShop);*/
+    }
 
-    private void Update()
+    public void EnterShop()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        for(int i = 1; i <= characterDB.GetCharacterCount(); i++)
         {
-            npc.StartConversation();
+            characterDB.GetCharacter(i).transform.SetParent(characters);
         }
+    }
+
+    void ExitShop()
+    {
+        
     }
 
     public Vector3 GetSpawnPos()
