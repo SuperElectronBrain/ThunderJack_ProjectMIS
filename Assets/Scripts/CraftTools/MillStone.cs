@@ -107,4 +107,29 @@ public class MillStone : MonoBehaviour
 	{
 
 	}
+
+	public bool SetItem(AdvencedItem p_AItem)
+	{
+		if (m_Input == 0)
+		{
+			if (p_AItem.IsAddable(new AdvencedItem()) == false)
+			{
+				switch (p_AItem.itemCode)
+				{
+					case 1: case 2: case 3: case 4: case 5:
+					{
+						m_Input = p_AItem.itemCode;
+						m_Progress = p_AItem.itemProgress;
+						return true;
+					}
+					default:
+					{
+						break;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
 }

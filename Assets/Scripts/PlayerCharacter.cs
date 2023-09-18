@@ -32,6 +32,7 @@ public class PlayerCharacter : CharacterBase
 	protected override void Start()
 	{
 		base.Start();
+		m_UseScaleFlip = false;
 
 		//m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
@@ -177,7 +178,7 @@ public class PlayerCharacter : CharacterBase
 			Canvas canvas = FindObjectOfType<Canvas>();
 			if (canvas != null)
 			{
-				if (m_PlayerCharacterUIPrefab == null)
+				if (m_PlayerCharacterUIPrefab != null)
 				{
 					m_PlayerCharacterUIScript = Instantiate(m_PlayerCharacterUIPrefab, canvas.transform).GetComponent<PlayerCharacterUIScript>();
 				}
@@ -190,19 +191,22 @@ public class PlayerCharacter : CharacterBase
 			{
 				m_GrabItemSprite = m_PlayerCharacterUIScript.m_MouseGrabIcon;
 			}
-			if (m_Inventory.m_InventoryUIScript == null)
+			if(m_Inventory != null)
 			{
-				m_Inventory.m_InventoryUIScript = m_PlayerCharacterUIScript.m_InventoryUIScript;
+				if (m_Inventory.m_InventoryUIScript == null)
+				{
+					m_Inventory.m_InventoryUIScript = m_PlayerCharacterUIScript.m_InventoryUIScript;
+				}
+				if (m_Inventory.m_MoneyText == null)
+				{
+					m_Inventory.m_MoneyText = m_PlayerCharacterUIScript.m_MoneyText;
+				}
+				if (m_Inventory.m_HonerText == null)
+				{
+					m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
+				}
+				m_Inventory.RefreshInventory();
 			}
-			if (m_Inventory.m_MoneyText == null)
-			{
-				m_Inventory.m_MoneyText = m_PlayerCharacterUIScript.m_MoneyText;
-			}
-			if (m_Inventory.m_HonerText == null)
-			{
-				m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
-			}
-			m_Inventory.RefreshInventory();
 		}
 	}
 
@@ -329,15 +333,21 @@ public class PlayerCharacter : CharacterBase
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
 		{
-			if(t_MillStone.M_Input == 0)
+			if (t_MillStone.SetItem(m_GrabItemCode) == true)
 			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				if(t_AItem.IsAddable(new AdvencedItem()) == false)
-				{
-					t_MillStone.M_Input = t_AItem.itemCode;
-					t_MillStone.m_Progress = t_AItem.itemProgress;
-				}
+				m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 			}
+
+			//if (t_MillStone.M_Input == 0)
+			//{
+			//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+			//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
+			//	{
+			//
+			//		t_MillStone.M_Input = t_AItem.itemCode;
+			//		t_MillStone.m_Progress = t_AItem.itemProgress;
+			//	}
+			//}
 		}
 
 		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
@@ -427,14 +437,9 @@ public class PlayerCharacter : CharacterBase
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
 		{
-			if (t_MillStone.M_Input == 0)
+			if (t_MillStone.SetItem(m_GrabItemCode) == true)
 			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				if (t_AItem.IsAddable(new AdvencedItem()) == false)
-				{
-					t_MillStone.M_Input = t_AItem.itemCode;
-					t_MillStone.m_Progress = t_AItem.itemProgress;
-				}
+				m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 			}
 		}
 

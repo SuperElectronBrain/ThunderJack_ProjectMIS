@@ -14,6 +14,7 @@ public class CharacterBase : MonoBehaviour
 	protected float m_VerticalMove = 0.0f;
 	private Vector3 m_PrevPosition;
 	protected float m_Velocity;
+	protected bool m_UseScaleFlip = true;
 
 	protected Camera m_MainCamera;
 	protected Rigidbody m_Rigidbody;
@@ -28,6 +29,7 @@ public class CharacterBase : MonoBehaviour
 		m_HorizontalMoveDirection = Vector3.right;
 		m_VerticalMoveDirection = Vector3.forward;
 		m_PrevPosition = transform.position;
+		m_UseScaleFlip = true;
 
 		m_MainCamera = Camera.main;
 		m_Rigidbody = gameObject.GetComponent<Rigidbody>();
@@ -52,15 +54,18 @@ public class CharacterBase : MonoBehaviour
             }
 			m_SD.transform.rotation = Quaternion.Euler(t_ModelingRotation);
 
-			Vector3 t_ModelingScale = m_SD.transform.localScale;
-			if (m_HorizontalMove > 0) { t_ModelingScale.x = -0.2f; }
-			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 0.2f; }
-			m_SD.transform.localScale = t_ModelingScale;
+			if(m_UseScaleFlip == true)
+			{
+				Vector3 t_ModelingScale = m_SD.transform.localScale;
+				if (m_HorizontalMove > 0) { t_ModelingScale.x = -0.2f; }
+				else if (m_HorizontalMove < 0) { t_ModelingScale.x = 0.2f; }
+				m_SD.transform.localScale = t_ModelingScale;
+			}
 		}
 
 		if(m_Animator != null)
 		{
-			m_Animator.SetFloat("HorizontalSpeed", m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove);
+			m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
 			m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
 		}
 	}

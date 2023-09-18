@@ -42,6 +42,7 @@ public class GameStartButtonScript : ButtonScript
 		if (t_PlayerCharacter != null)
 		{
 			t_PlayerCharacter.gameObject.transform.position = destination;
+			Debug.Log(destination);
 			if(m_PlayerCharacter != null)
 			{ 
 				if(t_PlayerCharacter.m_Inventory == null)
@@ -64,7 +65,10 @@ public class GameStartButtonScript : ButtonScript
 		if(m_PlayerCharacter != null) { Destroy(m_PlayerCharacter.gameObject); }
 		m_PlayerCharacter = null;
 		UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
-		Destroy(gameObject);
+		if(gameObject != null)
+		{
+			Destroy(gameObject);
+		}
 	}
 
 	public override void OnButtonClick()
@@ -81,6 +85,10 @@ public class GameStartButtonScript : ButtonScript
 			}
 
 			UnityEngine.SceneManagement.SceneManager.LoadScene(destinationSceneName);
+		}
+		if (m_PlayerCharacter != null)
+		{
+			m_PlayerCharacter.gameObject.transform.position = destination;
 		}
 	}
 }
