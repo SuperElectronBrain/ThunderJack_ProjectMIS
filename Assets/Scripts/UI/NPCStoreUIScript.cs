@@ -9,7 +9,8 @@ using static Unity.Burst.Intrinsics.X86.Avx;
 public class NPCStoreUIScript : MonoBehaviour
 {
 	private int m_ItemCode = 0;
-	public int m_SelectCount = 0;
+	[HideInInspector] public int m_ItemPrice = 0;
+	[HideInInspector] public int m_SelectCount = 0;
 
 	public TextMeshProUGUI m_StoreNameText;
 	public GameObject m_ButtonsPrefab;
@@ -32,6 +33,14 @@ public class NPCStoreUIScript : MonoBehaviour
 	//{
 	//
 	//}
+
+	private void OnDisable()
+	{
+		m_ItemCode = 0;
+		m_SelectCount = 0;
+		m_SelectCount = 0;
+		m_NPCInventory = null;
+	}
 
 	private void DefineTradePanelAction()
 	{
@@ -72,7 +81,18 @@ public class NPCStoreUIScript : MonoBehaviour
 				{
 					t_Button.onClick.AddListener(() =>
 					{
-						//m_Inventory.FindAItem();
+						if(m_Inventory.FindAItem(1000, 1.0f, m_SelectCount * m_ItemPrice) == true)
+						{
+							m_Inventory.PopAItem(1000, 1.0f, m_SelectCount * m_ItemPrice);
+							m_Inventory.AddAItem(m_ItemCode, 1.0f, m_SelectCount);
+
+							m_ItemCode = 0;
+							m_SelectCount = 0;
+							m_ItemPrice = 0;
+							if (ItemCountText != null) { ItemCountText.text = m_SelectCount + ""; }
+							if (m_ButtonsParent != null) { if (m_ButtonsParent.transform.parent != null) { m_ButtonsParent.transform.parent.gameObject.SetActive(true); } }
+							if (m_TradePanel != null) { m_TradePanel.SetActive(false); }
+						}
 					});
 				}
 			}
@@ -86,6 +106,7 @@ public class NPCStoreUIScript : MonoBehaviour
 					{
 						m_ItemCode = 0;
 						m_SelectCount = 0;
+						m_ItemPrice = 0;
 						if (ItemCountText != null) { ItemCountText.text = m_SelectCount + ""; }
 						if (m_ButtonsParent != null) { if (m_ButtonsParent.transform.parent != null) { m_ButtonsParent.transform.parent.gameObject.SetActive(true); } }
 						if (m_TradePanel != null) { m_TradePanel.SetActive(false); }
@@ -182,7 +203,8 @@ public class NPCStoreUIScript : MonoBehaviour
 						TextMeshProUGUI t_Text = t_GO.GetComponent<TextMeshProUGUI>();
 						if (t_Text != null)
 						{
-							t_Text.text = t_AItems[i].itemCode + " ";// + (((int)(t_AItems[i].itemProgress * 100.0f)) / 100.0f);
+							
+							t_Text.text = UniFunc.FindItemData(t_AItems[i].itemCode).itemNameEg;// + (((int)(t_AItems[i].itemProgress * 100.0f)) / 100.0f);
 						}
 					}
 					t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "PriceText (TMP)");
@@ -191,7 +213,7 @@ public class NPCStoreUIScript : MonoBehaviour
 						TextMeshProUGUI t_Text = t_GO.GetComponent<TextMeshProUGUI>();
 						if (t_Text != null)
 						{
-
+							t_Text.text = "$" + t_AItems[i].itemAmount;
 						}
 					}
 					t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "Text (TMP)");
@@ -200,7 +222,7 @@ public class NPCStoreUIScript : MonoBehaviour
 						TextMeshProUGUI t_Text = t_GO.GetComponent<TextMeshProUGUI>();
 						if (t_Text != null)
 						{
-
+							t_Text.text = UniFunc.FindItemData(t_AItems[i].itemCode).itemText;
 						}
 					}
 
@@ -209,6 +231,7 @@ public class NPCStoreUIScript : MonoBehaviour
 					m_Buttons[i].onClick.AddListener(() =>
 					{
 						m_ItemCode = t_AItems[t_Number].itemCode;
+						m_ItemPrice = t_AItems[t_Number].itemAmount;
 						if (m_ButtonsParent != null) { if (m_ButtonsParent.transform.parent != null) { m_ButtonsParent.transform.parent.gameObject.SetActive(false); } }
 						if (m_TradePanel != null) { m_TradePanel.SetActive(true); }
 					});
