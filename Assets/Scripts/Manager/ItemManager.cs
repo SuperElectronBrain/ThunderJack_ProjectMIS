@@ -263,6 +263,11 @@ public class ItemManager : MonoBehaviour
         return (MaterialItemData)basicItemData[itemID - 1];
     }
 
+    public List<ShopItemData> GetShopItemData()
+    {
+        return shopItemList;
+    }
+
     /*public int GetJewelryItemIdByComb()
     {
 
