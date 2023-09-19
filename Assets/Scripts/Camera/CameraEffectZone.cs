@@ -25,8 +25,8 @@ public class CameraEffectZone : MonoBehaviour
             CameraEvent.Instance.ChangeCamera(CamType.Area);
             //vCam.Priority = 100;
             playerPos = other.transform;
-            StartCoroutine(StartCameraMove());
-            //dolly.m_AutoDolly.m_Enabled = true;
+            //StartCoroutine(StartCameraMove());
+            dolly.m_AutoDolly.m_Enabled = true;
         }
     }
 
@@ -34,11 +34,11 @@ public class CameraEffectZone : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            StopCoroutine(StartCameraMove());
+            //StopCoroutine(StartCameraMove());
             CameraEvent.Instance.ChangeCamera(CamType.Main);
             //vCam.Priority = 0;
             playerPos = null;            
-            //dolly.m_AutoDolly.m_Enabled = false;
+            dolly.m_AutoDolly.m_Enabled = false;
         }
     }
 
