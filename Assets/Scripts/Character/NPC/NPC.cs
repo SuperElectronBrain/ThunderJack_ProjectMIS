@@ -28,14 +28,16 @@ public class NPC : Character
 
     float intimacy;
 
-    bool isMeet;
-    bool isNear;
+    public bool isMeet;
 
     public NavMeshAgent agent;
     public Vector3 destinationPos;
     public GameObject curInteractionObj;
 
     public GameObject player;
+
+    [SerializeField]
+    float sightRange;
     
     [SerializeField]
     TextMeshPro dialog;
@@ -57,12 +59,17 @@ public class NPC : Character
 
     private void Start()
     {
-        fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
-
         InitDay();
 
         EventManager.Subscribe(EventType.NextDialog, TalkEnd);
         DontDestroyOnLoad(gameObject);
+
+        SkAni.Initialize(true);
+    }
+
+    public void Init()
+    {
+        fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
     }
 
     public void InitDay()
@@ -74,19 +81,11 @@ public class NPC : Character
     {
         fsm.StateUpdate();
         myTransform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+    }
 
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            if(isMeet)
-            {
-                curInteractionObj = player;
-                ChangeState(NPCBehaviour.Conversation);
-            }            
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            ChangeState(NPCBehaviour.Move);
-        }
+    public bool IsInSight()
+    {
+        return (player.transform.position - transform.position).sqrMagnitude <= sightRange && !isMeet;
     }
 
     public void Greeting()
@@ -159,24 +158,13 @@ public class NPC : Character
 
 
     [SerializeField]
-    float sightRange;
-    [SerializeField]
     bool isDebug;
     private void OnDrawGizmos()
     {
         if (!isDebug)
             return;
         Gizmos.color = Color.green;
-
-        if ((player.transform.position - transform.position).sqrMagnitude <= sightRange)
-        {
-            Debug.Log(gameObject.name + " Hi");
-            isMeet = true;
-        }
-        else
-            isMeet = false;
             
-
         Gizmos.DrawWireSphere(transform.position, sightRange);
     }
 }

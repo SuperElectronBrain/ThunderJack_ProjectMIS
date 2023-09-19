@@ -7,9 +7,9 @@ public class IdleState : State<NPC>
     public override void Enter(NPC entity)
     {
         if (entity.lookDir.isFront)
-            entity.SkAni.AnimationName = "FRONT";
+            entity.SkAni.AnimationName = "A_idle_F";
         else
-            entity.SkAni.AnimationName = "BACK";
+            entity.SkAni.AnimationName = "A_idle_B";
     }
 
     public override void Execute(NPC entity)
@@ -24,6 +24,9 @@ public class IdleState : State<NPC>
 
     public override void OnTransition(NPC entity)
     {
-        
+        if (entity.IsInSight())
+        {
+            entity.ChangeState(NPCBehaviour.Greeting);
+        }
     }
 }

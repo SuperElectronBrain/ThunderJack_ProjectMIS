@@ -25,16 +25,16 @@ public class MoveState : State<NPC>
         if (entity.lookDir.isFront)
         {                
             if (entity.lookDir.isSideWalk)
-                entity.SkAni.AnimationName = "FRONT_Walk2";
+                entity.SkAni.AnimationName = "A_walk_F";
             else
-                entity.SkAni.AnimationName = "FRONT_Walk1";
+                entity.SkAni.AnimationName = "A_walk_F";
         }
         else
         {
             if (entity.lookDir.isSideWalk)
-                entity.SkAni.AnimationName = "BACK_Walk2";
+                entity.SkAni.AnimationName = "A_walk_B";
             else
-                entity.SkAni.AnimationName = "BACK_Walk1";
+                entity.SkAni.AnimationName = "A_walk_B";
         }                
     }
 
@@ -50,5 +50,10 @@ public class MoveState : State<NPC>
         {
             entity.ChangeState(NPCBehaviour.Idle);
         }            */
+
+        if(entity.IsInSight())
+        {
+            entity.ChangeState(NPCBehaviour.Greeting);
+        }
     }
 }
