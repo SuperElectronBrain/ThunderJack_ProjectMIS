@@ -47,7 +47,7 @@ public class DataBase_Character : MonoBehaviour
             newCharacter.SetCharacterData(characterDB[charId - 1]);
             newCharacter.gameObject.name = GetCharacterName(charId);
 
-            newCharacter.InitCharacter("Cat");
+            newCharacter.InitCharacter(GetCharacterEgName(charId));
         }
     }
 

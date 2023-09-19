@@ -69,52 +69,16 @@ Addressables.LoadAssetAsync<T>(loadObjectName)
     {
         T returnObject = default;
 
-        if (typeof(T) == typeof(Sprite))
+        if (!AddressableNullCheck<T>(loadObjectName))
         {
-            if (!AddressableNullCheck<T>(loadObjectName))
-            {
-                Debug.Log("실패");
-                loadObjectName = "Icon";
-            }
-            else
-            {
-                Debug.Log("성공");
-            }
-
-
-            /*            AsyncOperationHandle handle = Addressables.LoadAssetAsync<T>(loadObjectName);
-
-                        handle.WaitForCompletion();
-                            if (handle.Status == AsyncOperationStatus.Succeeded)
-                            {
-                                Debug.Log($"주소 '{loadObjectName}'를 찾았습니다.");
-                                // 주소가 존재하는 경우 실행할 작업을 추가할 수 있습니다.
-                            }
-                            else
-                            {
-                                Debug.LogError($"주소 '{loadObjectName}'를 찾을 수 없습니다.");
-                            loadObjectName = "Stone";
-                                // 주소가 존재하지 않는 경우 실행할 작업을 추가할 수 있습니다.
-                            }*/
-            /*            AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(loadObjectName);
-                        //임시임 확실히 버그인지 알 수 있는 이미지로 바꿀 것
-                        if (handle.Status == AsyncOperationStatus.Succeeded)
-                        {
-                            Debug.Log("성공");
-                        }
-                        else
-                            loadObjectName = "Icon";*//*
-            if (Addressables.LoadAssetAsync<T>(loadObjectName).IsValid())
-            //if (Addressables.LoadResourceLocationsAsync(loadObjectName, typeof(object)).IsValid())
-            {
-                Debug.Log("성공");
-                //loadObjectName = "Icon";
-            }                
-            else
-            {
-                Debug.Log("실패");
-            }*/
+            Debug.Log("실패");
+            loadObjectName = "Icon";
         }
+        else
+        {
+            Debug.Log("성공");
+        }
+
 
         var op = Addressables.LoadAssetAsync<T>(loadObjectName);
 
