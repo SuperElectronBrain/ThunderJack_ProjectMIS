@@ -71,7 +71,15 @@ public class PlayerCharacter : CharacterBase
 
 		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
 
-		if (Input.GetKeyDown(KeyCode.E) == true) { NPC t_NPC = GetInteractableCharacter(); if (t_NPC != null) { t_NPC.StartConversation(); } }
+		if (Input.GetKeyDown(KeyCode.E) == true) 
+		{
+			NPC t_NPC = GetInteractableCharacter(); 
+			if (t_NPC != null)
+			{
+				t_NPC.StartConversation();
+
+			}
+		}
 		if (Input.GetKeyDown(KeyCode.I) == true) 
 		{ 
 			if (m_Inventory.m_InventoryUIScript != null)
@@ -206,6 +214,12 @@ public class PlayerCharacter : CharacterBase
 					m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
 				}
 				m_Inventory.RefreshInventory();
+
+				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory == null)
+				{
+					m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory = m_Inventory;
+					m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+				}
 			}
 		}
 	}
@@ -225,28 +239,28 @@ public class PlayerCharacter : CharacterBase
 	/// <param name="p_MouseDown"> MouseButtonDown = true, MouseButtonUp = false </param>
 	protected virtual void DoRaycast(bool p_MouseDown = true)
 	{
-		if(p_MouseDown == true)
+		bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current != null ? UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() : false;
+		if (p_MouseDown == true)
 		{
 			Vector3 t_MousePosition = Vector3.zero;
 			if (Camera.main.orthographic == false)
 			{
 				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
 				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
-				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (result == true && bMouseOnUI == false)
-				{ OnClickHit(hit); }
-				else if (result == false || bMouseOnUI == true)
-				{ OnClickMiss(); }
+				// bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+				if (result == true)// && bMouseOnUI == false)
+				{ OnClickHit(hit, bMouseOnUI); }
+				else if (result == false)// || bMouseOnUI == true)
+				{ OnClickMiss(bMouseOnUI); }
 			}
 			else if (Camera.main.orthographic == true)
 			{
 				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
-				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (hit2D == true && bMouseOnUI == false)
-				{ OnClickHit2D(hit2D); }
-				else if (hit2D == false || bMouseOnUI == true)
-				{ OnClickMiss2D(); }
+				if (hit2D == true)// && bMouseOnUI == false)
+				{ OnClickHit2D(hit2D, bMouseOnUI); }
+				else if (hit2D == false)// || bMouseOnUI == true)
+				{ OnClickMiss2D(bMouseOnUI); }
 			}
 		}
 		else if(p_MouseDown == false)
@@ -256,154 +270,211 @@ public class PlayerCharacter : CharacterBase
 			{
 				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
 				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
-				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (result == true && bMouseOnUI == false)
-				{ OnReleaseHit(hit); }
-				else if (result == false || bMouseOnUI == true)
-				{ OnReleaseMiss(); }
+				if (result == true)// && bMouseOnUI == false)
+				{ OnReleaseHit(hit, bMouseOnUI); }
+				else if (result == false)// || bMouseOnUI == true)
+				{ OnReleaseMiss(bMouseOnUI); }
 			}
 			else if (Camera.main.orthographic == true)
 			{
 				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
-				bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (hit2D == true && bMouseOnUI == false)
-				{ OnReleaseHit2D(hit2D); }
-				else if (hit2D == false || bMouseOnUI == true)
-				{ OnReleaseMiss2D(); }
+				if (hit2D == true)// && bMouseOnUI == false)
+				{ OnReleaseHit2D(hit2D, bMouseOnUI); }
+				else if (hit2D == false)// || bMouseOnUI == true)
+				{ OnReleaseMiss2D(bMouseOnUI); }
 			}
 		}
 	}
 
 	//3DHit
 
-	protected virtual void OnClickHit(RaycastHit hit)
+	protected virtual void OnClickHit(RaycastHit hit, bool bMouseOnUI)
 	{
-		//m_HitObject = hit.transform.gameObject;
-
-		MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
-		if (t_MillStoneHandle != null)
+		if (bMouseOnUI == false)
 		{
-			MillStone t_MillStone = UniFunc.GetParentComponent<MillStone>(t_MillStoneHandle.gameObject);
+			MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
+			if (t_MillStoneHandle != null)
+			{
+				MillStone t_MillStone = UniFunc.GetParentComponent<MillStone>(t_MillStoneHandle.gameObject);
+				if (t_MillStone != null)
+				{
+					t_MillStone.bProgress = true;
+				}
+			}
+
+			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
+			if(t_AccessoryPlate != null)
+			{
+				if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
+				{
+					if (t_AccessoryPlate.m_Input.itemAmount > 0)
+					{
+						if (m_GrabItemCode.IsAddable(new AdvencedItem()) == true)
+						{
+							m_Inventory.AddAItem(t_AccessoryPlate.m_Input.itemCode, t_AccessoryPlate.m_Input.itemProgress, t_AccessoryPlate.m_Input.itemAmount);
+							m_GrabItemCode = t_AccessoryPlate.m_Input;
+							if (m_GrabItemSprite != null)
+							{
+								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
+								m_GrabItemSprite.gameObject.SetActive(true);
+							}
+							t_AccessoryPlate.m_Input = new AdvencedItem();
+							t_AccessoryPlate.RefreshPlate();
+						}
+					}
+				}
+			}
+
+			IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
+			if (t_GrabableObject != null)
+			{
+				if (t_GrabableObject.IsGrabable() == true)
+				{
+					t_GrabableObject.SetGrabState(true);
+				}
+			}
+
+			Debug.Log(hit.transform.gameObject);
+			NPCShop t_NPCShop = hit.transform.GetComponent<NPCShop>();
+			if (t_NPCShop != null)
+			{
+				if (m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+					{
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(true);
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = t_NPCShop.m_Inventory;
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
+				}
+			}
+			else if (t_NPCShop == null)
+			{
+				if (m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+					{
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
+				}
+			}
+		}
+		else if (bMouseOnUI == true)
+		{
+
+		}
+	}
+	protected virtual void OnClickMiss(bool bMouseOnUI)
+	{
+		if (bMouseOnUI == false)
+		{
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+				{
+					m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+					m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+					m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+				}
+			}
+		}
+		else if (bMouseOnUI == true)
+		{
+		}
+	}
+
+	protected virtual void OnReleaseHit(RaycastHit hit, bool bMouseOnUI)
+	{
+		if (bMouseOnUI == false)
+		{
+			MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 			if (t_MillStone != null)
 			{
-				t_MillStone.bProgress = true;
-			}
-		}
-
-		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
-		if(t_AccessoryPlate != null)
-		{
-			if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
-			{
-				if (t_AccessoryPlate.m_Input.itemAmount > 0)
+				if (t_MillStone.SetItem(m_GrabItemCode) == true)
 				{
-					if (m_GrabItemCode.IsAddable(new AdvencedItem()) == true)
+					m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+				}
+
+				/*
+				//if (t_MillStone.M_Input == 0)
+				//{
+				//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+				//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
+				//	{
+				//
+				//		t_MillStone.M_Input = t_AItem.itemCode;
+				//		t_MillStone.m_Progress = t_AItem.itemProgress;
+				//	}
+				//}
+				*/
+			}
+
+			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
+			if (t_AccessoryPlate != null)
+			{
+				if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == true)
+				{
+					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+					if (t_AItem.IsAddable(new AdvencedItem()) == false)
 					{
-						m_Inventory.AddAItem(t_AccessoryPlate.m_Input.itemCode, t_AccessoryPlate.m_Input.itemProgress, t_AccessoryPlate.m_Input.itemAmount);
-						m_GrabItemCode = t_AccessoryPlate.m_Input;
-						if (m_GrabItemSprite != null)
-						{
-							m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
-							m_GrabItemSprite.gameObject.SetActive(true);
-						}
-						t_AccessoryPlate.m_Input = new AdvencedItem();
+						t_AccessoryPlate.m_Input = t_AItem;
 						t_AccessoryPlate.RefreshPlate();
 					}
 				}
-			}
-		}
-
-		IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
-		if (t_GrabableObject != null)
-		{
-			if (t_GrabableObject.IsGrabable() == true)
-			{
-				t_GrabableObject.SetGrabState(true);
-			}
-		}
-	}
-	protected virtual void OnClickMiss()
-	{
-		//m_HitObject = null;
-	}
-
-	protected virtual void OnReleaseHit(RaycastHit hit)
-	{
-		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
-		if (t_MillStone != null)
-		{
-			if (t_MillStone.SetItem(m_GrabItemCode) == true)
-			{
-				m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-			}
-
-			//if (t_MillStone.M_Input == 0)
-			//{
-			//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-			//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
-			//	{
-			//
-			//		t_MillStone.M_Input = t_AItem.itemCode;
-			//		t_MillStone.m_Progress = t_AItem.itemProgress;
-			//	}
-			//}
-		}
-
-		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
-		if (t_AccessoryPlate != null)
-		{
-			if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == true)
-			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				if (t_AItem.IsAddable(new AdvencedItem()) == false)
+				else if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
 				{
-					t_AccessoryPlate.m_Input = t_AItem;
-					t_AccessoryPlate.RefreshPlate();
-				}
-			}
-			else if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
-			{
-				if(m_GrabItemCode.IsAddable(new AdvencedItem()) == false)
-				{
-					if(t_AccessoryPlate.CraftItem(m_GrabItemCode) == true)
+					if (m_GrabItemCode.IsAddable(new AdvencedItem()) == false)
 					{
-						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-						t_AccessoryPlate.RefreshPlate();
-
-						if (m_GrabItemSprite != null)
+						if (t_AccessoryPlate.CraftItem(m_GrabItemCode) == true)
 						{
-							m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
-							m_GrabItemSprite.gameObject.SetActive(true);
+							m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+							t_AccessoryPlate.RefreshPlate();
+
+							if (m_GrabItemSprite != null)
+							{
+								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
+								m_GrabItemSprite.gameObject.SetActive(true);
+							}
 						}
 					}
 				}
 			}
-		}
 
-		PlayerShop t_PlayerShop = hit.transform.GetComponent<PlayerShop>();
-		if (t_PlayerShop != null) 
-		{
-			if(t_PlayerShop.itemCode == 0)
+			PlayerShop t_PlayerShop = hit.transform.GetComponent<PlayerShop>();
+			if (t_PlayerShop != null)
 			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				if (t_AItem.IsAddable(new AdvencedItem()) == false)
+				if (t_PlayerShop.itemCode == 0)
 				{
-					t_PlayerShop.itemCode = t_AItem.itemCode;
-					t_PlayerShop.HandOverItem();
+					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+					if (t_AItem.IsAddable(new AdvencedItem()) == false)
+					{
+						t_PlayerShop.itemCode = t_AItem.itemCode;
+						t_PlayerShop.HandOverItem();
+					}
 				}
 			}
 		}
+		else if (bMouseOnUI == true)
+		{
+		}
 	}
 
-	protected virtual void OnReleaseMiss()
+	protected virtual void OnReleaseMiss(bool bMouseOnUI)
 	{
-		//m_HitObject = null;
+		if (bMouseOnUI == false)
+		{
+		}
+		else if (bMouseOnUI == true)
+		{
+		}
 	}
 
 	//2DHit
 
-	protected virtual void OnClickHit2D(RaycastHit2D hit)
+	protected virtual void OnClickHit2D(RaycastHit2D hit, bool bMouseOnUI)
 	{
 		//m_HitObject = hit.transform.gameObject;
 
@@ -427,12 +498,12 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	protected virtual void OnClickMiss2D()
+	protected virtual void OnClickMiss2D(bool bMouseOnUI)
 	{
 		//m_HitObject = null;
 	}
 
-	protected virtual void OnReleaseHit2D(RaycastHit2D hit)
+	protected virtual void OnReleaseHit2D(RaycastHit2D hit, bool bMouseOnUI)
 	{
 		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
 		if (t_MillStone != null)
@@ -458,7 +529,7 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	protected virtual void OnReleaseMiss2D()
+	protected virtual void OnReleaseMiss2D(bool bMouseOnUI)
 	{
 		//m_HitObject = null;
 	}

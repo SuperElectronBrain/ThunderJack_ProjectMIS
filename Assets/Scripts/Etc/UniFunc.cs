@@ -249,4 +249,74 @@ public class UniFunc : MonoBehaviour
 
 		return AddressableManager.LoadObject<Sprite>(p_ItemCode);
 	}
+
+	public static ShopItemData FindShopItem(List<ShopItemData> p_ShopItemDatas, int p_ItemCode)
+	{
+		ShopItemData t_ShopItemData = null;
+		for (int i = 0; i < p_ShopItemDatas.Count; i = i + 1)
+		{
+			if (p_ShopItemDatas[i].itemId == p_ItemCode)
+			{
+				t_ShopItemData = p_ShopItemDatas[i];
+			}
+		}
+		return t_ShopItemData;
+	}
+
+	public static BasicItemData FindItemData(int p_ItemCode)
+	{
+		BasicItemData t_BasicItemData = null;
+		if(GameManager.Instance != null)
+		{
+			if (GameManager.Instance.ItemManager != null)
+			{
+				t_BasicItemData = GameManager.Instance.ItemManager.GetMaterialItem(p_ItemCode);
+			}
+		}
+		return t_BasicItemData;
+	}
+
+	public static List<ShopItemData> GetShopItemData()
+	{
+		List<ShopItemData> t_ShopItemDatas = null;
+		if (GameManager.Instance != null)
+		{
+			if (GameManager.Instance.ItemManager != null)
+			{
+				t_ShopItemDatas = new List<ShopItemData>(GameManager.Instance.ItemManager.GetShopItemData());
+			}
+		}
+
+		for(int i = 0; i < t_ShopItemDatas.Count; i = i + 1)
+		{
+			if (t_ShopItemDatas[i].itemId >= 16 || t_ShopItemDatas[i].itemId <= 21)
+			{
+				t_ShopItemDatas[i].itemId = t_ShopItemDatas[i].itemId + 6;
+			}
+			/*
+			//else if (t_ShopItemDatas[i].itemId == 17)
+			//{
+			//	t_ShopItemDatas[i].itemId = 23;
+			//}
+			//else if (t_ShopItemDatas[i].itemId == 18)
+			//{
+			//	t_ShopItemDatas[i].itemId = 24;
+			//}
+			//else if (t_ShopItemDatas[i].itemId == 19)
+			//{
+			//	t_ShopItemDatas[i].itemId = 25;
+			//}
+			//else if (t_ShopItemDatas[i].itemId == 20)
+			//{
+			//	t_ShopItemDatas[i].itemId = 26;
+			//}
+			//else if (t_ShopItemDatas[i].itemId == 21)
+			//{
+			//	t_ShopItemDatas[i].itemId = 27;
+			//}
+			*/
+		}
+
+		return t_ShopItemDatas;
+	}
 }
