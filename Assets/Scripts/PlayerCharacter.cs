@@ -47,17 +47,18 @@ public class PlayerCharacter : CharacterBase
 		base.Update();
 		float DeltaTime = Time.deltaTime;
 
-		if((m_GrabItemSprite != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
+		if ((m_GrabItemSprite != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
 		{
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
 		}
 	}
 
-	//protected override void FixedUpdate()
-	//{
-	//	base.FixedUpdate();
-	//	float DeltaTime = Time.fixedDeltaTime;
-	//}
+	protected override void FixedUpdate()
+	{
+		base.FixedUpdate();
+		float DeltaTime = Time.fixedDeltaTime;
+		SetMoveDirection(Camera.main.transform.right, new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized);
+	}
 
 	protected override void KeyInput()
 	{

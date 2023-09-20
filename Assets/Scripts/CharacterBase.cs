@@ -74,10 +74,10 @@ public class CharacterBase : MonoBehaviour
 	{
 		float DeltaTime = Time.fixedDeltaTime;
 
-		if(m_CPAComponent != null)
-		{
-			SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward);
-		}
+		//if(m_CPAComponent != null)
+		//{
+		//	SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward);
+		//}
 		HorizontalMove(DeltaTime);
 		VerticalMove(DeltaTime);
 
