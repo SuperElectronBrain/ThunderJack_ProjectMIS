@@ -204,7 +204,7 @@ public class NPCStoreUIScript : MonoBehaviour
 						if (t_Text != null)
 						{
 							
-							t_Text.text = UniFunc.FindItemData(t_AItems[i].itemCode).itemNameEg;// + (((int)(t_AItems[i].itemProgress * 100.0f)) / 100.0f);
+							t_Text.text = UniFunc.FindItemData(t_AItems[i].itemCode).itemNameKo;// + (((int)(t_AItems[i].itemProgress * 100.0f)) / 100.0f);
 						}
 					}
 					t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "PriceText (TMP)");

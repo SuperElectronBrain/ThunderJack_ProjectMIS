@@ -289,7 +289,7 @@ public class UniFunc : MonoBehaviour
 
 		for(int i = 0; i < t_ShopItemDatas.Count; i = i + 1)
 		{
-			if (t_ShopItemDatas[i].itemId >= 16 || t_ShopItemDatas[i].itemId <= 21)
+			if (t_ShopItemDatas[i].itemId >= 16 && t_ShopItemDatas[i].itemId <= 21)
 			{
 				t_ShopItemDatas[i].itemId = t_ShopItemDatas[i].itemId + 6;
 			}

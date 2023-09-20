@@ -66,10 +66,8 @@ public class Portal : MonoBehaviour
 			}
 			t_PlayerCharacter.FindPlayerCharacterUIScript();
 			CameraController t_CameraController = Camera.main.GetComponent<CameraController>();
-			if(t_CameraController != null)
-			{
-				t_CameraController.m_PlayerCharacter = t_PlayerCharacter;
-			}
+			if(t_CameraController != null) { t_CameraController.m_PlayerCharacter = t_PlayerCharacter; }
+			if (t_PlayerCharacter.GetComponent<Rigidbody>() != null) { t_PlayerCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero; }
 		}
 
 		if (m_PlayerCharacter != null) { Destroy(m_PlayerCharacter.gameObject); }

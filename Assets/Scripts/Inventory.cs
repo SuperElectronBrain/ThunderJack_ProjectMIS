@@ -14,13 +14,13 @@ public enum ItemCode
 {
 	None = 0,
 
-	Ruby,
+	Ruby = 1,
 	Sapphire,
 	Topaz,
 	Diamond,
 	Spinel,
 
-	Ring,
+	Ring = 22,
 	Necklace,
 	Bangle,
 	Earring,

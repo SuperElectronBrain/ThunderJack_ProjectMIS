@@ -215,10 +215,13 @@ public class PlayerCharacter : CharacterBase
 				}
 				m_Inventory.RefreshInventory();
 
-				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory == null)
+				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
 				{
-					m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory = m_Inventory;
-					m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory == null)
+					{
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory = m_Inventory;
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
 				}
 			}
 		}
