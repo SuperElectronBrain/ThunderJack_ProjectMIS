@@ -8,15 +8,16 @@ public class Dialogue : MonoBehaviour
     [System.Serializable]
     public class DialogueData
     {
-        public int Text_ID;
-        public int Character_ID;
-        public int Animation_ID;
-        public int Text_Type;
-        public int Fame_Grade;
-        public int Text_Day;
-        public float Text_Rate;
-        public string Text_Script;
-        public int Text_Next;
+        public int textID;
+        public int characterID;
+        public int animationID;
+        public int textType;
+        public int textFormal;          
+        public string textScript;
+        public int textSelect1;
+        public int textSelect2;       
+        public int textNext1;
+        public int textNext2;
     }
 
     public string currentDialogue;
@@ -48,16 +49,17 @@ public class Dialogue : MonoBehaviour
 
             dialogueList.Add(
                 new DialogueData
-                {
-                    Text_ID = int.Parse(dict["Text_ID"].ToString()),
-                    Character_ID = charId,
-                    Animation_ID = int.Parse(dict["Animation_ID"].ToString()),
-                    //Text_Type = int.Parse(dict["Text_Type"].ToString()),
-                    //Fame_Grade = int.Parse(dict["Fame_Grade"].ToString()),
-                    //Text_Day = int.Parse(dict["Text_Day"].ToString()),
-                    Text_Rate = float.Parse(dict["Text_Rate"].ToString()),
-                    Text_Script = dict["Text_Script"].ToString(),
-                    Text_Next = int.Parse(dict["Text_Next"].ToString())
+                {                    
+                    textID = Tools.IntParse(dict["Text_ID"]),
+                    characterID = charId,
+                    textType = Tools.IntParse(dict["Text_Type"]),
+                    animationID = Tools.IntParse(dict["Animation_ID"]),
+                    textFormal = Tools.IntParse(dict["Text_Formal"]),
+                    textScript = dict["Text_Script"].ToString(),
+                    textSelect1 = Tools.IntParse(dict["Text_Select1"]),
+                    textSelect2 = Tools.IntParse(dict["Text_Select2"]),
+                    textNext1 = Tools.IntParse(dict["Text_Next"]),
+                    textNext2 = Tools.IntParse(dict["Text_Next2"])
                 }
             );
         }
@@ -94,20 +96,20 @@ public class Dialogue : MonoBehaviour
     void NextDialog()
     {       
         var dData = dialogueList[dialogueIdx];
-        if (dData.Character_ID == 1)
+        if (dData.characterID == 1)
         {
             playerText.gameObject.SetActive(true);
-            playerText.text = dData.Text_Script;
+            playerText.text = dData.textScript;
         }
         else
         {
-            var npc = GameManager.Instance.CharacterDB.GetNPC(dData.Character_ID);
-            npc.Talk(dData.Text_Script);
+            var npc = GameManager.Instance.CharacterDB.GetNPC(dData.characterID);
+            npc.Talk(dData.textScript);
         }
             /*dialogBox.SetName(GameManager.Instance.CharacterDB.GetCharacterName(dData.Character_ID));
         dialogBox.SetDialog(dData.Text_Script);*/
-        Debug.Log(dData.Text_Script);
-        dialogueIdx = dData.Text_Next;
+        Debug.Log(dData.textScript);
+        dialogueIdx = dData.textNext1;
     }
 
     public void EndDialogue()

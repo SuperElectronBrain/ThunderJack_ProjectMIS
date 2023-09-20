@@ -85,6 +85,9 @@ public class NPC : Character
 
     public bool IsInSight()
     {
+        if (player != null)
+            return false;
+
         return (player.transform.position - transform.position).sqrMagnitude <= sightRange && !isMeet;
     }
 
