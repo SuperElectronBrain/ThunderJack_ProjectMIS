@@ -17,11 +17,13 @@ public class NpcRelocation : MonoBehaviour
 
     void Relocation()
     {
+        var player = GameObject.FindGameObjectWithTag("Player");
         for(int i = 1; i <= GameManager.Instance.CharacterDB.GetCharacterCount(); i++)
         {
             var npc = GameManager.Instance.CharacterDB.GetNPC(i);
             npc.gameObject.SetActive(true);
             npc.Relocation();
+            npc.player = player;
         }
     }
 }
