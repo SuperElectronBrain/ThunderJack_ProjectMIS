@@ -14,8 +14,8 @@ public class Dialogue : MonoBehaviour
         public int textType;
         public int textFormal;          
         public string textScript;
-        public int textSelect1;
-        public int textSelect2;       
+        public string textSelect1;
+        public string textSelect2;       
         public int textNext1;
         public int textNext2;
     }
@@ -56,8 +56,8 @@ public class Dialogue : MonoBehaviour
                     animationID = Tools.IntParse(dict["Animation_ID"]),
                     textFormal = Tools.IntParse(dict["Text_Formal"]),
                     textScript = dict["Text_Script"].ToString(),
-                    textSelect1 = Tools.IntParse(dict["Text_Select1"]),
-                    textSelect2 = Tools.IntParse(dict["Text_Select2"]),
+                    textSelect1 = dict["Text_Select1"].ToString(),
+                    textSelect2 = dict["Text_Select2"].ToString(),
                     textNext1 = Tools.IntParse(dict["Text_Next"]),
                     textNext2 = Tools.IntParse(dict["Text_Next2"])
                 }
