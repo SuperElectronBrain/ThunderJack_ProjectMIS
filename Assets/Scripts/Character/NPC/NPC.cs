@@ -29,6 +29,7 @@ public class NPC : Character
     float intimacy;
 
     public bool isMeet;
+    public bool isTalk;
 
     public NavMeshAgent agent;
     public Vector3 destinationPos;
@@ -134,14 +135,20 @@ public class NPC : Character
                 break;
             case 2:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
-                ChangeState(NPCBehaviour.Move);
+                if (!isTalk)
+                    ChangeState(NPCBehaviour.Move);
+                else
+                    prevBehaviour = NPCBehaviour.Move;
                 break;
             case 3:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
                 destinationPos = LocationManager.GetLocationRandomPosition(destinationPos);
                 //Debug.Log(curBehaviourData.)
                 //Debug.Log(((BehaviourType2)curBehaviourData).actionGoal);
-                ChangeState(NPCBehaviour.Move);
+                if(!isTalk)
+                    ChangeState(NPCBehaviour.Move);
+                else
+                    prevBehaviour = NPCBehaviour.Move;
                 break;
         }
     }
