@@ -31,6 +31,8 @@ public class NPC : Character
     public bool isMeet;
     public bool isTalk;
 
+    int formal = 0;
+
     public NavMeshAgent agent;
     public Vector3 destinationPos;
     public GameObject curInteractionObj;
@@ -76,6 +78,7 @@ public class NPC : Character
     public void InitDay()
     {
         isMeet = false;
+        formal = 0;
     }
 
     protected virtual void Update()
@@ -102,10 +105,11 @@ public class NPC : Character
 
     public void StartConversation()
     {
+        formal++;
         Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
-        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");
+        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue", formal);
         curInteractionObj = player;
-        ChangeState(NPCBehaviour.Conversation);
+        ChangeState(NPCBehaviour.Conversation);        
     }
 
     public void TalkEnd()
