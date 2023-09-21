@@ -35,13 +35,16 @@ public class Dialogue : MonoBehaviour
     [SerializeField]
     PlayerDialogBox playerDialogBox;
 
+    [SerializeField]
+    bool isSelect = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        playerDialogBox = FindObjectOfType<PlayerDialogBox>();
+        //playerDialogBox = FindObjectOfType<PlayerDialogBox>();        
     }
 
-    public void InitDialogue(string newDialogue)
+    public void InitDialogue(string newDialogue, int formal)
     {
         var dialogue = GameManager.Instance.DataBase.Parser(newDialogue);
 
@@ -66,6 +69,15 @@ public class Dialogue : MonoBehaviour
             );
         }
 
+        for(int i = 0; i < dialogueList.Count; i++)
+        {
+            if(dialogueList[i].textFormal == formal)
+            {
+                dialogueIdx = i;
+                break;
+            }
+        }
+
         StartCoroutine(StartConversation());
     }
 
@@ -75,19 +87,34 @@ public class Dialogue : MonoBehaviour
 
         while (!dialogueIdx.Equals(-1))
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if(IsOption())
             {
-                EventManager.Publish(EventType.NextDialog);
-                playerText.transform.parent.gameObject.SetActive(false);
-                NextDialog();
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    NextDialog();
+                    GameManager.Instance.CharacterDB.GetNPC(dialogueList[dialogueIdx].characterID).TalkEnd();
+                    playerDialogBox.gameObject.SetActive(true);
+                    playerDialogBox.ActiveButton(true);
+                    yield return new WaitUntil(() => isSelect == true);
+                }                    
             }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    EventManager.Publish(EventType.NextDialog);
+                    playerDialogBox.gameObject.SetActive(false);
+                    NextDialog();
+                }
+            }
+            
             yield return null;
         }
         while(true)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                playerText.transform.parent.gameObject.SetActive(false);
+                playerDialogBox.gameObject.SetActive(false);
                 EndDialogue();
                 yield break;
             }
@@ -100,8 +127,8 @@ public class Dialogue : MonoBehaviour
         var dData = dialogueList[dialogueIdx];
         if (dData.characterID == 1)
         {
-            playerText.transform.parent.gameObject.SetActive(true);
-            playerText.text = dData.textScript;
+            playerDialogBox.gameObject.SetActive(true);
+            playerDialogBox.SetPlayerDialog(dData.textScript);
         }
         else
         {
@@ -111,11 +138,50 @@ public class Dialogue : MonoBehaviour
             /*dialogBox.SetName(GameManager.Instance.CharacterDB.GetCharacterName(dData.Character_ID));
         dialogBox.SetDialog(dData.Text_Script);*/
         Debug.Log(dData.textScript);
+        
+
+        if (IsOption())
+        {
+            Debug.Log("¤·¤¤¤±");
+            isSelect = false;            
+            playerDialogBox.SetPlayerDialogOption(dData.textSelect1, dData.textSelect2);
+        }
+        else
+        {
+            dialogueIdx = dData.textNext1;
+            playerDialogBox.ActiveButton(false);
+        }
+            
+    }
+
+    public void SelectOption1()
+    {
+        isSelect = true;
+        var dData = dialogueList[dialogueIdx];
+
         dialogueIdx = dData.textNext1;
+        playerDialogBox.gameObject.SetActive(false);
+        playerDialogBox.ActiveButton(false);
+
+        NextDialog();
+    }
+
+    public void SelectOption2()
+    {
+        isSelect = true;
+        var dData = dialogueList[dialogueIdx];
+
+        dialogueIdx = dData.textNext2;
+        playerDialogBox.gameObject.SetActive(false);
+        playerDialogBox.ActiveButton(false);
+        
+        NextDialog();
     }
 
     bool IsOption()
     {
+        if (dialogueIdx == -1)
+            return false;
         return dialogueList[dialogueIdx].textType == 2;
     }
 

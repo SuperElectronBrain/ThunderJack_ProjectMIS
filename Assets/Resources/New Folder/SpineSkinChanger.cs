@@ -3,12 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
 using Spine;
-using Spine.Unity.AttachmentTools;
+
+public enum HumanRaceType
+{
+    Blonde_Human, Blue_Human, Brown_Human, Red_human, End
+}
+
+public enum ParrotRaceType
+{
+    Blue_Parrot, Yellow_Parrot, End
+}
+
+public enum SheepRaceType
+{
+    Pink_Sheep, white_Sheep, End
+}
+
+public enum RaceType
+{
+    Human, Parrot, Sheep, End
+}
+
+public enum ClothType
+{
+    Dress_Blue, Dress_Yellow, Shirts_Brown, Shirts_Green, Shirts_White, Vest, End
+}
 
 public class SpineSkinChanger : MonoBehaviour
 {
     SkeletonAnimation skAni;
     SkeletonData skData;
+    [SpineSkin, SerializeField]
+    string skin;
+    [SpineSkin("Cloth"), SerializeField]
+    string cloth;
+    [SpineSlot, SerializeField]
+    string slot;
+    [SpineAttachment, SerializeField]
+    string key;
 
     // Start is called before the first frame update
     void Start()
@@ -17,15 +49,18 @@ public class SpineSkinChanger : MonoBehaviour
         skData = skAni.skeleton.Data;
 
         var mix = new Skin("default");
-        mix.AddSkin(skData.FindSkin("skin-base"));
-        mix.AddSkin(skData.FindSkin("nose/short"));
-        mix.AddSkin(skData.FindSkin("eyelids/girly"));
-        mix.AddSkin(skData.FindSkin("eyes/violet"));
-        mix.AddSkin(skData.FindSkin("hair/brown"));
-        mix.AddSkin(skData.FindSkin("clothes/hoodie-orange"));
-        mix.AddSkin(skData.FindSkin("legs/pants-jeans"));
-        mix.AddSkin(skData.FindSkin("accessories/bag"));
-        mix.AddSkin(skData.FindSkin("accessories/hat-red-yellow"));
+        /*        mix.AddSkin(skData.FindSkin("skin-base"));
+                mix.AddSkin(skData.FindSkin("nose/short"));
+                mix.AddSkin(skData.FindSkin("eyelids/girly"));
+                mix.AddSkin(skData.FindSkin("eyes/violet"));
+                mix.AddSkin(skData.FindSkin("hair/brown"));
+                mix.AddSkin(skData.FindSkin("clothes/hoodie-orange"));
+                mix.AddSkin(skData.FindSkin("legs/pants-jeans"));
+                mix.AddSkin(skData.FindSkin("accessories/bag"));
+                mix.AddSkin(skData.FindSkin("accessories/hat-red-yellow"));*/
+
+        mix.AddSkin(skData.FindSkin(skin));
+        mix.AddSkin(skData.FindSkin(cloth));
 
         skAni.skeleton.SetSkin(mix);
         
@@ -39,36 +74,51 @@ public class SpineSkinChanger : MonoBehaviour
         skAni.Initialize(true);
     }
 
-    public void SkinChange1()
+    public void SkinCahnge()
     {
+        SkinReset();
+
         var mix = new Skin("default");
-        mix.AddSkin(skData.FindSkin("skin-base"));
-        mix.AddSkin(skData.FindSkin("nose/long"));
-        mix.AddSkin(skData.FindSkin("eyelids/girly"));
-        mix.AddSkin(skData.FindSkin("eyes/yellow"));
-        mix.AddSkin(skData.FindSkin("hair/brown"));
-        mix.AddSkin(skData.FindSkin("clothes/dress-green"));
-        mix.AddSkin(skData.FindSkin("legs/pants-green"));
-        mix.AddSkin(skData.FindSkin("accessories/scarf"));
-        mix.AddSkin(skData.FindSkin("accessories/hat-red-yellow"));
+        mix.AddSkin(skData.FindSkin(skin));
+        mix.AddSkin(skData.FindSkin(cloth));
 
         skAni.skeleton.SetSkin(mix);
 
         skAni.skeleton.SetSlotsToSetupPose();
     }
 
-    public void SkinChange2()
+    public void RandomSkinChange()
     {
+        SkinReset();
+
+        string newCloth = "Cloth/" + ((ClothType)Random.Range(0, ((int)ClothType.End))).ToString();
+        RaceType race = (RaceType)Random.Range(0, ((int)RaceType.End));
+        string newRace = null;
+        string type = null;
+
+        switch (race)
+        {
+            case RaceType.Human:
+                type = ((HumanRaceType)Random.Range(0, ((int)HumanRaceType.End))).ToString();
+                break;
+            case RaceType.Parrot:
+                type = ((ParrotRaceType)Random.Range(0, ((int)ParrotRaceType.End))).ToString();
+                break;
+            case RaceType.Sheep:
+                type = ((SheepRaceType)Random.Range(0, ((int)SheepRaceType.End))).ToString();
+                break;
+        }
+
+        type = type.Replace("_", " ");
+
+        newRace = race.ToString() + "/" + type;
+
+        Debug.Log(newRace);
+        Debug.Log(newCloth);
+
         var mix = new Skin("default");
-        mix.AddSkin(skData.FindSkin("skin-base"));
-        mix.AddSkin(skData.FindSkin("nose/short"));
-        mix.AddSkin(skData.FindSkin("eyelids/girly"));
-        mix.AddSkin(skData.FindSkin("eyes/violet"));
-        mix.AddSkin(skData.FindSkin("hair/brown"));
-        mix.AddSkin(skData.FindSkin("clothes/hoodie-orange"));
-        mix.AddSkin(skData.FindSkin("legs/pants-jeans"));
-        mix.AddSkin(skData.FindSkin("accessories/bag"));
-        mix.AddSkin(skData.FindSkin("accessories/hat-red-yellow"));
+        mix.AddSkin(skData.FindSkin(newRace));
+        mix.AddSkin(skData.FindSkin(newCloth));
 
         skAni.skeleton.SetSkin(mix);
 
