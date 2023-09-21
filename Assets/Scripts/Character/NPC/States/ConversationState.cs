@@ -9,6 +9,7 @@ public class ConversationState : State<NPC>
     {
         CameraEvent.Instance.ChangeCamera(CamType.Conversation);
         isTalking = true;
+        entity.isTalk = true;
         entity.agent.isStopped = true;
         entity.lookDir.SetDir(transform.position, entity.curInteractionObj.transform.position);
 
@@ -19,9 +20,9 @@ public class ConversationState : State<NPC>
         entity.myTransform.localScale = newScale;
 
         if (entity.lookDir.isFront)
-            entity.SkAni.AnimationName = "FRONT";
+            entity.SkAni.AnimationName = "A_idle_F";
         else
-            entity.SkAni.AnimationName = "BACK";
+            entity.SkAni.AnimationName = "A_idle_B";
 
         //entity.StartConversation();
         EventManager.Subscribe(EventType.EndConversation, EndConversation);
@@ -35,6 +36,7 @@ public class ConversationState : State<NPC>
     public override void Exit(NPC entity)
     {
         EventManager.Unsubscribe(EventType.EndConversation, EndConversation);
+        entity.isTalk = false;
     }
 
     public override void OnTransition(NPC entity)

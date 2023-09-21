@@ -32,11 +32,13 @@ public class Dialogue : MonoBehaviour
 
     [SerializeField]
     TextMeshPro playerText;
+    [SerializeField]
+    PlayerDialogBox playerDialogBox;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerDialogBox = FindObjectOfType<PlayerDialogBox>();
     }
 
     public void InitDialogue(string newDialogue)
@@ -70,13 +72,13 @@ public class Dialogue : MonoBehaviour
     IEnumerator StartConversation()
     {
         NextDialog();
-        //dialogBox.ShowDialogBox();
+
         while (!dialogueIdx.Equals(-1))
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 EventManager.Publish(EventType.NextDialog);
-                playerText.gameObject.SetActive(false);
+                playerText.transform.parent.gameObject.SetActive(false);
                 NextDialog();
             }
             yield return null;
@@ -85,12 +87,12 @@ public class Dialogue : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                playerText.gameObject.SetActive(false);
+                playerText.transform.parent.gameObject.SetActive(false);
                 EndDialogue();
                 yield break;
             }
             yield return null;
-        }        
+        }
     }
 
     void NextDialog()
@@ -98,7 +100,7 @@ public class Dialogue : MonoBehaviour
         var dData = dialogueList[dialogueIdx];
         if (dData.characterID == 1)
         {
-            playerText.gameObject.SetActive(true);
+            playerText.transform.parent.gameObject.SetActive(true);
             playerText.text = dData.textScript;
         }
         else
@@ -110,6 +112,11 @@ public class Dialogue : MonoBehaviour
         dialogBox.SetDialog(dData.Text_Script);*/
         Debug.Log(dData.textScript);
         dialogueIdx = dData.textNext1;
+    }
+
+    bool IsOption()
+    {
+        return dialogueList[dialogueIdx].textType == 2;
     }
 
     public void EndDialogue()
