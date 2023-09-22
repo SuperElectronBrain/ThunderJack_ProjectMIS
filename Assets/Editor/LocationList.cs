@@ -56,7 +56,7 @@ public class LocationList : EditorWindow
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain")))
             {
                 selectPos = Instantiate(Resources.Load<GameObject>("SelectPos"), hit.point, Quaternion.identity) as GameObject;
             }            
