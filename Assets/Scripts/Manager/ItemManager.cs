@@ -182,7 +182,8 @@ public class ItemManager : MonoBehaviour
                     buyValue = Tools.IntParse(item["Buy_Value"]),
                     sellValue = Tools.IntParse(item["Sell_Value"]),
                     shopType = Tools.IntParse(item["Shop_Type"]),
-                    shopRate = Tools.FloatParse(item["Shop_Rate"])
+                    shopRate = Tools.FloatParse(item["Shop_Rate"]),
+                    sellFame = Tools.IntParse(item["Sell_Fame"])
                 }
                 );
         }
@@ -265,6 +266,9 @@ public class ItemManager : MonoBehaviour
 
     public BasicItemData GetBasicItemData(int itemID)
     {
+        if (itemID < 0 || itemID >= basicItemData.Count)
+            return null;
+
         return basicItemData[itemID - 1];
     }
 
@@ -273,10 +277,14 @@ public class ItemManager : MonoBehaviour
         return shopItemList;
     }
 
-    /*public int GetJewelryItemIdByComb()
+    public SalesData GetSalesData(int itemID)
     {
-
-    }*/
+        return new SalesData
+        {
+            money = shopItemList[itemID - 1].sellValue,
+            fame = shopItemList[itemID - 1].sellFame
+        };
+    }
 }
 
 //ItemData
@@ -349,6 +357,7 @@ public class ShopItemData
     public int itemId;
     public int buyValue;
     public int sellValue;
+    public int sellFame;
     public int shopType;
     public float shopRate;
 }
