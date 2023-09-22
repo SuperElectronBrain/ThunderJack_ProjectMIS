@@ -21,6 +21,7 @@ public class Guest : MonoBehaviour
     bool isAccept;
     bool isFail;
     bool isDone;
+    bool isEntry;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +71,7 @@ public class Guest : MonoBehaviour
     public void RefusalSales()
     {
         skAni.AnimationName = "No";
+        isFail = true;
         AnimationCheck();
     }
 
@@ -98,28 +100,29 @@ public class Guest : MonoBehaviour
         skAni.AnimationState.Complete -= AnimationEnd;
     }
 
-    public void CheckItem(int requestItemID)
+    public void CheckItem(int requestItemID, float perfection)
     {
         var requestItem = GameManager.Instance.ItemManager.GetRequestStuffByItemID(requestItemID);
-        Debug.Log(requestItem.requestStuff1 + " " + requestItem.requestStuff2);       
+        Debug.Log(requestItem.requestStuff1 + " " + requestItem.requestStuff2);
+
+        SalesData salesData = GameManager.Instance.ItemManager.GetSalesData(requestItemID);
+        salesData.perfection = perfection;
 
         if (requestItem.requestStuff1 == request.requestStuff1 && requestItem.requestStuff2 == request.requestStuff2)
         {
             isDone = true;
             skAni.AnimationName = "Yes";
-            AnimationCheck();                        
+            
+            PlayerShop_Sales.SalesSuccess(salesData);
         }
         else
         {
             isFail = true;
             skAni.AnimationName = "No";
-            AnimationCheck();
-        }            
-    }
 
-    public void FirstGuest()
-    {
-        EventManager.Publish(EventType.Dialog);        
+            PlayerShop_Sales.SalesFailure(salesData);
+        }
+        AnimationCheck();
     }
 
     public string GetGuestName()
@@ -135,6 +138,8 @@ public class Guest : MonoBehaviour
     public void EntryShop()
     {
         Debug.Log(gameObject.name + " º’¥‘¿‘¿Â");
+        EventManager.Publish(EventType.Dialog);
+        isEntry = true;
         mr.enabled = true;
         WaitingForAnswer();
     }
@@ -143,6 +148,12 @@ public class Guest : MonoBehaviour
     {
         Debug.Log(gameObject.name + " º’¥‘≈¿Â");
         StopAllCoroutines();
+        isEntry = false;
         mr.enabled = false;        
+    }
+
+    public bool IsEntry()
+    {
+        return isEntry;
     }
 }

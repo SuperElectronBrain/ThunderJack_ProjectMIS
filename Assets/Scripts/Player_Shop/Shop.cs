@@ -13,6 +13,5 @@ public class Shop : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.Publish(EventType.Exit);
-        EventManager.Publish(EventType.Work);
     }
 }

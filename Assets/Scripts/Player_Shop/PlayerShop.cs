@@ -3,70 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class CircularGuestQueue
-{
-    [SerializeField]
-    Guest[] guestQueue;
-    [SerializeField]
-    int maxGuestCount;
-    [SerializeField]
-    int guestCount;
-
-    public CircularGuestQueue(Guest[] guests, int maxGuestCount = 3)
-    {
-        this.maxGuestCount = maxGuestCount;
-        //guestQueue = new Guest[maxGuestCount];
-        guestQueue = guests;
-    }   
-
-    public void ExitGuest()
-    {
-        var temp = guestQueue[maxGuestCount - 1];
-        for (int i = 0; i < guestQueue.Length - 1; i++)
-        {
-            if(i == 0)
-                guestQueue[maxGuestCount - 1] = guestQueue[i];
-            else
-                guestQueue[i - 1] = guestQueue[i];
-        }
-        guestQueue[maxGuestCount - 2] = temp;
-
-        guestQueue[guestCount - 1].ExitShop();
-        guestCount--;
-        if (guestCount != 0)
-            GetGuest().FirstGuest();
-    }
-
-    public void EntryGuest(GuestData newGuest, RequestData newRequest)
-    {        
-        guestQueue[guestCount].InitGuest(newGuest, newRequest);
-        guestQueue[guestCount].EntryShop();
-        if (guestCount == 0)
-            guestQueue[guestCount].FirstGuest();
-        guestCount++;
-    }
-
-    public bool IsFull()
-    {
-        return guestCount == maxGuestCount;
-    }
-
-    public Guest GetGuest()
-    {
-        return guestQueue[0];
-    }
-}
-
 public class PlayerShop : MonoBehaviour
 {
-    PlayerShop_Guest guest;
+    PlayerShop_Guest guestData;
     PlayerShop_Sales sales;
     [SerializeField]
     DialogueBox dialogBox;
 
     [SerializeField]
-    CircularGuestQueue guestQueue;
+    Guest guest;
 
     [SerializeField]
     int entryWeight;
@@ -90,11 +35,10 @@ public class PlayerShop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        guest = GetComponent<PlayerShop_Guest>();
+        guestData = GetComponent<PlayerShop_Guest>();
         sales = GetComponent<PlayerShop_Sales>();
 
-        var guests = transform.GetComponentsInChildren<Guest>();
-        guestQueue = new CircularGuestQueue(guests, guests.Length);
+        guest = GetComponentInChildren<Guest>();
 
         EventManager.Subscribe(EventType.Minute, GuestCheck);
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
@@ -108,22 +52,23 @@ public class PlayerShop : MonoBehaviour
 
     public void EntryGuset()
     {        
-        var newGuest = guest.GetRandomGuest();
+        var newGuest = guestData.GetRandomGuest();
         var newRequest = sales.GetRequestData(newGuest.guestId);
 
-        guestQueue.EntryGuest(newGuest, newRequest);        
+        guest.InitGuest(newGuest, newRequest);
+        guest.EntryShop();
     }
 
     public void ShowDialog()
     {
-        dialogBox.SetName(guestQueue.GetGuest().GetGuestName());
-        dialogBox.SetDialog(guestQueue.GetGuest().GetRequest());
+        dialogBox.SetName(guest.GetGuestName());
+        dialogBox.SetDialog(guest.GetRequest());
         dialogBox.ShowDialogBox();
     }
 
     void GuestCheck()
     {
-        if (guestQueue.IsFull())
+        if (guest.IsEntry())
             return;
 
         if (entryWeight >= Random.Range(0, 100))
@@ -140,7 +85,7 @@ public class PlayerShop : MonoBehaviour
 
     public void HandOverItem()
     {
-        guestQueue.GetGuest().CheckItem(itemCode);
+        guest.CheckItem(itemCode, 0);
         itemCode = 0;
     }
 
@@ -157,18 +102,18 @@ public class PlayerShop : MonoBehaviour
     {
         //guestQueue.GetGuest().gameObject.SetActive(false);
         dialogBox.ShowDialogBox(false);
-        guestQueue.ExitGuest();        
+        guest.ExitShop();        
     }
 
     public void AcceptSales()
     {
-        guestQueue.GetGuest().AcceptSales();
+        guest.AcceptSales();
         dialogBox.ShowDialogBox(false);
     }
 
     public void RefusalSales()
     {
-        guestQueue.GetGuest().RefusalSales();
+        guest.RefusalSales();
         dialogBox.ShowDialogBox(false);
     }
 
@@ -177,7 +122,6 @@ public class PlayerShop : MonoBehaviour
         EventManager.Unsubscribe(EventType.Minute, GuestCheck);
         EventManager.Unsubscribe(EventType.Dialog, ShowDialog);
         EventManager.Unsubscribe(EventType.GuestExit, LeavingGuest);
-        EventManager.Publish(EventType.Work);
     }
 
     /// <summary>
