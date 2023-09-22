@@ -176,8 +176,10 @@ public class UniFunc : MonoBehaviour
 		return t_GemRecipes;
 	}
 
-	public static Sprite FindSprite(string p_ItemCode)
+	public static Sprite FindSprite(int p_ItemCode)
 	{
+		Sprite t_Sprite = null;
+		/*
 		if (p_ItemCode == "0")
 		{
 			return null;
@@ -246,8 +248,11 @@ public class UniFunc : MonoBehaviour
 		{
 			p_ItemCode = "Icon_Item_Accessory_6";
 		}
-
-		return AddressableManager.LoadObject<Sprite>(p_ItemCode);
+		*/
+		//return AddressableManager.LoadObject<Sprite>(FindItemData(p_ItemCode).itemNameEg);
+		BasicItemData t_BasicItemData = FindItemData(p_ItemCode);
+		if (t_BasicItemData != null) { t_Sprite = t_BasicItemData.itemResourceImage; }
+		return t_Sprite;
 	}
 
 	public static ShopItemData FindShopItem(List<ShopItemData> p_ShopItemDatas, int p_ItemCode)
@@ -270,7 +275,9 @@ public class UniFunc : MonoBehaviour
 		{
 			if (GameManager.Instance.ItemManager != null)
 			{
-				t_BasicItemData = GameManager.Instance.ItemManager.GetMaterialItem(p_ItemCode);
+				Debug.Log(p_ItemCode);
+				if (p_ItemCode < 1) { p_ItemCode = 1; }
+				t_BasicItemData = GameManager.Instance.ItemManager.GetBasicItemData(p_ItemCode);
 			}
 		}
 		return t_BasicItemData;

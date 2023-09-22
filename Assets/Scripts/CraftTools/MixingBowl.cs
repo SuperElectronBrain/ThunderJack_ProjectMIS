@@ -5,10 +5,20 @@ using UnityEngine;
 
 public struct Ingredient
 {
-	public string m_Input;
-	public float m_Progress;
+	public int itemCode;
+	public float progress;
 
-	public Ingredient(string p_Input, float p_Progress) { m_Input = p_Input; m_Progress = p_Progress; }
+	public Ingredient(string p_String = null) { itemCode = 0; progress = 0.0f; }
+	public Ingredient(int p_Input, float p_Progress) { itemCode = p_Input; progress = p_Progress; }
+
+	public static implicit operator Ingredient(string p_String) { return new Ingredient(); }
+
+	public static implicit operator string(Ingredient p_Ingredient)
+	{
+		string t_String = null;
+		if (p_Ingredient.itemCode != 0 || p_Ingredient.progress != 0.0f) { t_String = p_Ingredient.ToString(); }
+		return t_String;
+	}
 }
 
 public class MixingBowl : MonoBehaviour, IGrabable
@@ -43,6 +53,8 @@ public class MixingBowl : MonoBehaviour, IGrabable
 				//m_Furnace.m_Elements = m_Elements;
 				//Debug.Log(m_Furnace.m_Elements[0] + ", " + m_Furnace.m_Elements[1] + ", " + m_Furnace.m_Elements[2] + ", " + m_Furnace.m_Elements[3] + ", " + m_Furnace.m_Elements[4] + ", " + m_Furnace.m_Elements[5]);
 				for (int i = 0; i < m_Elements.Length; i = i + 1) { m_Elements[i] = 0.0f; }
+				m_Furnace.m_Ingredients = m_Ingredients;
+				m_Ingredients = null;
 				m_Furnace.m_bProgress = true;
 				m_IsGrabable = false;
 				RefreshGraph();
@@ -104,22 +116,22 @@ public class MixingBowl : MonoBehaviour, IGrabable
 		}
 
 		/*
-		//int count = 0;
-		//for (int i = 0; i < m_Ingredients.Count; i = i + 1)
-		//{
-		//	if (m_Ingredients[i].m_Input == p_Input)
-		//	{
-		//		m_Ingredients[i] = new Ingredient(m_Ingredients[i].m_Input, m_Ingredients[i].m_Progress + p_Progress);
-		//		count = count + 1;
-		//		break;
-		//	}
-		//}
-		//
-		//if(count < 1)
-		//{
-		//	m_Ingredients.Add(new Ingredient(p_Input, p_Progress));
-		//}
 		*/
+		int count = 0;
+		for (int i = 0; i < m_Ingredients.Count; i = i + 1)
+		{
+			if (m_Ingredients[i].itemCode == p_Input)
+			{
+				m_Ingredients[i] = new Ingredient(m_Ingredients[i].itemCode, m_Ingredients[i].progress + p_Progress);
+				count = count + 1;
+				break;
+			}
+		}
+		
+		if(count < 1)
+		{
+			m_Ingredients.Add(new Ingredient(p_Input, p_Progress));
+		}
 
 		RefreshGraph();
 	}

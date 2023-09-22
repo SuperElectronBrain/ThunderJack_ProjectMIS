@@ -6,7 +6,7 @@ public class Furnace : MonoBehaviour
 {
 	public float m_Progress = 0.0f;
 	public float m_ProgressPerSecond = 10.0f;
-	//public List<Ingredient> m_Ingredients = null;
+	public List<Ingredient> m_Ingredients = null;
 	public float[] m_Elements = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
 	public bool m_bProgress = false;
 
@@ -127,6 +127,17 @@ public class Furnace : MonoBehaviour
 				m_CraftedItem.m_CompleteItem = new AdvencedItem(t_ItemCode, 1.0f, t_ItemAmount);
 				m_CraftedItem.RefreshItemDisplay();
 				m_CraftedItem.m_IsGrabable = true;
+
+				if(m_Inventory != null)
+				{
+					if(m_Inventory.m_Owner != null)
+					{
+						if(((PlayerCharacter)m_Inventory.m_Owner).m_RecipeBook != null)
+						{
+							((PlayerCharacter)m_Inventory.m_Owner).m_RecipeBook.RegistItem(t_ItemCode, 1.0f, m_Ingredients);
+						}
+					}
+				}
 			}
 		}
 
@@ -188,30 +199,30 @@ public class Furnace : MonoBehaviour
 
 	
 
-	public GemRecipe FindItemData(List<GemRecipe> p_GemRecipes, string p_ItemCode)
-	{
-		GemRecipe t_GemRecipes = null;
-		for (int i = 0; i < p_GemRecipes.Count; i = i + 1)
-		{
-			if ((p_GemRecipes[i].itemNameEg == p_ItemCode) || (p_GemRecipes[i].itemNameKo == p_ItemCode))
-			{
-				t_GemRecipes = p_GemRecipes[i];
-			}
-		}
-
-		return t_GemRecipes;
-	}
-	public int FindItemDataIndex(List<GemRecipe> p_GemRecipes, string p_ItemCode)
-	{
-		int t_Index = -1;
-		for (int i = 0; i < p_GemRecipes.Count; i = i + 1)
-		{
-			if ((p_GemRecipes[i].itemNameEg == p_ItemCode) || (p_GemRecipes[i].itemNameKo == p_ItemCode))
-			{
-				t_Index = i;
-			}
-		}
-
-		return t_Index;
-	}
+	//public GemRecipe FindItemData(List<GemRecipe> p_GemRecipes, string p_ItemCode)
+	//{
+	//	GemRecipe t_GemRecipes = null;
+	//	for (int i = 0; i < p_GemRecipes.Count; i = i + 1)
+	//	{
+	//		if ((p_GemRecipes[i].itemNameEg == p_ItemCode) || (p_GemRecipes[i].itemNameKo == p_ItemCode))
+	//		{
+	//			t_GemRecipes = p_GemRecipes[i];
+	//		}
+	//	}
+	//
+	//	return t_GemRecipes;
+	//}
+	//public int FindItemDataIndex(List<GemRecipe> p_GemRecipes, string p_ItemCode)
+	//{
+	//	int t_Index = -1;
+	//	for (int i = 0; i < p_GemRecipes.Count; i = i + 1)
+	//	{
+	//		if ((p_GemRecipes[i].itemNameEg == p_ItemCode) || (p_GemRecipes[i].itemNameKo == p_ItemCode))
+	//		{
+	//			t_Index = i;
+	//		}
+	//	}
+	//
+	//	return t_Index;
+	//}
 }

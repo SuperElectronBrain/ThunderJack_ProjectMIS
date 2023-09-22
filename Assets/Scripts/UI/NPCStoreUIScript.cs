@@ -193,7 +193,7 @@ public class NPCStoreUIScript : MonoBehaviour
 
 							if (t_AItems[i].itemAmount > 0)
 							{
-								t_Image.sprite = UniFunc.FindSprite(t_AItems[i].itemCode + "");
+								t_Image.sprite = UniFunc.FindSprite(t_AItems[i].itemCode);
 							}
 						}
 					}
