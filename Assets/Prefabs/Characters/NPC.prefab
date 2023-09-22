@@ -223,7 +223,7 @@ MonoBehaviour:
   initialFlipY: 0
   updateWhenInvisible: 3
   separatorSlotNames: []
-  zSpacing: 0
+  zSpacing: -0.01
   useClipping: 1
   immutableTriangles: 0
   pmaVertexColors: 1
@@ -335,8 +335,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2056664829
+  m_SortingLayer: 1
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: a128d2c03b364fa498eaf231be2a5387, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -426,8 +426,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2056664829
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &4682375181242107248
@@ -592,12 +592,14 @@ MonoBehaviour:
     isFront: 0
     isRight: 0
     isSideWalk: 0
+  isMeet: 0
+  isTalk: 0
   agent: {fileID: 0}
   destinationPos: {x: 0, y: 0, z: 0}
   curInteractionObj: {fileID: 0}
   player: {fileID: 0}
-  dialog: {fileID: 4682375181242107248}
   sightRange: 8
+  dialog: {fileID: 4682375181242107248}
   isDebug: 0
 --- !u!114 &6529930206529814306
 MonoBehaviour:
