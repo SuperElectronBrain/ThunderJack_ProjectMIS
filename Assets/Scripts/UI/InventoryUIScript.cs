@@ -102,6 +102,15 @@ public class InventoryUIScript : MonoBehaviour
 							t_Text.text = t_AItems[t_Number].itemCode + " " + (((int)(t_AItems[t_Number].itemProgress * 100.0f)) / 100.0f);
 						}
 					}
+					t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "ItemAmountText (TMP)");
+					if (t_GO != null)
+					{
+						TextMeshProUGUI t_Text = t_GO.GetComponent<TextMeshProUGUI>();
+						if (t_Text != null)
+						{
+							t_Text.text = t_AItems[t_Number].itemAmount + "";
+						}
+					}
 					((CustomButton)m_Buttons[i]).onDown.RemoveAllListeners();
 					((CustomButton)m_Buttons[i]).onDown.AddListener(() =>
 					{
@@ -113,7 +122,7 @@ public class InventoryUIScript : MonoBehaviour
 								if (t_PlayerCharacter != null)
 								{
 									AdvencedItem t_AItem = m_Inventory.GetAItems()[t_Number];
-									t_PlayerCharacter.m_GrabItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, t_AItem.itemAmount);
+									t_PlayerCharacter.m_GrabItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, 1);
 									if(t_PlayerCharacter.m_GrabItemSprite != null)
 									{
 										t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(m_Inventory.GetAItems()[t_Number].itemCode);

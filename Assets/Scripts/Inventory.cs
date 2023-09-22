@@ -444,13 +444,8 @@ public class Inventory : MonoBehaviour
 				else if (m_AItems[i].itemAmount > p_AItem.itemAmount)
 				{
 					t_AItem = p_AItem;
-					m_AItems[i] = m_AItems[i] + new AdvencedItem
-					(
-						p_AItem.itemCode,
-						p_AItem.itemProgress,
-						-p_AItem.itemAmount,
-						(m_AItems[i].itemAmount - p_AItem.itemAmount) < m_AItems[i].selectCount ? (m_AItems[i].itemAmount - p_AItem.itemAmount) - m_AItems[i].selectCount : 0
-					);
+					m_AItems[i] = new AdvencedItem (p_AItem.itemCode, p_AItem.itemProgress, m_AItems[i].itemAmount - p_AItem.itemAmount,
+						(m_AItems[i].itemAmount - p_AItem.itemAmount) < m_AItems[i].selectCount ? (m_AItems[i].itemAmount - p_AItem.itemAmount) - m_AItems[i].selectCount : 0);
 				}
 
 				break;

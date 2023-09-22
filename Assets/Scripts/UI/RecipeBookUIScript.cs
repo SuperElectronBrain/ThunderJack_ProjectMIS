@@ -105,6 +105,7 @@ public class RecipeBookUIScript : MonoBehaviour
 								}
 
 								m_Inventory.AddAItem(m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].itemCode, m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].progress, 1);
+								m_Inventory.RefreshInventory();
 								if (m_RecipePanel != null) { m_RecipePanel.SetActive(false); }
 							}
 						}
@@ -129,23 +130,11 @@ public class RecipeBookUIScript : MonoBehaviour
 		if (m_ItemRegistPanel != null)
 		{
 			GameObject t_GO = UniFunc.GetChildOfName(m_ItemRegistPanel.transform, "ItemImage");
-			if (t_GO != null)
-			{
-				m_RegistItemImage = t_GO.GetComponent<UnityEngine.UI.Image>();
-				//t_Image.sprite = UniFunc.FindSprite(p_ItemCode);
-			}
+			if (t_GO != null) { m_RegistItemImage = t_GO.GetComponent<UnityEngine.UI.Image>(); }
 			t_GO = UniFunc.GetChildOfName(m_ItemRegistPanel.transform, "ItemNameText (TMP)");
-			if (t_GO != null)
-			{
-				m_RegistItemNameText = t_GO.GetComponent<TextMeshProUGUI>();
-				//t_Text.text = UniFunc.FindItemData(p_ItemCode).itemNameKo;
-			}
+			if (t_GO != null) { m_RegistItemNameText = t_GO.GetComponent<TextMeshProUGUI>(); }
 			t_GO = UniFunc.GetChildOfName(m_ItemRegistPanel.transform, "ItemPerfectionText (TMP)");
-			if (t_GO != null)
-			{
-				m_RegistItemPerfectionText = t_GO.GetComponent<TextMeshProUGUI>();
-				//t_Text.text = (int)(p_Progress * 100.0f) + "";
-			}
+			if (t_GO != null) { m_RegistItemPerfectionText = t_GO.GetComponent<TextMeshProUGUI>(); }
 
 			t_GO = UniFunc.GetChildOfName(m_ItemRegistPanel.transform, "RegistButton");
 			if (t_GO != null)
@@ -203,7 +192,8 @@ public class RecipeBookUIScript : MonoBehaviour
 					string t_String = "";
 					for(int i = 0; i < m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].ingredients.Count; i = i + 1)
 					{
-						t_String = t_String + UniFunc.FindItemData(m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].ingredients[i].itemCode).itemNameKo + "\n";
+						t_String = t_String + UniFunc.FindItemData(m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].ingredients[i].itemCode).itemNameKo + " " +
+							((int)m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].ingredients[i].progress * 100.0f) + "\n";
 					}
 					m_RecipeItemIngredientsText.text = t_String;
 				}
