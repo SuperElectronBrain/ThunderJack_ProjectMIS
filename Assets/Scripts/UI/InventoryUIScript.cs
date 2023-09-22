@@ -89,7 +89,7 @@ public class InventoryUIScript : MonoBehaviour
 
 							if (t_AItems[t_Number].itemAmount > 0)
 							{
-								t_Image.sprite = UniFunc.FindSprite(t_AItems[t_Number].itemCode + "");
+								t_Image.sprite = UniFunc.FindSprite(t_AItems[t_Number].itemCode);
 							}
 						}
 					}
@@ -116,7 +116,7 @@ public class InventoryUIScript : MonoBehaviour
 									t_PlayerCharacter.m_GrabItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, t_AItem.itemAmount);
 									if(t_PlayerCharacter.m_GrabItemSprite != null)
 									{
-										t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(m_Inventory.GetAItems()[t_Number].itemCode + "");
+										t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(m_Inventory.GetAItems()[t_Number].itemCode);
 										t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
 									}
 								}

@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 1735453549961857417}
   - component: {fileID: 212165627660371767}
   - component: {fileID: 1016496045938947752}
+  - component: {fileID: 1813622840504543691}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -219,6 +220,7 @@ MonoBehaviour:
   m_CollisionComponent: {fileID: 6007753278028999201}
   m_PlayerCharacterUIPrefab: {fileID: 7797226417942440491, guid: 02836ee837613c9498224242273a8ed1, type: 3}
   m_PlayerCharacterUIScript: {fileID: 0}
+  m_RecipeBook: {fileID: 1813622840504543691}
 --- !u!114 &3498382288381705809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +285,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1813622840504543691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932186443044066599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a43f9c1bb9767fa48a0560e38d8ee676, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RecipeBookUIScript: {fileID: 0}
 --- !u!1001 &3090305993254792254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -346,6 +361,10 @@ PrefabInstance:
     - target: {fileID: 2486684789330713284, guid: 80f8b6dccaa5cfb47bd58c5446aa4f3a, type: 3}
       propertyPath: zSpacing
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486684789330713284, guid: 80f8b6dccaa5cfb47bd58c5446aa4f3a, type: 3}
+      propertyPath: _animationName
+      value: A_CrowIdle_FL
       objectReference: {fileID: 0}
     - target: {fileID: 4205969844693434075, guid: 80f8b6dccaa5cfb47bd58c5446aa4f3a, type: 3}
       propertyPath: m_Name

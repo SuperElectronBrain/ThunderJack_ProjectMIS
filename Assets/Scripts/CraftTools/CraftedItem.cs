@@ -51,7 +51,7 @@ public class CraftedItem : MonoBehaviour, IGrabable
 				if (m_SpriteRenderer != null)
 				{
 					m_SpriteRenderer.gameObject.SetActive(true);
-					m_SpriteRenderer.sprite = UniFunc.FindSprite(m_CompleteItem.itemCode + "");
+					m_SpriteRenderer.sprite = UniFunc.FindSprite(m_CompleteItem.itemCode);
 				}
 			}
 		}

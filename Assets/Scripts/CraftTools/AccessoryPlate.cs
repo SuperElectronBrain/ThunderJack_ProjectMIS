@@ -46,7 +46,7 @@ public class AccessoryPlate : MonoBehaviour
             //{
 		if (m_SpriteRenderer != null)
 		{
-			m_SpriteRenderer.sprite = UniFunc.FindSprite(m_Input.itemCode + "");
+			m_SpriteRenderer.sprite = UniFunc.FindSprite(m_Input.itemCode);
 		}
 		if (m_Text != null)
 		{

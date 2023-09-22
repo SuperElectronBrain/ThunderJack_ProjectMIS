@@ -27,6 +27,7 @@ public class PlayerCharacter : CharacterBase
 	[SerializeField] private CollisionComponent m_CollisionComponent;
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
 	[SerializeField] private PlayerCharacterUIScript m_PlayerCharacterUIScript;
+	public RecipeBook m_RecipeBook;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -37,6 +38,7 @@ public class PlayerCharacter : CharacterBase
 		//m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
 		if (m_CollisionComponent == null) { m_CollisionComponent = UniFunc.GetChildComponent<CollisionComponent>(transform); }
+		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 
 		FindPlayerCharacterUIScript();
 	}
@@ -196,6 +198,7 @@ public class PlayerCharacter : CharacterBase
 
 		if (m_PlayerCharacterUIScript != null)
 		{
+			m_PlayerCharacterUIScript.ReFindUI();
 			if (m_GrabItemSprite == null)
 			{
 				m_GrabItemSprite = m_PlayerCharacterUIScript.m_MouseGrabIcon;
@@ -214,14 +217,31 @@ public class PlayerCharacter : CharacterBase
 				{
 					m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
 				}
-				m_Inventory.RefreshInventory();
+				//m_Inventory.RefreshInventory();
 
 				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
 				{
 					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory == null)
 					{
 						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory = m_Inventory;
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+						//m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
+				}
+			}
+			
+			if (m_RecipeBook == null)
+			{
+			}
+			if (m_RecipeBook != null)
+			{
+				
+				if (m_RecipeBook.m_RecipeBookUIScript == null)
+				{
+					if(m_PlayerCharacterUIScript.m_RecipeBookUIScript != null)
+					{
+						m_RecipeBook.m_RecipeBookUIScript = m_PlayerCharacterUIScript.m_RecipeBookUIScript;
+						m_RecipeBook.m_RecipeBookUIScript.m_RecipeBook = m_RecipeBook;
+						if(m_Inventory != null) { m_RecipeBook.m_RecipeBookUIScript.m_Inventory = m_Inventory; }
 					}
 				}
 			}
@@ -320,7 +340,7 @@ public class PlayerCharacter : CharacterBase
 							m_GrabItemCode = t_AccessoryPlate.m_Input;
 							if (m_GrabItemSprite != null)
 							{
-								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
+								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
 								m_GrabItemSprite.gameObject.SetActive(true);
 							}
 							t_AccessoryPlate.m_Input = new AdvencedItem();
@@ -439,7 +459,7 @@ public class PlayerCharacter : CharacterBase
 
 							if (m_GrabItemSprite != null)
 							{
-								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode + "");
+								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
 								m_GrabItemSprite.gameObject.SetActive(true);
 							}
 						}

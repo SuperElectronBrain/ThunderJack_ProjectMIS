@@ -335,6 +335,7 @@ GameObject:
   - component: {fileID: 72959460}
   - component: {fileID: 72959459}
   - component: {fileID: 72959458}
+  - component: {fileID: 72959461}
   m_Layer: 0
   m_Name: PlayerCharacter (1)
   m_TagString: Untagged
@@ -435,6 +436,7 @@ MonoBehaviour:
   m_CollisionComponent: {fileID: 0}
   m_PlayerCharacterUIPrefab: {fileID: 0}
   m_PlayerCharacterUIScript: {fileID: 0}
+  m_RecipeBook: {fileID: 0}
 --- !u!4 &72959460
 Transform:
   m_ObjectHideFlags: 0
@@ -450,6 +452,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &72959461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72959457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a43f9c1bb9767fa48a0560e38d8ee676, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RecipeBookUIScript: {fileID: 0}
 --- !u!1 &74830265
 GameObject:
   m_ObjectHideFlags: 0
@@ -3868,7 +3883,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1097309106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3957,7 +3972,7 @@ MonoBehaviour:
   behaviourMaster: {fileID: 0}
   locationManager: {fileID: 0}
   dialogue: {fileID: 0}
-  npc: {fileID: 0}
+  characters: {fileID: 0}
 --- !u!4 &1131807233
 Transform:
   m_ObjectHideFlags: 0
