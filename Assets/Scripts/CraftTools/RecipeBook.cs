@@ -52,7 +52,7 @@ public struct ItemRecipe
 
 public class RecipeBook : MonoBehaviour
 {
-	private List<ItemRecipe> m_ItemRecipes;
+	private List<ItemRecipe> m_ItemRecipes = new List<ItemRecipe>();
 	public RecipeBookUIScript m_RecipeBookUIScript;
 
 	private void Start()
@@ -75,20 +75,26 @@ public class RecipeBook : MonoBehaviour
 
 	public bool FindRecipe(int p_ItemCode)
 	{
-		for(int i = 0; i < m_ItemRecipes.Count; i = i + 1)
+		if(m_ItemRecipes != null)
 		{
-			if (m_ItemRecipes[i].itemCode == p_ItemCode) { return true; }
+			for (int i = 0; i < m_ItemRecipes.Count; i = i + 1)
+			{
+				if (m_ItemRecipes[i].itemCode == p_ItemCode) { return true; }
+			}
 		}
 		return false;
 	}
 	public void AddRecipe(int p_ItemCode, float p_Progress, List<Ingredient> p_Ingredients)
 	{
 		int count = 0;
-		for (int i = 0; i < m_ItemRecipes.Count; i = i + 1)
+		if (m_ItemRecipes != null)
 		{
-			if (m_ItemRecipes[i].itemCode == p_ItemCode) { m_ItemRecipes[i] = new ItemRecipe(p_ItemCode, p_Progress, p_Ingredients); count = count + 1; break; }
+			for (int i = 0; i < m_ItemRecipes.Count; i = i + 1)
+			{
+				if (m_ItemRecipes[i].itemCode == p_ItemCode) { m_ItemRecipes[i] = new ItemRecipe(p_ItemCode, p_Progress, p_Ingredients); count = count + 1; break; }
+			}
 		}
 
-		if(count < 1) { m_ItemRecipes.Add(new ItemRecipe(p_ItemCode, p_Progress, p_Ingredients)); }
+		if(count < 1) { m_ItemRecipes = m_ItemRecipes == null ? new List<ItemRecipe>() : m_ItemRecipes; m_ItemRecipes.Add(new ItemRecipe(p_ItemCode, p_Progress, p_Ingredients)); }
 	}
 }
