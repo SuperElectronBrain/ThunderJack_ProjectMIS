@@ -36,6 +36,7 @@ public class Guest : MonoBehaviour
         isAccept = false;
         isFail = false;
         isDone = false;
+        SpineSkinChanger.RandomSkinChange(skAni);
         /*skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(guest.guestNameEg);
         mr.material = AddressableManager.LoadObject<Material>(guest.guestNameEg);*/
     }
@@ -61,14 +62,14 @@ public class Guest : MonoBehaviour
     public void AcceptSales()
     {
         isAccept = true;
-        skAni.AnimationName = "LAUGH";
+        skAni.AnimationName = "Yes";
         AnimationCheck();
         WaitingForCraft();
     }
 
     public void RefusalSales()
     {
-        skAni.AnimationName = "ANGRY";
+        skAni.AnimationName = "No";
         AnimationCheck();
     }
 
@@ -82,7 +83,7 @@ public class Guest : MonoBehaviour
     void AnimationEnd(Spine.TrackEntry te)
     {
         //ExitShop();        
-        skAni.AnimationName = "IDLE";
+        skAni.AnimationName = "Idle";
         skAni.loop = true;
         if (!isAccept || isFail)
         {
@@ -105,13 +106,13 @@ public class Guest : MonoBehaviour
         if (requestItem.requestStuff1 == request.requestStuff1 && requestItem.requestStuff2 == request.requestStuff2)
         {
             isDone = true;
-            skAni.AnimationName = "LAUGH";
+            skAni.AnimationName = "Yes";
             AnimationCheck();                        
         }
         else
         {
             isFail = true;
-            skAni.AnimationName = "ANGRY";
+            skAni.AnimationName = "No";
             AnimationCheck();
         }            
     }

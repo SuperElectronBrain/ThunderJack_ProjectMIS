@@ -70,28 +70,16 @@ public class SpineSkinChanger : MonoBehaviour
         Debug.Log(skData.Skins.Count);
     }
 
-    public void SkinReset()
+    public static void SkinReset(SkeletonAnimation skAni)
     {
         skAni.skeletonDataAsset.Clear();
         skAni.Initialize(true);
     }
 
-    public void SkinCahnge()
+    public static void RandomSkinChange(SkeletonAnimation skAni)
     {
-        SkinReset();
-
-        var mix = new Skin("default");
-        mix.AddSkin(skData.FindSkin(skin));
-        mix.AddSkin(skData.FindSkin(cloth));
-
-        skAni.skeleton.SetSkin(mix);
-
-        skAni.skeleton.SetSlotsToSetupPose();
-    }
-
-    public void RandomSkinChange()
-    {
-        SkinReset();
+        SkinReset(skAni);
+        SkeletonData skData = skAni.skeleton.Data;
 
         string newCloth = "Cloth/" + ((ClothType)Random.Range(0, ((int)ClothType.End))).ToString();
         RaceType race = (RaceType)Random.Range(0, ((int)RaceType.End));
@@ -115,15 +103,9 @@ public class SpineSkinChanger : MonoBehaviour
 
         newRace = race.ToString() + "/" + type;
 
-        Debug.Log(newRace);
-        Debug.Log(newCloth);
-
         var mix = new Skin("default");
         mix.AddSkin(skData.FindSkin(newRace));
         mix.AddSkin(skData.FindSkin(newCloth));
-
-        skin = newRace;
-        cloth = newCloth;
 
         skAni.skeleton.SetSkin(mix);
 

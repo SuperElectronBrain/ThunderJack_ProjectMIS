@@ -263,6 +263,11 @@ public class ItemManager : MonoBehaviour
         return (MaterialItemData)basicItemData[itemID - 1];
     }
 
+    public BasicItemData GetBasicItemData(int itemID)
+    {
+        return basicItemData[itemID - 1];
+    }
+
     public List<ShopItemData> GetShopItemData()
     {
         return shopItemList;
