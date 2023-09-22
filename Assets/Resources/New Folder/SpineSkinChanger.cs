@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
 using Spine;
+using System.IO;
+using System.Text;
 
 public enum HumanRaceType
 {
@@ -120,8 +122,32 @@ public class SpineSkinChanger : MonoBehaviour
         mix.AddSkin(skData.FindSkin(newRace));
         mix.AddSkin(skData.FindSkin(newCloth));
 
+        skin = newRace;
+        cloth = newCloth;
+
         skAni.skeleton.SetSkin(mix);
 
         skAni.skeleton.SetSlotsToSetupPose();
+    }
+
+    const string filePath = "Editor/SkinList.csv";
+    public string description;
+
+    public void WriteSkinInfo()
+    {
+        DirectoryInfo directoryInfo = new DirectoryInfo(Path.GetDirectoryName(filePath));
+
+        if (!directoryInfo.Exists)
+        {
+            directoryInfo.Create();
+        }
+
+        FileStream fileStream = new FileStream(filePath, FileMode.Append, FileAccess.Write);
+
+        StreamWriter writer = new StreamWriter(fileStream);
+
+        writer.WriteLine(string.Format("{0}, {1}", skin, cloth));
+
+        writer.Close();
     }
 }
