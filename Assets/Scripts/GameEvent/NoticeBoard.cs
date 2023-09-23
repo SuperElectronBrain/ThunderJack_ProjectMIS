@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class NoticeBoard : MonoBehaviour
@@ -10,6 +11,8 @@ public class NoticeBoard : MonoBehaviour
     [SerializeField]
     TextMeshPro noticeDescription;
     SpriteRenderer noticeImage;
+    [SerializeField]
+    UI_Sequence noticeUI;
 
     public void Start()
     {
@@ -21,6 +24,18 @@ public class NoticeBoard : MonoBehaviour
     {
         noticeName.text = noticeData.noticeName;
         noticeDescription.text = noticeData.noticeDescription;
+    }
+
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            noticeUI.gameObject.SetActive(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            noticeUI.Hide();
+        }
     }
 }
 

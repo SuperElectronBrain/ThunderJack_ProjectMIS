@@ -8,22 +8,44 @@ public class UI_Sequence : MonoBehaviour
     public List<Sequence> sequences = new List<Sequence>();
 
     Sequence finalSequence;
-    void Start()
+    Sequence sf;
+
+    public void OnEnable()
     {
-        finalSequence = DOTween.Sequence().SetAutoKill(false).Pause()
-        .Append(transform.DOMoveX(0, 3))
-        .Append(transform.GetComponent<Renderer>().material.DOColor(Color.blue, 3))
-        .Append(transform.DOShakeRotation(1));
+        var seq = DOTween.Sequence();
+
+        seq.Append(transform.DOScale(1.1f, 0.2f));
+        seq.Append(transform.DOScale(1f, 0.1f));
+
+        seq.Play();
+    }
+
+    public void OnDisable()
+    {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        if(Input.GetMouseButtonDown(1))
+        DOTween.Init();
+        transform.localScale = Vector3.one * 0.1f;
+
+        gameObject.SetActive(false);
+    }
+
+    public void Hide()
+    {
+        var seq = DOTween.Sequence();
+
+        transform.localScale = Vector3.one * 0.2f;
+
+        seq.Append(transform.DOScale(1.1f, 0.1f));
+        seq.Append(transform.DOScale(0.2f, 0.2f));
+
+        seq.Play().OnComplete(() =>
         {
-            finalSequence.Restart();
-        }
+            gameObject.SetActive(false);
+        });
     }
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class PlayerDialogBox : MonoBehaviour
 {
@@ -14,10 +15,24 @@ public class PlayerDialogBox : MonoBehaviour
     TextMeshPro dialogScript;
     [SerializeField]
     TextMeshPro dialogName;
-       
+    [SerializeField]
+    Text text;
+
+    private void OnEnable()
+    {
+        var seq = DOTween.Sequence();
+
+        seq.Append(transform.DOScale(1.1f, 0.2f));
+        seq.Append(transform.DOScale(1f, 0.1f));
+
+        seq.Play();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        DOTween.Init();
+
         button1 = transform.Find("SelectOption1").GetComponent<PlayerDialogButton>();
         button2 = transform.Find("SelectOption2").GetComponent<PlayerDialogButton>();
 
@@ -30,7 +45,12 @@ public class PlayerDialogBox : MonoBehaviour
 
     public void SetPlayerDialog(string script)
     {
-        dialogScript.text = script;
+        text.DOKill();
+        text.text = null;
+        text.DOText(script, 1f).OnUpdate(()=>
+        {
+            dialogScript.text = text.text;
+        });        
     }
 
     public void SetPlayerDialogOption(string option1, string option2)
