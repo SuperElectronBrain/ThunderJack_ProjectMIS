@@ -133,7 +133,7 @@ public class UI_Sequence : MonoBehaviour
                         }
                         else
                         {
-                            seq.Join(elements.Target.DOMove(elements.TweenTarget, elements.Duration)
+                            seq.Join(elements.Target.DOLocalMove(elements.TweenTarget, elements.Duration)
                                 .SetEase(elements.Ease));
                         }
                         break;
