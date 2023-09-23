@@ -74,7 +74,7 @@ public class GameEventManager : MonoBehaviour
             case GameEventType.AppearDemonLord:
                 break;
         }*/
-        dayGameEvent = new OreEvent();
+        dayGameEvent = new RandomGameEvent.OreEvent();
         dayGameEvent.InitEvent(this, gameEventData[7]);
 
         dayGameEvent.EventActive();

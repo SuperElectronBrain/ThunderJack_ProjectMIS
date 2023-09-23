@@ -34,7 +34,7 @@ public class NoticeBoard : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            noticeUI.Hide();
+            
         }
     }
 }
