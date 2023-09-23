@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class CameraEffectZone : MonoBehaviour
+public class CameraDirectionZone : MonoBehaviour
 {
     [SerializeField]
     CinemachineVirtualCamera vCam;
@@ -11,6 +11,9 @@ public class CameraEffectZone : MonoBehaviour
     CinemachineTrackedDolly dolly;
 
     Transform playerPos;
+
+    [SerializeField]
+    bool isReturnByExit;
 
     void Start()
     {
@@ -26,19 +29,23 @@ public class CameraEffectZone : MonoBehaviour
             //vCam.Priority = 100;
             playerPos = other.transform;
             //StartCoroutine(StartCameraMove());
-            dolly.m_AutoDolly.m_Enabled = true;
+            if(dolly != null)
+                dolly.m_AutoDolly.m_Enabled = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (!isReturnByExit)
+            return;
         if (other.gameObject.CompareTag("Player"))
         {
             //StopCoroutine(StartCameraMove());
             CameraEvent.Instance.ChangeCamera(CamType.Main);
             //vCam.Priority = 0;
-            playerPos = null;            
-            dolly.m_AutoDolly.m_Enabled = false;
+            playerPos = null;
+            if (dolly != null)
+                dolly.m_AutoDolly.m_Enabled = false;
         }
     }
 

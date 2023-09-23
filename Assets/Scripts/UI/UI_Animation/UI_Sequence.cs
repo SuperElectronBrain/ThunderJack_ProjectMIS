@@ -1,62 +1,162 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+public enum TweenMode
+{
+    DoMove,
+    DoRotate,
+    DoScale
+}
+
+[Serializable]
+public class TweenSequenceElement
+{
+    public TweenMode Mode;
+    public Transform Target;
+    public Ease Ease = Ease.Linear;
+    public Vector3 TweenTarget;
+    public float Duration = 1;
+}
+
+[Serializable]
+public class TweenSequence
+{
+    public List<TweenSequenceElement> Elements;
+}
+
 public class UI_Sequence : MonoBehaviour
 {
-    public List<Sequence> sequences = new List<Sequence>();
+    public bool PlayOnAwake;
+    public bool IgnoreTimeScale;
+    public bool IsLoop;
+    public bool isEneble;
+    public bool isDisable;
+    public bool isRewind;
 
-    Sequence finalSequence;
-    Sequence sf;
+    public float SequenceLength { get; private set; }
+
+    [field: SerializeField] public List<TweenSequence> Sequences { get; private set; } = new();
+
+    private Sequence _sequence;
+
+    private void Awake()
+    {
+        if (PlayOnAwake)
+        {
+            ReStart();
+            if(isRewind)
+            {
+                _sequence.OnComplete(() =>
+                {
+                    PlayBackwards();
+                });
+            }
+        }
+    }
 
     public void OnEnable()
     {
-        var seq = DOTween.Sequence();
-
-        seq.Append(transform.DOScale(1.1f, 0.2f));
-        seq.Append(transform.DOScale(1f, 0.1f));
-
-        seq.Play();
-    }
-
-    public void OnDisable()
-    {
-        
-    }
-
-    void Start()
-    {
-        DOTween.Init();
-        transform.localScale = Vector3.one * 0.1f;
-
-        gameObject.SetActive(false);
-    }
-
-    public void Hide()
-    {
-        var seq = DOTween.Sequence();
-
-        transform.localScale = Vector3.one * 0.2f;
-
-        seq.Append(transform.DOScale(1.1f, 0.1f));
-        seq.Append(transform.DOScale(0.2f, 0.2f));
-
-        seq.Play().OnComplete(() =>
+        if(isEneble)
         {
-            gameObject.SetActive(false);
-        });
+            ReStart();
+            if (isRewind)
+            {
+                _sequence.OnComplete(() =>
+                {
+                    PlayBackwards();
+                });
+            }
+        }
     }
-}
 
-[System.Serializable]
-public class MoveSequence
-{
-    public Vector3 targetPos;
-    public float duration;
-
-    public Sequence Move(Sequence sequence ,Transform transform)
+    private void OnDisable()
     {
-        return sequence.Append(transform.DOMove(targetPos, duration));
+        if(isDisable)
+        {
+            ReStart();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _sequence?.Kill();
+    }
+
+    public void ReStart()
+    {
+        if (_sequence == null)
+        {
+            BakeSeqence();
+        }
+
+        _sequence.Restart();
+    }
+
+    public void PlayBackwards()
+    {
+        if (_sequence == null)
+        {
+            BakeSeqence();
+            _sequence.Rewind();
+        }
+
+        _sequence.PlayBackwards();
+    }
+
+    public void BakeSeqence()
+    {
+        _sequence = DOTween.Sequence().SetUpdate(IgnoreTimeScale).SetRecyclable(true).SetAutoKill(false).Pause();
+        SequenceLength = 0;
+
+        if (IsLoop)
+        {
+            _sequence.SetLoops(-1);
+        }
+
+        foreach (var sequence in Sequences)
+        {
+            var seq = DOTween.Sequence();
+            float duration = 0;
+
+            foreach (var elements in sequence.Elements)
+            {
+                switch (elements.Mode)
+                {
+                    case TweenMode.DoMove:
+                        if (elements.Target is RectTransform rectTransform)
+                        {
+                            seq.Join(rectTransform.DOAnchorPos(elements.TweenTarget, elements.Duration)
+                                .SetEase(elements.Ease));
+                        }
+                        else
+                        {
+                            seq.Join(elements.Target.DOMove(elements.TweenTarget, elements.Duration)
+                                .SetEase(elements.Ease));
+                        }
+                        break;
+
+                    case TweenMode.DoRotate:
+                        seq.Join(elements.Target.DOLocalRotate(elements.TweenTarget, elements.Duration)
+                            .SetEase(elements.Ease));
+                        break;
+
+                    case TweenMode.DoScale:
+                        seq.Join(elements.Target.DOScale(elements.TweenTarget, elements.Duration)
+                            .SetEase(elements.Ease));
+                        break;
+                }
+
+                if (elements.Duration > duration)
+                {
+                    duration = elements.Duration;
+                }
+            }
+
+            _sequence.Append(seq);
+            SequenceLength += duration;
+        }
     }
 }

@@ -50,7 +50,7 @@ public class PlayerDialogBox : MonoBehaviour
         text.DOText(script, 1f).OnUpdate(()=>
         {
             dialogScript.text = text.text;
-        });        
+        });
     }
 
     public void SetPlayerDialogOption(string option1, string option2)
