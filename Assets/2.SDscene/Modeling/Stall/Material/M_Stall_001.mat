@@ -26,6 +26,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - N_F_EAL_ON
+  - N_F_GLO_ON
   - N_F_NM_ON
   - N_F_O_ON
   - N_F_RDC_ON
@@ -109,7 +110,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 83dc6d7bb477f184397943509c0a42b5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 34bb64d3e1fc5d44babccb17a97231ba, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskGloss:
@@ -133,7 +134,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 7b9a3bd9b049bc441ad50736eafaecf6, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1aa1100cbceb312479b37aa6bcd08377, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -213,8 +214,8 @@ Material:
     - _FarDistanceMaxWidth: 10
     - _GIFlatShade: 0
     - _GIShadeThreshold: 0
-    - _GlossColorPower: 10
-    - _GlossIntensity: 1
+    - _GlossColorPower: 1
+    - _GlossIntensity: -0
     - _GlossMapScale: 0
     - _GlossSoftness: 0
     - _GlossTextureFollowLight: 0
@@ -235,7 +236,7 @@ Material:
     - _MCIALO: 0
     - _MCapIntensity: 1
     - _MVCOL: 0
-    - _MaiColPo: 0.8
+    - _MaiColPo: 1
     - _MaxFadDistance: 2
     - _Metallic: 0
     - _MinFadDistance: 0
@@ -249,7 +250,7 @@ Material:
     - _N_F_EAL: 1
     - _N_F_ESSAO: 0
     - _N_F_FR: 0
-    - _N_F_GLO: 0
+    - _N_F_GLO: 1
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
@@ -272,7 +273,7 @@ Material:
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
     - _NoisyOutlineIntensity: 0
-    - _NormalMapIntensity: 1
+    - _NormalMapIntensity: 10
     - _OcclusionStrength: 1
     - _Opacity: 1
     - _Oper: 0
