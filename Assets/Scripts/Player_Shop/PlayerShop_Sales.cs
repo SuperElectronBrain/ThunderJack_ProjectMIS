@@ -53,7 +53,7 @@ public class PlayerShop_Sales : MonoBehaviour
 
     public static void SalesFailure(SalesData salesData)
     {
-        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money);
+        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money / 2);
         FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, -(salesData.fame / 2));
     }
 

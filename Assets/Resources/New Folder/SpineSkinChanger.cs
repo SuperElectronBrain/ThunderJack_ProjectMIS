@@ -76,6 +76,11 @@ public class SpineSkinChanger : MonoBehaviour
         skAni.Initialize(true);
     }
 
+    public void RandomSkin()
+    {
+        RandomSkinChange(skAni);
+    }
+
     public static void RandomSkinChange(SkeletonAnimation skAni)
     {
         SkinReset(skAni);
