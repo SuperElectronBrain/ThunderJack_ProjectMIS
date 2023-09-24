@@ -59,8 +59,8 @@ public class LocationManager : MonoBehaviour
     }
 
     public static Vector3 GetLocationRandomPosition(Vector3 locationPos)
-    {        
-        int layer = 1 << NavMesh.GetAreaFromName("Road");
+    {
+        int layer = 1 << NavMesh.GetAreaFromName("Road") << NavMesh.GetAreaFromName("Walkable");
         Vector3 randomPos = Random.insideUnitSphere * 5;
         randomPos += locationPos;
 

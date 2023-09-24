@@ -5,10 +5,14 @@ using UnityEngine;
 public class MoveState : State<NPC>
 {
     public Vector3 vel;
+    [SerializeField]
+    bool isMove;
+
     public override void Enter(NPC entity)
     {
         entity.agent.isStopped = false;
         entity.agent.SetDestination(entity.destinationPos);
+        StartCoroutine(MoveCheck(entity));
     }
 
     public override void Execute(NPC entity)
@@ -40,20 +44,39 @@ public class MoveState : State<NPC>
 
     public override void Exit(NPC entity)
     {
-        Debug.Log("이동완료");
-        //entity.agent.ResetPath();
+        Debug.Log(gameObject.name + "이동완료");        
     }
 
     public override void OnTransition(NPC entity)
     {
-/*        if (entity.agent.remainingDistance <= 0.1f)
-        {
-            entity.ChangeState(NPCBehaviour.Idle);
-        }            */
-
-        if(entity.IsInSight())
+        if (entity.IsInSight())
         {
             entity.ChangeState(NPCBehaviour.Greeting);
+        }
+        if(isMove)
+        {
+            if (entity.agent.remainingDistance <= 0.5f)
+            {
+                if (!entity.agent.hasPath || entity.agent.velocity.sqrMagnitude == 0f)
+                {
+                    entity.ChangeState(NPCBehaviour.Idle);
+                }
+            }
+        }             
+    }
+
+    IEnumerator MoveCheck(NPC entity)
+    {
+        isMove = false;
+
+        while (true)
+        {
+            if(entity.agent.velocity.sqrMagnitude != 0)
+            {
+                isMove = true;
+                yield break;
+            }
+            yield return null;
         }
     }
 }
