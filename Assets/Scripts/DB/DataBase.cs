@@ -48,7 +48,7 @@ public class DataBase : Singleton<DataBase>
             string[] rowData = text.Split(',');
             for (int i = 0; i < rowData.Length; i++)
             {
-                Debug.Log(rowData[i]);
+                //Debug.Log(rowData[i]);
                 newDic.Add(row[i], rowData[i]);                
             }
                 

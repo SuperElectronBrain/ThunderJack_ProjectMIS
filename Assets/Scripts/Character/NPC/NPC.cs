@@ -170,21 +170,14 @@ public class NPC : Character, IInteraction
         transform.position = relocationPos;
     }
 
-
-    [SerializeField]
-    bool isDebug;
-    private void OnDrawGizmos()
+    public void GetRandomDestinationByMyPosition()
     {
-        if (!isDebug)
-            return;
-        Gizmos.color = Color.green;
-            
-        Gizmos.DrawWireSphere(transform.position, sightRange);
+        destinationPos = LocationManager.GetLocationRandomPosition(transform.position);
     }
 
     public void Interaction()
     {
-        Debug.Log(gameObject.name + " 상호작용");
+        StartConversation();
     }
 }
 

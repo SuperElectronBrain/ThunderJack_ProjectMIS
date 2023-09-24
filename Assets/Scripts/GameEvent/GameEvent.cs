@@ -37,7 +37,7 @@ namespace RandomGameEvent
 
     public class OreEvent : GameEvent
     {
-        public void Event()
+        public override void EventActive()
         {
             NoticeData noticeData = new NoticeData
             {
@@ -47,11 +47,6 @@ namespace RandomGameEvent
 
             GetGameEventManager.Notice(noticeData);
             Debug.Log("±¤¹°°¡°Ý »ó½Â");
-        }
-
-        public override void EventActive()
-        {
-
         }
 
         public override void EventInactive()

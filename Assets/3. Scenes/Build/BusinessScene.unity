@@ -435,6 +435,7 @@ MonoBehaviour:
   m_CollisionComponent: {fileID: 0}
   m_PlayerCharacterUIPrefab: {fileID: 0}
   m_PlayerCharacterUIScript: {fileID: 0}
+  m_RecipeBook: {fileID: 0}
 --- !u!4 &72959460
 Transform:
   m_ObjectHideFlags: 0
@@ -4440,6 +4441,7 @@ PrefabInstance:
     - {fileID: 3608518490557061160, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
     - {fileID: 3009166609659021845, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
     - {fileID: 1633281511238371787, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
+    - {fileID: 1215559081413043476, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -4455,6 +4457,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3962767616297547896, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1739136284}
+    - targetCorrespondingSourceObject: {fileID: 3962767616297547896, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1739136285}
     - targetCorrespondingSourceObject: {fileID: 3433297926326596378, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -4489,6 +4494,39 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
+--- !u!114 &1325003022 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9168471302804235926, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
+  m_PrefabInstance: {fileID: 1325003021}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1325003023 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1695196889243920022, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
+  m_PrefabInstance: {fileID: 1325003021}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1325003024 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2417492801006828739, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
+  m_PrefabInstance: {fileID: 1325003021}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46569616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bab3bb9d64cf43438f28fe09139a039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1348458973
 GameObject:
   m_ObjectHideFlags: 0
@@ -4588,6 +4626,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requestList: []
+  salesSuccessEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  salesFailureEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1348458981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5295,6 +5339,25 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 2}
+--- !u!114 &1739136285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739136281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72e4f0146d6c10d4cbb3fe6704f99dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Input: 0
+  bProgress: 0
+  m_Progress: 0
+  m_MaxTurnCount: 10
+  m_MeasurCup: {fileID: 1325003024}
+  m_ProgressText: {fileID: 1325003023}
+  m_SkeletonAnimation: {fileID: 1325003022}
 --- !u!1 &1746842710
 GameObject:
   m_ObjectHideFlags: 0
