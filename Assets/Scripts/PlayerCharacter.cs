@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using Unity.Mathematics;
 using UnityEditor;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using UnityEngine.Splines;
 using static UnityEngine.GraphicsBuffer;
@@ -76,14 +77,13 @@ public class PlayerCharacter : CharacterBase
 
 		if (Input.GetKeyDown(KeyCode.E) == true) 
 		{
-			NPC t_NPC = GetInteractableCharacter(); 
-			if (t_NPC != null)
+			IInteraction t_Interaction = GetInteractableObject(); 
+			if (t_Interaction != null)
 			{
-				t_NPC.StartConversation();
-
+				t_Interaction.Interaction();
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.I) == true) 
+		if (Input.GetKeyDown(KeyCode.Q) == true)
 		{ 
 			if (m_Inventory.m_InventoryUIScript != null)
 			{ 
@@ -132,9 +132,9 @@ public class PlayerCharacter : CharacterBase
 	//	base.VerticalMove(DeltaTime);
 	//}
 
-	public NPC GetInteractableCharacter()
+	public IInteraction GetInteractableObject()
 	{
-		NPC t_CharacterBase = null;
+		IInteraction t_Interaction = null;
 		if (m_CollisionComponent != null)
 		{
 			float t_DotProduct = -1.0f;
@@ -144,14 +144,14 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_CollisionComponent.m_Collisions[i].gameObject != gameObject)
 					{
-						NPC t_CharacterBase1 = m_CollisionComponent.m_Collisions[i].gameObject.GetComponent<NPC>();
-						if (t_CharacterBase1 != null)
+						IInteraction t_Interaction1 = m_CollisionComponent.m_Collisions[i].gameObject.GetComponent<IInteraction>();
+						if (t_Interaction1 != null)
 						{
 							float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (m_CollisionComponent.m_Collisions[i].transform.position - transform.position).normalized);
 							if (t_DotProduct < t_DotProduct1)
 							{
 								t_DotProduct = t_DotProduct1;
-								t_CharacterBase = t_CharacterBase1;
+								t_Interaction = t_Interaction1;
 							}
 						}
 					}
@@ -163,14 +163,14 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_CollisionComponent.m_Colliders[i].gameObject != gameObject)
 					{
-						NPC t_CharacterBase1 = m_CollisionComponent.m_Colliders[i].gameObject.GetComponent<NPC>();
-						if (t_CharacterBase1 != null)
+						IInteraction t_Interaction1 = m_CollisionComponent.m_Colliders[i].gameObject.GetComponent<IInteraction>();
+						if (t_Interaction1 != null)
 						{
 							float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (m_CollisionComponent.m_Colliders[i].transform.position - transform.position).normalized);
 							if (t_DotProduct < t_DotProduct1)
 							{
 								t_DotProduct = t_DotProduct1;
-								t_CharacterBase = t_CharacterBase1;
+								t_Interaction = t_Interaction1;
 							}
 						}
 					}
@@ -178,7 +178,7 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 
-		return t_CharacterBase;
+		return t_Interaction;
 	}
 
 	public void FindPlayerCharacterUIScript()
