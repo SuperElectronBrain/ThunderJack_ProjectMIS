@@ -8,7 +8,9 @@ public enum TweenMode
 {
     DoMove,
     DoRotate,
-    DoScale
+    DoScale,
+    DoInterval,
+    DoInActive
 }
 
 [Serializable]
@@ -146,6 +148,15 @@ public class UI_Sequence : MonoBehaviour
                     case TweenMode.DoScale:
                         seq.Join(elements.Target.DOScale(elements.TweenTarget, elements.Duration)
                             .SetEase(elements.Ease));
+                        break;
+                    case TweenMode.DoInterval:
+                        seq.AppendInterval(elements.Duration);
+                        break;
+                    case TweenMode.DoInActive:
+                        seq.OnComplete(() =>
+                        {
+                            elements.Target.gameObject.SetActive(false);
+                        });
                         break;
                 }
 

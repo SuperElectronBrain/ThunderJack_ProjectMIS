@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class NoticeBoard : MonoBehaviour
+public class NoticeBoard : MonoBehaviour, IInteraction
 {
     [SerializeField]
     TextMeshPro noticeName;
@@ -12,7 +12,7 @@ public class NoticeBoard : MonoBehaviour
     TextMeshPro noticeDescription;
     SpriteRenderer noticeImage;
     [SerializeField]
-    UI_Sequence noticeUI;
+    GameObject noticeUI;
 
     public void Start()
     {
@@ -26,16 +26,10 @@ public class NoticeBoard : MonoBehaviour
         noticeDescription.text = noticeData.noticeDescription;
     }
 
-    public void Update()
+    public void Interaction()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            noticeUI.gameObject.SetActive(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            
-        }
+        Debug.Log(gameObject.name + " 상호작용");
+        noticeUI.SetActive(true);
     }
 }
 
