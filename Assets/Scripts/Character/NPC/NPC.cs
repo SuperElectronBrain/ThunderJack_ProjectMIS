@@ -9,7 +9,7 @@ public enum NPCBehaviour
     Idle, Move, Conversation, Greeting, Sleep, Last
 }
 
-public class NPC : Character
+public class NPC : Character, IInteraction
 {
     CharacterFSM<NPC> fsm;
     [SerializeField]
@@ -180,6 +180,11 @@ public class NPC : Character
         Gizmos.color = Color.green;
             
         Gizmos.DrawWireSphere(transform.position, sightRange);
+    }
+
+    public void Interaction()
+    {
+        Debug.Log(gameObject.name + " 상호작용");
     }
 }
 
