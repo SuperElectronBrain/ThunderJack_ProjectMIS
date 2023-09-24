@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class RecipeBookUIScript : MonoBehaviour
 {
@@ -193,7 +192,7 @@ public class RecipeBookUIScript : MonoBehaviour
 					for(int i = 0; i < m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].ingredients.Count; i = i + 1)
 					{
 						t_String = t_String + UniFunc.FindItemData(m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].ingredients[i].itemCode).itemNameKo + " " +
-							((int)m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].ingredients[i].progress * 100.0f) + "\n";
+							(int)(m_RecipeBook.GetItemRecipes()[m_RecipeBookIndex].ingredients[i].progress * 100.0f) + "\n";
 					}
 					m_RecipeItemIngredientsText.text = t_String;
 				}
