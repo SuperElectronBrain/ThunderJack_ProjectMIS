@@ -1,10 +1,7 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class NPCStoreUIScript : MonoBehaviour
 {
