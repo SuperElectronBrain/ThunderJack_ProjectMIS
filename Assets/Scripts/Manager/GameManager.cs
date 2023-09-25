@@ -54,6 +54,7 @@ public class GameManager : Singleton<GameManager>
     public LocationManager LocationManager { get { return locationManager; } }
     public Dialogue Dialogue { get { return dialogue; } }
     public GameEventManager GameEventManager { get { return gameEventManager; } }
+    public QuestManager QuestManager { get { return questManager; } }
 
     [SerializeField]
     Transform characters;
