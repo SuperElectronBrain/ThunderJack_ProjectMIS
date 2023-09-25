@@ -37,6 +37,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     GameEventManager gameEventManager;
 
+    [Header("Quest")]
+    [SerializeField]
+    QuestManager questManager;
+
     [SerializeField]
     Dialogue dialogue;
 
