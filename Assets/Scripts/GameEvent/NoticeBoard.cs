@@ -28,7 +28,12 @@ public class NoticeBoard : MonoBehaviour, IInteraction
 
     public void Interaction()
     {
-        Debug.Log(gameObject.name + " 상호작용");
+        CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
+        CameraEvent.Instance.ChangeCamera(CamType.NoticeBoard);
+    }
+
+    public void ViewNoticeBoard()
+    {
         noticeUI.SetActive(true);
     }
 }

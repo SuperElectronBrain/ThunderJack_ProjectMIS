@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Cinemachine;
 
 public enum CamType
 {
-    Main, Conversation, Area, Prev
+    Main, Conversation, Area, NoticeBoard, Prev
 }
 
 public class CameraEvent : Singleton<CameraEvent>
@@ -22,11 +23,24 @@ public class CameraEvent : Singleton<CameraEvent>
     CinemachineVirtualCamera liveCam;
     [SerializeField]
     CinemachineVirtualCamera prevCam;
+    [SerializeField]
+    CinemachineVirtualCamera noticeBoardCam;
+
+    public UnityEvent onCamBlendComplate;
 
     // Start is called before the first frame update
     void Start()
     {
         ChangeCamera(CamType.Main);
+    }
+
+    IEnumerator OnBlendComplate()
+    {
+        yield return new WaitForSeconds(0.05f);
+
+        yield return new WaitUntil(() => brain.IsBlending == false);
+        onCamBlendComplate?.Invoke();
+        onCamBlendComplate = null;
     }
 
     public void SetCamera(CinemachineVirtualCamera newAreaCam)
@@ -50,6 +64,9 @@ public class CameraEvent : Singleton<CameraEvent>
             case CamType.Area:
                 AreaCamera();
                 break;
+            case CamType.NoticeBoard:
+                NoticeBoardCamera();
+                break;
             case CamType.Prev:
                 PrevCamera();
                 break;
@@ -72,6 +89,13 @@ public class CameraEvent : Singleton<CameraEvent>
     {
         liveCam = areaCam;
         areaCam.Priority = 100;
+    }
+
+    void NoticeBoardCamera()
+    {
+        liveCam = noticeBoardCam;
+        noticeBoardCam.Priority = 100;
+        StartCoroutine(OnBlendComplate());
     }
 
     void PrevCamera()
