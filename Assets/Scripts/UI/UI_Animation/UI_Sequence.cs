@@ -106,6 +106,11 @@ public class UI_Sequence : MonoBehaviour
         }
 
         _sequence.PlayBackwards();
+        _sequence.OnRewind(() =>
+        {
+            gameObject.SetActive(false);
+            Debug.Log("Rewind");
+        });
     }
 
     public void BakeSeqence()

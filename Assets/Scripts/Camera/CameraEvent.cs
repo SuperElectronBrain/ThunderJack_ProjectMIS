@@ -40,7 +40,7 @@ public class CameraEvent : Singleton<CameraEvent>
 
         yield return new WaitUntil(() => brain.IsBlending == false);
         onCamBlendComplate?.Invoke();
-        onCamBlendComplate = null;
+        onCamBlendComplate.RemoveAllListeners();
     }
 
     public void SetCamera(CinemachineVirtualCamera newAreaCam)
@@ -100,7 +100,8 @@ public class CameraEvent : Singleton<CameraEvent>
 
     void PrevCamera()
     {
+        StopAllCoroutines();
         prevCam.Priority = 100;
-        liveCam = prevCam;        
+        liveCam = prevCam;
     }
 }

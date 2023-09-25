@@ -20,6 +20,18 @@ public class NoticeBoard : MonoBehaviour, IInteraction
         noticeDescription = transform.Find("Description").GetComponent<TextMeshPro>();*/
     }
 
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(noticeUI.activeSelf)
+            {
+                noticeUI.GetComponent<UI_Sequence>().PlayBackwards();                
+            }
+            CameraEvent.Instance.ChangeCamera(CamType.Prev);
+        }
+    }
+
     public void SetNoticeBoard(NoticeData noticeData)
     {
         noticeName.text = noticeData.noticeName;
