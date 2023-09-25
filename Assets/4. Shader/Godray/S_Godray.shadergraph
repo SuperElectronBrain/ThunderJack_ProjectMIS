@@ -14,6 +14,9 @@
         },
         {
             "m_Id": "148f8e6906934fffbb75bccb94aa8bb0"
+        },
+        {
+            "m_Id": "1e0301b44b554c09b85304796183ad6e"
         }
     ],
     "m_Keywords": [],
@@ -92,6 +95,9 @@
         },
         {
             "m_Id": "96b2a976379f4ab297bbb57c107b8e38"
+        },
+        {
+            "m_Id": "8afb223475cb4fb395dbe63e20a9f765"
         }
     ],
     "m_GroupDatas": [],
@@ -291,6 +297,20 @@
                     "m_Id": "088e0a500ed5454f82de6dce6d391c8a"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "8afb223475cb4fb395dbe63e20a9f765"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "18be4fda3bad476090f2399b521051b3"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -819,6 +839,36 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
+    "m_ObjectId": "1e0301b44b554c09b85304796183ad6e",
+    "m_Guid": {
+        "m_GuidSerialized": "1cf115dd-48de-4fb5-baad-7476075b52f6"
+    },
+    "m_Name": "Texter",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Texter",
+    "m_DefaultReferenceName": "_Texter",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_Guid": ""
+    },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
+    "m_Modifiable": true,
+    "m_DefaultType": 0
 }
 
 {
@@ -2214,6 +2264,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "8afb223475cb4fb395dbe63e20a9f765",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -688.0,
+            "y": 515.0,
+            "width": 118.00006103515625,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "a91baf8c77f24af6bb08a05a07c8a1a7"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "1e0301b44b554c09b85304796183ad6e"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "8ccf2cf5bc3b4bb4b5754358fd0b5b48",
     "m_Id": 0,
@@ -2493,6 +2579,19 @@
     "m_Value": 1.0,
     "m_DefaultValue": 1.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
+    "m_ObjectId": "a91baf8c77f24af6bb08a05a07c8a1a7",
+    "m_Id": 0,
+    "m_DisplayName": "Texter",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_BareResource": false
 }
 
 {
@@ -3057,6 +3156,9 @@
         },
         {
             "m_Id": "148f8e6906934fffbb75bccb94aa8bb0"
+        },
+        {
+            "m_Id": "1e0301b44b554c09b85304796183ad6e"
         }
     ]
 }
