@@ -1,12 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
-using Unity.Mathematics;
 using UnityEditor;
-using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
-using UnityEngine.Splines;
-using static UnityEngine.GraphicsBuffer;
 
 public interface IGrabable
 {
@@ -29,6 +24,7 @@ public class PlayerCharacter : CharacterBase
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
 	[SerializeField] private PlayerCharacterUIScript m_PlayerCharacterUIScript;
 	public RecipeBook m_RecipeBook;
+	public QuestComponet m_QuestComponet;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -228,13 +224,8 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
-			
-			if (m_RecipeBook == null)
-			{
-			}
 			if (m_RecipeBook != null)
 			{
-				
 				if (m_RecipeBook.m_RecipeBookUIScript == null)
 				{
 					if(m_PlayerCharacterUIScript.m_RecipeBookUIScript != null)
@@ -242,6 +233,16 @@ public class PlayerCharacter : CharacterBase
 						m_RecipeBook.m_RecipeBookUIScript = m_PlayerCharacterUIScript.m_RecipeBookUIScript;
 						m_RecipeBook.m_RecipeBookUIScript.m_RecipeBook = m_RecipeBook;
 						if(m_Inventory != null) { m_RecipeBook.m_RecipeBookUIScript.m_Inventory = m_Inventory; }
+					}
+				}
+			}
+			if (m_QuestComponet != null)
+			{
+				if (m_QuestComponet.m_MailBoxUIScript == null)
+				{
+					if (m_PlayerCharacterUIScript.m_MailBoxUIScript != null)
+					{
+						m_QuestComponet.m_MailBoxUIScript = m_PlayerCharacterUIScript.m_MailBoxUIScript;
 					}
 				}
 			}

@@ -54,7 +54,7 @@ public class MixingBowl : MonoBehaviour, IGrabable
 				//Debug.Log(m_Furnace.m_Elements[0] + ", " + m_Furnace.m_Elements[1] + ", " + m_Furnace.m_Elements[2] + ", " + m_Furnace.m_Elements[3] + ", " + m_Furnace.m_Elements[4] + ", " + m_Furnace.m_Elements[5]);
 				for (int i = 0; i < m_Elements.Length; i = i + 1) { m_Elements[i] = 0.0f; }
 				m_Furnace.m_Ingredients = m_Ingredients;
-				m_Ingredients = null;
+				m_Ingredients = new List<Ingredient>();
 				m_Furnace.m_bProgress = true;
 				m_IsGrabable = false;
 				RefreshGraph();

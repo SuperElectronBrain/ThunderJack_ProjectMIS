@@ -11,6 +11,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public InventoryUIScript m_InventoryUIScript;
 	public NPCStoreUIScript m_NPCStoreUIScript;
 	public RecipeBookUIScript m_RecipeBookUIScript;
+	public MailBoxUIScript m_MailBoxUIScript;
 	public UnityEngine.UI.Image m_MouseGrabIcon;
 
 	// Start is called before the first frame update
@@ -33,6 +34,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 		if (m_InventoryUIScript == null) { m_InventoryUIScript = UniFunc.GetChildComponent<InventoryUIScript>(transform); }
 		if (m_NPCStoreUIScript == null) { m_NPCStoreUIScript = UniFunc.GetChildComponent<NPCStoreUIScript>(transform); }
 		if (m_RecipeBookUIScript == null) { m_RecipeBookUIScript = UniFunc.GetChildComponent<RecipeBookUIScript>(transform); }
+		if (m_MailBoxUIScript == null) { m_MailBoxUIScript = UniFunc.GetChildComponent<MailBoxUIScript>(transform); ; }
 		if (m_MouseGrabIcon == null) { m_MouseGrabIcon = UniFunc.GetChildOfName(transform, "MouseGrabItem").GetComponent<UnityEngine.UI.Image>(); }
 	}
 }

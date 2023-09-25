@@ -108,30 +108,33 @@ public class Furnace : MonoBehaviour
 			if (t_Element3 != -1) { m_Elements[t_Element3 - 1] = 0.0f; }
 			else if (t_Element3 == -1) { count = count + 1; }
 
-			if (t_Element1 == t_Element2 || t_Element2 == t_Element3) { count = count + 1; }
+			if (t_Element1 == t_Element2 || t_Element1 == t_Element3) { count = count + 1; }
 			for(int i = 0; i < m_Elements.Length; i = i + 1) { if (t_ElementPercent3 == m_Elements[i]) { count = count + 1; } }
 
-			int t_ItemCode = 0;
-			//float t_Progress = 0.0f;
-			int t_ItemAmount = 0;
+			int t_ItemCode = 21;
+			float t_Progress = 1.0f;
+			int t_ItemAmount = 1;
 			if (count < 1)
 			{
 				List<GemRecipe> t_GRecipes = UniFunc.FindRecipesOfElement(UniFunc.FindRecipesOfElement(UniFunc.FindRecipesOfElement(t_GemRecipes, 1, t_Element1), 2, t_Element2), 3, t_Element3);
 				if(t_GRecipes != null)
 				{
-					//t_GRecipes[0].materialPercent1;
+					t_ElementPercent1 = 1.0f - ((t_GRecipes[0].materialPercent1 - t_ElementPercent1) / t_GRecipes[0].materialPercent1);
+					t_ElementPercent2 = 1.0f - ((t_GRecipes[0].materialPercent2 - t_ElementPercent2) / t_GRecipes[0].materialPercent2);
+					t_ElementPercent3 = 1.0f - ((t_GRecipes[0].materialPercent3 - t_ElementPercent3) / t_GRecipes[0].materialPercent3);
 
 					t_ItemCode = t_GRecipes[0].itemID;
+					if((t_ElementPercent1 + t_ElementPercent2 + t_ElementPercent3) / 3 > 1.0f)
+					{ t_Progress = 1.0f / ((t_ElementPercent1 + t_ElementPercent2 + t_ElementPercent3) / 3); }
+					else
+					{ t_Progress = (t_ElementPercent1 + t_ElementPercent2 + t_ElementPercent3) / 3; }
 					t_ItemAmount = 1;
 				}
 			}
 
 			if(m_CraftedItem != null)
 			{
-
-
-
-				m_CraftedItem.m_CompleteItem = new AdvencedItem(t_ItemCode, 1.0f, t_ItemAmount);
+				m_CraftedItem.m_CompleteItem = new AdvencedItem(t_ItemCode, t_Progress, t_ItemAmount);
 				m_CraftedItem.RefreshItemDisplay();
 				m_CraftedItem.m_IsGrabable = true;
 
@@ -141,7 +144,7 @@ public class Furnace : MonoBehaviour
 					{
 						if(((PlayerCharacter)m_Inventory.m_Owner).m_RecipeBook != null)
 						{
-							((PlayerCharacter)m_Inventory.m_Owner).m_RecipeBook.RegistItem(t_ItemCode, 1.0f, m_Ingredients);
+							((PlayerCharacter)m_Inventory.m_Owner).m_RecipeBook.RegistItem(t_ItemCode, t_Progress, m_Ingredients);
 						}
 					}
 				}
