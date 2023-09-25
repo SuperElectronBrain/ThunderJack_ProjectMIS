@@ -6,7 +6,7 @@ using TMPro;
 
 public enum NPCBehaviour
 {
-    Idle, Move, Conversation, Greeting, Sleep, Last
+    Idle, Move, Conversation, Greeting, Sitting, Last
 }
 
 public class NPC : Character, IInteraction
@@ -51,13 +51,14 @@ public class NPC : Character, IInteraction
         player = GameObject.FindGameObjectWithTag("Player");        
         fsm = new();        
         agent = GetComponent<NavMeshAgent>();
-        states = new State<NPC>[((int)NPCBehaviour.Last) - 1];
+        states = new State<NPC>[((int)NPCBehaviour.Last)];
         //dialog = GetComponentInChildren<TextMeshPro>();
 
         states[((int)NPCBehaviour.Idle)] = GetComponent<IdleState>();
         states[((int)NPCBehaviour.Move)] = GetComponent<MoveState>();
         states[((int)NPCBehaviour.Conversation)] = GetComponent<ConversationState>();
-        states[((int)NPCBehaviour.Greeting)] = GetComponent<GreetingState>();        
+        states[((int)NPCBehaviour.Greeting)] = GetComponent<GreetingState>();
+        states[((int)NPCBehaviour.Sitting)] = GetComponent<SittingState>();
     }
 
     private void Start()

@@ -71,11 +71,6 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            ChangeCameraView(CameraView.Default, new CameraSetup());
-        }
-
         cameraObj.position = target.position;
         Camera.main.transform.localPosition = curCameraOffset;
         Camera.main.transform.rotation = Quaternion.Euler(curCameraRotation);
