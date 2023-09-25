@@ -7,17 +7,17 @@ using TMPro;
 public class NoticeBoard : MonoBehaviour, IInteraction
 {
     [SerializeField]
-    TextMeshPro noticeName;
+    TextMeshProUGUI noticeName;
     [SerializeField]
-    TextMeshPro noticeDescription;
+    TextMeshProUGUI noticeDescription;
     SpriteRenderer noticeImage;
     [SerializeField]
     GameObject noticeUI;
 
     public void Start()
     {
-        noticeName = transform.Find("Name").GetComponent<TextMeshPro>();
-        noticeDescription = transform.Find("Description").GetComponent<TextMeshPro>();
+        /*noticeName = transform.Find("Name").GetComponent<TextMeshPro>();
+        noticeDescription = transform.Find("Description").GetComponent<TextMeshPro>();*/
     }
 
     public void SetNoticeBoard(NoticeData noticeData)

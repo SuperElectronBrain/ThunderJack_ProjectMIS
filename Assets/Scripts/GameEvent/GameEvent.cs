@@ -15,7 +15,8 @@ public abstract class GameEvent
         this.eventData = eventData;
     }
 
-    protected int GetEventValue { get { return eventData.eventValue; } }
+    public GameEventType GetEventType { get { return (GameEventType)eventData.eventType; } }
+    public int GetEventValue { get { return eventData.eventValue; } }
     protected GameEventManager GetGameEventManager { get { return gameEventManager; } }
     protected EventData GetEventData { get { return eventData; } }
 }
