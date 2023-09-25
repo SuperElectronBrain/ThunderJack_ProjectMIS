@@ -42,6 +42,7 @@ jobs:
               with:
                   name: build
                   path: build/${{ matrix.targetPlatform }}
+                  retention-days: 3
 
             - name: Create Artifact Link
               id: artifact
