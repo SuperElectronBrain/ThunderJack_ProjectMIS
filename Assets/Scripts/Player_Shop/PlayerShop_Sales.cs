@@ -3,18 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum JewelryGrade
-{
-
-}
-
 public class PlayerShop_Sales : MonoBehaviour
 {
     [SerializeField]
-    List<RequestData> requestList = new List<RequestData>();
-
-    public UnityEvent<float, int, int> salesSuccessEvent;
-    public UnityEvent<float, int, int> salesFailureEvent;    
+    List<RequestData> requestList = new List<RequestData>();  
 
     // Start is called before the first frame update
     void Start()
@@ -47,20 +39,37 @@ public class PlayerShop_Sales : MonoBehaviour
 
     public static void SalesSuccess(SalesData salesData)
     {
+        float eventValue = 1;
+
+        if (GameManager.Instance.GameEventManager.GetGameEventType() == GameEventType.Fame)
+        {
+            eventValue += GameManager.Instance.GameEventManager.GetGameEventValue();
+        }
+
+        int addFameValue = salesData.fame + (int)(salesData.fame * eventValue);
+
         FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money);
-        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, salesData.fame);
+        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
     }
 
     public static void SalesFailure(SalesData salesData)
     {
+        float eventValue = 1;
+
+        if (GameManager.Instance.GameEventManager.GetGameEventType() == GameEventType.Fame)
+        {
+            eventValue += GameManager.Instance.GameEventManager.GetGameEventValue();
+        }
+
+        int addFameValue = -((salesData.fame + (int)(salesData.fame * eventValue)) / 2);
+
         FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money / 2);
-        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, -(salesData.fame / 2));
+        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
     }
 
     private void OnDestroy()
     {
-        salesSuccessEvent.RemoveAllListeners();
-        salesFailureEvent.RemoveAllListeners();
+
     }
 }
 

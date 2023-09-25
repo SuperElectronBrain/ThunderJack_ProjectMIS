@@ -33,6 +33,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     LocationManager locationManager;
 
+    [Header("GameEvent")]
+    [SerializeField]
+    GameEventManager gameEventManager;
+
     [SerializeField]
     Dialogue dialogue;
 
@@ -45,6 +49,7 @@ public class GameManager : Singleton<GameManager>
     public BehaviourMaster BehaviourMaster { get { return behaviourMaster; } }
     public LocationManager LocationManager { get { return locationManager; } }
     public Dialogue Dialogue { get { return dialogue; } }
+    public GameEventManager GameEventManager { get { return gameEventManager; } }
 
     [SerializeField]
     Transform characters;
@@ -65,15 +70,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ExitShop()
     {
-/*        Debug.Log("³ª°¨");
-        for (int i = 1; i <= characterDB.GetCharacterCount(); i++)
-        {
-            var npc = characterDB.GetNPC(i);
-            npc.gameObject.SetActive(true);
-            npc.Relocation();
-        }*/
 
-        //Relocation()
     }
 
     public Vector3 GetSpawnPos()
