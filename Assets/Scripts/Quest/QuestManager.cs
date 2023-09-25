@@ -39,6 +39,11 @@ public class QuestManager : MonoBehaviour
         return questList[questID - 1];
     }
 
+    public List<QuestData> GetQuestList()
+    {
+        return questList;
+    }
+
     public void SetQuestRate(int questID, float questRate)
     {
         if(questID > questList.Count || questID < 0)
