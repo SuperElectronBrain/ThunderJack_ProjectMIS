@@ -64,7 +64,6 @@ public class Mailbox : MonoBehaviour, IInteraction
 	{
 		if(QuestTable == null)
 		{
-
 			if(GameManager.Instance != null)
 			{
 				if(GameManager.Instance.QuestManager != null)

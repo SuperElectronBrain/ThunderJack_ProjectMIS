@@ -63,15 +63,7 @@ public class ClockUIScript : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		bProgressTime = true;
-
-		if (GameManager.Instance != null)
-		{
-			if (GameManager.Instance.GameTime != null)
-			{
-				CurrentTime = GameManager.Instance.GameTime.GetHour() + (GameManager.Instance.GameTime.GetMinute() / 60.0f);
-			}
-		}
+		bProgressTime = false;
 	}
 
 	// Update is called once per frame
@@ -79,20 +71,40 @@ public class ClockUIScript : MonoBehaviour
 	{
 		float DeltaTime = Time.deltaTime;
 
+		if (GameManager.Instance != null)
+		{
+			if (GameManager.Instance.GameTime != null)
+			{
+				float t_CurrentTime = GameManager.Instance.GameTime.GetHour() + (GameManager.Instance.GameTime.GetMinute() / 60.0f);
+				if (CurrentTime != t_CurrentTime)
+				{
+					CurrentTime = t_CurrentTime;
+
+					if (t_CurrentTime == 0.0f)
+					{
+						CurrentDay = CurrentDay + 1;
+						m_CurrentWeekday = m_CurrentWeekday + 1;
+						if (m_CurrentWeekday >= m_MaxWeekday)
+						{
+							m_CurrentWeekday = 0;
+						}
+					}
+				}
+
+				//CurrentTime = CurrentTime + (DeltaTime / (360.0f / (60.0f / GameManager.Instance.GameTime.GetGameSpeed())));
+				//if(CurrentTime >= m_MaxTime)
+				//{
+				//	CurrentTime = 0.0f;
+				//}
+			}
+		}
+
 		if (bProgressTime == true) { ProgressTime(DeltaTime); }
 		RefreshClock();
 	}
 
 	private void ProgressTime(float p_DeltaTime)
 	{
-		if (GameManager.Instance != null)
-		{
-			if (GameManager.Instance.GameTime != null)
-			{
-				m_TimeSpeed = GameManager.Instance.GameTime.GetGameSpeed() * 6;
-			}
-		}
-
 		m_CurrentTime = m_CurrentTime + (p_DeltaTime / m_TimeSpeed);
 		if (m_CurrentTime >= m_MaxTime)
 		{
@@ -102,14 +114,6 @@ public class ClockUIScript : MonoBehaviour
 			if (m_CurrentWeekday >= m_MaxWeekday)
 			{
 				m_CurrentWeekday = 0;
-			}
-
-			if (GameManager.Instance != null)
-			{
-				if (GameManager.Instance.GameTime != null)
-				{
-					CurrentTime = GameManager.Instance.GameTime.GetHour() + (GameManager.Instance.GameTime.GetMinute() / 60.0f);
-				}
 			}
 		}
 	}
