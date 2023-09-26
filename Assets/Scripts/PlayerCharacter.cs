@@ -77,7 +77,7 @@ public class PlayerCharacter : CharacterBase
 			IInteraction t_Interaction = GetInteractableObject(); 
 			if (t_Interaction != null)
 			{
-				t_Interaction.Interaction();
+				t_Interaction.Interaction(gameObject);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.Q) == true)
