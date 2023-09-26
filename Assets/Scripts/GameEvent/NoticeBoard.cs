@@ -14,6 +14,8 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     [SerializeField]
     GameObject noticeUI;
 
+    public bool IsUsed { get; set; }
+
     public void Start()
     {
         /*noticeName = transform.Find("Name").GetComponent<TextMeshPro>();
@@ -40,6 +42,9 @@ public class NoticeBoard : MonoBehaviour, IInteraction
 
     public void Interaction(GameObject user)
     {
+        IsUsed = !IsUsed;
+        Debug.Log(IsUsed);
+
         CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
         CameraEvent.Instance.ChangeCamera(CamType.NoticeBoard);
     }
