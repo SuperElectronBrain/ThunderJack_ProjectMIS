@@ -93,6 +93,28 @@ public class QuestComponet : MonoBehaviour
 		return new List<Quest>(m_Quests);
 	}
 
+	public List<Quest> GetTodayGuests()
+	{
+		List<Quest> t_Quests = null;
+
+		for (int i = 0; i < m_Quests.Count; i = i + 1)
+		{
+			if (m_Quests[i].timeLimit == 0)
+			{
+				if (m_Quests[i].bComplete == false)
+				{
+					if (t_Quests == null)
+					{
+						t_Quests = new List<Quest>();
+					}
+					t_Quests.Add(m_Quests[i]);
+				}
+			}
+		}
+
+		return t_Quests;
+	}
+
 	public bool CompleteQuest(int p_GuestID, bool p_Complete)
 	{
 		for(int i = 0; i < m_Quests.Count; i = i + 1)
