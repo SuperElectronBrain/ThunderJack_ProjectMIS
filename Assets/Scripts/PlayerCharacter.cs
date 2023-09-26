@@ -36,6 +36,7 @@ public class PlayerCharacter : CharacterBase
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
 		if (m_CollisionComponent == null) { m_CollisionComponent = UniFunc.GetChildComponent<CollisionComponent>(transform); }
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
+		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
 
 		FindPlayerCharacterUIScript();
 	}
@@ -213,14 +214,14 @@ public class PlayerCharacter : CharacterBase
 				{
 					m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
 				}
-				//m_Inventory.RefreshInventory();
+				m_Inventory.RefreshInventory();
 
 				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
 				{
 					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory == null)
 					{
 						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_Inventory = m_Inventory;
-						//m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
 					}
 				}
 			}
@@ -238,6 +239,18 @@ public class PlayerCharacter : CharacterBase
 			}
 			if (m_QuestComponet != null)
 			{
+				if (m_QuestComponet.m_QuestListUIScript == null)
+				{
+					if(m_PlayerCharacterUIScript.m_QuestListUIScript != null)
+					{
+						m_QuestComponet.m_QuestListUIScript = m_PlayerCharacterUIScript.m_QuestListUIScript;
+						if(m_QuestComponet.m_QuestListUIScript.m_QuestComponet == null)
+						{
+							m_QuestComponet.m_QuestListUIScript.m_QuestComponet = m_QuestComponet;
+						}
+						m_QuestComponet.m_QuestListUIScript.RefreshUI();
+					}
+				}
 				if (m_QuestComponet.m_MailBoxUIScript == null)
 				{
 					if (m_PlayerCharacterUIScript.m_MailBoxUIScript != null)
