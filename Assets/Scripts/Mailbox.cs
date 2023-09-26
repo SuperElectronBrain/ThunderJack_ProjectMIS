@@ -43,6 +43,7 @@ public class Mailbox : MonoBehaviour, IInteraction
 	[SerializeField] [Range(0.0f, 1.0f)] private float rate = 0.3f;
 	private List<AdvencedQuestData> QuestTable = null;
 	private AdvencedQuestData m_QuestData;
+	private bool bCommunication; public bool IsUsed { get { return bCommunication; } set { bCommunication = value; } }
 
 	[SerializeField] private GameObject m_SD;
 	private PlayerCharacter m_PlayerCharacter;
