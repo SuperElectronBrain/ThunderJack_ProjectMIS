@@ -8,6 +8,8 @@ public class Bench : MonoBehaviour, IInteraction
     [SerializeField]
     GameObject g;
 
+    public bool IsUsed { get; set; }
+
     public void Start()
     {
         seatTransform = transform.GetChild(0);

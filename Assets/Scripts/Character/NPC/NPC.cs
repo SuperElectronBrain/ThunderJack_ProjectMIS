@@ -21,6 +21,8 @@ public class NPC : Character, IInteraction
 
     public NPCBehaviour PrevBehaviour { get { return prevBehaviour; } }
 
+    public bool IsUsed { get; set; }
+
     [SerializeField]
     BehaviourData curBehaviourData;    
 
@@ -190,8 +192,7 @@ public class LookDir
     public bool isSideWalk;
 
     public void SetDir(Vector3 velocity)
-    {
-        
+    {        
         if (velocity.x >= 0)
             isRight = true;
         else
