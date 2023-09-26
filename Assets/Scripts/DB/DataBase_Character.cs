@@ -38,20 +38,24 @@ public class DataBase_Character : MonoBehaviour
 
             if (charId == 0)
                 continue;
-            
-            newCharacter = Instantiate(npcPrefab, GameManager.Instance.GetSpawnPos(), Quaternion.identity).GetComponent<Character>();
-           
-            characterDB.Add(new CharacterData
+
+            var characterData = new CharacterData
             {
                 characterName = character[characterName].ToString(),
                 characterEgName = character[characterEgName].ToString(),
-                character = newCharacter
-            }
-            );
-            newCharacter.SetCharacterData(characterDB[charId - 1]);
-            newCharacter.gameObject.name = GetCharacterName(charId);
+                character = newCharacter,
+                spawnPoint = new Vector3(Tools.FloatParse(character["Spawn_Location_1"]), Tools.FloatParse(character["Spawn_Location_2"]), Tools.FloatParse(character["Spawn_Location_3"]))
+            };
 
-            newCharacter.InitCharacter(GetCharacterEgName(charId));
+            newCharacter = Instantiate(npcPrefab, characterData.spawnPoint, Quaternion.identity).GetComponent<Character>();
+            characterData.character = newCharacter;
+
+            characterDB.Add(characterData);            
+
+            newCharacter.SetCharacterData(characterDB[charId - 1]);
+            newCharacter.gameObject.name = characterData.characterName;
+
+            newCharacter.InitCharacter(characterData.characterEgName);
             ((NPC)newCharacter).Init();
             if (charId == maxCharacter)
                 break;
@@ -100,4 +104,5 @@ public class CharacterData
     public string characterName;
     public string characterEgName;
     public Character character;
+    public Vector3 spawnPoint;
 }

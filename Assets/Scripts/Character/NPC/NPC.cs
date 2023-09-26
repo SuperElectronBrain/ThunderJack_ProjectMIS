@@ -176,7 +176,7 @@ public class NPC : Character, IInteraction
         destinationPos = LocationManager.GetLocationRandomPosition(transform.position);
     }
 
-    public void Interaction()
+    public void Interaction(GameObject user)
     {
         StartConversation();
     }

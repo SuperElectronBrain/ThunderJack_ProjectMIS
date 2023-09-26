@@ -38,7 +38,7 @@ public class NoticeBoard : MonoBehaviour, IInteraction
         noticeDescription.text = noticeData.noticeDescription;
     }
 
-    public void Interaction()
+    public void Interaction(GameObject user)
     {
         CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
         CameraEvent.Instance.ChangeCamera(CamType.NoticeBoard);
