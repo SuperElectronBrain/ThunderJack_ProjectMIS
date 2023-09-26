@@ -7,6 +7,7 @@ public struct AdvencedQuestData
 	public int questID;
 	public string questName;
 	public string questScript;
+	public int questGrade;
 	public int requestItemID;
 	public int guestID;
 	public string guestName;
@@ -23,6 +24,7 @@ public struct AdvencedQuestData
 		questID = 0;
 		questName = null;
 		questScript = null;
+		questGrade = 0;
 		requestItemID = 0;
 		guestID = 0;
 		guestName = null;
@@ -61,7 +63,27 @@ public class Mailbox : MonoBehaviour, IInteraction
 	{
 		if(QuestTable == null)
 		{
-			//QuestTable = GameManager.Instance.QuestManager.GetQuestData();
+			List<QuestData> QuestDatas = GameManager.Instance.QuestManager.GetQuestList();
+			if(QuestDatas != null)
+			{
+				QuestTable = new List<AdvencedQuestData>();
+				for (int i = 0; i < QuestDatas.Count; i = i + 1)
+				{
+					AdvencedQuestData t_AQuestData = new AdvencedQuestData();
+					t_AQuestData.questID = QuestDatas[i].questID;
+					t_AQuestData.questName = QuestDatas[i].questName;
+					t_AQuestData.questScript = QuestDatas[i].questScript;
+					t_AQuestData.questGrade = QuestDatas[i].questGrade;
+					t_AQuestData.requestItemID = QuestDatas[i].requestItemID;
+					t_AQuestData.guestName = QuestDatas[i].questCharacter;
+					t_AQuestData.timeLimit = QuestDatas[i].questTimeLimit;
+					t_AQuestData.startRate = QuestDatas[i].startRate;
+					t_AQuestData.resetRate = QuestDatas[i].resetRate;
+					t_AQuestData.rate = QuestDatas[i].rate;
+					t_AQuestData.dayRate = QuestDatas[i].dayRate;
+					QuestTable.Add(t_AQuestData);
+				}
+			}
 		}
 
 		if (QuestTable != null)
@@ -100,6 +122,8 @@ public class Mailbox : MonoBehaviour, IInteraction
 					AdvencedQuestData t_QuestData = QuestTable[i];
 					t_QuestData.presentRate = QuestTable[i].presentRate + QuestTable[i].rate;
 					t_QuestData.rate = QuestTable[i].rate + QuestTable[i].dayRate;
+					if (t_QuestData.rate < 0) { t_QuestData.rate = 0; }
+					if (t_QuestData.rate > 1) { t_QuestData.rate = 1; }
 					QuestTable[i] = t_QuestData;
 				}
 				else if(QuestTable[i].waitingTime > 0)
@@ -137,7 +161,11 @@ public class Mailbox : MonoBehaviour, IInteraction
 				}
 
 				m_PlayerCharacter.m_QuestComponet.AddQuest
-				(new Quest(m_QuestData.questID, m_QuestData.questName, m_QuestData.questScript, m_QuestData.requestItemID, m_QuestData.guestID, m_QuestData.guestName, m_QuestData.timeLimit));
+				(new Quest(m_QuestData.questID, m_QuestData.questName, m_QuestData.questScript, m_QuestData.questGrade, m_QuestData.requestItemID, m_QuestData.guestID, m_QuestData.guestName, m_QuestData.timeLimit, false));
+				if (m_PlayerCharacter.m_QuestComponet.m_QuestListUIScript != null)
+				{
+					m_PlayerCharacter.m_QuestComponet.m_QuestListUIScript.RefreshUI();
+				}
 
 				m_QuestData = new AdvencedQuestData();
 				if (m_SD != null)

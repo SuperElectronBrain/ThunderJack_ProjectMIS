@@ -275,7 +275,6 @@ public class UniFunc : MonoBehaviour
 		{
 			if (GameManager.Instance.ItemManager != null)
 			{
-				Debug.Log(p_ItemCode);
 				if (p_ItemCode < 1) { p_ItemCode = 1; }
 				t_BasicItemData = GameManager.Instance.ItemManager.GetBasicItemData(p_ItemCode);
 			}

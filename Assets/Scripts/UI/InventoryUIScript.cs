@@ -25,10 +25,10 @@ public class InventoryUIScript : MonoBehaviour
 			m_Buttons.TrimExcess();
 			for (int i = 0; i < m_ButtonsParent.transform.childCount; i = i + 1)
 			{
-				Button m_Button = m_ButtonsParent.transform.GetChild(i).GetComponent<Button>();
-				if (m_Button != null)
+				Button t_Button = m_ButtonsParent.transform.GetChild(i).GetComponent<Button>();
+				if (t_Button != null)
 				{
-					m_Buttons.Add(m_Button);
+					m_Buttons.Add(t_Button);
 				}
 			}
 		}
