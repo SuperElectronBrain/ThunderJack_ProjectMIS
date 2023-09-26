@@ -15,6 +15,7 @@ public class CharacterBase : MonoBehaviour
 	private Vector3 m_PrevPosition;
 	protected float m_Velocity;
 	protected bool m_UseScaleFlip = true;
+	protected bool bMovable = true;
 
 	protected Camera m_MainCamera;
 	protected Rigidbody m_Rigidbody;
@@ -78,8 +79,12 @@ public class CharacterBase : MonoBehaviour
 		//{
 		//	SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward);
 		//}
-		HorizontalMove(DeltaTime);
-		VerticalMove(DeltaTime);
+
+		if(bMovable==true)
+		{
+			HorizontalMove(DeltaTime);
+			VerticalMove(DeltaTime);
+		}
 
 		m_Velocity = (transform.position - m_PrevPosition).magnitude / DeltaTime;
 		m_PrevPosition = transform.position;
@@ -117,6 +122,16 @@ public class CharacterBase : MonoBehaviour
 
 	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection) { SetMoveDirection(p_HorizontalMoveDirection, Vector3.right); }
 	public void SetMoveDirection() { SetMoveDirection(Vector3.forward, Vector3.right); }
+
+	public void CommunicationStart()
+	{
+		bMovable = false;
+	}
+
+	public void CommunicationEnd()
+	{
+		bMovable = true;
+	}
 
 	protected virtual void OnCollisionEnter(Collision collision)
 	{
