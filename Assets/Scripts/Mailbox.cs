@@ -64,25 +64,32 @@ public class Mailbox : MonoBehaviour, IInteraction
 	{
 		if(QuestTable == null)
 		{
-			List<QuestData> QuestDatas = GameManager.Instance.QuestManager.GetQuestList();
-			if(QuestDatas != null)
+
+			if(GameManager.Instance != null)
 			{
-				QuestTable = new List<AdvencedQuestData>();
-				for (int i = 0; i < QuestDatas.Count; i = i + 1)
+				if(GameManager.Instance.QuestManager != null)
 				{
-					AdvencedQuestData t_AQuestData = new AdvencedQuestData();
-					t_AQuestData.questID = QuestDatas[i].questID;
-					t_AQuestData.questName = QuestDatas[i].questName;
-					t_AQuestData.questScript = QuestDatas[i].questScript;
-					t_AQuestData.questGrade = QuestDatas[i].questGrade;
-					t_AQuestData.requestItemID = QuestDatas[i].requestItemID;
-					t_AQuestData.guestName = QuestDatas[i].questCharacter;
-					t_AQuestData.timeLimit = QuestDatas[i].questTimeLimit;
-					t_AQuestData.startRate = QuestDatas[i].startRate;
-					t_AQuestData.resetRate = QuestDatas[i].resetRate;
-					t_AQuestData.rate = QuestDatas[i].rate;
-					t_AQuestData.dayRate = QuestDatas[i].dayRate;
-					QuestTable.Add(t_AQuestData);
+					List<QuestData> QuestDatas = GameManager.Instance.QuestManager.GetQuestList();
+					if (QuestDatas != null)
+					{
+						QuestTable = new List<AdvencedQuestData>();
+						for (int i = 0; i < QuestDatas.Count; i = i + 1)
+						{
+							AdvencedQuestData t_AQuestData = new AdvencedQuestData();
+							t_AQuestData.questID = QuestDatas[i].questID;
+							t_AQuestData.questName = QuestDatas[i].questName;
+							t_AQuestData.questScript = QuestDatas[i].questScript;
+							t_AQuestData.questGrade = QuestDatas[i].questGrade;
+							t_AQuestData.requestItemID = QuestDatas[i].requestItemID;
+							t_AQuestData.guestName = QuestDatas[i].questCharacter;
+							t_AQuestData.timeLimit = QuestDatas[i].questTimeLimit;
+							t_AQuestData.startRate = QuestDatas[i].startRate;
+							t_AQuestData.resetRate = QuestDatas[i].resetRate;
+							t_AQuestData.rate = QuestDatas[i].rate;
+							t_AQuestData.dayRate = QuestDatas[i].dayRate;
+							QuestTable.Add(t_AQuestData);
+						}
+					}
 				}
 			}
 		}

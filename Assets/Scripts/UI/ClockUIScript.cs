@@ -6,6 +6,7 @@ using UnityEngine;
 public class ClockUIScript : MonoBehaviour
 {
 	[SerializeField] private RectTransform m_ClockHand;
+	[SerializeField] private RectTransform m_ClockMinuteHand;
 	[SerializeField] private RectTransform m_MoonPhaseImage;
 	[SerializeField] private TextMeshProUGUI m_DateText;
 
@@ -56,13 +57,21 @@ public class ClockUIScript : MonoBehaviour
 	[SerializeField] private int m_MaxWeekday = 7;
 	[SerializeField] private float m_MaxTime = 24.0f;
 	[SerializeField] private bool bProgressTime = true;
-	[SerializeField] private float m_TimeSpeed = 1.0f;
+	[SerializeField] private float m_TimeSpeed = 180;
 
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		bProgressTime = false;
+		bProgressTime = true;
+
+		if (GameManager.Instance != null)
+		{
+			if (GameManager.Instance.GameTime != null)
+			{
+				CurrentTime = GameManager.Instance.GameTime.GetHour() + (GameManager.Instance.GameTime.GetMinute() / 60.0f);
+			}
+		}
 	}
 
 	// Update is called once per frame
@@ -70,20 +79,20 @@ public class ClockUIScript : MonoBehaviour
 	{
 		float DeltaTime = Time.deltaTime;
 
-		if(GameManager.Instance != null)
-		{
-			if (GameManager.Instance.GameTime != null)
-			{
-				CurrentTime = GameManager.Instance.GameTime.GetHour() + GameManager.Instance.GameTime.GetMinute();
-			}
-		}
-
 		if (bProgressTime == true) { ProgressTime(DeltaTime); }
 		RefreshClock();
 	}
 
 	private void ProgressTime(float p_DeltaTime)
 	{
+		if (GameManager.Instance != null)
+		{
+			if (GameManager.Instance.GameTime != null)
+			{
+				m_TimeSpeed = GameManager.Instance.GameTime.GetGameSpeed() * 6;
+			}
+		}
+
 		m_CurrentTime = m_CurrentTime + (p_DeltaTime / m_TimeSpeed);
 		if (m_CurrentTime >= m_MaxTime)
 		{
@@ -93,6 +102,14 @@ public class ClockUIScript : MonoBehaviour
 			if (m_CurrentWeekday >= m_MaxWeekday)
 			{
 				m_CurrentWeekday = 0;
+			}
+
+			if (GameManager.Instance != null)
+			{
+				if (GameManager.Instance.GameTime != null)
+				{
+					CurrentTime = GameManager.Instance.GameTime.GetHour() + (GameManager.Instance.GameTime.GetMinute() / 60.0f);
+				}
 			}
 		}
 	}
@@ -113,10 +130,17 @@ public class ClockUIScript : MonoBehaviour
 
 		if(m_ClockHand != null)
 		{
+			//12시간 단위로 2바퀴 돔
 			m_ClockHand.rotation = Quaternion.Euler(0.0f, 0.0f, -360.0f * t_Progress * 2);
+		}
+		if(m_ClockMinuteHand != null)
+		{
+			//1시간 단위로 24바퀴 돌아야 함
+			m_ClockMinuteHand.rotation = Quaternion.Euler(0.0f, 0.0f, -360.0f * t_Progress * m_MaxTime);
 		}
 		if(m_MoonPhaseImage != null)
 		{
+			//24시간 단위로 움직임
 			m_MoonPhaseImage.rotation = Quaternion.Euler(0.0f, 0.0f, -360.0f * t_Progress);
 		}
 

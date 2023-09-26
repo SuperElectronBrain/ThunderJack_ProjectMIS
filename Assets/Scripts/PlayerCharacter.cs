@@ -39,7 +39,7 @@ public class PlayerCharacter : CharacterBase
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
 
-		//EventManager.Subscribe(EventType.EndInteraction, CommunicationEnd);
+		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		FindPlayerCharacterUIScript();
 	}
 
