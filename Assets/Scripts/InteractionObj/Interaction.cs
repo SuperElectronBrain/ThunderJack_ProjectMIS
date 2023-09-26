@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IInteraction
 {
-    public void Interaction();
+    public void Interaction(GameObject user);
 }
 

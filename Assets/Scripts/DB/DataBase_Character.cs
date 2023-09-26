@@ -22,6 +22,9 @@ public class DataBase_Character : MonoBehaviour
     [SerializeField]
     string characterEgName;
 
+    [SerializeField]
+    int maxCharacter;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +38,7 @@ public class DataBase_Character : MonoBehaviour
 
             if (charId == 0)
                 continue;
+            
             newCharacter = Instantiate(npcPrefab, GameManager.Instance.GetSpawnPos(), Quaternion.identity).GetComponent<Character>();
            
             characterDB.Add(new CharacterData
@@ -49,6 +53,8 @@ public class DataBase_Character : MonoBehaviour
 
             newCharacter.InitCharacter(GetCharacterEgName(charId));
             ((NPC)newCharacter).Init();
+            if (charId == maxCharacter)
+                break;
         }
     }
 
