@@ -144,33 +144,35 @@ public class Mailbox : MonoBehaviour, IInteraction
 		}
 	}
 
-	public void Interaction()
+	public void Interaction(GameObject p_GameObject)
 	{
 		if(m_QuestData.questID != 0)
 		{
-			if (m_PlayerCharacter == null)
+			if(p_GameObject != null)
 			{
-				m_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
-			}
-
-			if (m_PlayerCharacter.m_QuestComponet != null)
-			{
-				if (m_PlayerCharacter.m_QuestComponet.m_MailBoxUIScript != null)
+				PlayerCharacter t_PalyerCharacter = p_GameObject.GetComponent<PlayerCharacter>();
+				if(t_PalyerCharacter != null)
 				{
-					m_PlayerCharacter.m_QuestComponet.m_MailBoxUIScript.DisplayMail(true, "");
-				}
+					if (t_PalyerCharacter.m_QuestComponet != null)
+					{
+						if (t_PalyerCharacter.m_QuestComponet.m_MailBoxUIScript != null)
+						{
+							t_PalyerCharacter.m_QuestComponet.m_MailBoxUIScript.DisplayMail(true, "");
+						}
 
-				m_PlayerCharacter.m_QuestComponet.AddQuest
-				(new Quest(m_QuestData.questID, m_QuestData.questName, m_QuestData.questScript, m_QuestData.questGrade, m_QuestData.requestItemID, m_QuestData.guestID, m_QuestData.guestName, m_QuestData.timeLimit, false));
-				if (m_PlayerCharacter.m_QuestComponet.m_QuestListUIScript != null)
-				{
-					m_PlayerCharacter.m_QuestComponet.m_QuestListUIScript.RefreshUI();
-				}
+						t_PalyerCharacter.m_QuestComponet.AddQuest
+						(new Quest(m_QuestData.questID, m_QuestData.questName, m_QuestData.questScript, m_QuestData.questGrade, m_QuestData.requestItemID, m_QuestData.guestID, m_QuestData.guestName, m_QuestData.timeLimit, false));
+						if (t_PalyerCharacter.m_QuestComponet.m_QuestListUIScript != null)
+						{
+							t_PalyerCharacter.m_QuestComponet.m_QuestListUIScript.RefreshUI();
+						}
 
-				m_QuestData = new AdvencedQuestData();
-				if (m_SD != null)
-				{
-					m_SD.SetActive(false);
+						m_QuestData = new AdvencedQuestData();
+						if (m_SD != null)
+						{
+							m_SD.SetActive(false);
+						}
+					}
 				}
 			}
 		}
