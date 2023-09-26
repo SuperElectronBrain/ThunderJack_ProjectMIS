@@ -69,6 +69,7 @@ public class GameManager : Singleton<GameManager>
     {
         for(int i = 1; i <= characterDB.GetCharacterCount(); i++)
         {
+            characterDB.GetCharacter(i).transform.SetParent(null);
             characterDB.GetCharacter(i).gameObject.SetActive(false);
         }
     }
