@@ -25,6 +25,7 @@ public class PlayerCharacter : CharacterBase
 	[SerializeField] private PlayerCharacterUIScript m_PlayerCharacterUIScript;
 	public RecipeBook m_RecipeBook;
 	public QuestComponet m_QuestComponet;
+	private IInteraction m_Interaction;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -38,6 +39,7 @@ public class PlayerCharacter : CharacterBase
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
 
+		//EventManager.Subscribe(EventType.EndInteraction, CommunicationEnd);
 		FindPlayerCharacterUIScript();
 	}
 
@@ -51,6 +53,19 @@ public class PlayerCharacter : CharacterBase
 		{
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
 		}
+
+		//if(m_Interaction != null)
+		//{
+		//	if (m_Interaction.IsUsed == true)
+		//	{
+		//		bMovable = false;
+		//	}
+		//	else if (m_Interaction.IsUsed == false)
+		//	{
+		//		bMovable = true;
+		//		m_Interaction = null;
+		//	}
+		//}
 	}
 
 	protected override void FixedUpdate()
@@ -74,10 +89,11 @@ public class PlayerCharacter : CharacterBase
 
 		if (Input.GetKeyDown(KeyCode.E) == true) 
 		{
-			IInteraction t_Interaction = GetInteractableObject(); 
-			if (t_Interaction != null)
+			m_Interaction = GetInteractableObject(); 
+			if (m_Interaction != null)
 			{
-				t_Interaction.Interaction(gameObject);
+				m_Interaction.Interaction(gameObject);
+				CommunicationStart();
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.Q) == true)
