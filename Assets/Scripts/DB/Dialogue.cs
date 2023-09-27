@@ -190,5 +190,6 @@ public class Dialogue : MonoBehaviour
         dialogueIdx = 0;
         dialogueList.Clear();
         EventManager.Publish(EventType.EndConversation);
+        EventManager.Publish(EventType.EndIteraction);
     }
 }

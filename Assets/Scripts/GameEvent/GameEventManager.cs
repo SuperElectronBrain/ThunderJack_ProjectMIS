@@ -50,7 +50,7 @@ public class GameEventManager : MonoBehaviour
         }
 
         EventManager.Subscribe(EventType.Day, NewDayEvent);
-        Invoke("NewDayEvent", 1f);
+        EventManager.Publish(EventType.Day);
     }
 
     public void Notice(NoticeData noticeData)
@@ -60,24 +60,24 @@ public class GameEventManager : MonoBehaviour
 
     public void NewDayEvent()
     {
-        /*int randomEventIdx = Random.Range(0, gameEventData.Count);
+        int randomEventIdx = Random.Range(0, gameEventData.Count);
 
         switch ((GameEventType)gameEventData[randomEventIdx].eventType)
         {
             case GameEventType.None:
                 break;
             case GameEventType.Fame:
+                dayGameEvent = new RandomGameEvent.FameEvent();
                 break;
             case GameEventType.OrePrice:
-                dayGameEvent = new OreEvent();
+                dayGameEvent = new RandomGameEvent.OreEvent();
                 break;
             case GameEventType.Collect:
                 break;
             case GameEventType.AppearDemonLord:
                 break;
-        }*/
-        dayGameEvent = new RandomGameEvent.OreEvent();
-        dayGameEvent.InitEvent(this, gameEventData[7]);
+        }
+        dayGameEvent.InitEvent(this, gameEventData[randomEventIdx]);
 
         dayGameEvent.EventActive();
     }

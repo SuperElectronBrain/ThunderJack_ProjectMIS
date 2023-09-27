@@ -31,6 +31,7 @@ public class NoticeBoard : MonoBehaviour, IInteraction
                 noticeUI.GetComponent<UI_Sequence>().PlayBackwards();                
             }
             CameraEvent.Instance.ChangeCamera(CamType.Prev);
+            EventManager.Publish(EventType.EndIteraction);
         }
     }
 
