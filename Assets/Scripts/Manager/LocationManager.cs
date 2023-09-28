@@ -12,50 +12,46 @@ public class LocationManager : MonoBehaviour
 {
     [SerializeField]
     List<LocationData> locationList;
+
     [SerializeField]
-    List<LocationData> targetLocationList;
-    Dictionary<string, LocationData> locationData;
-    Dictionary<string, LocationData> targetLocationData;
+    GameObject locationPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
-        locationData = new Dictionary<string, LocationData>();
-        locationList = new();
-        targetLocationList = new();
-        targetLocationData = new();
+        locationList = new List<LocationData>();
 
-        foreach (var location in GameObject.FindGameObjectsWithTag("Land"))
-        {
-            locationList.Add(location.GetComponent<LocationData>());
-        }
-        foreach (var location in GameObject.FindGameObjectsWithTag("TargetLocation"))
-        {
-            targetLocationList.Add(location.GetComponent<LocationData>());
-            
-        }
+        var locationData = GameManager.Instance.DataBase.Parser("LocationList");
 
-        foreach (var location in locationList)
+        foreach (var data in locationData)
         {
-            locationData.Add(location.name, location);
-        }
-        foreach (var location in targetLocationList)
-        {
-            targetLocationData.Add(location.name, location);
+            int idx = locationList.Count;
+            float x = Tools.FloatParse(data["Location_1"]);
+            float y = Tools.FloatParse(data["Location_2"]);
+            float z = Tools.FloatParse(data["Location_3"]);
+            locationList.Add(
+                new LocationData
+                {
+                    locationID = Tools.IntParse(data["Location_ID"]),
+                    locationName = data["Location_Name"].ToString(),
+                    locationPosition = new Vector3(x, y, z)
+                });
+            GameObject locationObj = Instantiate(locationPrefab, locationList[idx].locationPosition, Quaternion.identity);
+            locationObj.name = locationList[idx].locationName;
         }
     }
 
-    public Vector3 GetLocationPosition(string locationName)
+    public Vector3 GetLocationPosition(int locationID)
     {
         //Debug.Log(((LocationName)locationName).ToString() + " : " + locationData[((LocationName)locationName).ToString()].locationTransform);
         //return locationData[((LocationName)locationName).ToString()].locationTransform;s
         //gameObject.name = locationList[locationName].locationName;
-        return locationData[locationName].locationTransform;
+        return locationList[locationID].locationPosition;
     }
 
-    public Vector3 GetTargetPostion(string locationName)
+    public Vector3 GetTargetPostion(int locationID)
     {
-        return targetLocationData[locationName].locationTransform;
+        return locationList[locationID].locationPosition;
     }
 
     public static Vector3 GetLocationRandomPosition(Vector3 locationPos)
@@ -67,4 +63,11 @@ public class LocationManager : MonoBehaviour
         NavMesh.SamplePosition(randomPos, out NavMeshHit navHit, 10, layer);
         return navHit.position;
     }
+}
+
+public class LocationData
+{
+    public int locationID;
+    public string locationName;
+    public Vector3 locationPosition;
 }

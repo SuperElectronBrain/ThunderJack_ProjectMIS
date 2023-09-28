@@ -44,7 +44,8 @@ public class GameEventManager : MonoBehaviour
                 eventName = e["Event_Name"].ToString(),
                 eventScript = e["Event_Script"].ToString(),
                 eventType = Tools.IntParse(e["Event_Type"]),
-                eventValue = Tools.IntParse(e["Event_Value"])
+                eventEffectType = Tools.IntParse(e["Event_Effect_Type"]),
+                eventValue = Tools.FloatParse(e["Event_Value"])
             }
             );
         }
@@ -65,6 +66,7 @@ public class GameEventManager : MonoBehaviour
         switch ((GameEventType)gameEventData[randomEventIdx].eventType)
         {
             case GameEventType.None:
+                dayGameEvent = new RandomGameEvent.OreEvent();
                 break;
             case GameEventType.Fame:
                 dayGameEvent = new RandomGameEvent.FameEvent();
@@ -73,8 +75,10 @@ public class GameEventManager : MonoBehaviour
                 dayGameEvent = new RandomGameEvent.OreEvent();
                 break;
             case GameEventType.Collect:
+                dayGameEvent = new RandomGameEvent.OreEvent();
                 break;
             case GameEventType.AppearDemonLord:
+                dayGameEvent = new RandomGameEvent.OreEvent();
                 break;
         }
         dayGameEvent.InitEvent(this, gameEventData[randomEventIdx]);
@@ -87,7 +91,7 @@ public class GameEventManager : MonoBehaviour
         return dayGameEvent.GetEventType;
     }
 
-    public int GetGameEventValue()
+    public float GetGameEventValue()
     {
         return dayGameEvent.GetEventValue;
     }
@@ -99,7 +103,8 @@ public class EventData
     public string eventName;
     public string eventScript;
     public int eventType;
-    public int eventValue;
+    public int eventEffectType;
+    public float eventValue;
 }
 
 [System.Serializable]

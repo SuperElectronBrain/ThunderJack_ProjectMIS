@@ -44,7 +44,6 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     public void Interaction(GameObject user)
     {
         IsUsed = !IsUsed;
-        Debug.Log(IsUsed);
 
         CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
         CameraEvent.Instance.ChangeCamera(CamType.NoticeBoard);

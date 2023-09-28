@@ -37,7 +37,7 @@ public class BehaviourMaster : MonoBehaviour
                     {
                         actionName = behaviour["Action_Name"].ToString(),
                         actionType = actionType,
-                        actionGoal = GameManager.Instance.LocationManager.GetTargetPostion(behaviour["Action_Goal"].ToString())
+                        //actionGoal = GameManager.Instance.LocationManager.GetTargetPostion(behaviour["Action_Goal"].ToString())
                     };
                     break;
                 case 3:
@@ -46,7 +46,7 @@ public class BehaviourMaster : MonoBehaviour
                         actionName = behaviour["Action_Name"].ToString(),
                         actionType = actionType,
                         //actionGoal = GameManager.Instance.LocationManager.GetLocationPosition(Random.Range(0, 2))
-                        actionGoal = GameManager.Instance.LocationManager.GetLocationPosition(behaviour["Action_Goal"].ToString())
+                        //actionGoal = GameManager.Instance.LocationManager.GetLocationPosition(behaviour["Action_Goal"].ToString())
                     };
                     break;
             }

@@ -14,6 +14,9 @@ public class PlayerShop : MonoBehaviour
     Guest guest;
 
     [SerializeField]
+    PlayerCharacter player;
+
+    [SerializeField]
     int entryWeight;
     [SerializeField]
     int[] weightValue = new int[10];
@@ -39,6 +42,9 @@ public class PlayerShop : MonoBehaviour
         sales = GetComponent<PlayerShop_Sales>();
 
         guest = GetComponentInChildren<Guest>();
+
+        if (player == null)
+            player = FindObjectOfType<PlayerCharacter>();
 
         EventManager.Subscribe(EventType.Minute, GuestCheck);
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
@@ -70,6 +76,17 @@ public class PlayerShop : MonoBehaviour
     {
         if (guest.IsEntry())
             return;
+
+        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
+        {
+            Debug.Log(guest.questName + " »èÁ¦");
+            player.m_QuestComponet.GetTodayGuests().Remove(guest);
+        }
+
+        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
+        {
+            Debug.Log(guest.questName);
+        }
 
         if (entryWeight >= Random.Range(0, 100))
         {

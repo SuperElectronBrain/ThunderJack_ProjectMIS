@@ -18,8 +18,6 @@ public class Character : MonoBehaviour
 {
     Animator animator;
     [SerializeField]
-    Location curLocation;
-    [SerializeField]
     string dialogueName;
     //CharacterDialogue characterDialogue;
     [SerializeField]
@@ -57,19 +55,9 @@ public class Character : MonoBehaviour
         animator.Play(((AnimationType)newAnimationType).ToString());
     }*/
 
-    public void SetLocation(Location newLocation)
-    {
-        curLocation = newLocation;
-    }
-
     public string GetDialogue()
     {
         return dialogueName;
-    }
-
-    public Location GetLocation()
-    {
-        return curLocation;
     }
 
     public void SetCharacterData(CharacterData cd)

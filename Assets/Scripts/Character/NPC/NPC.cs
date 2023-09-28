@@ -6,7 +6,12 @@ using TMPro;
 
 public enum NPCBehaviour
 {
-    Idle, Move, Conversation, Greeting, Sitting, Last
+    Idle, Move, Conversation, Greeting, Sitting, Business, Interaction, Rest, Last
+}
+
+public enum NPCBehaviourType
+{
+    None, Business, Interaction, Rest, Last
 }
 
 public class NPC : Character, IInteraction
@@ -181,6 +186,19 @@ public class NPC : Character, IInteraction
     public void Interaction(GameObject user)
     {
         StartConversation();
+    }
+
+    public void LookAtTarget()
+    {
+        lookDir.SetDir(transform.position, curInteractionObj.transform.position);
+    }
+
+    public void Flip()
+    {
+        var scaleX = lookDir.isRight ? -1 : 1;
+        var newScale = transform.localScale;
+        newScale.x = Mathf.Abs(transform.localScale.x) * scaleX;
+        transform.localScale = newScale;
     }
 }
 
