@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System.IO;
 
 public class DataBase : Singleton<DataBase>
@@ -31,10 +32,19 @@ public class DataBase : Singleton<DataBase>
         characterDB = GetComponent<DataBase_Character>();
     }
 
-    public List<Dictionary<string, object>> Parser(string dataName, bool isDebg = false)
+    public List<Dictionary<string, object>> Parser(string dataName, bool isDebg = false, bool isEditor = false)
     {
         var list = new List<Dictionary<string, object>>();
-        TextAsset data = dataDic[dataName];
+        TextAsset data;
+
+        if (isEditor)
+        {
+            data = AssetDatabase.LoadAssetAtPath<TextAsset>(dataName);
+            if (data == null)
+                return null;
+        }
+        else
+            data = dataDic[dataName];
 
         StringReader reader = new StringReader(data.text);
         string text = reader.ReadLine();
