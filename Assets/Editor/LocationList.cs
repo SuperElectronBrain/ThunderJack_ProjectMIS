@@ -11,13 +11,18 @@ public class LocationList : EditorWindow
     static List<EditorLocationData> locationList = new List<EditorLocationData>();
     static CinemachineVirtualCamera topCam;
 
+    public enum LocationType
+    {
+        None, Interaction, Entrance
+    }
+
     GameObject selectPos;
 
     bool isActive = false;
 
     public const string locationName = "Location Name";
 
-    public const string filePath = "Editor/LocationList.csv";
+    public const string filePath = "Assets/Editor/LocationList.csv";
 
     [MenuItem("LocationList/List")]
     // Start is called before the first frame update   
@@ -28,12 +33,31 @@ public class LocationList : EditorWindow
         var loadCam = Instantiate(Resources.Load<CinemachineVirtualCamera>("TopCam"));
         topCam = loadCam.GetComponent<CinemachineVirtualCamera>();
 
-        window.Show();
+        Init();
+        window.Show();        
     }
 
-    void Init()
+    static void Init()
     {
-        
+        var locationData = GameManager.Instance.DataBase.Parser(filePath, false, true);
+
+        if (locationData == null)
+            return;
+
+        foreach (var location in locationData)
+        {
+            float x = Tools.FloatParse(location["PositionX"]);
+            float y = Tools.FloatParse(location["PositionY"]);
+            float z = Tools.FloatParse(location["PositionZ"]);
+            locationList.Add(
+                new EditorLocationData
+                {
+                    locationName = location["LocationName"].ToString(),
+                    locationType = (LocationType)Tools.IntParse(location["LocationType"]),
+                    locationPos = new Vector3(x, y, z)
+                }
+                );
+        }
     }
 
     void ChangeView()
@@ -80,7 +104,14 @@ public class LocationList : EditorWindow
     {
         for(int i = 0; i < locationList.Count; i++)
         {
+            GUILayout.BeginHorizontal();
+            locationList[i].locationType = (LocationType)EditorGUILayout.EnumPopup(locationList[i].locationType);
             locationList[i].locationName = GUILayout.TextField(locationList[i].locationName);
+            if(GUILayout.Button("X"))
+            {
+                locationList.Remove(locationList[i]);
+            }
+            GUILayout.EndHorizontal();
         }
     }
 
@@ -142,9 +173,11 @@ public class LocationList : EditorWindow
 
         StreamWriter writer = new StreamWriter(fileStream);
 
+        writer.WriteLine(string.Format("{0},{1},{2},{3},{4}", "LocationName", "LocationType", "PositionX", "PositionY", "PositionZ"));
+
         for (int i = 0; i < locationList.Count; i++)
         {
-            writer.WriteLine(string.Format("{0}, {1}, {2}, {3}", locationList[i].locationName, locationList[i].locationPos.x, locationList[i].locationPos.y, locationList[i].locationPos.z));
+            writer.WriteLine(string.Format("{0},{1},{2},{3},{4}", locationList[i].locationName, ((int)locationList[i].locationType), locationList[i].locationPos.x, locationList[i].locationPos.y, locationList[i].locationPos.z));
         }
 
         writer.Close();
@@ -158,6 +191,7 @@ public class LocationList : EditorWindow
     class EditorLocationData
     {
         public Vector3 locationPos;
+        public LocationType locationType;
         public string locationName;
     }
 }
