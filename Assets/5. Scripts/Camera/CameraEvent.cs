@@ -31,7 +31,7 @@ public class CameraEvent : Singleton<CameraEvent>
     // Start is called before the first frame update
     void Start()
     {
-        ChangeCamera(CamType.Main);
+        ChangeCamera(CamType.Main);        
     }
 
     IEnumerator OnBlendComplate()

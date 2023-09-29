@@ -7,11 +7,9 @@ public class NpcRelocation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         if(GameManager.Instance.CharacterDB.GetCharacterCount() != 0)
         {
-            Invoke("Relocation", 1f);
-            //Relocation();
+            Relocation();
         }
     }
 

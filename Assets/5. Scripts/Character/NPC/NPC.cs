@@ -28,9 +28,6 @@ public class NPC : Character, IInteraction
 
     public bool IsUsed { get; set; }
 
-    [SerializeField]
-    BehaviourData curBehaviourData;    
-
     public LookDir lookDir = new();
 
     float intimacy;
@@ -52,6 +49,9 @@ public class NPC : Character, IInteraction
     [SerializeField]
     TextMeshPro dialog;
 
+    [SerializeField]
+    TimeTableData schedule;
+
     protected override void Awake()
     {
         base.Awake();
@@ -66,6 +66,7 @@ public class NPC : Character, IInteraction
         states[((int)NPCBehaviour.Conversation)] = GetComponent<ConversationState>();
         states[((int)NPCBehaviour.Greeting)] = GetComponent<GreetingState>();
         states[((int)NPCBehaviour.Sitting)] = GetComponent<SittingState>();
+        states[((int)NPCBehaviour.Rest)] = GetComponent<RestState>();
     }
 
     private void Start()
@@ -131,38 +132,14 @@ public class NPC : Character, IInteraction
         dialog.text = talkScript;
     }
 
-    public void SetCurBehaviourData(BehaviourData newBehaviourData)
+    public void SetSchedule(TimeTableData newSchedule)
     {
-        curBehaviourData = newBehaviourData;
-
-        ChangeStateFromBehaviour();
+        schedule = newSchedule;
     }
 
     void ChangeStateFromBehaviour()
     {
-        switch(curBehaviourData.actionType)
-        {
-            case 1:
-                //PlayAnimation(((BehaviourType1)curBehaviourData).actionGoal);
-                break;
-            case 2:
-                destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
-                if (!isTalk)
-                    ChangeState(NPCBehaviour.Move);
-                else
-                    prevBehaviour = NPCBehaviour.Move;
-                break;
-            case 3:
-                destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
-                destinationPos = LocationManager.GetLocationRandomPosition(destinationPos);
-                //Debug.Log(curBehaviourData.)
-                //Debug.Log(((BehaviourType2)curBehaviourData).actionGoal);
-                if(!isTalk)
-                    ChangeState(NPCBehaviour.Move);
-                else
-                    prevBehaviour = NPCBehaviour.Move;
-                break;
-        }
+
     }
 
     public void ChangeState(NPCBehaviour newBehaviour)
@@ -174,7 +151,8 @@ public class NPC : Character, IInteraction
 
     public void Relocation()
     {
-        Vector3 relocationPos = LocationManager.GetLocationRandomPosition(((BehaviourType2)curBehaviourData).actionGoal);
+        Vector3 schedulePos = GameManager.Instance.LocationManager.GetLocationPosition(schedule.aiParam1);
+        Vector3 relocationPos = LocationManager.GetLocationRandomPosition(schedulePos);
         transform.position = relocationPos;
     }
 

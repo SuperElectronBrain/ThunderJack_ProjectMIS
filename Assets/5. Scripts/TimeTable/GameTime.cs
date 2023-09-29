@@ -63,7 +63,7 @@ public class GameTime : MonoBehaviour
 
     public string GetTime()
     {
-        return hour + ":" + minute;
+        return hour + ":" + minute.ToString("D2");
     }
 
     public int GetHour()
@@ -74,6 +74,11 @@ public class GameTime : MonoBehaviour
     public int GetMinute()
     {
         return minute;
+    }
+
+    public int GetDay()
+    {
+        return day;
     }
 
     public float GetGameSpeed()

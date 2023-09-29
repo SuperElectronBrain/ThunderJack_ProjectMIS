@@ -31,7 +31,7 @@ public class DataBase : Singleton<DataBase>
         characterDB = GetComponent<DataBase_Character>();
     }
 
-    public List<Dictionary<string, object>> Parser(string dataName)
+    public List<Dictionary<string, object>> Parser(string dataName, bool isDebg = false)
     {
         var list = new List<Dictionary<string, object>>();
         TextAsset data = dataDic[dataName];
@@ -48,7 +48,8 @@ public class DataBase : Singleton<DataBase>
             string[] rowData = text.Split(',');
             for (int i = 0; i < rowData.Length; i++)
             {
-                Debug.Log(rowData[i]);
+                if(isDebg)
+                    Debug.Log(rowData[i]);
                 newDic.Add(row[i], rowData[i]);                
             }
                 

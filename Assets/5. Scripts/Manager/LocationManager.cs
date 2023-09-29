@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum NavType
-{
-    Shop, Town, Park
-}
-
 public class LocationManager : MonoBehaviour
 {
     [SerializeField]
@@ -46,12 +41,12 @@ public class LocationManager : MonoBehaviour
         //Debug.Log(((LocationName)locationName).ToString() + " : " + locationData[((LocationName)locationName).ToString()].locationTransform);
         //return locationData[((LocationName)locationName).ToString()].locationTransform;s
         //gameObject.name = locationList[locationName].locationName;
-        return locationList[locationID].locationPosition;
+        return locationList[locationID - 1].locationPosition;
     }
 
     public Vector3 GetTargetPostion(int locationID)
     {
-        return locationList[locationID].locationPosition;
+        return locationList[locationID - 1].locationPosition;
     }
 
     public static Vector3 GetLocationRandomPosition(Vector3 locationPos)
@@ -65,6 +60,7 @@ public class LocationManager : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class LocationData
 {
     public int locationID;
