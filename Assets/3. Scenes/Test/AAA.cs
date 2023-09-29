@@ -35,6 +35,12 @@ public class AAA : MonoBehaviour
                 objects[i].GetComponent<BBB>().ResetObj(vectors[i], rotations[i]);                
             }
         }
+        else if(Input.GetMouseButton(0))
+        {
+            var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+
+            transform.position = mPos;
+        }
         else if(Input.GetMouseButtonUp(0))
         {
             for (int i = 0; i < transform.childCount; i++)

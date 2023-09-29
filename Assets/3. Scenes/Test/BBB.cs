@@ -18,7 +18,8 @@ public class BBB : MonoBehaviour
     {
         col.isTrigger = true;
         rig.gravityScale = 0;
-        rig.velocity = Vector2.zero;        
+        rig.velocity = Vector2.zero;
+        rig.angularVelocity = 0;
 
         Sequence sequence = DOTween.Sequence().SetRecyclable(true).SetAutoKill(false).Pause();
 
@@ -32,5 +33,8 @@ public class BBB : MonoBehaviour
     {
         rig.gravityScale = 3;
         col.isTrigger = false;
+        var forceX = Random.Range(-2f, 2f);
+        var forceY = Random.Range(-2f, 0f);
+        rig.AddForce(new Vector2(forceX, forceY),ForceMode2D.Impulse);
     }
 }
