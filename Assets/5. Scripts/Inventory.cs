@@ -495,7 +495,7 @@ public class Inventory : MonoBehaviour
 		RefreshInventory();
 	}
 
-	public void TransferInventoryItems(Inventory p_Inventory)
+	public void TakeInventoryItems(Inventory p_Inventory)
 	{
 		if(p_Inventory != null)
 		{

@@ -52,17 +52,7 @@ public class Portal : MonoBehaviour
 			t_PlayerCharacter.gameObject.transform.position = destination;
 			if (m_PlayerCharacter != null)
 			{
-				if (t_PlayerCharacter.m_Inventory == null)
-				{
-					t_PlayerCharacter.m_Inventory = t_PlayerCharacter.GetComponent<Inventory>();
-				}
-				if (t_PlayerCharacter.m_Inventory != null)
-				{
-					if(t_PlayerCharacter.m_Inventory.GetAItems().Count <= 0)
-					{
-						t_PlayerCharacter.m_Inventory.TransferInventoryItems(m_PlayerCharacter.m_Inventory);
-					}
-				}
+				t_PlayerCharacter.TakeComponents(m_PlayerCharacter);
 			}
 			t_PlayerCharacter.FindPlayerCharacterUIScript();
 			CameraController t_CameraController = Camera.main.GetComponent<CameraController>();

@@ -42,17 +42,9 @@ public class GameStartButtonScript : ButtonScript
 		if (t_PlayerCharacter != null)
 		{
 			t_PlayerCharacter.gameObject.transform.position = destination;
-			Debug.Log(destination);
-			if(m_PlayerCharacter != null)
-			{ 
-				if(t_PlayerCharacter.m_Inventory == null)
-				{
-					t_PlayerCharacter.m_Inventory = t_PlayerCharacter.GetComponent<Inventory>();
-				}
-				if(t_PlayerCharacter.m_Inventory != null)
-				{
-					t_PlayerCharacter.m_Inventory.TransferInventoryItems(m_PlayerCharacter.m_Inventory); 
-				}
+			if (m_PlayerCharacter != null)
+			{
+				t_PlayerCharacter.TakeComponents(m_PlayerCharacter);
 			}
 			t_PlayerCharacter.FindPlayerCharacterUIScript();
 			CameraController t_CameraController = Camera.main.GetComponent<CameraController>();

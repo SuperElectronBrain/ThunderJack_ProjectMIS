@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -54,18 +55,20 @@ public class PlayerCharacter : CharacterBase
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
 		}
 
-		//if(m_Interaction != null)
-		//{
-		//	if (m_Interaction.IsUsed == true)
-		//	{
-		//		bMovable = false;
-		//	}
-		//	else if (m_Interaction.IsUsed == false)
-		//	{
-		//		bMovable = true;
-		//		m_Interaction = null;
-		//	}
-		//}
+		/*
+		if(m_Interaction != null)
+		{
+			if (m_Interaction.IsUsed == true)
+			{
+				bMovable = false;
+			}
+			else if (m_Interaction.IsUsed == false)
+			{
+				bMovable = true;
+				m_Interaction = null;
+			}
+		}
+		*/
 	}
 
 	protected override void FixedUpdate()
@@ -144,6 +147,42 @@ public class PlayerCharacter : CharacterBase
 	//{
 	//	base.VerticalMove(DeltaTime);
 	//}
+
+	public void TakeComponents(PlayerCharacter p_PlayerCharacter)
+	{
+		if (p_PlayerCharacter != null)
+		{
+			if (m_Inventory == null)
+			{
+				m_Inventory = gameObject.GetComponent<Inventory>();
+				if(m_Inventory == null) { m_Inventory = gameObject.AddComponent<Inventory>(); }
+			}
+			if (m_Inventory != null)
+			{
+				if (m_Inventory.GetAItems().Count <= 0) { m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory); }
+			}
+
+			if(m_RecipeBook == null)
+			{
+				m_RecipeBook = gameObject.GetComponent<RecipeBook>();
+				if (m_RecipeBook == null) { m_RecipeBook = gameObject.AddComponent<RecipeBook>(); }
+			}
+			if (m_RecipeBook != null)
+			{
+				if (m_RecipeBook.GetItemRecipes().Count <= 0) { m_RecipeBook.TakeItemRecipes(p_PlayerCharacter.m_RecipeBook); }
+			}
+
+			if(m_QuestComponet == null)
+			{
+				m_QuestComponet = gameObject.GetComponent<QuestComponet>();
+				if (m_QuestComponet == null) { m_QuestComponet = gameObject.AddComponent<QuestComponet>(); }
+			}
+			if (m_QuestComponet != null)
+			{
+				if (m_QuestComponet.GetQuests().Count <= 0) { m_QuestComponet.TakeQuests(p_PlayerCharacter.m_QuestComponet); }
+			}
+		}
+	}
 
 	public IInteraction GetInteractableObject()
 	{
