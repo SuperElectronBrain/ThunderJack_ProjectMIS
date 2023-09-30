@@ -84,17 +84,49 @@ public class RecipeBook : MonoBehaviour
 		}
 		return false;
 	}
-	public void AddRecipe(int p_ItemCode, float p_Progress, List<Ingredient> p_Ingredients)
+
+	public void AddRecipe(ItemRecipe p_ItemRecipe)
 	{
 		int count = 0;
 		if (m_ItemRecipes != null)
 		{
 			for (int i = 0; i < m_ItemRecipes.Count; i = i + 1)
 			{
-				if (m_ItemRecipes[i].itemCode == p_ItemCode) { m_ItemRecipes[i] = new ItemRecipe(p_ItemCode, p_Progress, p_Ingredients); count = count + 1; break; }
+				if (m_ItemRecipes[i].itemCode == p_ItemRecipe.itemCode) { m_ItemRecipes[i] = p_ItemRecipe; count = count + 1; break; }
 			}
 		}
 
-		if(count < 1) { m_ItemRecipes = m_ItemRecipes == null ? new List<ItemRecipe>() : m_ItemRecipes; m_ItemRecipes.Add(new ItemRecipe(p_ItemCode, p_Progress, p_Ingredients)); }
+		if (count < 1) { m_ItemRecipes = m_ItemRecipes == null ? new List<ItemRecipe>() : m_ItemRecipes; m_ItemRecipes.Add(p_ItemRecipe); }
+	}
+	public void AddRecipe(int p_ItemCode, float p_Progress, List<Ingredient> p_Ingredients)
+	{
+		AddRecipe(new ItemRecipe(p_ItemCode, p_Progress, p_Ingredients));
+	}
+
+	public ItemRecipe PopRecipeAt(int p_Index)
+	{
+		ItemRecipe t_ItemRecipe = m_ItemRecipes[p_Index];
+		m_ItemRecipes.RemoveAt(p_Index);
+		m_ItemRecipes.TrimExcess();
+		return t_ItemRecipe;
+	}
+
+	public void CleanRecipeBook()
+	{
+		m_ItemRecipes.Clear();
+		m_ItemRecipes.TrimExcess();
+	}
+
+	public void TakeItemRecipes(RecipeBook p_RecipeBook)
+	{
+		if (p_RecipeBook != null)
+		{
+			int count = p_RecipeBook.GetItemRecipes().Count;
+			for (int i = 0; i < count; i = i + 1)
+			{
+				AddRecipe(p_RecipeBook.PopRecipeAt(p_RecipeBook.GetItemRecipes().Count - 1));
+			}
+			p_RecipeBook.CleanRecipeBook();
+		}
 	}
 }

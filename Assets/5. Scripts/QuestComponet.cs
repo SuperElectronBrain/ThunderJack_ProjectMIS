@@ -69,6 +69,11 @@ public class QuestComponet : MonoBehaviour
 	//	
 	//}
 
+	public List<Quest> GetQuests()
+	{
+		return new List<Quest>(m_Quests);
+	}
+
 	public void AddQuest(Quest p_Quest)
 	{
 		int count = 0;
@@ -88,9 +93,31 @@ public class QuestComponet : MonoBehaviour
 		}
 	}
 
-	public List<Quest> GetQuests()
+	public Quest PopQuestAt(int p_Index)
 	{
-		return new List<Quest>(m_Quests);
+		Quest t_Quest = m_Quests[p_Index];
+		m_Quests.RemoveAt(p_Index);
+		m_Quests.TrimExcess();
+		return t_Quest;
+	}
+
+	public void CleanRecipeBook()
+	{
+		m_Quests.Clear();
+		m_Quests.TrimExcess();
+	}
+
+	public void TakeQuests(QuestComponet p_QuestComponet)
+	{
+		if (p_QuestComponet != null)
+		{
+			int count = p_QuestComponet.GetQuests().Count;
+			for (int i = 0; i < count; i = i + 1)
+			{
+				AddQuest(p_QuestComponet.PopQuestAt(p_QuestComponet.GetQuests().Count - 1));
+			}
+			p_QuestComponet.CleanRecipeBook();
+		}
 	}
 
 	public List<Quest> GetTodayGuests()
