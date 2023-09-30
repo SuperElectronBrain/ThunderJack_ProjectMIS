@@ -5,8 +5,6 @@ using UnityEngine;
 public class Bench : MonoBehaviour, IInteraction
 {
     Transform seatTransform;
-    [SerializeField]
-    GameObject g;
 
     public bool IsUsed { get; set; }
 
@@ -15,23 +13,13 @@ public class Bench : MonoBehaviour, IInteraction
         seatTransform = transform.GetChild(0);
     }
 
-    public void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            g.transform.SetParent(seatTransform, true);
-            g.transform.localPosition = Vector3.zero;
-            g.GetComponent<NPC>().ChangeState(NPCBehaviour.Sitting);
-        }
-    }
-
     public void Interaction(GameObject go)
     {
-
-    }
-
-    public void Interaction()
-    {
-        
+        go.transform.SetParent(seatTransform, true);
+        go.transform.localPosition = Vector3.zero;
+        if (go.TryGetComponent(out NPC npc))
+        {
+            npc.ChangeState(NPCBehaviour.Sitting);
+        }
     }
 }

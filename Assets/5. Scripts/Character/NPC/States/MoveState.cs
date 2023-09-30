@@ -44,6 +44,8 @@ public class MoveState : State<NPC>
 
     public override void Exit(NPC entity)
     {
+        entity.agent.isStopped = true;
+        StopAllCoroutines();
         Debug.Log(gameObject.name + "이동완료");        
     }
 
@@ -53,7 +55,11 @@ public class MoveState : State<NPC>
         {
             entity.ChangeState(NPCBehaviour.Greeting);
         }
-        if(isMove)
+        if((entity.targetInteractionObj.transform.position - transform.position).sqrMagnitude < 1f)
+        {
+            entity.ChangeState(NPCBehaviour.Interaction);
+        }
+        else if(isMove)
         {
             if (entity.agent.remainingDistance <= 0.5f)
             {
@@ -62,7 +68,7 @@ public class MoveState : State<NPC>
                     entity.ChangeState(NPCBehaviour.Idle);
                 }
             }
-        }             
+        }
     }
 
     IEnumerator MoveCheck(NPC entity)

@@ -539,6 +539,7 @@ GameObject:
   - component: {fileID: 1280512205260860089}
   - component: {fileID: 8138508947451609621}
   - component: {fileID: 3097852794441509403}
+  - component: {fileID: 5004500615192490151}
   - component: {fileID: 4966393478467375630}
   - component: {fileID: 4267774433955039929}
   m_Layer: 0
@@ -596,9 +597,13 @@ MonoBehaviour:
   agent: {fileID: 0}
   destinationPos: {x: 0, y: 0, z: 0}
   curInteractionObj: {fileID: 0}
+  targetInteractionObj: {fileID: 0}
   player: {fileID: 0}
   sightRange: 8
   dialog: {fileID: 4682375181242107248}
+  schedule:
+    aiParam1: 0
+    aiParam2: 0
 --- !u!114 &6529930206529814306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -672,6 +677,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57775ac4820f65a43947b95f6aa0730a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5004500615192490151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418965915492831595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068c6f11f281ce0489af5227f775c7b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!195 &4966393478467375630

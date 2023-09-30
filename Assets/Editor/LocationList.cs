@@ -13,7 +13,7 @@ public class LocationList : EditorWindow
 
     public enum LocationType
     {
-        None, Interaction, Entrance
+        None = 1, Interaction, Entrance
     }
 
     GameObject selectPos;

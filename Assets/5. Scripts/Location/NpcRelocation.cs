@@ -9,7 +9,7 @@ public class NpcRelocation : MonoBehaviour
     {
         if(GameManager.Instance.CharacterDB.GetCharacterCount() != 0)
         {
-            Relocation();
+            Invoke("Relocation", 0.5f);
         }
     }
 
