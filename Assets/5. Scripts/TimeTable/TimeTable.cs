@@ -33,8 +33,8 @@ public class TimeTable : MonoBehaviour
                     timeTableList[i - 1].Add(t["ConditionTime"].ToString(),
                         new TimeTableData
                         {
-                            aiType = Tools.IntParse(t["AIType"]),
-                            aiParam1 = Tools.IntParse(t["AiParameter"])
+                            aiParam1 = Tools.IntParse(t["AiParameter1"]),
+                            aiParam2 = Tools.IntParse(t["AiParameter2"])
                         }
                         );
                 }
@@ -55,13 +55,7 @@ public class TimeTable : MonoBehaviour
 
         for (int i = 1; i <= dc.GetCharacterCount(); i++)
         {
-            Debug.Log(gt.GetTime());
-            NPC npc = dc.GetNPC(i);
-            var key = gt.GetTime();
-
-            npc.SetSchedule(timeTableList[i - 1][key]);
-
-            //.SetSchedule(timeTableList[i][gt.GetTime()]);
+            dc.GetNPC(i).SetSchedule(timeTableList[i - 1][gt.GetTime()]);
         }
     }
 }
@@ -69,6 +63,6 @@ public class TimeTable : MonoBehaviour
 [System.Serializable]
 public class TimeTableData
 {
-    public int aiType;
     public int aiParam1;
+    public int aiParam2;
 }

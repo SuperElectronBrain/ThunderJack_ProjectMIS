@@ -9,9 +9,9 @@ public enum NPCBehaviour
     Idle, Move, Conversation, Greeting, Sitting, Business, Interaction, Rest, Last
 }
 
-public enum NPCBehaviourType
+public enum NPCScheduleType
 {
-    None, Business, Interaction, Rest, Last
+    Interaction = 1, Business, Rest, None, Last
 }
 
 public class NPC : Character, IInteraction
@@ -40,6 +40,7 @@ public class NPC : Character, IInteraction
     public NavMeshAgent agent;
     public Vector3 destinationPos;
     public GameObject curInteractionObj;
+    public GameObject targetInteractionObj;
 
     public GameObject player;
 
@@ -67,6 +68,7 @@ public class NPC : Character, IInteraction
         states[((int)NPCBehaviour.Greeting)] = GetComponent<GreetingState>();
         states[((int)NPCBehaviour.Sitting)] = GetComponent<SittingState>();
         states[((int)NPCBehaviour.Rest)] = GetComponent<RestState>();
+        states[((int)NPCBehaviour.Interaction)] = GetComponent<InteractionState>();
     }
 
     private void Start()
@@ -134,12 +136,48 @@ public class NPC : Character, IInteraction
 
     public void SetSchedule(TimeTableData newSchedule)
     {
+        bool isMove = schedule.aiParam2 != newSchedule.aiParam2;
+
         schedule = newSchedule;
+
+        /*if(isMove)
+        {
+            RandomDestinationPos();
+            ChangeState(NPCBehaviour.Move);
+        }*/
+        ChangeStateFromSchedule();
     }
 
-    void ChangeStateFromBehaviour()
+    void RandomDestinationPos()
     {
+        Vector3 schedulePos = GameManager.Instance.LocationManager.GetLocationPosition(schedule.aiParam2);
+        destinationPos = LocationManager.GetLocationRandomPosition(schedulePos);
+    }
 
+    void TargetDestinationPos()
+    {
+        destinationPos = GameManager.Instance.LocationManager.GetLocationPosition(schedule.aiParam2);
+        LocationType locationType = GameManager.Instance.LocationManager.GetLocationType(schedule.aiParam2);
+        targetInteractionObj = LocationManager.GetObjectFromLocation(destinationPos, locationType);
+    }
+
+    void ChangeStateFromSchedule()
+    {
+        switch((NPCScheduleType)schedule.aiParam1)
+        {
+            case NPCScheduleType.Interaction:
+                TargetDestinationPos();
+                ChangeState(NPCBehaviour.Move);
+                break;
+            case NPCScheduleType.Business:
+                break;
+            case NPCScheduleType.Rest:
+                TargetDestinationPos();
+                ChangeState(NPCBehaviour.Move);
+                break;
+            case NPCScheduleType.None:
+                break;
+        }
     }
 
     public void ChangeState(NPCBehaviour newBehaviour)
@@ -151,9 +189,13 @@ public class NPC : Character, IInteraction
 
     public void Relocation()
     {
-        Vector3 schedulePos = GameManager.Instance.LocationManager.GetLocationPosition(schedule.aiParam1);
+        agent.enabled = false;
+        Vector3 schedulePos = GameManager.Instance.LocationManager.GetLocationPosition(schedule.aiParam2);
         Vector3 relocationPos = LocationManager.GetLocationRandomPosition(schedulePos);
         transform.position = relocationPos;
+        agent.enabled = true;
+
+        ChangeStateFromSchedule();
     }
 
     public void GetRandomDestinationByMyPosition()
@@ -177,7 +219,7 @@ public class NPC : Character, IInteraction
         var newScale = transform.localScale;
         newScale.x = Mathf.Abs(transform.localScale.x) * scaleX;
         transform.localScale = newScale;
-    }
+    }    
 }
 
 [System.Serializable]

@@ -43,10 +43,15 @@ public class NoticeBoard : MonoBehaviour, IInteraction
 
     public void Interaction(GameObject user)
     {
-        IsUsed = !IsUsed;
+        if(user.GetComponent<NPC>())
+        {
 
-        CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
-        CameraEvent.Instance.ChangeCamera(CamType.NoticeBoard);
+        }
+        else
+        {
+            CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
+            CameraEvent.Instance.ChangeCamera(CamType.NoticeBoard);
+        }        
     }
 
     public void ViewNoticeBoard()
