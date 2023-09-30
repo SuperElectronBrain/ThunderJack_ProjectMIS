@@ -35,13 +35,15 @@ public class DataBase : Singleton<DataBase>
     public List<Dictionary<string, object>> Parser(string dataName, bool isDebg = false, bool isEditor = false)
     {
         var list = new List<Dictionary<string, object>>();
-        TextAsset data;
+        TextAsset data = null;
 
         if (isEditor)
         {
+#if UNITY_EDITOR
             data = AssetDatabase.LoadAssetAtPath<TextAsset>(dataName);
             if (data == null)
                 return null;
+#endif
         }
         else
             data = dataDic[dataName];
