@@ -71,12 +71,6 @@ public class MillStone : MonoBehaviour
 					m_SkeletonAnimation.timeScale = 0.0f;
 				}
 
-				float t_AnimationProgress = (1 - m_Progress) * m_MaxTurnCount;
-				if (trackEntry != null)
-				{
-					trackEntry.TrackTime = (t_AnimationProgress - (int)t_AnimationProgress) * trackEntry.AnimationEnd;
-				}
-
 				if (m_Progress <= 0.0f)
 				{
 					m_Input = 0;
@@ -89,6 +83,12 @@ public class MillStone : MonoBehaviour
 		{
 			bProgress = false;
 			m_SkeletonAnimation.timeScale = 0.0f;
+		}
+
+		float t_AnimationProgress = (1 - m_Progress) * m_MaxTurnCount;
+		if (trackEntry != null)
+		{
+			trackEntry.TrackTime = (t_AnimationProgress - (int)t_AnimationProgress) * trackEntry.AnimationEnd;
 		}
 
 		if (m_ProgressText != null)
@@ -116,20 +116,16 @@ public class MillStone : MonoBehaviour
 			{
 				switch (p_AItem.itemCode)
 				{
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-					case 5:
-						{
-							m_Input = p_AItem.itemCode;
-							m_Progress = p_AItem.itemProgress;
-							return true;
-						}
+					case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15:
+					{
+						m_Input = p_AItem.itemCode;
+						m_Progress = p_AItem.itemProgress;
+						return true;
+					}
 					default:
-						{
-							break;
-						}
+					{
+						break;
+					}
 				}
 			}
 		}
