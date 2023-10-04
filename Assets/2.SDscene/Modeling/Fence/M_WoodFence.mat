@@ -13,8 +13,8 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - N_F_EAL_ON
-  - N_F_GLO_ON
   - N_F_NM_ON
+  - N_F_O_ON
   - N_F_RDC_ON
   - N_F_RELGI_ON
   - N_F_SS_ON
@@ -49,8 +49,7 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses:
-  - SRPDEFAULTUNLIT
+  disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -100,7 +99,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskGloss:
-        m_Texture: {fileID: 2800000, guid: 1da78b1fd52c9e741b7ae7c9120bc8b7, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskReflection:
@@ -203,12 +202,12 @@ Material:
     - _GlossColorPower: 10
     - _GlossIntensity: 1
     - _GlossMapScale: 0
-    - _GlossSoftness: 1
+    - _GlossSoftness: 0
     - _GlossTextureFollowLight: 0
     - _GlossTextureFollowObjectRotation: 0
     - _GlossTextureRotate: 0
     - _GlossTextureSoftness: 0
-    - _Glossiness: 0.277
+    - _Glossiness: 0
     - _GlossyReflections: 0
     - _Glow_Edge_Width: 1
     - _HighlightColorPower: 1
@@ -236,7 +235,7 @@ Material:
     - _N_F_EAL: 1
     - _N_F_ESSAO: 0
     - _N_F_FR: 0
-    - _N_F_GLO: 1
+    - _N_F_GLO: 0
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
@@ -245,7 +244,7 @@ Material:
     - _N_F_NFD: 0
     - _N_F_NLASOBF: 0
     - _N_F_NM: 1
-    - _N_F_O: 0
+    - _N_F_O: 1
     - _N_F_OFLMB: 0
     - _N_F_PT: 0
     - _N_F_R: 0
