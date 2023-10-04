@@ -55,10 +55,13 @@ public class MoveState : State<NPC>
         {
             entity.ChangeState(NPCBehaviour.Greeting);
         }
-        if((entity.targetInteractionObj.transform.position - transform.position).sqrMagnitude < 1f)
+        if(entity.targetInteractionObj != null)
         {
-            entity.ChangeState(NPCBehaviour.Interaction);
-        }
+            if ((entity.targetInteractionObj.transform.position - transform.position).sqrMagnitude < 1f)
+            {
+                entity.ChangeState(NPCBehaviour.Interaction);
+            }
+        }        
         else if(isMove)
         {
             if (entity.agent.remainingDistance <= 0.5f)

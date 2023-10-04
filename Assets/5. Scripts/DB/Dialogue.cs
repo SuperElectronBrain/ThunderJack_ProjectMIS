@@ -125,7 +125,7 @@ public class Dialogue : MonoBehaviour
     void NextDialog()
     {       
         var dData = dialogueList[dialogueIdx];
-        if (dData.characterID == 1)
+        if (dData.characterID == 0)
         {
             playerDialogBox.gameObject.SetActive(true);
             playerDialogBox.SetPlayerDialog(dData.textScript);

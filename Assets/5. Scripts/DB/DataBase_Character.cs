@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CharacterCode
+public enum CharacterType
 {
-    Player, Younghoon, DisgustingKim
+    Player, Normal, Merchant
 }
 public class DataBase_Character : MonoBehaviour
 {
@@ -43,6 +43,7 @@ public class DataBase_Character : MonoBehaviour
             {
                 characterName = character[characterName].ToString(),
                 characterEgName = character[characterEgName].ToString(),
+                characterType = (CharacterType)(Tools.IntParse(character["Character_Type"])),
                 character = newCharacter,
                 spawnPoint = new Vector3(Tools.FloatParse(character["Spawn_Location_1"]), Tools.FloatParse(character["Spawn_Location_2"]), Tools.FloatParse(character["Spawn_Location_3"]))
             };
@@ -52,8 +53,14 @@ public class DataBase_Character : MonoBehaviour
 
             characterDB.Add(characterData);            
 
-            newCharacter.SetCharacterData(characterDB[charId - 1]);
+            newCharacter.SetCharacterData(characterDB[characterDB.Count - 1]);
             newCharacter.gameObject.name = characterData.characterName;
+
+            if(characterData.characterType == CharacterType.Merchant)
+            {
+                newCharacter.gameObject.AddComponent<NPCShop>();
+                newCharacter.gameObject.AddComponent<Inventory>();
+            }
 
             newCharacter.InitCharacter(characterData.characterEgName);
             ((NPC)newCharacter).Init();
@@ -103,6 +110,7 @@ public class CharacterData
 {
     public string characterName;
     public string characterEgName;
+    public CharacterType characterType;
     public Character character;
     public Vector3 spawnPoint;
 }

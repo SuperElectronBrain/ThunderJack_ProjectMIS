@@ -150,6 +150,7 @@ public class NPC : Character, IInteraction
 
     void RandomDestinationPos()
     {
+        targetInteractionObj = null;
         Vector3 schedulePos = GameManager.Instance.LocationManager.GetLocationPosition(schedule.aiParam2);
         destinationPos = LocationManager.GetLocationRandomPosition(schedulePos);
     }
@@ -163,7 +164,8 @@ public class NPC : Character, IInteraction
 
     void ChangeStateFromSchedule()
     {
-        switch((NPCScheduleType)schedule.aiParam1)
+        Debug.Log("ChangeStateFromSchedule");
+        switch ((NPCScheduleType)schedule.aiParam1)
         {
             case NPCScheduleType.Interaction:
                 TargetDestinationPos();
@@ -176,6 +178,9 @@ public class NPC : Character, IInteraction
                 ChangeState(NPCBehaviour.Move);
                 break;
             case NPCScheduleType.None:
+                Debug.Log("Noce");
+                RandomDestinationPos();
+                ChangeState(NPCBehaviour.Move);
                 break;
         }
     }

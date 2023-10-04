@@ -12,7 +12,7 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     TextMeshProUGUI noticeDescription;
     SpriteRenderer noticeImage;
     [SerializeField]
-    GameObject noticeUI;
+    UiComponent noticeUI;
 
     public bool IsUsed { get; set; }
 
@@ -20,19 +20,6 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     {
         /*noticeName = transform.Find("Name").GetComponent<TextMeshPro>();
         noticeDescription = transform.Find("Description").GetComponent<TextMeshPro>();*/
-    }
-
-    public void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(noticeUI.activeSelf)
-            {
-                noticeUI.GetComponent<UI_Sequence>().PlayBackwards();                
-            }
-            CameraEvent.Instance.ChangeCamera(CamType.Prev);
-            EventManager.Publish(EventType.EndIteraction);
-        }
     }
 
     public void SetNoticeBoard(NoticeData noticeData)
@@ -56,7 +43,7 @@ public class NoticeBoard : MonoBehaviour, IInteraction
 
     public void ViewNoticeBoard()
     {
-        noticeUI.SetActive(true);
+        noticeUI.ActiveUI();
     }
 }
 
