@@ -257,6 +257,9 @@
         },
         {
             "m_Id": "ea3bed97ee604b68be1c4bdbe733447d"
+        },
+        {
+            "m_Id": "44732350b5f648d7a313b6f966cab47a"
         }
     ],
     "m_GroupDatas": [
@@ -491,6 +494,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "44732350b5f648d7a313b6f966cab47a"
+                },
+                "m_SlotId": 1
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "fe36a66fa5794d37aadf487ef6658dd6"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "4bb165f0742d4803924cf69a7158a080"
                 },
                 "m_SlotId": 2
@@ -553,7 +570,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "fe36a66fa5794d37aadf487ef6658dd6"
+                    "m_Id": "44732350b5f648d7a313b6f966cab47a"
                 },
                 "m_SlotId": 0
             }
@@ -3368,8 +3385,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 943.0,
-            "y": 1119.0,
+            "x": 443.0,
+            "y": 864.0,
             "width": 208.0,
             "height": 302.0
         }
@@ -3459,6 +3476,44 @@
         "e31": 0.0,
         "e32": 0.0,
         "e33": 1.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.SaturateNode",
+    "m_ObjectId": "44732350b5f648d7a313b6f966cab47a",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Saturate",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 1090.0,
+            "y": 441.9999694824219,
+            "width": 208.0,
+            "height": 278.0000305175781
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "9f5f79ca961841ee9315da895fdc760a"
+        },
+        {
+            "m_Id": "b5cad5c2ee804d60920f55c47ecd2804"
+        }
+    ],
+    "synonyms": [
+        "clamp"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
     }
 }
 
@@ -4068,10 +4123,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1188.0,
-            "y": 776.0,
-            "width": 208.0001220703125,
-            "height": 302.0001220703125
+            "x": 836.0000610351563,
+            "y": 677.0000610351563,
+            "width": 208.00006103515626,
+            "height": 301.99993896484377
         }
     },
     "m_Slots": [
@@ -6483,6 +6538,30 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
+    "m_ObjectId": "9f5f79ca961841ee9315da895fdc760a",
+    "m_Id": 0,
+    "m_DisplayName": "In",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "In",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "a1e5f4f7453046cebb0ab51397c5e9cc",
     "m_Id": 1,
     "m_DisplayName": "B",
@@ -7062,6 +7141,30 @@
     },
     "m_Labels": [],
     "m_Channel": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
+    "m_ObjectId": "b5cad5c2ee804d60920f55c47ecd2804",
+    "m_Id": 1,
+    "m_DisplayName": "Out",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    }
 }
 
 {
