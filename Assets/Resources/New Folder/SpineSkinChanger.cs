@@ -10,6 +10,20 @@ public enum HumanRaceType
 {
     Blonde_Human, Blue_Human, Brown_Human, Red_human, End
 }
+public enum HumanRaceTypeB
+{
+    Human1, Human2, End
+}
+
+public enum OwlRaceTypeB
+{
+    OwlBrown, OwlGray, End
+}
+
+public enum TigerRaceTypeB
+{
+    TigerOrange, TigerWhite, End
+}
 
 public enum ParrotRaceType
 {
@@ -26,94 +40,144 @@ public enum RaceType
     Human, Parrot, Sheep, End
 }
 
+public enum RaceTypeB
+{
+    Human, Owl, Tiger, End
+}
+
 public enum ClothType
 {
     Dress_Blue, Dress_Yellow, Shirts_Brown, Shirts_Green, Shirts_White, Vest, End
+}
+
+public enum ClothTypeB
+{
+    RobeGreen, RobeViolet, SuitBlue, SuitGreen, TravlerPink, TravlerRed, End
+}
+
+public enum GuestType
+{
+    None, GuestA, GuestB
 }
 
 public class SpineSkinChanger : MonoBehaviour
 {
     SkeletonAnimation skAni;
     SkeletonData skData;
-    [SpineSkin, SerializeField]
-    string skin;
-    [SpineSkin("Cloth"), SerializeField]
-    string cloth;
-    [SpineSlot, SerializeField]
-    string slot;
-    [SpineAttachment, SerializeField]
-    string key;
 
     // Start is called before the first frame update
     void Start()
     {
         skAni = GetComponent<SkeletonAnimation>();
-        skData = skAni.skeleton.Data;
 
-        var mix = new Skin("default");
-        /*        mix.AddSkin(skData.FindSkin("skin-base"));
-                mix.AddSkin(skData.FindSkin("nose/short"));
-                mix.AddSkin(skData.FindSkin("eyelids/girly"));
-                mix.AddSkin(skData.FindSkin("eyes/violet"));
-                mix.AddSkin(skData.FindSkin("hair/brown"));
-                mix.AddSkin(skData.FindSkin("clothes/hoodie-orange"));
-                mix.AddSkin(skData.FindSkin("legs/pants-jeans"));
-                mix.AddSkin(skData.FindSkin("accessories/bag"));
-                mix.AddSkin(skData.FindSkin("accessories/hat-red-yellow"));*/
-
-        mix.AddSkin(skData.FindSkin(skin));
-        mix.AddSkin(skData.FindSkin(cloth));
-
-        skAni.skeleton.SetSkin(mix);
-        
-        skAni.skeleton.SetSlotsToSetupPose();
-        Debug.Log(skData.Skins.Count);
+        RandomSkin();
     }
 
     public static void SkinReset(SkeletonAnimation skAni)
     {
         skAni.skeletonDataAsset.Clear();
+        if (isTypeA)
+            skAni.initialSkinName = "1. full/Dress_Sheep";
+        else
+            skAni.initialSkinName = "1. Full/Human_Travler";
         skAni.Initialize(true);
+    }
+
+    public static void ChangeType(SkeletonAnimation skAni, bool isType)
+    {        
+        string customerType = isType ? "A" : "B";
+        skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>("NormalCustomer" + customerType);
+        skAni.skeletonDataAsset.Clear();
+
+        var skData = skAni.skeleton.Data;
+        var mix = new Skin("default");       
+
+        skAni.skeleton.SetSkin(mix);
+
+        skAni.skeleton.SetSlotsToSetupPose();
+    }
+
+    static bool isTypeA = true;
+
+    public void ChangeType()
+    {
+        isTypeA = !isTypeA;
+        ChangeType(skAni, isTypeA);
     }
 
     public void RandomSkin()
     {
-        RandomSkinChange(skAni);
+        RandomSkinChange(skAni,isTypeA);
     }
 
-    public static void RandomSkinChange(SkeletonAnimation skAni)
+    public static void RandomSkinChange(SkeletonAnimation skAni, bool isTypeA = true)
     {
         SkinReset(skAni);
         SkeletonData skData = skAni.skeleton.Data;
 
-        string newCloth = "Cloth/" + ((ClothType)Random.Range(0, ((int)ClothType.End))).ToString();
-        RaceType race = (RaceType)Random.Range(0, ((int)RaceType.End));
-        string newRace = null;
-        string type = null;
-
-        switch (race)
+        if(isTypeA)
         {
-            case RaceType.Human:
-                type = ((HumanRaceType)Random.Range(0, ((int)HumanRaceType.End))).ToString();
-                break;
-            case RaceType.Parrot:
-                type = ((ParrotRaceType)Random.Range(0, ((int)ParrotRaceType.End))).ToString();
-                break;
-            case RaceType.Sheep:
-                type = ((SheepRaceType)Random.Range(0, ((int)SheepRaceType.End))).ToString();
-                break;
+            string newCloth = "Cloth/" + ((ClothType)Random.Range(0, ((int)ClothType.End))).ToString();
+            RaceType race = (RaceType)Random.Range(0, ((int)RaceType.End));
+            string newRace = null;
+            string type = null;
+
+            switch (race)
+            {
+                case RaceType.Human:
+                    type = ((HumanRaceType)Random.Range(0, ((int)HumanRaceType.End))).ToString();
+                    break;
+                case RaceType.Parrot:
+                    type = ((ParrotRaceType)Random.Range(0, ((int)ParrotRaceType.End))).ToString();
+                    break;
+                case RaceType.Sheep:
+                    type = ((SheepRaceType)Random.Range(0, ((int)SheepRaceType.End))).ToString();
+                    break;
+            }
+
+            type = type.Replace("_", " ");
+
+            newRace = race.ToString() + "/" + type;
+
+            var mix = new Skin("default");
+            mix.AddSkin(skData.FindSkin(newRace));
+            mix.AddSkin(skData.FindSkin(newCloth));
+
+            skAni.skeleton.SetSkin(mix);
         }
+        else
+        {
+            string newCloth = "Cloth/" + ((ClothTypeB)Random.Range(0, ((int)ClothTypeB.End))).ToString();
+            RaceTypeB race = (RaceTypeB)Random.Range(0, ((int)RaceTypeB.End));
+            string newRace = null;
+            string type = null;
 
-        type = type.Replace("_", " ");
+            switch (race)
+            {
+                case RaceTypeB.Human:
+                    type = ((HumanRaceTypeB)Random.Range(0, ((int)HumanRaceTypeB.End))).ToString();
+                    break;
+                case RaceTypeB.Owl:
+                    type = ((OwlRaceTypeB)Random.Range(0, ((int)OwlRaceTypeB.End))).ToString();
+                    break;
+                case RaceTypeB.Tiger:
+                    type = ((TigerRaceTypeB)Random.Range(0, ((int)TigerRaceTypeB.End))).ToString();
+                    break;
+            }
 
-        newRace = race.ToString() + "/" + type;
+            type = type.Replace("_", " ");
 
-        var mix = new Skin("default");
-        mix.AddSkin(skData.FindSkin(newRace));
-        mix.AddSkin(skData.FindSkin(newCloth));
+            newRace = race.ToString() + "/" + type;
 
-        skAni.skeleton.SetSkin(mix);
+            var mix = new Skin("default");
+            Debug.Log(newRace);
+            Debug.Log(newCloth);
+            mix.AddSkin(skData.FindSkin(newRace));
+            mix.AddSkin(skData.FindSkin(newCloth));
 
+            skAni.skeleton.SetSkin(mix);
+        }
+              
         skAni.skeleton.SetSlotsToSetupPose();
     }
 
@@ -133,7 +197,7 @@ public class SpineSkinChanger : MonoBehaviour
 
         StreamWriter writer = new StreamWriter(fileStream);
 
-        writer.WriteLine(string.Format("{0}, {1}", skin, cloth));
+        //writer.WriteLine(string.Format("{0}, {1}", skin, cloth));
 
         writer.Close();
     }

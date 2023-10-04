@@ -41,6 +41,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     QuestManager questManager;
 
+    [Header("UiManager")]
+    [SerializeField]
+    UI_Manager uiManager;
+
     [SerializeField]
     Dialogue dialogue;
 
@@ -55,6 +59,7 @@ public class GameManager : Singleton<GameManager>
     public Dialogue Dialogue { get { return dialogue; } }
     public GameEventManager GameEventManager { get { return gameEventManager; } }
     public QuestManager QuestManager { get { return questManager; } }
+    public UI_Manager UIManager { get { return uiManager; } }
 
     [SerializeField]
     Transform characters;
