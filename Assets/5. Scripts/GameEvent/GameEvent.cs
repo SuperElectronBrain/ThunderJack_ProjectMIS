@@ -17,17 +17,40 @@ public abstract class GameEvent
 
     public GameEventType GetEventType { get { return (GameEventType)eventData.eventType; } }
     public float GetEventValue { get { return eventData.eventValue; } }
+    protected void SetNoticeBorad()
+    {
+        NoticeData noticeData = new NoticeData
+        {
+            noticeName = GetEventData.eventName,
+            noticeDescription = GetEventData.eventScript,
+        };
+
+        gameEventManager.Notice(noticeData);
+    }
     protected GameEventManager GetGameEventManager { get { return gameEventManager; } }
     protected EventData GetEventData { get { return eventData; } }
 }
 
 namespace RandomGameEvent
 {
+    public class Sunny : GameEvent
+    {
+        public override void EventActive()
+        {
+            SetNoticeBorad();
+        }
+
+        public override void EventInactive()
+        {
+            
+        }
+    }
+
     public class FameEvent : GameEvent
     {
         public override void EventActive()
         {
-            
+            SetNoticeBorad();
         }
 
         public override void EventInactive()
@@ -40,19 +63,25 @@ namespace RandomGameEvent
     {
         public override void EventActive()
         {
-            NoticeData noticeData = new NoticeData
-            {
-                noticeName = GetEventData.eventName,
-                noticeDescription = GetEventData.eventScript,
-            };
-
-            GetGameEventManager.Notice(noticeData);
-            Debug.Log("±¤¹°°¡°Ý »ó½Â");
+            SetNoticeBorad();
         }
 
         public override void EventInactive()
         {
 
+        }
+    }
+
+    public class AppearDemonLoad : GameEvent
+    {
+        public override void EventActive()
+        {
+            SetNoticeBorad();
+        }
+
+        public override void EventInactive()
+        {
+            
         }
     }
 }

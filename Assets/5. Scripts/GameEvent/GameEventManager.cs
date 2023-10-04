@@ -16,8 +16,6 @@ public class GameEventManager : MonoBehaviour
     [SerializeField]
     List<EventData> gameEventData;
     List<GameEvent> gameEventList;
-    [SerializeField]
-    List<GameEventBase> gameEventListBase;
 
     [SerializeField]
     NoticeBoard noticeBoard;
@@ -45,7 +43,8 @@ public class GameEventManager : MonoBehaviour
                 eventScript = e["Event_Script"].ToString(),
                 eventType = Tools.IntParse(e["Event_Type"]),
                 eventEffectType = Tools.IntParse(e["Event_Effect_Type"]),
-                eventValue = Tools.FloatParse(e["Event_Value"])
+                eventValue = Tools.FloatParse(e["Event_Value"]),
+                //eventIllust = addressable
             }
             );
         }
@@ -61,7 +60,19 @@ public class GameEventManager : MonoBehaviour
 
     public void NewDayEvent()
     {
-        int randomEventIdx = Random.Range(0, gameEventData.Count);
+        int randomEventIdx = -1;
+        foreach (EventData eventData in gameEventData)
+        {
+            if(eventData.eventEffectType <= 3)
+            {
+                if(eventData.eventEffectType == GameManager.Instance.GameTime.GetDay())
+                {
+                    randomEventIdx = eventData.eventType;
+                }                
+            }
+        }
+
+        randomEventIdx = randomEventIdx == -1 ? Random.Range(0, gameEventData.Count) : randomEventIdx;
 
         switch ((GameEventType)gameEventData[randomEventIdx].eventType)
         {
@@ -105,10 +116,5 @@ public class EventData
     public int eventType;
     public int eventEffectType;
     public float eventValue;
-}
-
-[System.Serializable]
-public class GameEventBase
-{
-    public UnityEvent gameEvent;
+    public Sprite eventIllust;
 }

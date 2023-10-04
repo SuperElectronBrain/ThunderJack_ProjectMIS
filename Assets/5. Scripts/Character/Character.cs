@@ -36,7 +36,6 @@ public class Character : MonoBehaviour
         skAni = GetComponentInChildren<SkeletonAnimation>();
 
         myTransform = transform.Find("Body");
-        Debug.Log(gameObject.name + " start");
     }
 
     // Update is called once per frame
@@ -67,7 +66,6 @@ public class Character : MonoBehaviour
 
     public void InitCharacter(string characterInfo)
     {
-        Debug.Log(gameObject.name + "Init");
         //myTransform.GetComponent<MeshRenderer>().material = AddressableManager.LoadObject<Material>(characterInfo + "_Material");
         skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(characterInfo + "_Skeleton");
         //skAni.Initialize(true);

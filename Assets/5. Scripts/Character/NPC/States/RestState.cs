@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RestState : State<NPC>
 {
+    [SerializeField]
     Vector3 originPos;
     public override void Enter(NPC entity)
     {
@@ -20,7 +21,7 @@ public class RestState : State<NPC>
 
     public override void Exit(NPC entity)
     {
-        entity.gameObject.transform.position = originPos;
+        transform.position = originPos;
         entity.agent.enabled = true;
         entity.agent.isStopped = false;
     }

@@ -9,6 +9,11 @@ public enum ItemType
     Materials = 1, Gem, Accessory, Jewelry
 }
 
+public enum SalesItemType
+{
+    Materials = 1, Accessory
+}
+
 public class ItemManager : MonoBehaviour
 {
     [SerializeField]
@@ -284,6 +289,21 @@ public class ItemManager : MonoBehaviour
             money = shopItemList[itemID - 1].sellValue,
             fame = shopItemList[itemID - 1].sellFame
         };
+    }
+
+    public List<ShopItemData> GetShopItemDataBySalesType(SalesItemType salesItemType)
+    {
+        List<ShopItemData> returnShopItemList = new List<ShopItemData>();
+
+        for(int i = 0; i < shopItemList.Count; i++)
+        {
+            if(shopItemList[i].shopType == (int)salesItemType)
+            {
+                returnShopItemList.Add(shopItemList[i]);
+            }            
+        }
+
+        return returnShopItemList;
     }
 }
 

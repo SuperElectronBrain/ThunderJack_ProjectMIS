@@ -52,7 +52,7 @@ public class DataBase_Character : MonoBehaviour
 
             characterDB.Add(characterData);            
 
-            newCharacter.SetCharacterData(characterDB[charId - 1]);
+            newCharacter.SetCharacterData(characterDB[characterDB.Count - 1]);
             newCharacter.gameObject.name = characterData.characterName;
 
             newCharacter.InitCharacter(characterData.characterEgName);
