@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_Tree_Leaf02
+  m_Shader: {fileID: 4800000, guid: b27debb547c51ba48b3a096ea7040804, type: 3}
+  m_Parent: {fileID: 2100000, guid: 5ef7ecc5d8b3d724992880ea8f74af0d, type: 2}
+  m_ModifiedSerializedProperties: 16
+  m_ValidKeywords:
+  - N_F_CO_ON
+  - N_F_EAL_ON
+  - N_F_O_ON
+  - N_F_RDC_ON
+  - N_F_RELGI_ON
+  - N_F_RL_ON
+  - N_F_SON_ON
+  - N_F_SS_ON
+  - N_F_TRANSAFFSHA_ON
+  - N_F_TRANS_ON
+  m_InvalidKeywords:
+  - _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_OFF
+  - _GIFLATSHADE_OFF
+  - _GLOSSTEXTUREFOLLOWOBJECTROTATION_OFF
+  - _LIGHTAFFECTRIMLIGHTCOLOR_OFF
+  - _LIGHTAFFECTSHADOW_OFF
+  - _LIGHTFALLOFFAFFECTSHADOWT_OFF
+  - _LIGIGNOYNORDIR_OFF
+  - _MCIALO_OFF
+  - _MIXMAINTEXTOOUTLINE_OFF
+  - _MVCOL_OFF
+  - _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_OFF
+  - _PSGLOTEX_OFF
+  - _SELFSHADOWAFFECTEDBYLIGHTSHADOWSTRENGTH_OFF
+  - _SELFSHADOWSHADOWTATVIEWDIRECTION_OFF
+  - _SHOWNORMAL_OFF
+  - _SPECMODE_OFF
+  - _STIL_OFF
+  - _TEXTUREPATTERNSTYLE_OFF
+  - _VERTEXCOLORBLUEAFFECTOUTLINEWITDH_OFF
+  - _VERTEXCOLORGREENCONTROLSELFSHADOWTHRESHOLD_OFF
+  - _VERTEXCOLORREDCONTROLSMOOTHOBJECTNORMAL_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
+  disabledShaderPasses: []
+  m_LockedProperties: _OverallShadowColor
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 02bf369100d474f4fae6262169284359, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SecondaryCutout:
+        m_Texture: {fileID: 2800000, guid: e431a22ef42777d498b7515779a294ba, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BleModDest: 10
+    - _BleModSour: 5
+    - _Culling: 0
+    - _Cutout: 0.36
+    - _DoubleSidedOutline: 1
+    - _N_F_CO: 1
+    - _NoisyOutlineIntensity: 0
+    - _OutlineExtrudeMethod: 1
+    - _OutlineWidth: 0
+    - _RimLigInt: 0
+    - _RimLightUnfill: 1
+    - _SelfShadowThreshold: 0
+    - _SmoothObjectNormal: 0.23
+    - _TRANSMODE: 1
+    - _UseSecondaryCutout: 1
+    m_Colors:
+    - _MainColor: {r: 0.086415805, g: 0.23584908, b: 0.027812388, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _OverallShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SelfShadowRealTimeShadowColor: {r: 0.034264863, g: 0.18036796, b: 0.20754719, a: 1}
+    - _XYZPosition: {r: 0, g: 0, b: 13.79, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &2761777749544298899
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
