@@ -76,6 +76,14 @@ public struct AdvencedItem
 		return new AdvencedItem(p_AdvencedItem0.itemCode, p_AdvencedItem0.itemProgress, t_ItemAmount, t_SelectCount);
 	}
 
+	public static implicit operator AdvencedItem(string p_String) { return new AdvencedItem(); }
+	public static implicit operator string(AdvencedItem p_AItem)
+	{
+		string t_String = null;
+		if (p_AItem.itemCode != 0 && p_AItem.itemProgress != 0.0f) { t_String = p_AItem.ToString(); }
+		return t_String;
+	}
+
 	//public static bool operator ==(AdvencedItem p_AdvencedItem0, AdvencedItem p_AdvencedItem1)
 	//{
 	//	int count = 0;
