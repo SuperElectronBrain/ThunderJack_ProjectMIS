@@ -27,6 +27,7 @@ Material:
   m_ValidKeywords:
   - N_F_EAL_ON
   - N_F_NM_ON
+  - N_F_O_ON
   - N_F_RDC_ON
   - N_F_RELGI_ON
   - N_F_SS_ON
@@ -42,7 +43,6 @@ Material:
   - _LIGHTFALLOFFAFFECTSHADOWT_OFF
   - _LIGIGNOYNORDIR_OFF
   - _MCIALO_OFF
-  - _MIXMAINTEXTOOUTLINE_OFF
   - _MVCOL_OFF
   - _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_OFF
   - _PSGLOTEX_OFF
@@ -61,8 +61,7 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses:
-  - SRPDEFAULTUNLIT
+  disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -238,7 +237,7 @@ Material:
     - _MaxFadDistance: 2
     - _Metallic: 0
     - _MinFadDistance: 0
-    - _MixMainTexToOutline: 0
+    - _MixMainTexToOutline: 1
     - _N_F_CA: 0
     - _N_F_CLD: 0
     - _N_F_CO: 0
@@ -257,7 +256,7 @@ Material:
     - _N_F_NFD: 0
     - _N_F_NLASOBF: 0
     - _N_F_NM: 1
-    - _N_F_O: 0
+    - _N_F_O: 1
     - _N_F_OFLMB: 0
     - _N_F_PT: 0
     - _N_F_R: 0
@@ -350,7 +349,7 @@ Material:
     - _Glow_Color: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.0754717, g: 0.051665645, b: 0.048771806, a: 1}
+    - _OutlineColor: {r: 0.6509434, g: 0.4594857, b: 0.4267978, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
     - _OverallShadowColor: {r: 0.3490566, g: 0.26146317, b: 0.26146317, a: 1}
     - _PTCol: {r: 0, g: 0, b: 0, a: 1}
