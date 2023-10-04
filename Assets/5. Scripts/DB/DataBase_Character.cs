@@ -58,7 +58,7 @@ public class DataBase_Character : MonoBehaviour
 
             if(characterData.characterType == CharacterType.Merchant)
             {
-                newCharacter.gameObject.AddComponent<NPCShop>();
+                newCharacter.gameObject.AddComponent<NPCShop>().enabled = false;
                 newCharacter.gameObject.AddComponent<Inventory>();
             }
 

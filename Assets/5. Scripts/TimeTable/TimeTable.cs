@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class TimeTable : MonoBehaviour
 {
     public List<Dictionary<string, TimeTableData>> timeTableList = new List<Dictionary<string, TimeTableData>>();
