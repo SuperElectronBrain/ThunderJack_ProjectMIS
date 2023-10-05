@@ -53,6 +53,8 @@ public class NPC : Character, IInteraction
     [SerializeField]
     TimeTableData schedule;
 
+    public TimeTableData Schedule { get { return schedule; } }
+
     protected override void Awake()
     {
         base.Awake();
@@ -69,6 +71,7 @@ public class NPC : Character, IInteraction
         states[((int)NPCBehaviour.Sitting)] = GetComponent<SittingState>();
         states[((int)NPCBehaviour.Rest)] = GetComponent<RestState>();
         states[((int)NPCBehaviour.Interaction)] = GetComponent<InteractionState>();
+        states[((int)NPCBehaviour.Business)] = GetComponent<BusinessState>();
     }
 
     private void Start()
@@ -172,6 +175,8 @@ public class NPC : Character, IInteraction
                 ChangeState(NPCBehaviour.Move);
                 break;
             case NPCScheduleType.Business:
+                TargetDestinationPos();
+                ChangeState(NPCBehaviour.Move);
                 break;
             case NPCScheduleType.Rest:
                 TargetDestinationPos();

@@ -396,8 +396,18 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			PressHandle t_PressHandle = hit.transform.GetComponent<PressHandle>();
+			if (t_PressHandle != null)
+			{
+				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressHandle.gameObject);
+				if (t_Press != null)
+				{
+					t_Press.bProgress = true;
+				}
+			}
+
 			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
-			if(t_AccessoryPlate != null)
+			if (t_AccessoryPlate != null)
 			{
 				if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
 				{
@@ -419,6 +429,60 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
+			if (t_PressAccessoryPlate != null)
+			{
+				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressAccessoryPlate.gameObject);
+				if (t_Press != null)
+				{
+					if (t_Press.m_AccessoryInput != null)
+					{
+						if (t_Press.m_AccessoryInput.itemAmount > 0)
+						{
+							if (m_GrabItemCode == null)
+							{
+								m_Inventory.AddAItem(t_Press.m_AccessoryInput);
+								m_GrabItemCode = t_Press.m_AccessoryInput;
+								if (m_GrabItemSprite != null)
+								{
+									m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
+									m_GrabItemSprite.gameObject.SetActive(true);
+								}
+								t_Press.m_AccessoryInput = null;
+								t_Press.RefreshPlate();
+							}
+						}
+					}
+				}
+			}
+
+			PressOutput t_PressOutput = hit.transform.GetComponent<PressOutput>();
+			if (t_PressOutput != null)
+			{
+				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressOutput.gameObject);
+				if (t_Press != null)
+				{
+					if (t_Press.m_CraftedItem != null)
+					{
+						if (t_Press.m_CraftedItem.itemAmount > 0)
+						{
+							if (m_GrabItemCode == null)
+							{
+								m_Inventory.AddAItem(t_Press.m_CraftedItem);
+								m_GrabItemCode = t_Press.m_CraftedItem;
+								if (m_GrabItemSprite != null)
+								{
+									m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
+									m_GrabItemSprite.gameObject.SetActive(true);
+								}
+								t_Press.m_CraftedItem = null;
+								t_Press.RefreshOutput();
+							}
+						}
+					}
+				}
+			}
+
 			IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
 			if (t_GrabableObject != null)
 			{
@@ -428,7 +492,6 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
-			Debug.Log(hit.transform.gameObject);
 			NPCShop t_NPCShop = hit.transform.GetComponent<NPCShop>();
 			if (t_NPCShop != null)
 			{
@@ -536,6 +599,24 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
+			if (t_PressAccessoryPlate != null)
+			{
+				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressAccessoryPlate.gameObject);
+				if (t_Press != null)
+				{
+					if (t_Press.m_AccessoryInput == null)
+					{
+						AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						if (t_AItem != null)
+						{
+							t_Press.m_AccessoryInput = t_AItem;
+							t_Press.RefreshPlate();
+						}
+					}
+				}
+			}
+
 			PlayerShop t_PlayerShop = hit.transform.GetComponent<PlayerShop>();
 			if (t_PlayerShop != null)
 			{
@@ -569,61 +650,266 @@ public class PlayerCharacter : CharacterBase
 
 	protected virtual void OnClickHit2D(RaycastHit2D hit, bool bMouseOnUI)
 	{
-		//m_HitObject = hit.transform.gameObject;
-
-		MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
-		if (t_MillStoneHandle != null)
+		if (bMouseOnUI == false)
 		{
-			MillStone t_MillStone = UniFunc.GetParentComponent<MillStone>(t_MillStoneHandle.gameObject);
-			if (t_MillStone != null)
+			MillStoneHandle t_MillStoneHandle = hit.transform.GetComponent<MillStoneHandle>();
+			if (t_MillStoneHandle != null)
 			{
-				t_MillStone.bProgress = true;
+				MillStone t_MillStone = UniFunc.GetParentComponent<MillStone>(t_MillStoneHandle.gameObject);
+				if (t_MillStone != null)
+				{
+					t_MillStone.bProgress = true;
+				}
+			}
+
+			PressHandle t_PressHandle = hit.transform.GetComponent<PressHandle>();
+			if (t_PressHandle != null)
+			{
+				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressHandle.gameObject);
+				if (t_Press != null)
+				{
+					t_Press.bProgress = true;
+				}
+			}
+
+			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
+			if (t_AccessoryPlate != null)
+			{
+				if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
+				{
+					if (t_AccessoryPlate.m_Input.itemAmount > 0)
+					{
+						if (m_GrabItemCode.IsAddable(new AdvencedItem()) == true)
+						{
+							m_Inventory.AddAItem(t_AccessoryPlate.m_Input.itemCode, t_AccessoryPlate.m_Input.itemProgress, t_AccessoryPlate.m_Input.itemAmount);
+							m_GrabItemCode = t_AccessoryPlate.m_Input;
+							if (m_GrabItemSprite != null)
+							{
+								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
+								m_GrabItemSprite.gameObject.SetActive(true);
+							}
+							t_AccessoryPlate.m_Input = new AdvencedItem();
+							t_AccessoryPlate.RefreshPlate();
+						}
+					}
+				}
+			}
+
+			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
+			if (t_PressAccessoryPlate != null)
+			{
+				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressAccessoryPlate.gameObject);
+				if (t_Press != null)
+				{
+					if(t_Press.m_AccessoryInput != null)
+					{
+						if (t_Press.m_AccessoryInput.itemAmount > 0)
+						{
+							if(m_GrabItemCode == null)
+							{
+								m_Inventory.AddAItem(t_Press.m_AccessoryInput);
+								m_GrabItemCode = t_Press.m_AccessoryInput;
+								if (m_GrabItemSprite != null)
+								{
+									m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
+									m_GrabItemSprite.gameObject.SetActive(true);
+								}
+								t_Press.m_AccessoryInput = null;
+								t_Press.RefreshPlate();
+							}
+						}
+					}
+				}
+			}
+
+			PressOutput t_PressOutput = hit.transform.GetComponent<PressOutput>();
+			if (t_PressOutput != null)
+			{
+				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressOutput.gameObject);
+				if (t_Press != null)
+				{
+					if (t_Press.m_CraftedItem != null)
+					{
+						if (t_Press.m_CraftedItem.itemAmount > 0)
+						{
+							if (m_GrabItemCode == null)
+							{
+								m_Inventory.AddAItem(t_Press.m_CraftedItem);
+								m_GrabItemCode = t_Press.m_CraftedItem;
+								if (m_GrabItemSprite != null)
+								{
+									m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
+									m_GrabItemSprite.gameObject.SetActive(true);
+								}
+								t_Press.m_CraftedItem = null;
+								t_Press.RefreshOutput();
+							}
+						}
+					}
+				}
+			}
+
+			IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
+			if (t_GrabableObject != null)
+			{
+				if (t_GrabableObject.IsGrabable() == true)
+				{
+					t_GrabableObject.SetGrabState(true);
+				}
+			}
+
+			NPCShop t_NPCShop = hit.transform.GetComponent<NPCShop>();
+			if (t_NPCShop != null)
+			{
+				if (m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+					{
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(true);
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = t_NPCShop.m_Inventory;
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
+				}
+			}
+			else if (t_NPCShop == null)
+			{
+				if (m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+					{
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
+				}
 			}
 		}
-
-		IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
-		if (t_GrabableObject != null)
+		else if (bMouseOnUI == true)
 		{
-			if (t_GrabableObject.IsGrabable() == true)
-			{
-				t_GrabableObject.SetGrabState(true);
-			}
+
 		}
 	}
 
 	protected virtual void OnClickMiss2D(bool bMouseOnUI)
 	{
-		//m_HitObject = null;
+		if (bMouseOnUI == false)
+		{
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+				{
+					m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+					m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+					m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+				}
+			}
+		}
+		else if (bMouseOnUI == true)
+		{
+		}
 	}
 
 	protected virtual void OnReleaseHit2D(RaycastHit2D hit, bool bMouseOnUI)
 	{
-		MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
-		if (t_MillStone != null)
+		if (bMouseOnUI == false)
 		{
-			if (t_MillStone.SetItem(m_GrabItemCode) == true)
+			MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
+			if (t_MillStone != null)
 			{
-				m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-			}
-		}
-
-		AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
-		if (t_AccessoryPlate != null)
-		{
-			if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == true)
-			{
-				AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				if (t_AItem.IsAddable(new AdvencedItem()) == false)
+				if (t_MillStone.SetItem(m_GrabItemCode) == true)
 				{
-					t_AccessoryPlate.m_Input = t_AItem;
-					t_AccessoryPlate.RefreshPlate();
+					m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+				}
+
+				/*
+				//if (t_MillStone.M_Input == 0)
+				//{
+				//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+				//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
+				//	{
+				//
+				//		t_MillStone.M_Input = t_AItem.itemCode;
+				//		t_MillStone.m_Progress = t_AItem.itemProgress;
+				//	}
+				//}
+				*/
+			}
+
+			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
+			if (t_AccessoryPlate != null)
+			{
+				if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == true)
+				{
+					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+					if (t_AItem.IsAddable(new AdvencedItem()) == false)
+					{
+						t_AccessoryPlate.m_Input = t_AItem;
+						t_AccessoryPlate.RefreshPlate();
+					}
+				}
+				else if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
+				{
+					if (m_GrabItemCode.IsAddable(new AdvencedItem()) == false)
+					{
+						if (t_AccessoryPlate.CraftItem(m_GrabItemCode) == true)
+						{
+							m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+							t_AccessoryPlate.RefreshPlate();
+
+							if (m_GrabItemSprite != null)
+							{
+								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
+								m_GrabItemSprite.gameObject.SetActive(true);
+							}
+						}
+					}
 				}
 			}
+
+			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
+			if (t_PressAccessoryPlate != null)
+			{
+				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressAccessoryPlate.gameObject);
+				if (t_Press != null)
+				{
+					if (t_Press.m_AccessoryInput == null)
+					{
+						AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						if (t_AItem != null)
+						{
+							t_Press.m_AccessoryInput = t_AItem;
+							t_Press.RefreshPlate();
+						}
+					}
+				}
+			}
+
+			PlayerShop t_PlayerShop = hit.transform.GetComponent<PlayerShop>();
+			if (t_PlayerShop != null)
+			{
+				if (t_PlayerShop.itemCode == 0)
+				{
+					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+					if (t_AItem.IsAddable(new AdvencedItem()) == false)
+					{
+						t_PlayerShop.itemCode = t_AItem.itemCode;
+						t_PlayerShop.HandOverItem();
+					}
+				}
+			}
+		}
+		else if (bMouseOnUI == true)
+		{
 		}
 	}
 
 	protected virtual void OnReleaseMiss2D(bool bMouseOnUI)
 	{
-		//m_HitObject = null;
+		if (bMouseOnUI == false)
+		{
+		}
+		else if (bMouseOnUI == true)
+		{
+		}
 	}
 }

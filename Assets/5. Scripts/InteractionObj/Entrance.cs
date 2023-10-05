@@ -10,8 +10,14 @@ public class Entrance : MonoBehaviour, IInteraction
     {
         if (user.TryGetComponent(out NPC npc))
         {
-            //user.SetActive(false);
-            npc.ChangeState(NPCBehaviour.Rest);            
+            if(npc.Schedule.aiParam1 == 2)
+            {
+                npc.ChangeState(NPCBehaviour.Business);
+            }
+            else if(npc.Schedule.aiParam1 == 3)
+            {
+                npc.ChangeState(NPCBehaviour.Rest);
+            }            
         }        
     }
 }
