@@ -293,7 +293,7 @@ public class SpineSkinChanger : MonoBehaviour
 
         StreamWriter writer = new StreamWriter(fileStream);
 
-        //writer.WriteLine(string.Format("{0}, {1}", skin, cloth));
+        writer.WriteLine(string.Format("{0}, {1}", race, cloth));
 
         writer.Close();
     }
