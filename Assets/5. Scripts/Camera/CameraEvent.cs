@@ -6,7 +6,7 @@ using Cinemachine;
 
 public enum CamType
 {
-    Main, Conversation, Area, NoticeBoard, Enter, Prev
+    Conversation, NoticeBoard, Enter, Prev
 }
 
 public class CameraEvent : Singleton<CameraEvent>
@@ -15,8 +15,6 @@ public class CameraEvent : Singleton<CameraEvent>
     CinemachineBrain brain;
     [SerializeField]
     CinemachineVirtualCamera conversationCam;
-    [SerializeField]
-    CinemachineVirtualCamera mainCam;
     [SerializeField]
     CinemachineVirtualCamera liveCam;
     [SerializeField]
@@ -31,8 +29,7 @@ public class CameraEvent : Singleton<CameraEvent>
     // Start is called before the first frame update
     void Start()
     {
-        brain = Camera.main.GetComponent<CinemachineBrain>();
-        ChangeCamera(CamType.Main);      
+        brain = Camera.main.GetComponent<CinemachineBrain>(); 
     }
 
     IEnumerator OnBlendComplate()
@@ -51,9 +48,6 @@ public class CameraEvent : Singleton<CameraEvent>
             prevCam = liveCam;
         switch (camType)
         {
-            case CamType.Main:
-                MainCamera();
-                break;
             case CamType.Conversation:
                 ConversationCamera();                
                 break;
@@ -88,12 +82,7 @@ public class CameraEvent : Singleton<CameraEvent>
     {
         liveCam = conversationCam;
         conversationCam.Priority = 100;
-    }
-
-    void MainCamera()
-    {
-        liveCam = mainCam;
-        mainCam.Priority = 100;
+        StartCoroutine(OnBlendComplate());
     }
 
     void NoticeBoardCamera()
