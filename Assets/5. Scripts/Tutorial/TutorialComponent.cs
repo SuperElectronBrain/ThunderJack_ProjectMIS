@@ -25,7 +25,7 @@ public class TutorialState
 {
 	public StateType stateType;
 	public Transform locationMarker;
-	public MonologueScript monologueScripts;
+	public MonologueScript monologueScript;
 	public NPCInfo spawnNPC;
 }
 
@@ -84,6 +84,10 @@ public class TutorialComponent : MonoBehaviour
 					}
 					case StateType.PopUpMonologue:
 					{
+						if (m_PlayerCharacter != null)
+						{
+							m_PlayerCharacter.PopUpMonologue(m_States[m_CurrentState].monologueScript.script, m_States[m_CurrentState].monologueScript.popUpTime);
+						}
 						break;
 					}
 					case StateType.Fade:

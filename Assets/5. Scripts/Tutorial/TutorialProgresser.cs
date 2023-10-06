@@ -19,7 +19,7 @@ public class TutorialProgresser : MonoBehaviour
 						TutorialComponent t_TutorialComponent = t_CollisionComponent.m_Colliders[i].GetComponent<TutorialComponent>();
 						if (t_TutorialComponent != null)
 						{
-							if(t_TutorialComponent.GetCurrentStateType() != StateType.EndTutorial)
+							if(t_TutorialComponent.GetCurrentStateType() == StateType.MovePointToPoint)
 							{
 								t_TutorialComponent.ProgressTutorial();
 							}
