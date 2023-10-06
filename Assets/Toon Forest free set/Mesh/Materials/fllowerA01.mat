@@ -16,6 +16,7 @@ Material:
   - N_F_O_ON
   - N_F_RDC_ON
   - N_F_RELGI_ON
+  - N_F_SL_ON
   - N_F_SS_ON
   - N_F_TRANSAFFSHA_ON
   - N_F_TRANS_ON
@@ -34,6 +35,7 @@ Material:
   - _MVCOL_OFF
   - _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_OFF
   - _PSGLOTEX_OFF
+  - _SELFLITHIGHCONTRAST_OFF
   - _SELFSHADOWAFFECTEDBYLIGHTSHADOWSTRENGTH_OFF
   - _SELFSHADOWSHADOWTATVIEWDIRECTION_OFF
   - _SHOWNORMAL_OFF
@@ -44,7 +46,7 @@ Material:
   - _VERTEXCOLORBLUEAFFECTOUTLINEWITDH_OFF
   - _VERTEXCOLORGREENCONTROLSELFSHADOWTHRESHOLD_OFF
   - _VERTEXCOLORREDCONTROLSMOOTHOBJECTNORMAL_OFF
-  m_LightmapFlags: 0
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -104,7 +106,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskSelfLit:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 354934dd23986874db7db00998190f5d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTransparency:
@@ -221,7 +223,7 @@ Material:
     - _N_F_RDC: 1
     - _N_F_RL: 0
     - _N_F_SCT: 0
-    - _N_F_SL: 0
+    - _N_F_SL: 1
     - _N_F_SON: 0
     - _N_F_SS: 1
     - _N_F_ST: 0
@@ -256,9 +258,9 @@ Material:
     - _SPECMODE: 0
     - _STIL: 0
     - _Saturation: 1
-    - _SelfLitHighContrast: 1
-    - _SelfLitIntensity: 0
-    - _SelfLitPower: 2
+    - _SelfLitHighContrast: 0
+    - _SelfLitIntensity: 0.537
+    - _SelfLitPower: 6.14
     - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
@@ -305,7 +307,7 @@ Material:
     - _PTCol: {r: 0, g: 0, b: 0, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _SSAOColor: {r: 0, g: 0, b: 0, a: 0}
-    - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SelfLitColor: {r: 1, g: 0.79510856, b: 0, a: 1}
     - _SelfShadowRealTimeShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTColor: {r: 1, g: 1, b: 1, a: 1}
     - _XYZPosition: {r: 0, g: 0, b: 0, a: 0}
