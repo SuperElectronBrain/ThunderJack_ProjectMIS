@@ -291,47 +291,59 @@ public class ItemManager : MonoBehaviour
         };
     }
 
+    [SerializeField]
+    List<ShopItemData> sl;
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.K))
         {
-            GetShopItemDataBySalesType(SalesItemType.Materials);
+            sl = GetShopItemDataBySalesType(SalesItemType.Materials);
         }
     }
 
     public List<ShopItemData> GetShopItemDataBySalesType(SalesItemType salesItemType)
     {
-        List<ShopItemData> returnShopItemList = new List<ShopItemData>();
+        List<ShopItemData> salesItemList = new List<ShopItemData>();        
 
         for(int i = 0; i < shopItemList.Count; i++)
         {
             if(shopItemList[i].shopType == (int)salesItemType)
             {
-                returnShopItemList.Add(shopItemList[i]);
+                salesItemList.Add(shopItemList[i]);
             }            
         }
 
-        float[] appearRate = new float[returnShopItemList.Count];
         float total = 0;
         float randomRate = 0;
 
-        for(int i = 0; i < returnShopItemList.Count; i++)
+        List<ShopItemData> returnShopItemList = new List<ShopItemData>();
+
+        for (int i = 0; i < salesItemList.Count; i++)
         {
-            total += returnShopItemList[i].shopRate;
+            total += salesItemList[i].shopRate;
         }
 
         randomRate = Random.value * total;
 
-        for (int i = 0; i < returnShopItemList.Count; i++)
+        while(returnShopItemList.Count < 5)
         {
-            Debug.Log(GetItemName(returnShopItemList[i].itemId) + " È®·ü °è»ê");
-            if (randomRate < returnShopItemList[i].shopRate)
-                Debug.Log(GetItemName(returnShopItemList[i].itemId) + " È®·ü  = " + randomRate + " < " + returnShopItemList[i].shopRate);
+            int randomIdx = Random.Range(0, salesItemList.Count);
+
+            if (randomRate < salesItemList[randomIdx].shopRate)
+            {
+                returnShopItemList.Add(salesItemList[randomIdx]);
+                salesItemList[randomIdx].shopRate = 0.1f;
+                salesItemList.RemoveAt(randomIdx);
+            }                
             else
             {
-                Debug.Log("RandomRate = " + randomRate + returnShopItemList[i].shopRate);
-                randomRate -= returnShopItemList[i].shopRate;
+                randomRate -= salesItemList[randomIdx].shopRate;
             }
+        }
+
+        for(int i = 0; i < salesItemList.Count; i++)
+        {
+            salesItemList[i].shopRate += 0.1f;
         }
 
         return returnShopItemList;
