@@ -18,8 +18,6 @@ public class CameraEvent : Singleton<CameraEvent>
     [SerializeField]
     CinemachineVirtualCamera mainCam;
     [SerializeField]
-    CinemachineVirtualCamera areaCam;
-    [SerializeField]
     CinemachineVirtualCamera liveCam;
     [SerializeField]
     CinemachineVirtualCamera prevCam;
@@ -33,7 +31,8 @@ public class CameraEvent : Singleton<CameraEvent>
     // Start is called before the first frame update
     void Start()
     {
-        ChangeCamera(CamType.Main);        
+        brain = Camera.main.GetComponent<CinemachineBrain>();
+        ChangeCamera(CamType.Main);      
     }
 
     IEnumerator OnBlendComplate()
@@ -43,11 +42,6 @@ public class CameraEvent : Singleton<CameraEvent>
         yield return new WaitUntil(() => brain.IsBlending == false);
         onCamBlendComplate?.Invoke();
         onCamBlendComplate?.RemoveAllListeners();
-    }
-
-    public void SetCamera(CinemachineVirtualCamera newAreaCam)
-    {
-        areaCam = newAreaCam;
     }
 
     public void ChangeCamera(CamType camType)
@@ -63,9 +57,6 @@ public class CameraEvent : Singleton<CameraEvent>
             case CamType.Conversation:
                 ConversationCamera();                
                 break;
-            case CamType.Area:
-                AreaCamera();
-                break;
             case CamType.NoticeBoard:
                 NoticeBoardCamera();
                 break;
@@ -78,6 +69,21 @@ public class CameraEvent : Singleton<CameraEvent>
         }                
     }
 
+    public void ChangeCamera(CinemachineVirtualCamera vCam)
+    {
+        prevCam = liveCam;
+        liveCam = vCam;
+        liveCam.Priority = 100;
+        prevCam.Priority = 10;        
+    }
+
+    public bool IsIgnoreCam(CinemachineVirtualCamera vCam)
+    {
+        if (prevCam != vCam || vCam == null)
+            return false;
+        return true;
+    }
+
     void ConversationCamera()
     {
         liveCam = conversationCam;
@@ -88,12 +94,6 @@ public class CameraEvent : Singleton<CameraEvent>
     {
         liveCam = mainCam;
         mainCam.Priority = 100;
-    }
-
-    void AreaCamera()
-    {
-        liveCam = areaCam;
-        areaCam.Priority = 100;
     }
 
     void NoticeBoardCamera()

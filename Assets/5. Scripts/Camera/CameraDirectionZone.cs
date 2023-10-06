@@ -7,8 +7,10 @@ public class CameraDirectionZone : MonoBehaviour
 {
     [SerializeField]
     CinemachineVirtualCamera vCam;
-    [SerializeField]
     CinemachineTrackedDolly dolly;
+
+    [SerializeField]
+    CinemachineVirtualCamera ignoreCam;
 
     Transform playerPos;
 
@@ -24,11 +26,11 @@ public class CameraDirectionZone : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            CameraEvent.Instance.SetCamera(vCam);
-            CameraEvent.Instance.ChangeCamera(CamType.Area);
-            //vCam.Priority = 100;
+            if(CameraEvent.Instance.IsIgnoreCam(ignoreCam))
+                return;
+
+            CameraEvent.Instance.ChangeCamera(vCam);
             playerPos = other.transform;
-            //StartCoroutine(StartCameraMove());
             if(dolly != null)
                 dolly.m_AutoDolly.m_Enabled = true;
         }
