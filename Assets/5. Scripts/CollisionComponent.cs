@@ -5,8 +5,8 @@ using UnityEngine.Events;
 
 public class CollisionComponent : MonoBehaviour
 {
-	public List<Collision> m_Collisions = new List<Collision>();
-	public List<Collider> m_Colliders = new List<Collider>();
+	[HideInInspector] public List<Collision> m_Collisions = new List<Collision>();
+	[HideInInspector] public List<Collider> m_Colliders = new List<Collider>();
 
 	[SerializeField] private UnityEvent m_OnCollisionEnter = new UnityEvent();
 	[SerializeField] private UnityEvent m_OnCollisionExit = new UnityEvent();
@@ -33,6 +33,7 @@ public class CollisionComponent : MonoBehaviour
 			if (m_Collisions[i] == collision)
 			{
 				m_Collisions.RemoveAt(i);
+				m_Collisions.TrimExcess();
 				break;
 			}
 		}
@@ -61,6 +62,7 @@ public class CollisionComponent : MonoBehaviour
 			if (m_Colliders[i] == other)
 			{
 				m_Colliders.RemoveAt(i);
+				m_Colliders.TrimExcess();
 				break;
 			}
 		}

@@ -116,8 +116,7 @@ GameObject:
   - component: {fileID: 3498382288381705809}
   - component: {fileID: 134507900064649756}
   - component: {fileID: 1813622840504543691}
-  - component: {fileID: 1735453549961857417}
-  - component: {fileID: 212165627660371767}
+  - component: {fileID: 7376853225062001187}
   - component: {fileID: 1016496045938947752}
   m_Layer: 0
   m_Name: PlayerCharacter
@@ -267,7 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RecipeBookUIScript: {fileID: 0}
---- !u!114 &1735453549961857417
+--- !u!114 &7376853225062001187
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -276,23 +275,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6932186443044066599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5b43f2b570472f449948dd0a457a7a5, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a4f504b97803f14882e7f603fd3d099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &212165627660371767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6932186443044066599}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c7affa8924722c48be2e8592096cf7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TradingPanelPrefab: {fileID: 0}
-  SalesPanelPrefab: {fileID: 0}
+  m_PlayerCharacter: {fileID: 5214859961542075772}
+  m_States:
+  - stateAction: 0
+    locationMarkers: []
+    monologueScripts: []
+    teleportMarker: {fileID: 0}
+    bUseFade: 0
+    spawnNPC:
+      NPCPrefab: {fileID: 0}
+      spawnMarker: {fileID: 0}
 --- !u!95 &1016496045938947752
 Animator:
   serializedVersion: 5

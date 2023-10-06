@@ -1,11 +1,11 @@
-//using System.Collections;
-//using System.Collections.Generic;
-//using TMPro;
-//using UnityEngine;
-//using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
-//public class PartTimerComponent : MonoBehaviour
-//{
+public class PartTimerComponent : MonoBehaviour
+{
 //	[HideInInspector] private CharacterBase master;
 //	private Inventory masterInventory;
 //	public ItemCode productionItem = ItemCode.RubyRing;
@@ -134,4 +134,4 @@
 //			}
 //		}
 //	}
-//}
+}

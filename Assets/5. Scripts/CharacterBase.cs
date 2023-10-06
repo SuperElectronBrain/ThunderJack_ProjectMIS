@@ -16,6 +16,7 @@ public class CharacterBase : MonoBehaviour
 	protected float m_Velocity;
 	protected bool m_UseScaleFlip = true;
 	protected bool bMovable = true;
+	protected Transform m_Destination = null;
 
 	protected Camera m_MainCamera;
 	protected Rigidbody m_Rigidbody;
@@ -43,8 +44,10 @@ public class CharacterBase : MonoBehaviour
     protected virtual void Update()
     {
 		float DeltaTime = Time.deltaTime;
-
-		KeyInput();
+		if (m_Destination == null)
+		{
+			KeyInput();
+		}
 
 		if (m_SD != null)
         {
@@ -75,13 +78,18 @@ public class CharacterBase : MonoBehaviour
 	{
 		float DeltaTime = Time.fixedDeltaTime;
 
-		//if(m_CPAComponent != null)
-		//{
-		//	SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward);
-		//}
+		//if(m_CPAComponent != null) { SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward); }
 
-		if(bMovable==true)
+		if(bMovable == true)
 		{
+			if(m_Destination != null)
+			{
+				Vector3 t_Vector = (m_Destination.position - transform.position).normalized;
+
+				m_HorizontalMove = t_Vector.x;
+				m_VerticalMove = t_Vector.z;
+			}
+
 			HorizontalMove(DeltaTime);
 			VerticalMove(DeltaTime);
 		}
@@ -122,6 +130,16 @@ public class CharacterBase : MonoBehaviour
 
 	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection) { SetMoveDirection(p_HorizontalMoveDirection, Vector3.right); }
 	public void SetMoveDirection() { SetMoveDirection(Vector3.forward, Vector3.right); }
+
+	public void SetDestination(Transform p_Transform)
+	{
+		m_Destination = p_Transform;
+		if (p_Transform == null)
+		{
+			m_HorizontalMove = 0;
+			m_VerticalMove = 0;
+		}
+	}
 
 	public void CommunicationStart()
 	{
