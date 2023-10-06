@@ -291,6 +291,14 @@ public class ItemManager : MonoBehaviour
         };
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            GetShopItemDataBySalesType(SalesItemType.Materials);
+        }
+    }
+
     public List<ShopItemData> GetShopItemDataBySalesType(SalesItemType salesItemType)
     {
         List<ShopItemData> returnShopItemList = new List<ShopItemData>();
@@ -303,7 +311,35 @@ public class ItemManager : MonoBehaviour
             }            
         }
 
+        float[] appearRate = new float[returnShopItemList.Count];
+        float total = 0;
+        float randomRate = 0;
+
+        for(int i = 0; i < returnShopItemList.Count; i++)
+        {
+            total += returnShopItemList[i].shopRate;
+        }
+
+        randomRate = Random.value * total;
+
+        for (int i = 0; i < returnShopItemList.Count; i++)
+        {
+            Debug.Log(GetItemName(returnShopItemList[i].itemId) + " È®·ü °è»ê");
+            if (randomRate < returnShopItemList[i].shopRate)
+                Debug.Log(GetItemName(returnShopItemList[i].itemId) + " È®·ü  = " + randomRate + " < " + returnShopItemList[i].shopRate);
+            else
+            {
+                Debug.Log("RandomRate = " + randomRate + returnShopItemList[i].shopRate);
+                randomRate -= returnShopItemList[i].shopRate;
+            }
+        }
+
         return returnShopItemList;
+    }
+
+    public void UpdateShopItemInfo()
+    {
+
     }
 }
 
