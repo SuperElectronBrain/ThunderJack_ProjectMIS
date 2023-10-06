@@ -6,7 +6,7 @@ using Cinemachine;
 
 public enum CamType
 {
-    Main, Conversation, Area, NoticeBoard, Prev
+    Main, Conversation, Area, NoticeBoard, Enter, Prev
 }
 
 public class CameraEvent : Singleton<CameraEvent>
@@ -25,6 +25,8 @@ public class CameraEvent : Singleton<CameraEvent>
     CinemachineVirtualCamera prevCam;
     [SerializeField]
     CinemachineVirtualCamera noticeBoardCam;
+    [SerializeField]
+    CinemachineVirtualCamera enterCam;
 
     public UnityEvent onCamBlendComplate;
 
@@ -40,7 +42,7 @@ public class CameraEvent : Singleton<CameraEvent>
 
         yield return new WaitUntil(() => brain.IsBlending == false);
         onCamBlendComplate?.Invoke();
-        onCamBlendComplate.RemoveAllListeners();
+        onCamBlendComplate?.RemoveAllListeners();
     }
 
     public void SetCamera(CinemachineVirtualCamera newAreaCam)
@@ -69,6 +71,9 @@ public class CameraEvent : Singleton<CameraEvent>
                 break;
             case CamType.Prev:
                 PrevCamera();
+                break;
+            case CamType.Enter:
+                EnterCamera();
                 break;
         }                
     }
@@ -101,7 +106,14 @@ public class CameraEvent : Singleton<CameraEvent>
     void PrevCamera()
     {
         StopAllCoroutines();
+        onCamBlendComplate?.RemoveAllListeners();
         prevCam.Priority = 100;
         liveCam = prevCam;
+    }
+
+    void EnterCamera()
+    {
+        liveCam = enterCam;
+        enterCam.Priority = 100;
     }
 }

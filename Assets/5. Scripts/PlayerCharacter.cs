@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -315,6 +314,11 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 		}
+	}
+
+	public void PopUpMonologue(string p_Script, float p_Time)
+	{
+
 	}
 
 	protected override void OnTriggerEnter(Collider collision)

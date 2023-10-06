@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using DG.Tweening;
 
 public enum TweenMode
@@ -43,6 +44,9 @@ public class UI_Sequence : MonoBehaviour
     [field: SerializeField] public List<TweenSequence> Sequences { get; private set; } = new();
 
     private Sequence _sequence;
+
+    [Header("Event")]
+    public UnityEvent onComplateEvents;
 
     private void Awake()
     {
@@ -95,6 +99,10 @@ public class UI_Sequence : MonoBehaviour
         }
 
         _sequence.Restart();
+        _sequence.OnComplete(() =>
+        {
+            onComplateEvents?.Invoke();
+        });
     }
 
     public void PlayBackwards()
