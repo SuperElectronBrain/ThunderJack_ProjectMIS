@@ -43,7 +43,6 @@ public class CameraDirectionZone : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             //StopCoroutine(StartCameraMove());
-            CameraEvent.Instance.ChangeCamera(CamType.Main);
             //vCam.Priority = 0;
             playerPos = null;
             if (dolly != null)

@@ -121,9 +121,14 @@ public class NPC : Character, IInteraction
     {
         formal++;
         Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
-        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue", formal);
         curInteractionObj = player;
-        ChangeState(NPCBehaviour.Conversation);        
+        ChangeState(NPCBehaviour.Conversation);
+        CameraEvent.Instance.onCamBlendComplate.AddListener(TalkEvent);
+    }
+
+    public void TalkEvent()
+    {
+        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue", formal);
     }
 
     public void TalkEnd()
