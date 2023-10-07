@@ -68,7 +68,8 @@ public class CameraEvent : Singleton<CameraEvent>
         prevCam = liveCam;
         liveCam = vCam;
         liveCam.Priority = 100;
-        prevCam.Priority = 10;        
+        if(prevCam!= null)
+            prevCam.Priority = 10;        
     }
 
     public bool IsIgnoreCam(CinemachineVirtualCamera vCam)
