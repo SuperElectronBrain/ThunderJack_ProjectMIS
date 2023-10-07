@@ -14,11 +14,13 @@ public interface IGrabable
 
 public class PlayerCharacter : CharacterBase
 {
+	private float m_MonologueDisplayTime = 0.0f;
+	private float m_GuideDisplayTime = 0.0f;
+
 	//private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
 	public UnityEngine.UI.Image m_GrabItemSprite;
-	public AdvencedItem m_GrabItemCode = new AdvencedItem();
-
+	[HideInInspector] public AdvencedItem m_GrabItemCode = new AdvencedItem();
 	//[HideInInspector] public GameObject m_HitObject;
 	[SerializeField] private CollisionComponent m_CollisionComponent;
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
@@ -26,6 +28,7 @@ public class PlayerCharacter : CharacterBase
 	public RecipeBook m_RecipeBook;
 	public QuestComponet m_QuestComponet;
 	private IInteraction m_Interaction;
+	private GameObject m_GuideUI;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -52,6 +55,44 @@ public class PlayerCharacter : CharacterBase
 		if ((m_GrabItemSprite != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
 		{
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
+		}
+
+		if(m_MonologueDisplayTime > 0.0f)
+		{
+			m_MonologueDisplayTime = m_MonologueDisplayTime - DeltaTime;
+			if(m_MonologueDisplayTime < 0.0f)
+			{
+				PopUpMonologue("", 0.0f);
+
+				TutorialComponent t_TutorialComponent = GetComponent<TutorialComponent>();
+				if (t_TutorialComponent != null)
+				{
+					if (t_TutorialComponent.GetCurrentStateType() == StateType.PopUpMonologue)
+					{
+						t_TutorialComponent.ProgressTutorial();
+					}
+				}
+				m_MonologueDisplayTime = 0.0f;
+			}
+		}
+
+		if (m_GuideDisplayTime > 0.0f)
+		{
+			m_GuideDisplayTime = m_GuideDisplayTime - DeltaTime;
+			if (m_GuideDisplayTime < 0.0f)
+			{
+				PopUpGuide("", 0.0f);
+
+				TutorialComponent t_TutorialComponent = GetComponent<TutorialComponent>();
+				if (t_TutorialComponent != null)
+				{
+					if (t_TutorialComponent.GetCurrentStateType() == StateType.PopUpGuide)
+					{
+						t_TutorialComponent.ProgressTutorial();
+					}
+				}
+				m_GuideDisplayTime = 0.0f;
+			}
 		}
 
 		/*
@@ -254,7 +295,7 @@ public class PlayerCharacter : CharacterBase
 			{
 				m_GrabItemSprite = m_PlayerCharacterUIScript.m_MouseGrabIcon;
 			}
-			if(m_Inventory != null)
+			if (m_Inventory != null)
 			{
 				if (m_Inventory.m_InventoryUIScript == null)
 				{
@@ -318,7 +359,57 @@ public class PlayerCharacter : CharacterBase
 
 	public void PopUpMonologue(string p_Script, float p_Time)
 	{
+		if(m_PlayerCharacterUIScript != null)
+		{
+			if(m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO != null)
+			{
+				if(p_Time > 0.0f)
+				{
+					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.activeSelf == false)
+					{
+						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.SetActive(true);
+					}
+					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText != null)
+					{
+						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText.text = p_Script;
+					}
+				}
+				else if (p_Time <= 0.0f)
+				{
+					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.activeSelf == true)
+					{
+						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.SetActive(false);
+					}
 
+					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText != null)
+					{
+						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText.text = "";
+					}
+				}
+			}
+		}
+
+		m_MonologueDisplayTime = p_Time;
+	}
+
+	public void PopUpGuide(string p_GuideUIName, float p_Time)
+	{
+		if (m_GuideUI != null) { m_GuideUI.SetActive(false); }
+
+		m_GuideUI = GameObject.Find(p_GuideUIName);
+		if(m_GuideUI != null)
+		{
+			if(p_Time > 0.0f)
+			{
+				if (m_GuideUI.activeSelf == false) { m_GuideUI.SetActive(true); }
+			}
+			else if(p_Time <= 0.0f)
+			{
+				if (m_GuideUI.activeSelf == true) { m_GuideUI.SetActive(false); }
+			}
+		}
+
+		m_GuideDisplayTime = p_Time;
 	}
 
 	protected override void OnTriggerEnter(Collider collision)

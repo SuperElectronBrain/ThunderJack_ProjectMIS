@@ -1,22 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public struct MonologueUI
+[Serializable]
+public class MonologueUI
 {
 	public GameObject m_MonologueGO;
-	public TextMeshProUGUI m_MonologueText;
 	public UnityEngine.UI.Image m_PortraitImage;
+	public TextMeshProUGUI m_MonologueText;
 
 
-	public static implicit operator MonologueUI(string p_String) { return new MonologueUI(); }
-	public static implicit operator string(MonologueUI p_Quest)
-	{
-		string t_String = null;
-		if (p_Quest.m_MonologueGO != null) { t_String = p_Quest.ToString(); }
-		return t_String;
-	}
+	//public static implicit operator MonologueUI(string p_String) { return new MonologueUI(); }
+	//public static implicit operator string(MonologueUI p_MonologueUI)
+	//{
+	//	string t_String = null;
+	//	if (p_MonologueUI.m_MonologueGO != null) { t_String = p_MonologueUI.ToString(); }
+	//	return t_String;
+	//}
 
 	public static implicit operator MonologueUI(GameObject p_GO)
 	{
@@ -47,7 +49,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public QuestListUIScript m_QuestListUIScript;
 	public MailBoxUIScript m_MailBoxUIScript;
 	public UnityEngine.UI.Image m_MouseGrabIcon;
-	public MonologueUI m_MonologueUI;
+	public MonologueUI m_MonologueUI = new MonologueUI();
 
 	// Start is called before the first frame update
 	void Start()
@@ -72,12 +74,16 @@ public class PlayerCharacterUIScript : MonoBehaviour
 		if (m_QuestListUIScript == null) { m_QuestListUIScript = UniFunc.GetChildComponent<QuestListUIScript>(transform); }
 		if (m_MailBoxUIScript == null) { m_MailBoxUIScript = UniFunc.GetChildComponent<MailBoxUIScript>(transform); ; }
 		if (m_MouseGrabIcon == null) { m_MouseGrabIcon = UniFunc.GetChildOfName(transform, "MouseGrabItem").GetComponent<UnityEngine.UI.Image>(); }
-		if (m_MonologueUI == null)
+		if (m_MonologueUI != null)
 		{
-			m_MonologueUI = UniFunc.GetChildOfName(transform, "MonologueUI").GetComponent<GameObject>();
-			if(m_MonologueUI != null)
+			if (m_MonologueUI.m_MonologueGO == null)
 			{
-
+				m_MonologueUI.m_MonologueGO = UniFunc.GetChildOfName(transform, "MonologueUI").GetComponent<GameObject>();
+				if (m_MonologueUI.m_MonologueGO != null)
+				{
+					m_MonologueUI.m_PortraitImage = UniFunc.GetChildComponent<UnityEngine.UI.Image>(m_MonologueUI.m_MonologueGO);
+					m_MonologueUI.m_MonologueText = UniFunc.GetChildComponent<TextMeshProUGUI>(m_MonologueUI.m_MonologueGO);
+				}
 			}
 		}
 	}
