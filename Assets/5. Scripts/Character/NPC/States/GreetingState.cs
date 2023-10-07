@@ -8,7 +8,24 @@ public class GreetingState : State<NPC>
     {
         elapsedTime = 0;
         entity.isMeet = true;
-        entity.SkAni.AnimationName = "A_hi_F";
+
+        entity.lookDir.SetDir(transform.position, entity.player.transform.position);
+
+        var scaleX = entity.lookDir.isRight ? -1 : 1;
+        var newScale = entity.myTransform.localScale;
+        newScale.x = Mathf.Abs(entity.myTransform.localScale.x) * scaleX;
+
+        entity.myTransform.localScale = newScale;
+
+        if (entity.lookDir.isFront)
+        {
+            entity.SkAni.AnimationName = "A_hi_F";
+        }
+        else
+        {
+            entity.SkAni.AnimationName = "A_hi_B";
+        }
+        
         entity.agent.isStopped = true;
     }
 
