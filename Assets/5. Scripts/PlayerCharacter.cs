@@ -15,6 +15,7 @@ public interface IGrabable
 public class PlayerCharacter : CharacterBase
 {
 	private float m_MonologueDisplayTime = 0.0f;
+	private float m_GuideDisplayTime = 0.0f;
 
 	//private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
@@ -27,6 +28,7 @@ public class PlayerCharacter : CharacterBase
 	public RecipeBook m_RecipeBook;
 	public QuestComponet m_QuestComponet;
 	private IInteraction m_Interaction;
+	private GameObject m_GuideUI;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -71,6 +73,25 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 				m_MonologueDisplayTime = 0.0f;
+			}
+		}
+
+		if (m_GuideDisplayTime > 0.0f)
+		{
+			m_GuideDisplayTime = m_GuideDisplayTime - DeltaTime;
+			if (m_GuideDisplayTime < 0.0f)
+			{
+				PopUpGuide("", 0.0f);
+
+				TutorialComponent t_TutorialComponent = GetComponent<TutorialComponent>();
+				if (t_TutorialComponent != null)
+				{
+					if (t_TutorialComponent.GetCurrentStateType() == StateType.PopUpGuide)
+					{
+						t_TutorialComponent.ProgressTutorial();
+					}
+				}
+				m_GuideDisplayTime = 0.0f;
 			}
 		}
 
@@ -369,6 +390,26 @@ public class PlayerCharacter : CharacterBase
 		}
 
 		m_MonologueDisplayTime = p_Time;
+	}
+
+	public void PopUpGuide(string p_GuideUIName, float p_Time)
+	{
+		if (m_GuideUI != null) { m_GuideUI.SetActive(false); }
+
+		m_GuideUI = GameObject.Find(p_GuideUIName);
+		if(m_GuideUI != null)
+		{
+			if(p_Time > 0.0f)
+			{
+				if (m_GuideUI.activeSelf == false) { m_GuideUI.SetActive(true); }
+			}
+			else if(p_Time <= 0.0f)
+			{
+				if (m_GuideUI.activeSelf == true) { m_GuideUI.SetActive(false); }
+			}
+		}
+
+		m_GuideDisplayTime = p_Time;
 	}
 
 	protected override void OnTriggerEnter(Collider collision)
