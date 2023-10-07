@@ -33,9 +33,6 @@ public class PlayerDialogBox : MonoBehaviour
     {
         DOTween.Init();
 
-        button1 = transform.Find("SelectOption1").GetComponent<PlayerDialogButton>();
-        button2 = transform.Find("SelectOption2").GetComponent<PlayerDialogButton>();
-
         button1.selectOption += GameManager.Instance.Dialogue.SelectOption1;
         button2.selectOption += GameManager.Instance.Dialogue.SelectOption2;
 
