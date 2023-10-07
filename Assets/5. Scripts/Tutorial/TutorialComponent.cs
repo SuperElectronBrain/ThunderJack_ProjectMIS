@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum StateType
-{ WaitingTutorial, MovePointToPoint, PopUpMonologue, Fade, Teleport, SpawnNPC, EndTutorial, }
+{ WaitingTutorial, MovePointToPoint, PopUpMonologue, PopUpGuide, WaitingKeyboardInput, WaitingFewSeconds, Fade, Teleport, SpawnNPC, EndTutorial, }
 
 [Serializable]
 public struct MonologueScript
 {
 	public string script;
+	public float popUpTime;
+}
+
+[Serializable]
+public struct GuideUI
+{
+	public string guideUIName;
 	public float popUpTime;
 }
 
@@ -26,6 +33,8 @@ public class TutorialState
 	public StateType stateType;
 	public Transform locationMarker;
 	public MonologueScript monologueScript;
+	public GuideUI guideUI;
+	public float waitingTime;
 	public NPCInfo spawnNPC;
 }
 
@@ -79,7 +88,6 @@ public class TutorialComponent : MonoBehaviour
 						{
 							m_PlayerCharacter.SetDestination(m_States[m_CurrentState].locationMarker);
 						}
-
 						break;
 					}
 					case StateType.PopUpMonologue:
@@ -87,6 +95,26 @@ public class TutorialComponent : MonoBehaviour
 						if (m_PlayerCharacter != null)
 						{
 							m_PlayerCharacter.PopUpMonologue(m_States[m_CurrentState].monologueScript.script, m_States[m_CurrentState].monologueScript.popUpTime);
+						}
+						break;
+					}
+					case StateType.PopUpGuide:
+					{
+						if (m_PlayerCharacter != null)
+						{
+							m_PlayerCharacter.PopUpGuide(m_States[m_CurrentState].guideUI.guideUIName, m_States[m_CurrentState].guideUI.popUpTime);
+						}
+						break;
+					}
+					case StateType.WaitingKeyboardInput:
+					{
+						break;
+					}
+					case StateType.WaitingFewSeconds:
+					{
+						if (m_PlayerCharacter != null)
+						{
+							m_PlayerCharacter.PopUpGuide("", m_States[m_CurrentState].waitingTime);
 						}
 						break;
 					}
