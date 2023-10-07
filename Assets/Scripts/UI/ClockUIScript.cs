@@ -63,13 +63,21 @@ public class ClockUIScript : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-
+		bProgressTime = false;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		float DeltaTime = Time.deltaTime;
+
+		if(GameManager.Instance != null)
+		{
+			if (GameManager.Instance.GameTime != null)
+			{
+				CurrentTime = GameManager.Instance.GameTime.GetHour() + GameManager.Instance.GameTime.GetMinute();
+			}
+		}
 
 		if (bProgressTime == true) { ProgressTime(DeltaTime); }
 		RefreshClock();

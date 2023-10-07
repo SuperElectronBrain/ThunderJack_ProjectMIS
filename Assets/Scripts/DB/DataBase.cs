@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class DataBase : MonoBehaviour
+public class DataBase : Singleton<DataBase>
 {
     public Dictionary<string, TextAsset> dataDic;
     public TextAsset data;
@@ -23,6 +23,7 @@ public class DataBase : MonoBehaviour
         {
             dataDic.Add(data.name, data);
         }
+
     }
 
     public void Start()
@@ -47,7 +48,7 @@ public class DataBase : MonoBehaviour
             string[] rowData = text.Split(',');
             for (int i = 0; i < rowData.Length; i++)
             {
-                //Debug.Log(rowData[i]);
+                Debug.Log(rowData[i]);
                 newDic.Add(row[i], rowData[i]);                
             }
                 

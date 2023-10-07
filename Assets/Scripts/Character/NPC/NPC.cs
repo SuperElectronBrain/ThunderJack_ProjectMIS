@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public enum NPCBehaviour
 {
-    Idle, Move, Conversation, Sleep, Last
+    Idle, Move, Conversation, Greeting, Sleep, Last
 }
 
 public class NPC : Character
@@ -18,6 +19,8 @@ public class NPC : Character
     [SerializeField]
     NPCBehaviour curBehaviour;
 
+    public NPCBehaviour PrevBehaviour { get { return prevBehaviour; } }
+
     [SerializeField]
     BehaviourData curBehaviourData;    
 
@@ -25,57 +28,99 @@ public class NPC : Character
 
     float intimacy;
 
-    bool isMeet;
-    bool isNear;
+    public bool isMeet;
+    public bool isTalk;
 
-    NPC_Move npcMove;
+    int formal = 0;
 
     public NavMeshAgent agent;
     public Vector3 destinationPos;
     public GameObject curInteractionObj;
 
-    protected override void Start()
+    public GameObject player;
+
+    [SerializeField]
+    float sightRange;
+    
+    [SerializeField]
+    TextMeshPro dialog;
+
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
+        player = GameObject.FindGameObjectWithTag("Player");        
         fsm = new();        
         agent = GetComponent<NavMeshAgent>();
         states = new State<NPC>[((int)NPCBehaviour.Last) - 1];
+        //dialog = GetComponentInChildren<TextMeshPro>();
 
         states[((int)NPCBehaviour.Idle)] = GetComponent<IdleState>();
         states[((int)NPCBehaviour.Move)] = GetComponent<MoveState>();
         states[((int)NPCBehaviour.Conversation)] = GetComponent<ConversationState>();
+        states[((int)NPCBehaviour.Greeting)] = GetComponent<GreetingState>();        
+    }
 
+    private void Start()
+    {
+        InitDay();
+
+        EventManager.Subscribe(EventType.NextDialog, TalkEnd);
+        DontDestroyOnLoad(gameObject);
+
+        SkAni.Initialize(true);
+    }
+
+    public void Init()
+    {
         fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
-
-        InitDay();        
     }
 
     public void InitDay()
     {
         isMeet = false;
+        formal = 0;
     }
 
     protected virtual void Update()
     {
         fsm.StateUpdate();
+        myTransform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+    }
 
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            curInteractionObj = gameObject;
-            StartConversation();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            ChangeState(NPCBehaviour.Move);
-        }
+    public bool IsInSight()
+    {
+        if (player == null)
+            return false;
 
+        return (player.transform.position - transform.position).sqrMagnitude <= sightRange && !isMeet;
+    }
+
+    public void Greeting()
+    {
+        if (isMeet)
+            return;
+
+        ChangeState(NPCBehaviour.Greeting);
     }
 
     public void StartConversation()
     {
+        formal++;
         Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
-        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue");
-        
+        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue", formal);
+        curInteractionObj = player;
+        ChangeState(NPCBehaviour.Conversation);        
+    }
+
+    public void TalkEnd()
+    {
+        dialog.gameObject.SetActive(false);
+    }
+
+    public void Talk(string talkScript)
+    {
+        dialog.gameObject.SetActive(true);
+        dialog.text = talkScript;
     }
 
     public void SetCurBehaviourData(BehaviourData newBehaviourData)
@@ -94,13 +139,20 @@ public class NPC : Character
                 break;
             case 2:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
-                ChangeState(NPCBehaviour.Move);
+                if (!isTalk)
+                    ChangeState(NPCBehaviour.Move);
+                else
+                    prevBehaviour = NPCBehaviour.Move;
                 break;
             case 3:
                 destinationPos = ((BehaviourType2)curBehaviourData).actionGoal;
                 destinationPos = LocationManager.GetLocationRandomPosition(destinationPos);
-                Debug.Log(((BehaviourType2)curBehaviourData).actionGoal);
-                ChangeState(NPCBehaviour.Move);
+                //Debug.Log(curBehaviourData.)
+                //Debug.Log(((BehaviourType2)curBehaviourData).actionGoal);
+                if(!isTalk)
+                    ChangeState(NPCBehaviour.Move);
+                else
+                    prevBehaviour = NPCBehaviour.Move;
                 break;
         }
     }
@@ -110,6 +162,24 @@ public class NPC : Character
         prevBehaviour = curBehaviour;        
         fsm.ChangeState(states[(int)newBehaviour]);
         curBehaviour = newBehaviour;
+    }
+
+    public void Relocation()
+    {
+        Vector3 relocationPos = LocationManager.GetLocationRandomPosition(((BehaviourType2)curBehaviourData).actionGoal);
+        transform.position = relocationPos;
+    }
+
+
+    [SerializeField]
+    bool isDebug;
+    private void OnDrawGizmos()
+    {
+        if (!isDebug)
+            return;
+        Gizmos.color = Color.green;
+            
+        Gizmos.DrawWireSphere(transform.position, sightRange);
     }
 }
 

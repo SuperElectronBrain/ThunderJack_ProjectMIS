@@ -26,13 +26,19 @@ public class Character : MonoBehaviour
     protected CharacterData characterData;
 
     SkeletonAnimation skAni;
+    [SerializeField]
+    public Transform myTransform;
+
     public SkeletonAnimation SkAni { get { return skAni; } }
 
     // Start is called before the first frame update
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         animator= GetComponentInChildren<Animator>();
-        skAni = GetComponent<SkeletonAnimation>();
+        skAni = GetComponentInChildren<SkeletonAnimation>();
+
+        myTransform = transform.Find("Body");
+        Debug.Log(gameObject.name + " start");
     }
 
     // Update is called once per frame
@@ -73,7 +79,9 @@ public class Character : MonoBehaviour
 
     public void InitCharacter(string characterInfo)
     {
-        GetComponent<MeshRenderer>().material = AddressableManager.LoadObject<Material>(characterInfo + "_Material");
+        Debug.Log(gameObject.name + "Init");
+        //myTransform.GetComponent<MeshRenderer>().material = AddressableManager.LoadObject<Material>(characterInfo + "_Material");
         skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(characterInfo + "_Skeleton");
-    }
+        skAni.Initialize(true);
+    }    
 }

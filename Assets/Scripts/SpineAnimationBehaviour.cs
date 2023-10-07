@@ -24,4 +24,24 @@ public class SpineAnimationBehaviour : StateMachineBehaviour
 			trackEntry.TimeScale = stateInfo.speed;
 		}
 	}
+
+	//public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+	//{
+	//	base.OnStateUpdate(animator, stateInfo, layerIndex);
+	//
+	//	if (trackEntry != null)
+	//	{
+	//		trackEntry.TrackTime = stateInfo.normalizedTime * trackEntry.TrackComplete;
+	//	}
+	//}
+
+	//public override void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+	//{
+	//	base.OnStateMove(animator, stateInfo, layerIndex);
+	//
+	//	if (trackEntry != null)
+	//	{
+	//		trackEntry.TrackTime = stateInfo.normalizedTime * trackEntry.TrackComplete;
+	//	}
+	//}
 }

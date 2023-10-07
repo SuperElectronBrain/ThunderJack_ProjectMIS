@@ -1,11 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+public enum JewelryGrade
+{
+
+}
 
 public class PlayerShop_Sales : MonoBehaviour
 {
     [SerializeField]
     List<RequestData> requestList = new List<RequestData>();
+
+    public UnityEvent<float, int, int> salesSuccessEvent;
+    public UnityEvent<float, int, int> salesFailureEvent;    
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +35,9 @@ public class PlayerShop_Sales : MonoBehaviour
                 }
                 );
         }
-        EventManager.Subscribe(EventType.SalesSuccess, SalesSuccess);
-        EventManager.Subscribe(EventType.SalesFailure, SalesFailure);
+
+/*        salesSuccessEvent.AddListener(SalesSuccess);
+        salesFailureEvent.AddListener(SalesFailure);*/
     }
 
     public RequestData GetRequestData(int guestId)
@@ -35,30 +45,43 @@ public class PlayerShop_Sales : MonoBehaviour
         return requestList[guestId];
     }
 
-    void SalesSuccess()
+    public static void SalesSuccess(SalesData salesData)
     {
-        
+        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money);
+        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, salesData.fame);
     }
 
-    void SalesFailure()
+    public static void SalesFailure(SalesData salesData)
     {
-
+        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money / 2);
+        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, -(salesData.fame / 2));
     }
 
     private void OnDestroy()
     {
-        EventManager.Unsubscribe(EventType.SalesSuccess, SalesSuccess);
-        EventManager.Unsubscribe(EventType.SalesFailure, SalesFailure);
+        salesSuccessEvent.RemoveAllListeners();
+        salesFailureEvent.RemoveAllListeners();
     }
 }
 
+public class RequestStuff
+{
+    public int requestStuff1;
+    public int requestStuff2;
+}
+
 [System.Serializable]
-public class RequestData
+public class RequestData : RequestStuff
 {
     public int requestId;
     public int guestId;
     public float requestRate;
     public string requestScript;
-    public int requestStuff1;
-    public int requestStuff2;
+}
+
+public class SalesData
+{
+    public float perfection;
+    public int money;
+    public int fame;
 }

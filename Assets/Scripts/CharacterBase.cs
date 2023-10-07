@@ -14,12 +14,14 @@ public class CharacterBase : MonoBehaviour
 	protected float m_VerticalMove = 0.0f;
 	private Vector3 m_PrevPosition;
 	protected float m_Velocity;
+	protected bool m_UseScaleFlip = true;
 
 	protected Camera m_MainCamera;
 	protected Rigidbody m_Rigidbody;
     [SerializeField] protected GameObject m_SD;
     protected Animator m_Animator;
 	[HideInInspector] public CameraPresetAreaComponent m_CPAComponent;
+	[HideInInspector] public Inventory m_Inventory;
 
 	// Start is called before the first frame update
 	protected virtual void Start()
@@ -27,11 +29,13 @@ public class CharacterBase : MonoBehaviour
 		m_HorizontalMoveDirection = Vector3.right;
 		m_VerticalMoveDirection = Vector3.forward;
 		m_PrevPosition = transform.position;
+		m_UseScaleFlip = true;
 
 		m_MainCamera = Camera.main;
 		m_Rigidbody = gameObject.GetComponent<Rigidbody>();
 		//if (m_Rigidbody == null) { m_Rigidbody = gameObject.AddComponent<Rigidbody>(); }
 		m_Animator = gameObject.GetComponent<Animator>();
+		m_Inventory = gameObject.GetComponent<Inventory>();
 	}
 
     // Update is called once per frame
@@ -50,15 +54,18 @@ public class CharacterBase : MonoBehaviour
             }
 			m_SD.transform.rotation = Quaternion.Euler(t_ModelingRotation);
 
-			Vector3 t_ModelingScale = m_SD.transform.localScale;
-			if (m_HorizontalMove > 0) { t_ModelingScale.x = -0.2f; }
-			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 0.2f; }
-			m_SD.transform.localScale = t_ModelingScale;
+			if(m_UseScaleFlip == true)
+			{
+				Vector3 t_ModelingScale = m_SD.transform.localScale;
+				if (m_HorizontalMove > 0) { t_ModelingScale.x = -0.2f; }
+				else if (m_HorizontalMove < 0) { t_ModelingScale.x = 0.2f; }
+				m_SD.transform.localScale = t_ModelingScale;
+			}
 		}
 
 		if(m_Animator != null)
 		{
-			m_Animator.SetFloat("HorizontalSpeed", m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove);
+			m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
 			m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
 		}
 	}
@@ -67,10 +74,10 @@ public class CharacterBase : MonoBehaviour
 	{
 		float DeltaTime = Time.fixedDeltaTime;
 
-		if(m_CPAComponent != null)
-		{
-			SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward);
-		}
+		//if(m_CPAComponent != null)
+		//{
+		//	SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward);
+		//}
 		HorizontalMove(DeltaTime);
 		VerticalMove(DeltaTime);
 

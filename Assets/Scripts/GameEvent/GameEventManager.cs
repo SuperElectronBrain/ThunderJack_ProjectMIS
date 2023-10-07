@@ -1,30 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum GameEventType
 {
-    None, CustomerF, CustomerA, CustomerE, CustomerW, Fame, OrePrice, Collect ,Tax, VisitRate
+    None, Fame, OrePrice, Collect , AppearDemonLord = 6
 }
 
 public class GameEventManager : MonoBehaviour
 {
-    GameEvent gameEvent;
-    Dictionary<string, EventData> gameEventData;
+    GameEvent dayGameEvent;
+    [SerializeField]
+    List<EventData> gameEventData;
+    List<GameEvent> gameEventList;
+    [SerializeField]
+    List<GameEventBase> gameEventListBase;
+
+    [SerializeField]
+    NoticeBoard noticeBoard;
+
+    [SerializeField]
+    int positiveEventWeight;
+    [SerializeField]
+    int negativeEventWeight;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameEventData = new Dictionary<string, EventData>();
+        gameEventData = new();
+
+        noticeBoard = GameObject.Find("Notice Board").GetComponent<NoticeBoard>();
 
         var eventData = GameManager.Instance.DataBase.Parser("Random_Event_DataTable");
 
         foreach (var e in eventData)
         {
             var eId = (e["Event_ID"]).ToString();
-            gameEventData.Add(eId, new EventData
+            gameEventData.Add(new EventData
             {
-                eventId = eId,
                 eventName = e["Event_Name"].ToString(),
                 eventScript = e["Event_Script"].ToString(),
                 eventType = Tools.IntParse(e["Event_Type"]),
@@ -34,55 +48,50 @@ public class GameEventManager : MonoBehaviour
         }
 
         EventManager.Subscribe(EventType.Day, NewDayEvent);
+        Invoke("NewDayEvent", 1f);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Notice(NoticeData noticeData)
     {
-        
+        noticeBoard.SetNoticeBoard(noticeData);
     }
 
-    public void EventSetting(GameEventType eventType, float eventValue)
+    public void NewDayEvent()
     {
-        switch (eventType)
+        /*int randomEventIdx = Random.Range(0, gameEventData.Count);
+
+        switch ((GameEventType)gameEventData[randomEventIdx].eventType)
         {
             case GameEventType.None:
-                break;
-            case GameEventType.CustomerF:
-                break;
-            case GameEventType.CustomerA:
-                break;
-            case GameEventType.CustomerE:
-                break;
-            case GameEventType.CustomerW:
                 break;
             case GameEventType.Fame:
                 break;
             case GameEventType.OrePrice:
+                dayGameEvent = new OreEvent();
                 break;
             case GameEventType.Collect:
                 break;
-            case GameEventType.Tax:
+            case GameEventType.AppearDemonLord:
                 break;
-            case GameEventType.VisitRate:
-                break;
-        }
-    }
+        }*/
+        dayGameEvent = new RandomGameEvent.OreEvent();
+        dayGameEvent.InitEvent(this, gameEventData[7]);
 
-    public void NewDayEvent()
-    {      
-
-
-        //EventSetting();
-        gameEvent.EventEffect();
+        dayGameEvent.EventActive();
     }
 }
 
+[System.Serializable]
 public class EventData
 {
-    public string eventId;
     public string eventName;
     public string eventScript;
     public int eventType;
     public int eventValue;
+}
+
+[System.Serializable]
+public class GameEventBase
+{
+    public UnityEvent gameEvent;
 }

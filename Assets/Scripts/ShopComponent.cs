@@ -12,28 +12,28 @@ public class ShopComponent : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		Canvas canvas = FindObjectOfType<Canvas>();
-		if (canvas != null)
-		{
-			if (ShopPanelPrefab != null)
-			{
-				ShopPanel = Instantiate(ShopPanelPrefab, canvas.transform);
-				ShopPanel.SetActive(false);
-
-				GameObject t_GameObject = UniFunc.GetChildOfName(ShopPanel, "StartButton");
-				if(t_GameObject != null)
-				{
-					Button t_Button = t_GameObject.GetComponent<Button>();
-					if (t_Button != null)
-					{
-						t_Button.onClick.AddListener(() => 
-						{
-							UnityEngine.SceneManagement.SceneManager.LoadScene(m_SceneName);
-						});
-					}
-				}
-			}
-		}
+		//Canvas canvas = FindObjectOfType<Canvas>();
+		//if (canvas != null)
+		//{
+		//	if (ShopPanelPrefab != null)
+		//	{
+		//		ShopPanel = Instantiate(ShopPanelPrefab, canvas.transform);
+		//		ShopPanel.SetActive(false);
+		//
+		//		GameObject t_GameObject = UniFunc.GetChildOfName(ShopPanel, "StartButton");
+		//		if(t_GameObject != null)
+		//		{
+		//			Button t_Button = t_GameObject.GetComponent<Button>();
+		//			if (t_Button != null)
+		//			{
+		//				t_Button.onClick.AddListener(() => 
+		//				{
+		//					UnityEngine.SceneManagement.SceneManager.LoadScene(m_SceneName);
+		//				});
+		//			}
+		//		}
+		//	}
+		//}
 	}
 
 	// Update is called once per frame

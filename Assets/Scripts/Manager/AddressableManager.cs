@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using System.Threading.Tasks;
@@ -33,30 +34,51 @@ public class AddressableManager : MonoBehaviour
                 //assetReference.InstantiateAsync(canvas.transform);
             }
         };*/
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        Addressables.InitializeAsync().WaitForCompletion();
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
-/*        if(Input.GetKeyDown(KeyCode.Alpha1))
+*//*        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             var index = gameObjects.Count - 1;
-
+Addressables.LoadAssetAsync<T>(loadObjectName)
             Addressables.ReleaseInstance(gameObjects[index]);
             gameObjects.RemoveAt(index);
-        }*/
+        }*//*
+    }*/
+
+    static bool AddressableNullCheck<T>(string key)
+    {
+        foreach (var l in Addressables.ResourceLocators)
+        {
+            IList<IResourceLocation> locs;
+            if (l.Locate(key, typeof(T), out locs))
+                return true;
+        }
+        return false;
     }
 
     public static T LoadObject<T>(string loadObjectName)
     {
         T returnObject = default;
 
-        if (typeof(T) == typeof(Sprite))
+        if (!AddressableNullCheck<T>(loadObjectName))
         {
-            //임시임 확실히 버그인지 알 수 있는 이미지로 바꿀 것
-            if (Addressables.LoadResourceLocationsAsync(loadObjectName, typeof(object)).IsValid())
-                loadObjectName = "Stone";
-        }        
+            Debug.Log("실패");
+            loadObjectName = "Icon";
+        }
+        else
+        {
+            Debug.Log("성공");
+        }
+
 
         var op = Addressables.LoadAssetAsync<T>(loadObjectName);
 

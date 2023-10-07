@@ -8,6 +8,9 @@ public class TimeTable : MonoBehaviour
     [SerializeField]
     List<TimeTableData> npcTimeTable;
 
+    [SerializeField]
+    bool isWork;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +20,7 @@ public class TimeTable : MonoBehaviour
        
         var behaviourMaster = GameManager.Instance.BehaviourMaster;
 
-        for (int i = 1; i < GameManager.Instance.CharacterDB.GetCharacterCount(); i++)
+        for (int i = 1; i <= GameManager.Instance.CharacterDB.GetCharacterCount(); i++)
             npcTimeTable.Add(new());
 
         int h = 0;
@@ -26,7 +29,7 @@ public class TimeTable : MonoBehaviour
         foreach (var tData in timeTable)
         {
             var t = h + ":" + string.Format("{0:D2}", m);
-            for (int id = 1; id < GameManager.Instance.CharacterDB.GetCharacterCount(); id++)
+            for (int id = 1; id <= GameManager.Instance.CharacterDB.GetCharacterCount(); id++)
             {
                 var name = GameManager.Instance.CharacterDB.GetCharacterEgName(id);
 
@@ -43,13 +46,23 @@ public class TimeTable : MonoBehaviour
             }
 
         }
+
+        EventManager.Subscribe(EventType.Work, Work);
         EventManager.Subscribe(EventType.Minute, WorkDistribution);
-        //EventManager.Publish(EventType.hour);
+        EventManager.Publish(EventType.Minute);
+    }
+
+    void Work()
+    {
+        isWork = !isWork;
     }
 
     void WorkDistribution()
     {
-        for (int id = 1; id < GameManager.Instance.CharacterDB.GetCharacterCount(); id++)
+        if (isWork)
+            return;
+
+        for (int id = 1; id <= GameManager.Instance.CharacterDB.GetCharacterCount(); id++)
         {
             var timeIdx = GameManager.Instance.GameTime.GetTimeIdx();
             //npcTimeTable[id].timeTableData[locationIdx];

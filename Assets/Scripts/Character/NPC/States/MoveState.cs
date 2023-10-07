@@ -4,45 +4,56 @@ using UnityEngine;
 
 public class MoveState : State<NPC>
 {
+    public Vector3 vel;
     public override void Enter(NPC entity)
     {
+        entity.agent.isStopped = false;
         entity.agent.SetDestination(entity.destinationPos);
     }
 
     public override void Execute(NPC entity)
     {
         entity.lookDir.SetDir(entity.agent.velocity);
+        vel = entity.agent.velocity;
 
         var scaleX = entity.lookDir.isRight ? -1 : 1;
-        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * scaleX, transform.localScale.y, transform.localScale.z);
+        var newScale = entity.myTransform.localScale;
+        newScale.x = Mathf.Abs(entity.myTransform.localScale.x) * scaleX;
+
+        entity.myTransform.localScale = newScale;
         
         if (entity.lookDir.isFront)
         {                
             if (entity.lookDir.isSideWalk)
-                entity.SkAni.AnimationName = "FRONT_Walk2";
+                entity.SkAni.AnimationName = "A_walk_F";
             else
-                entity.SkAni.AnimationName = "FRONT_Walk1";
+                entity.SkAni.AnimationName = "A_walk_F";
         }
         else
         {
             if (entity.lookDir.isSideWalk)
-                entity.SkAni.AnimationName = "BACK_Walk2";
+                entity.SkAni.AnimationName = "A_walk_B";
             else
-                entity.SkAni.AnimationName = "BACK_Walk1";
+                entity.SkAni.AnimationName = "A_walk_B";
         }                
     }
 
     public override void Exit(NPC entity)
     {
         Debug.Log("이동완료");
-        entity.agent.ResetPath();
+        //entity.agent.ResetPath();
     }
 
     public override void OnTransition(NPC entity)
     {
-        if (entity.agent.remainingDistance <= 0.1f)
+/*        if (entity.agent.remainingDistance <= 0.1f)
         {
             entity.ChangeState(NPCBehaviour.Idle);
-        }            
+        }            */
+
+        if(entity.IsInSight())
+        {
+            entity.ChangeState(NPCBehaviour.Greeting);
+        }
     }
 }
