@@ -30,7 +30,7 @@ public class GameEventManager : MonoBehaviour
     {
         gameEventData = new();
 
-        noticeBoard = GameObject.Find("Notice Board").GetComponent<NoticeBoard>();
+        //noticeBoard = GameObject.Find("Notice Board").GetComponent<NoticeBoard>();
 
         var eventData = GameManager.Instance.DataBase.Parser("Random_Event_DataTable");
 

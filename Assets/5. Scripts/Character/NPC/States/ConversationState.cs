@@ -5,9 +5,12 @@ using UnityEngine;
 public class ConversationState : State<NPC>
 {
     bool isTalking;
+    bool isTwinkling;
+
     public override void Enter(NPC entity)
     {
         CameraEvent.Instance.ChangeCamera(CamType.Conversation);
+        isTalking = true;
         isTalking = true;
         entity.isTalk = true;
         entity.agent.isStopped = true;
@@ -20,9 +23,11 @@ public class ConversationState : State<NPC>
         entity.myTransform.localScale = newScale;
 
         if (entity.lookDir.isFront)
-            entity.SkAni.AnimationName = "A_idle_F";
+            entity.SkAni.AnimationName = "A_talk1_F";
         else
-            entity.SkAni.AnimationName = "A_idle_B";
+            entity.SkAni.AnimationName = "A_talk1_B";
+
+        StartCoroutine(CTwinkling(entity, 1.5f));        
 
         //entity.StartConversation();
         EventManager.Subscribe(EventType.EndConversation, EndConversation);
@@ -36,6 +41,7 @@ public class ConversationState : State<NPC>
     public override void Exit(NPC entity)
     {
         EventManager.Unsubscribe(EventType.EndConversation, EndConversation);
+        StopAllCoroutines();
         entity.isTalk = false;
     }
 
@@ -49,6 +55,23 @@ public class ConversationState : State<NPC>
     {
         CameraEvent.Instance.ChangeCamera(CamType.Prev);
         isTalking = false;
+    }
+
+    IEnumerator CTwinkling(NPC entity, float delay)
+    {
+        Debug.Log("변경 전 " + entity.SkAni.AnimationName);
+        yield return new WaitForSeconds(delay);
+
+        if (isTwinkling)
+            entity.SkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("1", "2"), true, 0);
+        else
+            entity.SkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("2", "1"), true, 0);
+
+        Debug.Log("변경 후 " + entity.SkAni.AnimationName);
+
+        isTwinkling = !isTwinkling;
+
+        StartCoroutine(CTwinkling(entity, delay));
     }
 }
 

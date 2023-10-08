@@ -29,16 +29,16 @@ public class MoveState : State<NPC>
         if (entity.lookDir.isFront)
         {                
             if (entity.lookDir.isSideWalk)
-                entity.SkAni.AnimationName = "A_walk_F";
+                entity.SkAni.AnimationName = "A_walk2_F";
             else
-                entity.SkAni.AnimationName = "A_walk_F";
+                entity.SkAni.AnimationName = "A_walk1_F";
         }
         else
         {
             if (entity.lookDir.isSideWalk)
-                entity.SkAni.AnimationName = "A_walk_B";
+                entity.SkAni.AnimationName = "A_walk2_B";
             else
-                entity.SkAni.AnimationName = "A_walk_B";
+                entity.SkAni.AnimationName = "A_walk1_B";
         }                
     }
 

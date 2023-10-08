@@ -6,7 +6,7 @@ using Cinemachine;
 
 public enum CamType
 {
-    Main, Conversation, Area, NoticeBoard, Prev
+    Conversation, NoticeBoard, Enter, Prev
 }
 
 public class CameraEvent : Singleton<CameraEvent>
@@ -16,22 +16,20 @@ public class CameraEvent : Singleton<CameraEvent>
     [SerializeField]
     CinemachineVirtualCamera conversationCam;
     [SerializeField]
-    CinemachineVirtualCamera mainCam;
-    [SerializeField]
-    CinemachineVirtualCamera areaCam;
-    [SerializeField]
     CinemachineVirtualCamera liveCam;
     [SerializeField]
     CinemachineVirtualCamera prevCam;
     [SerializeField]
     CinemachineVirtualCamera noticeBoardCam;
+    [SerializeField]
+    CinemachineVirtualCamera enterCam;
 
     public UnityEvent onCamBlendComplate;
 
     // Start is called before the first frame update
     void Start()
     {
-        ChangeCamera(CamType.Main);        
+        brain = Camera.main.GetComponent<CinemachineBrain>(); 
     }
 
     IEnumerator OnBlendComplate()
@@ -40,12 +38,7 @@ public class CameraEvent : Singleton<CameraEvent>
 
         yield return new WaitUntil(() => brain.IsBlending == false);
         onCamBlendComplate?.Invoke();
-        onCamBlendComplate.RemoveAllListeners();
-    }
-
-    public void SetCamera(CinemachineVirtualCamera newAreaCam)
-    {
-        areaCam = newAreaCam;
+        onCamBlendComplate?.RemoveAllListeners();
     }
 
     public void ChangeCamera(CamType camType)
@@ -55,14 +48,8 @@ public class CameraEvent : Singleton<CameraEvent>
             prevCam = liveCam;
         switch (camType)
         {
-            case CamType.Main:
-                MainCamera();
-                break;
             case CamType.Conversation:
                 ConversationCamera();                
-                break;
-            case CamType.Area:
-                AreaCamera();
                 break;
             case CamType.NoticeBoard:
                 NoticeBoardCamera();
@@ -70,25 +57,33 @@ public class CameraEvent : Singleton<CameraEvent>
             case CamType.Prev:
                 PrevCamera();
                 break;
+            case CamType.Enter:
+                EnterCamera();
+                break;
         }                
+    }
+
+    public void ChangeCamera(CinemachineVirtualCamera vCam)
+    {
+        prevCam = liveCam;
+        liveCam = vCam;
+        liveCam.Priority = 100;
+        if(prevCam!= null)
+            prevCam.Priority = 10;        
+    }
+
+    public bool IsIgnoreCam(CinemachineVirtualCamera vCam)
+    {
+        if (prevCam != vCam || vCam == null)
+            return false;
+        return true;
     }
 
     void ConversationCamera()
     {
         liveCam = conversationCam;
         conversationCam.Priority = 100;
-    }
-
-    void MainCamera()
-    {
-        liveCam = mainCam;
-        mainCam.Priority = 100;
-    }
-
-    void AreaCamera()
-    {
-        liveCam = areaCam;
-        areaCam.Priority = 100;
+        StartCoroutine(OnBlendComplate());
     }
 
     void NoticeBoardCamera()
@@ -101,7 +96,14 @@ public class CameraEvent : Singleton<CameraEvent>
     void PrevCamera()
     {
         StopAllCoroutines();
+        onCamBlendComplate?.RemoveAllListeners();
         prevCam.Priority = 100;
         liveCam = prevCam;
+    }
+
+    void EnterCamera()
+    {
+        liveCam = enterCam;
+        enterCam.Priority = 100;
     }
 }

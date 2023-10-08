@@ -291,19 +291,67 @@ public class ItemManager : MonoBehaviour
         };
     }
 
+    [SerializeField]
+    List<ShopItemData> sl;
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            sl = GetShopItemDataBySalesType(SalesItemType.Materials);
+        }
+    }
+
     public List<ShopItemData> GetShopItemDataBySalesType(SalesItemType salesItemType)
     {
-        List<ShopItemData> returnShopItemList = new List<ShopItemData>();
+        List<ShopItemData> salesItemList = new List<ShopItemData>();        
 
         for(int i = 0; i < shopItemList.Count; i++)
         {
             if(shopItemList[i].shopType == (int)salesItemType)
             {
-                returnShopItemList.Add(shopItemList[i]);
+                salesItemList.Add(shopItemList[i]);
             }            
         }
 
+        float total = 0;
+        float randomRate = 0;
+
+        List<ShopItemData> returnShopItemList = new List<ShopItemData>();
+
+        for (int i = 0; i < salesItemList.Count; i++)
+        {
+            total += salesItemList[i].shopRate;
+        }
+
+        randomRate = Random.value * total;
+
+        while(returnShopItemList.Count < 5)
+        {
+            int randomIdx = Random.Range(0, salesItemList.Count);
+
+            if (randomRate < salesItemList[randomIdx].shopRate)
+            {
+                returnShopItemList.Add(salesItemList[randomIdx]);
+                salesItemList[randomIdx].shopRate = 0.1f;
+                salesItemList.RemoveAt(randomIdx);
+            }                
+            else
+            {
+                randomRate -= salesItemList[randomIdx].shopRate;
+            }
+        }
+
+        for(int i = 0; i < salesItemList.Count; i++)
+        {
+            salesItemList[i].shopRate += 0.1f;
+        }
+
         return returnShopItemList;
+    }
+
+    public void UpdateShopItemInfo()
+    {
+
     }
 }
 

@@ -21,10 +21,11 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Stone
-  m_Shader: {fileID: 4800000, guid: 6459b2db96a08ca41b0f9b39dc7ad59e, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 80e89fc5610bb9340a7bb0167296929b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - N_F_EAL_ON
   - N_F_GLO_ON
   - N_F_NM_ON
@@ -32,9 +33,8 @@ Material:
   - N_F_RDC_ON
   - N_F_RELGI_ON
   - N_F_SS_ON
-  - N_F_TRANSAFFSHA_ON
-  m_InvalidKeywords:
   - N_F_TRANSAFFSHA
+  - N_F_TRANSAFFSHA_ON
   - _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_OFF
   - _GIFLATSHADE_OFF
   - _GLOSSTEXTUREFOLLOWOBJECTROTATION_OFF
@@ -68,12 +68,28 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Base_Map:
+        m_Texture: {fileID: 2800000, guid: 5fc8cf9a2005f80469f8d0e5e5b06ee2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Normal_Map:
+        m_Texture: {fileID: 2800000, guid: 83c9ab11f9b3913409370f5039807657, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Alpha_Map:
+        m_Texture: {fileID: 2800000, guid: cd140074f5fbc654e8b7fb30c447b2f9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Color_Map:
+        m_Texture: {fileID: 2800000, guid: 5fc8cf9a2005f80469f8d0e5e5b06ee2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -136,6 +152,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 83c9ab11f9b3913409370f5039807657, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal_Map:
+        m_Texture: {fileID: 2800000, guid: 83c9ab11f9b3913409370f5039807657, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -182,6 +202,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Normal_Blend: 0.5
     - _AlphaBaseCutout: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -200,11 +221,15 @@ Material:
     - _CustomLightDirectionIntensity: 0
     - _Cutoff: 0.5
     - _Cutout: 0
+    - _DecalMeshBiasType: 0
+    - _DecalMeshDepthBias: 0
+    - _DecalMeshViewBias: 0
     - _DepthThreshold: 900
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DirectionalLightIntensity: 0
     - _DoubleSidedOutline: 1
+    - _DrawOrder: 0
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _DynamicNoisyOutline: 0
@@ -273,6 +298,7 @@ Material:
     - _N_F_STIS: 0
     - _NoisyOutlineIntensity: 0
     - _NormalMapIntensity: 0.68
+    - _Normal_Power: 0.48
     - _OcclusionStrength: 1
     - _Opacity: 1
     - _Oper: 0
@@ -333,6 +359,7 @@ Material:
     - _TEXMCOLINT: 1
     - _TRANSMODE: 0
     - _TexturePatternStyle: 0
+    - _Texture_size: 3.61
     - _TransAffSha: 1
     - _TransparentThreshold: 0
     - _UseSecondaryCutout: 0
