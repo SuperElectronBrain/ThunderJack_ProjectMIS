@@ -101,7 +101,7 @@ public class QuestComponet : MonoBehaviour
 		return t_Quest;
 	}
 
-	public void CleanRecipeBook()
+	public void CleanQuests()
 	{
 		m_Quests.Clear();
 		m_Quests.TrimExcess();
@@ -116,7 +116,7 @@ public class QuestComponet : MonoBehaviour
 			{
 				AddQuest(p_QuestComponet.PopQuestAt(p_QuestComponet.GetQuests().Count - 1));
 			}
-			p_QuestComponet.CleanRecipeBook();
+			p_QuestComponet.CleanQuests();
 		}
 	}
 
