@@ -74,7 +74,7 @@ public class CameraEvent : Singleton<CameraEvent>
 
     public bool IsIgnoreCam(CinemachineVirtualCamera vCam)
     {
-        if (prevCam != vCam || vCam == null)
+        if (liveCam != vCam || vCam == null)
             return false;
         return true;
     }
