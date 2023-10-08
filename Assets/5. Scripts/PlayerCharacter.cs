@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Recorder.OutputPath;
 
 public interface IGrabable
 {
@@ -29,6 +30,8 @@ public class PlayerCharacter : CharacterBase
 	[SerializeField] private CollisionComponent m_CollisionComponent;
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
 	[SerializeField] private PlayerCharacterUIScript m_PlayerCharacterUIScript;
+	[SerializeField] private ParticleSystem m_FootStepEffectInside;
+	[SerializeField] private ParticleSystem m_FootStepEffectOutdoor;
 	public RecipeBook m_RecipeBook;
 	public QuestComponet m_QuestComponet;
 	public TutorialComponent m_TutorialComponent;
@@ -47,6 +50,15 @@ public class PlayerCharacter : CharacterBase
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
 		if (m_TutorialComponent == null) { m_TutorialComponent = GetComponent<TutorialComponent>(); }
+
+		if (m_FootStepEffectInside != null)
+		{
+			m_FootStepEffectInside.Stop();
+		}
+		if (m_FootStepEffectOutdoor != null)
+		{
+			m_FootStepEffectInside.Stop();
+		}
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		FindPlayerCharacterUIScript();
@@ -127,6 +139,17 @@ public class PlayerCharacter : CharacterBase
 				m_FadeOutTimeBase = 0.0f;
 			}
 		}
+
+		//if (m_FootStepEffectInside != null)
+		//{
+		//	m_FootStepEffectInside.Stop();
+		//}
+		//
+		//if (m_Animator != null)
+		//{
+		//	m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
+		//	m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
+		//}
 
 		/*
 		if(m_Interaction != null)
