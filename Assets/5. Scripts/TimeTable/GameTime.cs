@@ -20,8 +20,6 @@ public class GameTime : MonoBehaviour
     [SerializeField]
     float timer = 0;
 
-    bool isStop = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -36,9 +34,6 @@ public class GameTime : MonoBehaviour
 
     public void Timer()
     {
-        if (isStop)
-            return;
-
         timer += Time.deltaTime * gameSpeed;
 
         if (timer >= gameTime2RealTime * 60)
@@ -64,11 +59,6 @@ public class GameTime : MonoBehaviour
 
             EventManager.Publish(EventType.Minute);
         }
-    }
-
-    public void TimeStop(bool isStop)
-    {
-        this.isStop = isStop;
     }
 
     public string GetTime()

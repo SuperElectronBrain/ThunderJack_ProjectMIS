@@ -139,7 +139,6 @@ public class NPC : Character, IInteraction
 
     public void Talk(string talkScript)
     {
-        dialogBox.transform.Rotate(Vector3.zero);
         dialogBox.gameObject.SetActive(true);
         dialogBox.SetScript(talkScript);
     }
@@ -222,10 +221,7 @@ public class NPC : Character, IInteraction
 
     public void Interaction(GameObject user)
     {
-        if (curBehaviour == NPCBehaviour.Greeting)
-            Debug.Log("Hi");
-        else
-            StartConversation();
+        StartConversation();
     }
 
     public void LookAtTarget()

@@ -127,7 +127,6 @@ public class Dialogue : MonoBehaviour
         var dData = dialogueList[dialogueIdx];
         if (dData.characterID == 0)
         {
-            playerDialogBox.transform.Rotate(Vector3.zero);
             playerDialogBox.gameObject.SetActive(true);
             playerDialogBox.SetPlayerDialog(dData.textScript);
         }

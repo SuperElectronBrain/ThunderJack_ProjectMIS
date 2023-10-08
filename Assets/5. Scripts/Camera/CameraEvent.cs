@@ -23,8 +23,6 @@ public class CameraEvent : Singleton<CameraEvent>
     CinemachineVirtualCamera noticeBoardCam;
     [SerializeField]
     CinemachineVirtualCamera enterCam;
-    [SerializeField]
-    CinemachineTargetGroup targetGroup;
 
     public UnityEvent onCamBlendComplate;
 
@@ -79,14 +77,6 @@ public class CameraEvent : Singleton<CameraEvent>
         if (prevCam != vCam || vCam == null)
             return false;
         return true;
-    }
-
-    public void SetTarget(Transform target)
-    {
-        if(targetGroup.FindMember(target) == -1)
-            targetGroup.AddMember(target, 1, 5);
-        else
-            targetGroup.RemoveMember(target);
     }
 
     void ConversationCamera()
