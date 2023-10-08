@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum StateType
-{ WaitingTutorial, MovePointToPoint, PopUpMonologue, PopUpGuide, WaitingKeyboardInput, WaitingFewSeconds, Fade, Teleport, SpawnNPC, EndTutorial, }
+{ WaitingTutorial, MovePointToPoint, PopUpMonologue, PopUpGuide, WaitingKeyboardInput, WaitingFewSeconds, WaitingToEnterArea, FadeIn, FadeOut, Teleport, SpawnNPC, EndTutorial, }
 
 [Serializable]
 public struct MonologueScript
@@ -35,6 +35,7 @@ public class TutorialState
 	public MonologueScript monologueScript;
 	public GuideUI guideUI;
 	public float waitingTime;
+	public float fadeSpeed;
 	public NPCInfo spawnNPC;
 }
 
@@ -49,14 +50,21 @@ public class TutorialComponent : MonoBehaviour
 	void Start()
 	{
 		m_PlayerCharacter = GetComponent<PlayerCharacter>();
-		m_CurrentState = 0;
-		ProgressTutorial();
+		if(m_CurrenStatetType == StateType.WaitingTutorial)
+		{
+			ProgressTutorial();
+		}
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		
+	}
+
+	public List<TutorialState> GetStates()
+	{
+		return new List<TutorialState>(m_States);
 	}
 
 	public StateType GetCurrentStateType()
@@ -70,6 +78,37 @@ public class TutorialComponent : MonoBehaviour
 		//	}
 		//}
 		return m_CurrenStatetType;
+	}
+
+	public TutorialState PopStateAt(int p_Index)
+	{
+		TutorialState t_States = m_States[p_Index];
+		m_States.RemoveAt(p_Index);
+		m_States.TrimExcess();
+		return t_States;
+	}
+
+	public void CleanStates()
+	{
+		m_States.Clear();
+		m_States.TrimExcess();
+	}
+
+	public void TakeStates(TutorialComponent p_TutorialComponent)
+	{
+		if (p_TutorialComponent != null)
+		{
+			m_PlayerCharacter = GetComponent<PlayerCharacter>();
+			m_CurrentState = p_TutorialComponent.m_CurrentState;
+			m_CurrenStatetType = p_TutorialComponent.m_CurrenStatetType;
+			CleanStates();
+			int count = p_TutorialComponent.GetStates().Count;
+			for (int i = 0; i < count; i = i + 1)
+			{
+				m_States.Add(p_TutorialComponent.PopStateAt(0));
+			}
+			p_TutorialComponent.CleanStates();
+		}
 	}
 
 	public void ProgressTutorial()
@@ -118,8 +157,24 @@ public class TutorialComponent : MonoBehaviour
 						}
 						break;
 					}
-					case StateType.Fade:
+					case StateType.WaitingToEnterArea:
 					{
+						break;
+					}
+					case StateType.FadeIn:
+					{
+						if (m_PlayerCharacter != null)
+						{
+							m_PlayerCharacter.FadeIn(m_States[m_CurrentState].fadeSpeed);
+						}
+						break;
+					}
+					case StateType.FadeOut:
+					{
+						if (m_PlayerCharacter != null)
+						{
+							m_PlayerCharacter.FadeOut(m_States[m_CurrentState].fadeSpeed);
+						}
 						break;
 					}
 					case StateType.Teleport:

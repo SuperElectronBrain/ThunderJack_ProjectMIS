@@ -16,14 +16,18 @@ public class TutorialProgresser : MonoBehaviour
 				{
 					for(int i = 0; i < t_CollisionComponent.m_Colliders.Count; i = i + 1)
 					{
-						TutorialComponent t_TutorialComponent = t_CollisionComponent.m_Colliders[i].GetComponent<TutorialComponent>();
-						if (t_TutorialComponent != null)
+						Collider t_Collider = t_CollisionComponent.m_Colliders[i];
+						if (t_Collider != null)
 						{
-							if(t_TutorialComponent.GetCurrentStateType() == StateType.MovePointToPoint)
+							TutorialComponent t_TutorialComponent = t_Collider.gameObject.GetComponent<TutorialComponent>();
+							if (t_TutorialComponent != null)
 							{
-								t_TutorialComponent.ProgressTutorial();
+								if (t_TutorialComponent.GetCurrentStateType() == StateType.MovePointToPoint || t_TutorialComponent.GetCurrentStateType() == StateType.WaitingToEnterArea)
+								{
+									t_TutorialComponent.ProgressTutorial();
+								}
+								break;
 							}
-							break;
 						}
 					}
 				}
