@@ -144,6 +144,9 @@ public class SpineSkinChanger : MonoBehaviour
             }                
         }
 
+        if (panel == null)
+            return;
+
         for(int i = 0; i < buttonList.Count; i++)
         {
             Destroy(buttonList[i]);

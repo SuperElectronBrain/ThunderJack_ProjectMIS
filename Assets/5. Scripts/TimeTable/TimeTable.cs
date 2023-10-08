@@ -49,6 +49,9 @@ public class TimeTable : MonoBehaviour
 
     void ScheduleDistribution()
     {
+        if (GameManager.Instance.isWork)
+            return;
+
         DataBase_Character dc = GameManager.Instance.CharacterDB;
         GameTime gt = GameManager.Instance.GameTime;
 

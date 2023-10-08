@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class DialogueBox : MonoBehaviour
 {
     [SerializeField]
-    Text nameText;
+    TextMeshProUGUI nameText;
     [SerializeField]
-    Text dialogBox;
+    TextMeshProUGUI dialogBox;
 
     public void SetName(string newName)
     {
