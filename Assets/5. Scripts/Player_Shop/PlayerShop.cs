@@ -26,15 +26,6 @@ public class PlayerShop : MonoBehaviour
     [SerializeField]
     Text compItem;
 
-    [SerializeField]
-    InputField gemField;
-    [SerializeField]
-    InputField accessoryField;
-    [SerializeField]
-    Button button;
-    [SerializeField]
-    Button button2;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -77,7 +68,7 @@ public class PlayerShop : MonoBehaviour
         if (guest.IsEntry())
             return;
 
-        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
+/*        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
         {
             Debug.Log(guest.questName + " »èÁ¦");
             player.m_QuestComponet.GetTodayGuests().Remove(guest);
@@ -86,7 +77,7 @@ public class PlayerShop : MonoBehaviour
         foreach (var guest in player.m_QuestComponet.GetTodayGuests())
         {
             Debug.Log(guest.questName);
-        }
+        }*/
 
         if (entryWeight >= Random.Range(0, 100))
         {
@@ -104,15 +95,6 @@ public class PlayerShop : MonoBehaviour
     {
         guest.CheckItem(itemCode, 0);
         itemCode = 0;
-    }
-
-    public void MakeItem()
-    {
-        int gemId = GameManager.Instance.ItemManager.GetItemIdByName(gemField.text);
-        int accessoryId = GameManager.Instance.ItemManager.GetItemIdByName(accessoryField.text);
-
-        itemCode = GameManager.Instance.ItemManager.GetCombinationItem(gemId, accessoryId);
-        compItem.text = GameManager.Instance.ItemManager.GetItemName(itemCode);
     }
 
     public void LeavingGuest()

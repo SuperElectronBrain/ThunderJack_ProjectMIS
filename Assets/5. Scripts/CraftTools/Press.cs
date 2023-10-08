@@ -18,6 +18,7 @@ public class Press : MonoBehaviour
 	[SerializeField] private GameObject m_PressHandleBase;
 	//[SerializeField] private TMPro.TextMeshPro m_Text;
 	[SerializeField] private List<GameObject> m_MagicCircleGraph;
+	[SerializeField] private MeshRenderer m_MagicCircleMaterial;
 	[SerializeField] private SpriteRenderer m_AccessorySprite;
 	[SerializeField] private SpriteRenderer m_OutputSprite;
 	[SerializeField] private SkeletonAnimation m_SkeletonAnimation;
@@ -38,6 +39,11 @@ public class Press : MonoBehaviour
 		{
 			m_Inventory = t_PlayerCharacter.GetComponent<Inventory>();
 		}
+
+		//if (m_MagicCircleMaterial != null)
+		//{
+		//	m_MagicCircleMaterial.material = Instantiate(m_MagicCircleMaterial.material);
+		//}
 	}
 
     // Update is called once per frame
@@ -260,6 +266,18 @@ public class Press : MonoBehaviour
 
 	private void RefreshGraph()
 	{
+		if(m_MagicCircleMaterial != null)
+		{
+			if (m_MagicCircleMaterial.material != null)
+			{
+				m_MagicCircleMaterial.material.SetFloat("_Power5", (1 - m_Elements[0]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power3", (1 - m_Elements[1]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power1", (1 - m_Elements[2]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power2", (1 - m_Elements[3]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power4", (1 - m_Elements[4]) * 50.0f);
+			}
+		}
+		
 		for (int i = 0; i < m_MagicCircleGraph.Count; i = i + 1)
 		{
 			m_MagicCircleGraph[i].transform.localScale = new Vector3(1.0f, m_Elements[i], 1.0f);
