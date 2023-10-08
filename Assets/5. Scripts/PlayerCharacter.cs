@@ -175,7 +175,8 @@ public class PlayerCharacter : CharacterBase
 		{ 
 			if (m_Inventory.m_InventoryUIScript != null)
 			{ 
-				m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf); 
+				m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
+				m_Inventory.RefreshInventory();
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.F1) == true)
