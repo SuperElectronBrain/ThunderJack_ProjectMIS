@@ -9,9 +9,11 @@ public class ConversationState : State<NPC>
 
     public override void Enter(NPC entity)
     {
+        GameManager.Instance.GameTime.TimeStop(true);
+        CameraEvent.Instance.SetTarget(transform);
         CameraEvent.Instance.ChangeCamera(CamType.Conversation);
         isTalking = true;
-        isTalking = true;
+        isTwinkling = true;
         entity.isTalk = true;
         entity.agent.isStopped = true;
         entity.lookDir.SetDir(transform.position, entity.curInteractionObj.transform.position);
@@ -40,6 +42,8 @@ public class ConversationState : State<NPC>
 
     public override void Exit(NPC entity)
     {
+        GameManager.Instance.GameTime.TimeStop(false);
+        CameraEvent.Instance.SetTarget(transform);
         EventManager.Unsubscribe(EventType.EndConversation, EndConversation);
         StopAllCoroutines();
         entity.isTalk = false;
