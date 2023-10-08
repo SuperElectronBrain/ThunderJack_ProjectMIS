@@ -1,12 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Spine;
+using Spine.Unity;
 
 public class Loading : MonoBehaviour
 {
     static string sceneName;
+    [SerializeField]
+    GameObject openImage;
+    [SerializeField]
+    GameObject closeImage;
+    [SerializeField]
+    Sprite openRhombus;
+    [SerializeField]
+    Sprite closeRhombus;
+    [SerializeField]
+    SkeletonGraphic skGraphic;
+    [SerializeField]
+    GameObject loadingBar;
 
     // Start is called before the first frame update
     void Start()
@@ -16,47 +29,50 @@ public class Loading : MonoBehaviour
         if (GameManager.Instance.isWork)
             OpenShop();
         else
-            CloseShop();
+            CloseShop();        
     }
 
     public static void LoadScene(string nextSceneName)
     {
         sceneName = nextSceneName;
-        SceneManager.LoadScene("LoadingScene");
+        SceneManager.LoadScene("loading");
     }
 
     void OpenShop()
     {
+        openImage.SetActive(true);
 
+        foreach(Image image in loadingBar.GetComponentsInChildren<Image>())
+        {
+            image.sprite = openRhombus;
+        }
     }
 
     void CloseShop()
     {
+        closeImage.SetActive(true);
 
+        foreach (Image image in loadingBar.GetComponentsInChildren<Image>())
+        {
+            image.sprite = closeRhombus;
+        }
     }
     
     IEnumerator LoadScene()
     {
         yield return null;
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
-        op.allowSceneActivation = false;
-        
-        while(!op.isDone)
-        {
-            if(op.progress < 0.9f)
-            {
-                Debug.Log("로딩중... " + op.progress + "%");
-            }
-            else if(op.progress >= 0.9f)
-            {
-                if(Input.GetMouseButtonDown(1))
-                {
-                    Debug.Log("로딩완료");
-                    op.allowSceneActivation = true;
-                    yield break;
-                }
-            }
+        op.allowSceneActivation = false;        
 
+        while (!op.isDone)
+        {
+            if (op.progress >= 0.9f)
+            {
+                skGraphic.AnimationState.Complete += (Spine.TrackEntry te) =>
+                {
+                    op.allowSceneActivation = true;
+                };                
+            }            
             yield return null;
         }
     }

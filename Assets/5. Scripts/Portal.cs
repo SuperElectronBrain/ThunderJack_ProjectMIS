@@ -108,8 +108,10 @@ public class Portal : MonoBehaviour
 		m_PlayerCharacter = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCharacter>();
 		DontDestroyOnLoad(m_PlayerCharacter.gameObject);
 		DontDestroyOnLoad(gameObject);
-		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
-		UnityEngine.SceneManagement.SceneManager.LoadScene(destinationSceneName);
+		Loading.LoadScene(destinationSceneName);
+
+/*		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+		UnityEngine.SceneManagement.SceneManager.LoadScene(destinationSceneName);*/
 	}
 
 	private void OnTriggerExit(Collider other)

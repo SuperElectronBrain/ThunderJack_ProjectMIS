@@ -33,7 +33,8 @@ public class SpineSkinChanger : MonoBehaviour
 
         LoadSkinData();
 
-        RandomSkin();        
+        if(panel != null)
+            RandomSkin();        
     }
 
     public void LoadSkinData()
