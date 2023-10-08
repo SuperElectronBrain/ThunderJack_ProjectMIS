@@ -16,13 +16,8 @@ public class CollisionComponent : MonoBehaviour
 		int count = 0;
 		for(int i = 0; i < m_Collisions.Count; i = i + 1)
 		{
-			if (m_Collisions[i] == collision)
-			{
-				count = count + 1;
-				break;
-			}
+			if (m_Collisions[i] == collision) { count = count + 1; break; }
 		}
-
 		if(count < 1) { m_Collisions.Add(collision); }
 		m_OnCollisionEnter.Invoke();
 	}
@@ -45,13 +40,8 @@ public class CollisionComponent : MonoBehaviour
 		int count = 0;
 		for (int i = 0; i < m_Colliders.Count; i = i + 1)
 		{
-			if (m_Colliders[i] == other)
-			{
-				count = count + 1;
-				break;
-			}
+			if (m_Colliders[i] == other) { count = count + 1; break; }
 		}
-
 		if (count < 1) { m_Colliders.Add(other); }
 		m_OnCollisionEnter.Invoke();
 	}

@@ -50,6 +50,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public MailBoxUIScript m_MailBoxUIScript;
 	public UnityEngine.UI.Image m_MouseGrabIcon;
 	public MonologueUI m_MonologueUI = new MonologueUI();
+	public UnityEngine.UI.Image m_FadeUI;
 
 	// Start is called before the first frame update
 	void Start()
@@ -74,6 +75,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 		if (m_QuestListUIScript == null) { m_QuestListUIScript = UniFunc.GetChildComponent<QuestListUIScript>(transform); }
 		if (m_MailBoxUIScript == null) { m_MailBoxUIScript = UniFunc.GetChildComponent<MailBoxUIScript>(transform); ; }
 		if (m_MouseGrabIcon == null) { m_MouseGrabIcon = UniFunc.GetChildOfName(transform, "MouseGrabItem").GetComponent<UnityEngine.UI.Image>(); }
+		if (m_MonologueUI == null) { m_MonologueUI = new MonologueUI(); }
 		if (m_MonologueUI != null)
 		{
 			if (m_MonologueUI.m_MonologueGO == null)
@@ -86,5 +88,6 @@ public class PlayerCharacterUIScript : MonoBehaviour
 				}
 			}
 		}
+		if (m_FadeUI == null) { m_FadeUI = UniFunc.GetChildOfName(transform, "FadeUI").GetComponent<UnityEngine.UI.Image>(); }
 	}
 }
