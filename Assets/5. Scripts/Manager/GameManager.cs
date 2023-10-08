@@ -6,8 +6,6 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField]
     public readonly Transform Player;
-    [SerializeField]
-    Transform spawnPos;
 
     [Header("DB")]
     [SerializeField]
@@ -48,6 +46,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     Dialogue dialogue;
 
+    public bool isWork;
 
     public DataBase DataBase { get { return dataBase; } }
     public DataBase_Character CharacterDB { get { return characterDB; } }
@@ -82,11 +81,6 @@ public class GameManager : Singleton<GameManager>
     public void ExitShop()
     {
 
-    }
-
-    public Vector3 GetSpawnPos()
-    {
-        return spawnPos.position;
     }
 }
 
