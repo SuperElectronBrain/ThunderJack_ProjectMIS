@@ -10,7 +10,7 @@ public class CameraDirectionZone : MonoBehaviour
     CinemachineTrackedDolly dolly;
 
     [SerializeField]
-    CinemachineVirtualCamera ignoreCam;
+    List<CinemachineVirtualCamera> ignoreCams;
 
     Transform playerPos;
 
@@ -26,7 +26,7 @@ public class CameraDirectionZone : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            if(CameraEvent.Instance.IsIgnoreCam(ignoreCam))
+            if(CameraEvent.Instance.IsIgnoreCam(ignoreCams))
                 return;
 
             CameraEvent.Instance.ChangeCamera(vCam);
