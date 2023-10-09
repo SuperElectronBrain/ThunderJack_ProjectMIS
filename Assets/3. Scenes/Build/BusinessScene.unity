@@ -7980,6 +7980,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 4716544583226693182, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1348458982}
+    - target: {fileID: 4716544583226693182, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AcceptSales
+      objectReference: {fileID: 0}
     - target: {fileID: 4885631606136624164, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_SizeDelta.x
       value: -960
@@ -8092,11 +8100,68 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8704418146348080027, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1348458982}
+    - target: {fileID: 8704418146348080027, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RefusalSales
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+--- !u!114 &976242110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5135912050851182574, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+  m_PrefabInstance: {fileID: 976242109}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4da617ee0f0eed24e83ea69ef1fbe23c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &976242111 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6073310368687131387, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+  m_PrefabInstance: {fileID: 976242109}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &976242112 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7119940397992639821, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+  m_PrefabInstance: {fileID: 976242109}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &976242113 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 917225017529206492, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+  m_PrefabInstance: {fileID: 976242109}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &976242114 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3717274040276098412, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+  m_PrefabInstance: {fileID: 976242109}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &983647108
 GameObject:
   m_ObjectHideFlags: 0
@@ -10026,8 +10091,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c6675afb98f564428ff20660a23f035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogBox: {fileID: 0}
-  guest: {fileID: 0}
+  dialogBox: {fileID: 976242110}
+  guest: {fileID: 1847984248}
   player: {fileID: 72959459}
   entryWeight: 50
   weightValue: 32000000320000003c00000046000000500000005a00000064000000640000006400000064000000
@@ -10036,10 +10101,10 @@ MonoBehaviour:
     totalIncome: 0
     totalFame: 0
     totalGuestCount: 0
-  salesOver: {fileID: 0}
-  totalIncome: {fileID: 0}
-  totalFame: {fileID: 0}
-  totalGuestCount: {fileID: 0}
+  salesOver: {fileID: 976242114}
+  totalIncome: {fileID: 976242113}
+  totalFame: {fileID: 976242112}
+  totalGuestCount: {fileID: 976242111}
   itemImage: {fileID: 313879536}
   itemCode: 0
 --- !u!114 &1348458983
@@ -12743,8 +12808,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba040b1e2432f3441a50d600ecf7c73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  answerWatingDuration: 3
-  craftWaitingDuration: 5
+  answerWatingDuration: 9999
+  craftWaitingDuration: 9999
 --- !u!114 &1847984249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12757,7 +12822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 571546ea3041f4044a1206b55df65be6, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 47c6db1f302e31049b0c7bde8f13930e, type: 2}
   initialSkinName: 1. full/Dress_Sheep
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
@@ -12805,7 +12870,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 25392cae1508cb245acf614e461739fa, type: 2}
+  - {fileID: 2100000, guid: 1ea1e9aa38f646442a00759fd595724f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
