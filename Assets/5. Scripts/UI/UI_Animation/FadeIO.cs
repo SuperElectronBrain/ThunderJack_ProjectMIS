@@ -10,13 +10,20 @@ public class FadeIO : MonoBehaviour
     Sequence sequence;
 
     [SerializeField]
-    bool isFadeOut;
+    bool isFadeOut;    
     [SerializeField]
-    float duration;    
+    float duration;
+
+    [SerializeField]
+    float idleDuration;
+
+    [SerializeField]
+    float rewindDuration;
 
     [Header("Option")]
     [SerializeField]
-    bool isEnable;    
+    bool isEnable;
+    
 
     [Header("Event")]
     public UnityEvent onFadeEvent;
@@ -38,6 +45,17 @@ public class FadeIO : MonoBehaviour
             sequence.Append(image.DOFade(1, duration));
         else
             sequence.Append(image.DOFade(0, duration));
+
+            sequence.AppendInterval(idleDuration);
+
+        if(rewindDuration > 0)
+        {
+            if (!isFadeOut)
+                sequence.Append(image.DOFade(1, rewindDuration));
+            else
+                sequence.Append(image.DOFade(0, rewindDuration));
+        }
+
 
         sequence.OnComplete(() =>
         {
