@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class PlayerShop : MonoBehaviour
 {
@@ -23,7 +23,19 @@ public class PlayerShop : MonoBehaviour
     [SerializeField]
     int idx = 0;
 
+    [SerializeField]
     SalesResult salesResult;
+
+    [SerializeField]
+    GameObject salesOver;
+
+    [SerializeField]
+    TextMeshProUGUI totalIncome;
+    [SerializeField]
+    TextMeshProUGUI totalFame;
+    [SerializeField]
+    TextMeshProUGUI totalGuestCount;
+
 
     public PlayerShop_Sales Sales { get { return sales; } }
     public SalesResult SalesResult { get { return salesResult; } }
@@ -43,6 +55,7 @@ public class PlayerShop : MonoBehaviour
         EventManager.Subscribe(EventType.Minute, GuestCheck);
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
         EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
+        EventManager.Subscribe(EventType.CloseShop, ShowSalesResult);
         //EventManager.Subscribe(EventType.SalesFailure, LeavingGuest);
         EventManager.Publish(EventType.Work);
     }
@@ -119,6 +132,15 @@ public class PlayerShop : MonoBehaviour
         dialogBox.ShowDialogBox(false);
     }
 
+    void ShowSalesResult()
+    {
+        salesOver.SetActive(true);
+
+        totalIncome.text = "수익 : " + totalIncome + "원";
+        totalFame.text = "얻은 명성 : " + totalFame;
+        totalGuestCount.text = "찾아온 손님 : " + totalGuestCount + "명";
+    }
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventType.Minute, GuestCheck);
@@ -137,6 +159,7 @@ public class PlayerShop : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class SalesResult
 {
     public float totalIncome;

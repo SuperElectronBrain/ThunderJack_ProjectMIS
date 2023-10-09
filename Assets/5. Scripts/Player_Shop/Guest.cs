@@ -115,14 +115,14 @@ public class Guest : MonoBehaviour
             isDone = true;
             skAni.AnimationName = "Yes";
 
-            playerShop.Sales.SalesSuccess(salesData);
+            playerShop.Sales.SalesSuccess(salesData, playerShop.SalesResult);
         }
         else
         {
             isFail = true;
             skAni.AnimationName = "No";
 
-            playerShop.Sales.SalesFailure(salesData);
+            playerShop.Sales.SalesFailure(salesData, playerShop.SalesResult);
         }
         AnimationCheck();
     }
