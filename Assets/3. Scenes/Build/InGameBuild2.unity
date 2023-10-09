@@ -535,6 +535,10 @@ PrefabInstance:
       propertyPath: zSpacing
       value: -0.001
       objectReference: {fileID: 0}
+    - target: {fileID: 1205948370745725669, guid: 1b2d46ad08de41f4db5261c6cdbde5bc, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1317321774254652358, guid: 1b2d46ad08de41f4db5261c6cdbde5bc, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -826,7 +830,7 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     FocusDistance: 10
-    m_SensorSize: {x: 1, y: 1}
+    m_SensorSize: {x: 42, y: 24}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1443,7 +1447,7 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     FocusDistance: 10
-    m_SensorSize: {x: 1, y: 1}
+    m_SensorSize: {x: 42, y: 24}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -42092,7 +42096,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932881620}
-  m_LocalRotation: {x: 0.1800747, y: -0.000000004191128, z: 7.672584e-10, w: 0.98365295}
+  m_LocalRotation: {x: 0.18007469, y: -0.000000023535293, z: 0.000000004308543, w: 0.98365295}
   m_LocalPosition: {x: -30.569443, y: 5.4044456, z: 146.72849}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -81878,7 +81882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b3efea916b37646b4a323b5d5f4958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destination: {x: 0, y: 1, z: 0}
+  destination: {x: 0, y: 0.604, z: -4.5}
   destinationSceneName: Build_Inside
   isOverlapping: 0
 --- !u!114 &1836532021

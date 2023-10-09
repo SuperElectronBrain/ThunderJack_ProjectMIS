@@ -136,9 +136,9 @@ public class PlayerShop : MonoBehaviour
     {
         salesOver.SetActive(true);
 
-        totalIncome.text = "수익 : " + totalIncome + "원";
-        totalFame.text = "얻은 명성 : " + totalFame;
-        totalGuestCount.text = "찾아온 손님 : " + totalGuestCount + "명";
+        totalIncome.text = "수익 : " + salesResult.totalIncome + "원";
+        totalFame.text = "얻은 명성 : " + salesResult.totalFame;
+        totalGuestCount.text = "찾아온 손님 : " + salesResult.totalGuestCount + "명";
     }
 
     private void OnDestroy()

@@ -151,7 +151,7 @@ public class ItemManager : MonoBehaviour
                 {
                     //itemNameEg = recipe[]
                     itemID = Tools.IntParse(recipe["Item_ID"]),
-                    itemNameKo = recipe["Item_Name_Ko"].ToString(),
+                    //itemNameKo = recipe["Item_Name_Ko"].ToString(),
                     material1 = Tools.IntParse(recipe["Make_Material_1"]),
                     material2 = Tools.IntParse(recipe["Make_Material_2"]),
                     material3 = Tools.IntParse(recipe["Make_Material_3"]),
@@ -202,7 +202,6 @@ public class ItemManager : MonoBehaviour
     /// <returns></returns>
     public int GetCombinationItem(int gem, int accessory)
     {
-
         foreach (var jewelryItem in basicItemData)
         {
             if (jewelryItem.itemType != ItemType.Jewelry)
@@ -289,16 +288,6 @@ public class ItemManager : MonoBehaviour
             money = shopItemList[itemID - 1].sellValue,
             fame = shopItemList[itemID - 1].sellFame
         };
-    }
-
-    [SerializeField]
-    List<ShopItemData> sl;
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            sl = GetShopItemDataBySalesType(SalesItemType.Materials);
-        }
     }
 
     public List<ShopItemData> GetShopItemDataBySalesType(SalesItemType salesItemType)
