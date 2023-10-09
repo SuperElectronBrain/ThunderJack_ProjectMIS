@@ -11,6 +11,7 @@ public class Guest : MonoBehaviour
 
     GuestData guestData;
     RequestData request;
+    PlayerShop playerShop;
 
     [SerializeField]
     float answerWatingDuration;
@@ -28,6 +29,7 @@ public class Guest : MonoBehaviour
     {
         skAni = GetComponent<SkeletonAnimation>();
         mr = GetComponent<MeshRenderer>();
+        playerShop = GetComponentInParent<PlayerShop>();
     }
 
     public void InitGuest(GuestData guest, RequestData request)
@@ -112,15 +114,15 @@ public class Guest : MonoBehaviour
         {
             isDone = true;
             skAni.AnimationName = "Yes";
-            
-            PlayerShop_Sales.SalesSuccess(salesData);
+
+            playerShop.Sales.SalesSuccess(salesData, playerShop.SalesResult);
         }
         else
         {
             isFail = true;
             skAni.AnimationName = "No";
 
-            PlayerShop_Sales.SalesFailure(salesData);
+            playerShop.Sales.SalesFailure(salesData, playerShop.SalesResult);
         }
         AnimationCheck();
     }

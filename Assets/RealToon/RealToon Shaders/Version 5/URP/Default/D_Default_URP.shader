@@ -1705,7 +1705,12 @@ DOTS_LiBleSki(input.indices, input.weights, input.positionOS.xyz, input.normal.x
 		{
 			UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 				
-			Alpha(SampleAlbedoAlpha(input.uv, TEXTURE2D_ARGS(_MainTex, sampler_MainTex)).a, (_MainColor * _MaiColPo), _Cutout);
+			// ������ �Ʒ� �ּ��� �ڵ�� ����, �ٸ�, �̽��� �־ ���� �÷��� ���� �÷� �Ŀ��� ���ϴ� ������ �����ϰ� �����ϵ��� ó�� 
+			//Alpha(SampleAlbedoAlpha(input.uv, TEXTURE2D_ARGS(_MainTex, sampler_MainTex)).a, (_MainColor * _MaiColPo), _Cutout);
+			//Alpha(SampleAlbedoAlpha(input.uv, TEXTURE2D_ARGS(_MainTex, sampler_MainTex)).a, 1, _Cutout);
+			half4 _MainTex_var = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, TRANSFORM_TEX(input.uv, _MainTex));
+			half samplingA = (_MainColor * _MaiColPo).a;
+			clip(_MainTex_var.a - (samplingA * _Cutout)); 
 
 			//RT_NFD
 			#ifdef N_F_NFD_ON

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class PlayerShop : MonoBehaviour
 {
@@ -24,7 +24,21 @@ public class PlayerShop : MonoBehaviour
     int idx = 0;
 
     [SerializeField]
-    Text compItem;
+    SalesResult salesResult;
+
+    [SerializeField]
+    GameObject salesOver;
+
+    [SerializeField]
+    TextMeshProUGUI totalIncome;
+    [SerializeField]
+    TextMeshProUGUI totalFame;
+    [SerializeField]
+    TextMeshProUGUI totalGuestCount;
+
+
+    public PlayerShop_Sales Sales { get { return sales; } }
+    public SalesResult SalesResult { get { return salesResult; } }
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +47,7 @@ public class PlayerShop : MonoBehaviour
         sales = GetComponent<PlayerShop_Sales>();
 
         guest = GetComponentInChildren<Guest>();
+        salesResult = new SalesResult();
 
         if (player == null)
             player = FindObjectOfType<PlayerCharacter>();
@@ -40,6 +55,7 @@ public class PlayerShop : MonoBehaviour
         EventManager.Subscribe(EventType.Minute, GuestCheck);
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
         EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
+        EventManager.Subscribe(EventType.CloseShop, ShowSalesResult);
         //EventManager.Subscribe(EventType.SalesFailure, LeavingGuest);
         EventManager.Publish(EventType.Work);
     }
@@ -116,6 +132,15 @@ public class PlayerShop : MonoBehaviour
         dialogBox.ShowDialogBox(false);
     }
 
+    void ShowSalesResult()
+    {
+        salesOver.SetActive(true);
+
+        totalIncome.text = "수익 : " + totalIncome + "원";
+        totalFame.text = "얻은 명성 : " + totalFame;
+        totalGuestCount.text = "찾아온 손님 : " + totalGuestCount + "명";
+    }
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventType.Minute, GuestCheck);
@@ -132,9 +157,26 @@ public class PlayerShop : MonoBehaviour
         //CheckStuff();
         return true;
     }
+}
 
-/*    bool CheckStuff()
+[System.Serializable]
+public class SalesResult
+{
+    public float totalIncome;
+    public int totalFame;
+    public int totalGuestCount;
+
+    public SalesResult()
     {
+        totalIncome = 0;
+        totalFame = 0;
+        totalGuestCount = 0;
+    }
 
-    }*/
+    public void ResultUpdate(float inome, int fame)
+    {
+        totalIncome = inome;
+        totalFame = fame;
+        totalGuestCount++;
+    }
 }

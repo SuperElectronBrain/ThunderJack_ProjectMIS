@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class PlayerShop_Sales : MonoBehaviour
 {
     [SerializeField]
-    List<RequestData> requestList = new List<RequestData>();  
+    List<RequestData> requestList = new List<RequestData>();
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +37,7 @@ public class PlayerShop_Sales : MonoBehaviour
         return requestList[guestId];
     }
 
-    public static void SalesSuccess(SalesData salesData)
+    public void SalesSuccess(SalesData salesData, SalesResult salesResult)
     {
         float eventValue = 1;
 
@@ -50,9 +50,11 @@ public class PlayerShop_Sales : MonoBehaviour
 
         FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money);
         FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
+
+        salesResult.ResultUpdate(salesData.money, addFameValue);
     }
 
-    public static void SalesFailure(SalesData salesData)
+    public void SalesFailure(SalesData salesData, SalesResult salesResult)
     {
         float eventValue = 1;
 
@@ -65,6 +67,8 @@ public class PlayerShop_Sales : MonoBehaviour
 
         FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money / 2);
         FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
+
+        salesResult.ResultUpdate(salesData.money / 2, addFameValue);
     }
 
     private void OnDestroy()
