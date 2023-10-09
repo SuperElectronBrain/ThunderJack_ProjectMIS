@@ -82,6 +82,11 @@ public class GameManager : Singleton<GameManager>
     {
 
     }
+
+    public void ChangeWorking()
+    {
+        isWork = !isWork;
+    }
 }
 
 public class Tools

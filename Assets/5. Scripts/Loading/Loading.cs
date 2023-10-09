@@ -1,12 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Spine;
+using Spine.Unity;
+using DG.Tweening;
 
 public class Loading : MonoBehaviour
 {
     static string sceneName;
+    [SerializeField]
+    GameObject openImage;
+    [SerializeField]
+    GameObject closeImage;
+    [SerializeField]
+    Sprite openRhombus;
+    [SerializeField]
+    Sprite closeRhombus;
+    [SerializeField]
+    SkeletonGraphic skGraphic;
+    [SerializeField]
+    GameObject loadingBar;
+    [SerializeField]
+    Image fadeOutImage;
 
     // Start is called before the first frame update
     void Start()
@@ -16,23 +32,35 @@ public class Loading : MonoBehaviour
         if (GameManager.Instance.isWork)
             OpenShop();
         else
-            CloseShop();
+            CloseShop();        
     }
 
     public static void LoadScene(string nextSceneName)
     {
         sceneName = nextSceneName;
-        SceneManager.LoadScene("LoadingScene");
+        SceneManager.LoadScene("loading");
     }
 
     void OpenShop()
     {
+        openImage.SetActive(true);
+        skGraphic.startingAnimation = "open";
 
+        foreach(Image image in loadingBar.GetComponentsInChildren<Image>())
+        {
+            image.sprite = openRhombus;
+        }
     }
 
     void CloseShop()
     {
+        closeImage.SetActive(true);
+        skGraphic.startingAnimation = "close";
 
+        foreach (Image image in loadingBar.GetComponentsInChildren<Image>())
+        {
+            image.sprite = closeRhombus;
+        }
     }
     
     IEnumerator LoadScene()
@@ -40,24 +68,36 @@ public class Loading : MonoBehaviour
         yield return null;
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
-        
-        while(!op.isDone)
-        {
-            if(op.progress < 0.9f)
-            {
-                Debug.Log("로딩중... " + op.progress + "%");
-            }
-            else if(op.progress >= 0.9f)
-            {
-                if(Input.GetMouseButtonDown(1))
-                {
-                    Debug.Log("로딩완료");
-                    op.allowSceneActivation = true;
-                    yield break;
-                }
-            }
+        bool isDone = false;
+        bool canBreak = false;
 
+        skGraphic.AnimationState.Complete += (Spine.TrackEntry te) =>
+        {
+            isDone = true;
+        };
+
+        while (!op.isDone)
+        {
+            if (op.progress >= 0.9f)
+            {
+                if (isDone)
+                {
+                    Sequence foSequence = DOTween.Sequence().SetAutoKill(false).Pause()
+                        .Append(fadeOutImage.DOFade(1f, 1f))
+                        .OnComplete(() =>
+                        {
+                            fadeOutImage.color = new Color(0, 0, 0, 255f);
+                            canBreak = true;
+                        })
+                        .Play();
+                    if (canBreak)
+                        break;
+                }                
+            }            
             yield return null;
         }
+        fadeOutImage.color = new Color(0, 0, 0, 255f);
+        yield return new WaitForSeconds(1f);
+        op.allowSceneActivation = true;
     }
 }

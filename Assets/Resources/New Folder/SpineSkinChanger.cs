@@ -33,7 +33,8 @@ public class SpineSkinChanger : MonoBehaviour
 
         LoadSkinData();
 
-        RandomSkin();        
+        if(panel != null)
+            RandomSkin();        
     }
 
     public void LoadSkinData()
@@ -143,6 +144,9 @@ public class SpineSkinChanger : MonoBehaviour
                 break;
             }                
         }
+
+        if (panel == null)
+            return;
 
         for(int i = 0; i < buttonList.Count; i++)
         {

@@ -22,6 +22,9 @@ public class GameTime : MonoBehaviour
 
     bool isTimeStop;
 
+    [SerializeField]
+    int closeTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,9 +58,10 @@ public class GameTime : MonoBehaviour
                 {
                     hour = 0;
                     day++;
-
-                    
                 }
+
+                if (closeTime == hour)
+                    EventManager.Publish(EventType.CloseShop);
 
                 EventManager.Publish(EventType.hour);
             }
