@@ -18,6 +18,9 @@ public class Press : MonoBehaviour
 	[SerializeField] private GameObject m_PressHandleBase;
 	//[SerializeField] private TMPro.TextMeshPro m_Text;
 	[SerializeField] private List<GameObject> m_MagicCircleGraph;
+	[SerializeField] private List<ParticleSystem> m_MagicCircleVFXs;
+	[SerializeField] private ParticleSystem m_CompleteVFX;
+	[SerializeField] private ParticleSystem m_SmokeVFX;
 	[SerializeField] private MeshRenderer m_MagicCircleMaterial;
 	[SerializeField] private SpriteRenderer m_AccessorySprite;
 	[SerializeField] private SpriteRenderer m_OutputSprite;
@@ -145,9 +148,23 @@ public class Press : MonoBehaviour
 				{
 					if (t_MaterialItemData != null)
 					{
+						float t_PrevElement1 = m_Elements[t_MaterialItemData.elementType1 - 1];
+						float t_PrevElement2 = m_Elements[t_MaterialItemData.elementType2 - 1];
+
 						m_Elements[t_MaterialItemData.elementType1 - 1] = m_Elements[t_MaterialItemData.elementType1 - 1] + (t_MaterialItemData.elementPercent1 * 0.01f * p_Progress);
 						m_Elements[t_MaterialItemData.elementType2 - 1] = m_Elements[t_MaterialItemData.elementType2 - 1] + (t_MaterialItemData.elementPercent2 * 0.01f * p_Progress);
 						//m_Elements[t_MaterialItemData.elementType3 - 1] = m_Elements[t_MaterialItemData.elementType3 - 1] + (t_MaterialItemData.elementPercent3 * 0.01f * p_Progress);
+
+						if(t_PrevElement1 <= 0.0f && m_Elements[t_MaterialItemData.elementType1 - 1] > 0.0f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1].Play();
+						}
+						if (t_PrevElement2 <= 0.0f && m_Elements[t_MaterialItemData.elementType2 - 1] > 0.0f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1].Play();
+						}
 					}
 				}
 			}
@@ -248,22 +265,34 @@ public class Press : MonoBehaviour
 	{
 		AdvencedItem t_AItem = null;
 
-		int t_ItemCode = 0;
-		if(GameManager.Instance != null)
+		int t_ItemCode = 21;
+		if (GameManager.Instance != null)
 		{
 			if (GameManager.Instance.ItemManager != null)
 			{
 				t_ItemCode = GameManager.Instance.ItemManager.GetCombinationItem(p_AItem.itemCode, m_AccessoryInput.itemCode);
+
+				if(t_ItemCode == -1)
+				{
+					t_ItemCode = 21;
+				}
 			}
 		}
-		
-		if (t_ItemCode != 0)
+
+		m_SmokeVFX.Stop();
+		m_SmokeVFX.Play();
+
+		if (t_ItemCode != 21)
 		{
 			t_AItem = new AdvencedItem(t_ItemCode, p_AItem.itemProgress, 1);
 			m_AccessoryInput = null;
-			RefreshPlate();
+
+			
+			m_CompleteVFX.Stop();
+			m_CompleteVFX.Play();
 		}
 
+		RefreshPlate();
 		return t_AItem;
 	}
 

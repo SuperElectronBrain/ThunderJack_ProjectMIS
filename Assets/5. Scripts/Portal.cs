@@ -119,6 +119,7 @@ public class Portal : MonoBehaviour
 		m_PlayerCharacter = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCharacter>();
 		DontDestroyOnLoad(m_PlayerCharacter.gameObject);
 		DontDestroyOnLoad(gameObject);
+		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 		Loading.LoadScene(destinationSceneName);
 	}
 
