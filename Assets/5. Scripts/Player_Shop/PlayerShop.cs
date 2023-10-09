@@ -174,8 +174,8 @@ public class SalesResult
 
     public void ResultUpdate(float inome, int fame)
     {
-        totalIncome = inome;
-        totalFame = fame;
+        totalIncome += inome;
+        totalFame += fame;
         totalGuestCount++;
     }
 }
