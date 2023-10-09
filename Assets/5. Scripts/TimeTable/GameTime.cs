@@ -28,7 +28,7 @@ public class GameTime : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        EventManager.Subscribe(EventType.Work, StartWork);
     }
 
     // Update is called once per frame
@@ -68,6 +68,13 @@ public class GameTime : MonoBehaviour
 
             EventManager.Publish(EventType.Minute);
         }
+    }
+
+    void StartWork()
+    {
+        hour = 9;
+        minute = 0;
+        timer = 0;
     }
 
     public void TimeStop(bool isTimeStop)
