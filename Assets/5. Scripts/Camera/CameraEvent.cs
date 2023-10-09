@@ -72,11 +72,19 @@ public class CameraEvent : Singleton<CameraEvent>
             prevCam.Priority = 10;        
     }
 
-    public bool IsIgnoreCam(CinemachineVirtualCamera vCam)
+    public bool IsIgnoreCam(List<CinemachineVirtualCamera> vCams)
     {
-        if (prevCam != vCam || vCam == null)
+        if (vCams.Count == 0)
             return false;
-        return true;
+
+        for(int i = 0; i < vCams.Count; i++)
+        {
+            if (liveCam == vCams[i])
+                return true;
+        }
+
+        return false;
+        
     }
 
     void ConversationCamera()
