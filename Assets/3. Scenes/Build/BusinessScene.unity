@@ -11263,7 +11263,14 @@ MonoBehaviour:
   entryWeight: 50
   weightValue: 32000000320000003c00000046000000500000005a00000064000000640000006400000064000000
   idx: 0
-  compItem: {fileID: 0}
+  salesResult:
+    totalIncome: 0
+    totalFame: 0
+    totalGuestCount: 0
+  salesOver: {fileID: 0}
+  totalIncome: {fileID: 0}
+  totalFame: {fileID: 0}
+  totalGuestCount: {fileID: 0}
   itemImage: {fileID: 313879536}
   itemCode: 0
 --- !u!114 &1348458983
@@ -20112,6 +20119,39 @@ MonoBehaviour:
   m_AccessorySprite: {fileID: 3029771789535899425}
   m_OutputSprite: {fileID: 6341113431845339370}
   m_SkeletonAnimation: {fileID: 0}
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -9.304628
+      outSlope: -9.304628
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.066289425
+      value: 0.38320154
+      inSlope: -0.96379143
+      outSlope: -0.96379143
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.061530396
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.1170822
+      outSlope: -0.1170822
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.064722046
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &4351482353075349996
 Transform:
   m_ObjectHideFlags: 0
@@ -21884,7 +21924,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702351111945539338}
   m_LocalRotation: {x: 0.000000014901161, y: -0.000000014901161, z: 0.71159697, w: 0.7025879}
-  m_LocalPosition: {x: -8.601265, y: 1.2759621, z: -0.0000015716022}
+  m_LocalPosition: {x: -8.601265, y: 1.2759621, z: -0.0000015716021}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
