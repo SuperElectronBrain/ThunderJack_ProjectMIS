@@ -68,7 +68,7 @@ public class CameraEvent : Singleton<CameraEvent>
         prevCam = liveCam;
         liveCam = vCam;
         liveCam.Priority = 100;
-        if(prevCam!= null)
+        if (prevCam != null && prevCam != vCam)
             prevCam.Priority = 10;        
     }
 

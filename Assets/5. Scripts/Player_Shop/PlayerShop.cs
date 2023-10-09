@@ -36,7 +36,6 @@ public class PlayerShop : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI totalGuestCount;
 
-
     public PlayerShop_Sales Sales { get { return sales; } }
     public SalesResult SalesResult { get { return salesResult; } }
 
