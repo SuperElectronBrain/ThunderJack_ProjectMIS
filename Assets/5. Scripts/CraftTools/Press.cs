@@ -25,6 +25,9 @@ public class Press : MonoBehaviour
 	private TrackEntry trackEntry;
 	private Inventory m_Inventory;
 
+	[SerializeField]
+	AnimationCurve curve;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -270,11 +273,11 @@ public class Press : MonoBehaviour
 		{
 			if (m_MagicCircleMaterial.material != null)
 			{
-				m_MagicCircleMaterial.material.SetFloat("_Power5", (1 - m_Elements[0]) * 50.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power3", (1 - m_Elements[1]) * 50.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power1", (1 - m_Elements[2]) * 50.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power2", (1 - m_Elements[3]) * 50.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power4", (1 - m_Elements[4]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power5", curve.Evaluate(m_Elements[0]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power3", curve.Evaluate(m_Elements[1]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power1", curve.Evaluate(m_Elements[2]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power2", curve.Evaluate(m_Elements[3]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power4", curve.Evaluate(m_Elements[4]) * 50.0f);
 			}
 		}
 		
