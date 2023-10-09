@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using DG.Tweening;
+using TMPro;
 
 public class FadeIO : MonoBehaviour
 {
-    UnityEngine.UI.Image image;
+    Image image;
     Sequence sequence;
 
     [SerializeField]
@@ -23,7 +25,13 @@ public class FadeIO : MonoBehaviour
     [Header("Option")]
     [SerializeField]
     bool isEnable;
-    
+    [SerializeField]
+    bool isIncludeChild;
+
+    [SerializeField]
+    List<Image> childImage = new();
+    [SerializeField]
+    List<TextMeshProUGUI> childText = new();
 
     [Header("Event")]
     public UnityEvent onFadeEvent;
@@ -31,7 +39,7 @@ public class FadeIO : MonoBehaviour
     private void OnEnable()
     {
         if(isEnable)
-            sequence.Play();
+            sequence.Restart();
     }
 
     // Start is called before the first frame update
@@ -56,11 +64,45 @@ public class FadeIO : MonoBehaviour
                 sequence.Append(image.DOFade(0, rewindDuration));
         }
 
+        foreach(TextMeshProUGUI text in GetComponentsInChildren<TextMeshProUGUI>())
+        {
+            childText.Add(text);
+        }
+
+        foreach(Image image in GetComponentsInChildren<Image>())
+        {
+            childImage.Add(image);
+        }
+
+        if(isIncludeChild)
+        {
+            sequence.OnUpdate(() =>
+            {
+                for (int i = 0; i < childText.Count; i++)
+                {
+                    Color c = childText[i].color;
+                    c.a = image.color.a;
+                    childText[i].color = c;
+                }
+
+                for (int i = 0; i < childImage.Count; i++)
+                {
+                    Color c = childImage[i].color;
+                    c.a = image.color.a;
+                    childImage[i].color = c;
+                }
+            });
+        }        
 
         sequence.OnComplete(() =>
         {
             onFadeEvent?.Invoke();
         });        
+    }
+
+    public void ChangeText()
+    {
+
     }
 
     public void ChangeImage(Sprite newSprite)

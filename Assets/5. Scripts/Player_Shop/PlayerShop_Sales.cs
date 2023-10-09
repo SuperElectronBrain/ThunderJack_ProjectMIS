@@ -7,10 +7,13 @@ public class PlayerShop_Sales : MonoBehaviour
 {
     [SerializeField]
     List<RequestData> requestList = new List<RequestData>();
+    [SerializeField]
+    Inventory inventory;
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
+        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
         var requestData = GameManager.Instance.DataBase.Parser("Request_Master");
 
         foreach(var rData in requestData)
@@ -48,8 +51,8 @@ public class PlayerShop_Sales : MonoBehaviour
 
         int addFameValue = salesData.fame + (int)(salesData.fame * eventValue);
 
-        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money);
-        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
+        inventory.AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money);
+        inventory.AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
 
         salesResult.ResultUpdate(salesData.money, addFameValue);
     }
@@ -65,8 +68,8 @@ public class PlayerShop_Sales : MonoBehaviour
 
         int addFameValue = -((salesData.fame + (int)(salesData.fame * eventValue)) / 2);
 
-        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money / 2);
-        FindObjectOfType<Inventory>().AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
+        inventory.AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money / 2);
+        inventory.AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
 
         salesResult.ResultUpdate(salesData.money / 2, addFameValue);
     }
