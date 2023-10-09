@@ -23,8 +23,10 @@ public class PlayerShop : MonoBehaviour
     [SerializeField]
     int idx = 0;
 
-    [SerializeField]
-    Text compItem;
+    SalesResult salesResult;
+
+    public PlayerShop_Sales Sales { get { return sales; } }
+    public SalesResult SalesResult { get { return salesResult; } }
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,7 @@ public class PlayerShop : MonoBehaviour
         sales = GetComponent<PlayerShop_Sales>();
 
         guest = GetComponentInChildren<Guest>();
+        salesResult = new SalesResult();
 
         if (player == null)
             player = FindObjectOfType<PlayerCharacter>();
@@ -132,9 +135,25 @@ public class PlayerShop : MonoBehaviour
         //CheckStuff();
         return true;
     }
+}
 
-/*    bool CheckStuff()
+public class SalesResult
+{
+    public float totalIncome;
+    public int totalFame;
+    public int totalGuestCount;
+
+    public SalesResult()
     {
+        totalIncome = 0;
+        totalFame = 0;
+        totalGuestCount = 0;
+    }
 
-    }*/
+    public void ResultUpdate(float inome, int fame)
+    {
+        totalIncome = inome;
+        totalFame = fame;
+        totalGuestCount++;
+    }
 }
