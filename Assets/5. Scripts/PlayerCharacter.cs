@@ -187,11 +187,14 @@ public class PlayerCharacter : CharacterBase
 		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
 		if (Input.GetKeyDown(KeyCode.E) == true) 
 		{
-			m_Interaction = GetInteractableObject(); 
-			if (m_Interaction != null)
+			if(bMovable == true)
 			{
-				m_Interaction.Interaction(gameObject);
-				CommunicationStart();
+				m_Interaction = GetInteractableObject();
+				if (m_Interaction != null)
+				{
+					m_Interaction.Interaction(gameObject);
+					CommunicationStart();
+				}
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.Q) == true)
