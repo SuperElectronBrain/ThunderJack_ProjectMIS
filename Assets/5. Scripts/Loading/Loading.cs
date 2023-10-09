@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Spine.Unity;
+using DG.Tweening;
 
 public class Loading : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class Loading : MonoBehaviour
     SkeletonGraphic skGraphic;
     [SerializeField]
     GameObject loadingBar;
+    [SerializeField]
+    Image fadeOutImage;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +44,7 @@ public class Loading : MonoBehaviour
     void OpenShop()
     {
         openImage.SetActive(true);
+        skGraphic.startingAnimation = "open";
 
         foreach(Image image in loadingBar.GetComponentsInChildren<Image>())
         {
@@ -51,6 +55,7 @@ public class Loading : MonoBehaviour
     void CloseShop()
     {
         closeImage.SetActive(true);
+        skGraphic.startingAnimation = "close";
 
         foreach (Image image in loadingBar.GetComponentsInChildren<Image>())
         {
@@ -62,18 +67,37 @@ public class Loading : MonoBehaviour
     {
         yield return null;
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
-        op.allowSceneActivation = false;        
+        op.allowSceneActivation = false;
+        bool isDone = false;
+        bool canBreak = false;
+
+        skGraphic.AnimationState.Complete += (Spine.TrackEntry te) =>
+        {
+            isDone = true;
+        };
 
         while (!op.isDone)
         {
             if (op.progress >= 0.9f)
             {
-                skGraphic.AnimationState.Complete += (Spine.TrackEntry te) =>
+                if (isDone)
                 {
-                    op.allowSceneActivation = true;
-                };                
+                    Sequence foSequence = DOTween.Sequence().SetAutoKill(false).Pause()
+                        .Append(fadeOutImage.DOFade(1f, 1f))
+                        .OnComplete(() =>
+                        {
+                            fadeOutImage.color = new Color(0, 0, 0, 255f);
+                            canBreak = true;
+                        })
+                        .Play();
+                    if (canBreak)
+                        break;
+                }                
             }            
             yield return null;
         }
+        fadeOutImage.color = new Color(0, 0, 0, 255f);
+        yield return new WaitForSeconds(1f);
+        op.allowSceneActivation = true;
     }
 }

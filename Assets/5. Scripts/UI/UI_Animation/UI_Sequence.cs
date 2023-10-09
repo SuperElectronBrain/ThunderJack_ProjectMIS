@@ -12,7 +12,8 @@ public enum TweenMode
     DoScale,
     DoInterval,
     DoInActive,
-    DoColor
+    DoColor,
+    DoFade
 }
 
 [Serializable]
@@ -174,6 +175,9 @@ public class UI_Sequence : MonoBehaviour
                         break;
                     case TweenMode.DoColor:
                         elements.Target.GetComponent<SpriteRenderer>().DOColor(new Color(elements.TweenTarget.x, elements.TweenTarget.y, elements.TweenTarget.z), elements.Duration);
+                        break;
+                    case TweenMode.DoFade:
+                        elements.Target.GetComponent<UnityEngine.UI.Image>().DOFade(elements.TweenTarget.x, elements.Duration);
                         break;
                 }
 
