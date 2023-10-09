@@ -44,7 +44,7 @@ public class Loading : MonoBehaviour
     void OpenShop()
     {
         openImage.SetActive(true);
-        skGraphic.startingAnimation = "open";
+        skGraphic.startingAnimation = "Open";
 
         foreach(Image image in loadingBar.GetComponentsInChildren<Image>())
         {
@@ -55,7 +55,7 @@ public class Loading : MonoBehaviour
     void CloseShop()
     {
         closeImage.SetActive(true);
-        skGraphic.startingAnimation = "close";
+        skGraphic.startingAnimation = "Close";
 
         foreach (Image image in loadingBar.GetComponentsInChildren<Image>())
         {
@@ -82,21 +82,22 @@ public class Loading : MonoBehaviour
             {
                 if (isDone)
                 {
-                    Sequence foSequence = DOTween.Sequence().SetAutoKill(false).Pause()
+                    fadeOutImage.gameObject.SetActive(true);
+/*                    Sequence foSequence = DOTween.Sequence().SetAutoKill(false).Pause()
                         .Append(fadeOutImage.DOFade(1f, 1f))
                         .OnComplete(() =>
                         {
                             fadeOutImage.color = new Color(0, 0, 0, 255f);
                             canBreak = true;
                         })
-                        .Play();
-                    if (canBreak)
+                        .Play();*/
+                    //if (canBreak)
                         break;
                 }                
             }            
             yield return null;
         }
-        fadeOutImage.color = new Color(0, 0, 0, 255f);
+        //fadeOutImage.color = new Color(0, 0, 0, 255f);
         yield return new WaitForSeconds(1f);
         op.allowSceneActivation = true;
     }

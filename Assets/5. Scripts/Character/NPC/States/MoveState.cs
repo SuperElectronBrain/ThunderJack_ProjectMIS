@@ -46,7 +46,6 @@ public class MoveState : State<NPC>
     {
         entity.agent.isStopped = true;
         StopAllCoroutines();
-        Debug.Log(gameObject.name + "이동완료");        
     }
 
     public override void OnTransition(NPC entity)

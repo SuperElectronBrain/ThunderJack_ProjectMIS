@@ -173,7 +173,6 @@ public class NPC : Character, IInteraction
 
     void ChangeStateFromSchedule()
     {
-        Debug.Log("ChangeStateFromSchedule");
         switch ((NPCScheduleType)schedule.aiParam1)
         {
             case NPCScheduleType.Interaction:
@@ -189,7 +188,6 @@ public class NPC : Character, IInteraction
                 ChangeState(NPCBehaviour.Move);
                 break;
             case NPCScheduleType.None:
-                Debug.Log("Noce");
                 RandomDestinationPos();
                 ChangeState(NPCBehaviour.Move);
                 break;
