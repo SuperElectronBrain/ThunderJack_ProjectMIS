@@ -14,6 +14,8 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     [SerializeField]
     UiComponent noticeUI;
 
+    public UnityEngine.Events.UnityEvent onInteraction;
+
     public bool IsUsed { get; set; }
 
     public void Start()
@@ -37,7 +39,8 @@ public class NoticeBoard : MonoBehaviour, IInteraction
         else
         {
             CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
-            CameraEvent.Instance.ChangeCamera(CamType.NoticeBoard);
+            onInteraction?.Invoke();
+            //CameraEvent.Instance.ChangeCamera(CamType.NoticeBoard);
         }        
     }
 

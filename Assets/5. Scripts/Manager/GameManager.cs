@@ -80,7 +80,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ExitShop()
     {
-
+        CameraEvent.Instance.Init();
     }
 
     public void ChangeWorking()
