@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SceneType
+{
+    OutSide, InSide, Bussiness
+}
+
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField]
@@ -78,9 +83,25 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void InitScene(SceneType sceneType)
+    {
+        switch(sceneType)
+        {
+            case SceneType.OutSide:
+                CameraEvent.Instance.Init();
+                break;
+            case SceneType.InSide:
+
+                break;
+            case SceneType.Bussiness:
+
+                break;
+        }
+    }
+
     public void ExitShop()
     {
-        CameraEvent.Instance.Init();
+        
     }
 
     public void ChangeWorking()
