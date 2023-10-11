@@ -30,8 +30,20 @@ public class SoundManagerEditor : Editor
     {
         if (soundManager == null)
             return;
-       
-        selectSound = GUILayout.Toolbar(selectSound, sounds);
+
+        selectSound = EditorGUILayout.Popup(selectSound, sounds);
+
+        GUILayout.BeginHorizontal();
+
+        if(GUILayout.Button("Play Sound"))
+        {
+            soundManager.PlaySound(selectSound + 1, SoundType.Effect);
+        }
+        if(GUILayout.Button("Stop"))
+        {
+            soundManager.StopAllSound();
+        }
+        GUILayout.EndHorizontal();
 
         base.OnInspectorGUI();
     }
@@ -48,6 +60,7 @@ public class SoundManager : Singleton<SoundManager>
 {
     [SerializeField]
     List<AudioClip> audioClips = new List<AudioClip>();
+    [SerializeField]
     AudioSource[] audios;
 
     [SerializeField]

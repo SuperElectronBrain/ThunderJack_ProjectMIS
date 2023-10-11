@@ -17,6 +17,9 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     [SerializeField]
     Cinemachine.CinemachineVirtualCamera vCam;
 
+    [SerializeField]
+    UnityEngine.Events.UnityEvent onInteractionEvent;
+
     public bool IsUsed { get; set; }
 
     public void Start()
@@ -39,8 +42,9 @@ public class NoticeBoard : MonoBehaviour, IInteraction
         }
         else
         {
-            CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
+            //CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
             CameraEvent.Instance.ChangeCam(vCam);
+            onInteractionEvent?.Invoke();
         }        
     }
 
