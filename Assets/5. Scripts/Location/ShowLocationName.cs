@@ -7,22 +7,15 @@ using TMPro;
 public class ShowLocationName : MonoBehaviour
 {
     [SerializeField]
-    Image image;
-    [SerializeField]
-    TextMeshProUGUI text;
-
-    [SerializeField]
-    string areaName;
-
-    bool hasActive = false;
+    AreaSO areaSO;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (hasActive)
+        if (areaSO.hasActive)
             return;
 
-        text.text = areaName;
-        hasActive = true;
-        image.gameObject.SetActive(true);
+        areaSO.text.text = areaSO.areaName;
+        areaSO.hasActive = true;
+        areaSO.image.gameObject.SetActive(true);
     }
 }
