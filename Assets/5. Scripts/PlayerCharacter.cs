@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public interface IGrabable
@@ -56,7 +55,7 @@ public class PlayerCharacter : CharacterBase
 		}
 		if (m_FootStepEffectOutdoor != null)
 		{
-			m_FootStepEffectInside.Stop();
+			m_FootStepEffectOutdoor.Stop();
 		}
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
@@ -74,7 +73,7 @@ public class PlayerCharacter : CharacterBase
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
 		}
 
-		if(m_MonologueDisplayTime > 0.0f)
+		if (m_MonologueDisplayTime > 0.0f)
 		{
 			m_MonologueDisplayTime = m_MonologueDisplayTime - DeltaTime;
 			if(m_MonologueDisplayTime < 0.0f)
@@ -139,17 +138,46 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 
-		//if (m_FootStepEffectInside != null)
-		//{
-		//	m_FootStepEffectInside.Stop();
-		//}
-		//
-		//if (m_Animator != null)
-		//{
-		//	m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
-		//	m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
-		//}
+		if(m_FootStepEffectInside != null || m_FootStepEffectOutdoor != null)
+		{
+			if (m_FootStepEffectInside != null)
+			{
+				if (m_HorizontalMove != 0)
+				{
+					if (m_FootStepEffectInside.isPlaying != true)
+					{
+						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "ShopScene")
+						{
+							m_FootStepEffectInside.Play();
+						}
+					}
+				}
+				else if (m_HorizontalMove == 0)
+				{
+					m_FootStepEffectInside.Stop();
+				}
+			}
+			if (m_FootStepEffectOutdoor != null)
+			{
+				if (m_HorizontalMove != 0)
+				{
+					if (m_FootStepEffectOutdoor.isPlaying != true)
+					{
+						m_FootStepEffectOutdoor.Play();
+					}
+				}
+				else if (m_HorizontalMove == 0)
+				{
+					m_FootStepEffectOutdoor.Stop();
+				}
+			}
 
+			Vector3 t_ModelingScale = (m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale;
+			if (m_HorizontalMove > 0) { t_ModelingScale.x = -1.0f; }
+			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 1.0f; }
+			(m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale = t_ModelingScale;
+		}
+		
 		/*
 		if(m_Interaction != null)
 		{
