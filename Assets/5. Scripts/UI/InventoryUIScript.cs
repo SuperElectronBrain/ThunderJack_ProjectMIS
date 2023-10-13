@@ -111,27 +111,108 @@ public class InventoryUIScript : MonoBehaviour
 							t_Text.text = t_AItems[t_Number].itemAmount + "";
 						}
 					}
-					((CustomButton)m_Buttons[i]).onDown.RemoveAllListeners();
-					((CustomButton)m_Buttons[i]).onDown.AddListener(() =>
+
+					CustomButton t_Buttons = m_Buttons[i] as CustomButton;
+					if(t_Buttons != null)
 					{
-						if (m_Inventory != null)
+						t_Buttons.onDown.RemoveAllListeners();
+						t_Buttons.onDown.AddListener(() =>
 						{
-							if (m_Inventory.m_Owner != null)
+							if (m_Inventory != null)
 							{
-								PlayerCharacter t_PlayerCharacter = m_Inventory.m_Owner.gameObject.GetComponent<PlayerCharacter>();
-								if (t_PlayerCharacter != null)
+								if (m_Inventory.m_Owner != null)
 								{
-									AdvencedItem t_AItem = m_Inventory.GetAItems()[t_Number];
-									t_PlayerCharacter.m_GrabItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, 1);
-									if(t_PlayerCharacter.m_GrabItemSprite != null)
+									PlayerCharacter t_PlayerCharacter = m_Inventory.m_Owner as PlayerCharacter;
+									if (t_PlayerCharacter != null)
 									{
-										t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(m_Inventory.GetAItems()[t_Number].itemCode);
-										t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
+										AdvencedItem t_AItem = m_Inventory.GetAItems()[t_Number];
+										t_PlayerCharacter.m_GrabItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, 1);
+										if (t_PlayerCharacter.m_GrabItemSprite != null)
+										{
+											t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
+											t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
+										}
 									}
 								}
 							}
-						}
-					});
+						});
+
+						t_Buttons.onEnter.RemoveAllListeners();
+						t_Buttons.onEnter.AddListener(() => 
+						{
+							Debug.Log("onEnter");
+							if (m_Inventory != null)
+							{
+								if (m_Inventory.m_Owner != null)
+								{
+									PlayerCharacter t_PlayerCharacter = m_Inventory.m_Owner as PlayerCharacter;
+									if (t_PlayerCharacter != null) 
+									{
+										AdvencedItem t_AItem = m_Inventory.GetAItems()[t_Number];
+										t_PlayerCharacter.m_HoverItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, 1);
+										if(t_PlayerCharacter.m_ItemInfoDisplay != null)
+										{
+											if (t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
+											{
+												if (t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf == false)
+												{
+													t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(true);
+												}
+											}
+
+											BasicItemData t_BasicItemData = UniFunc.FindItemData(t_AItem.itemCode);
+											if (t_BasicItemData != null)
+											{
+												if (t_PlayerCharacter.m_ItemInfoDisplay.m_ItemNameText != null)
+												{
+													t_PlayerCharacter.m_ItemInfoDisplay.m_ItemNameText.text = t_BasicItemData.itemNameKo;
+												}
+												if (t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoText != null)
+												{
+													t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoText.text = t_BasicItemData.itemText;
+												}
+											}
+										}
+									}
+								}
+							}
+						});
+
+						t_Buttons.onExit.RemoveAllListeners();
+						t_Buttons.onExit.AddListener(() =>
+						{
+							Debug.Log("onExit");
+							if (m_Inventory != null)
+							{
+								if (m_Inventory.m_Owner != null)
+								{
+									PlayerCharacter t_PlayerCharacter = m_Inventory.m_Owner as PlayerCharacter;
+									if (t_PlayerCharacter != null)
+									{
+										if (t_PlayerCharacter.m_ItemInfoDisplay != null)
+										{
+											if (t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
+											{
+												if (t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf == true)
+												{
+													t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(false);
+												}
+											}
+
+											if (t_PlayerCharacter.m_ItemInfoDisplay.m_ItemNameText != null)
+											{
+												t_PlayerCharacter.m_ItemInfoDisplay.m_ItemNameText.text = "Null";
+											}
+											if (t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoText != null)
+											{
+												t_PlayerCharacter.m_ItemInfoDisplay.m_ItemInfoText.text = "Null";
+											}
+										}
+									}
+								}
+							}
+						});
+					}
 				}
 			}
 		}

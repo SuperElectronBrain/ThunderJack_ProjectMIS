@@ -24,6 +24,8 @@ public class PlayerCharacter : CharacterBase
 	private CapsuleCollider m_Collider;
 	public UnityEngine.UI.Image m_GrabItemSprite;
 	[HideInInspector] public AdvencedItem m_GrabItemCode = new AdvencedItem();
+	[HideInInspector] public AdvencedItem m_HoverItemCode = new AdvencedItem();
+	public ItemInfoDisplay m_ItemInfoDisplay;
 	//[HideInInspector] public GameObject m_HitObject;
 	[SerializeField] private CollisionComponent m_CollisionComponent;
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
@@ -71,6 +73,16 @@ public class PlayerCharacter : CharacterBase
 		if ((m_GrabItemSprite != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
 		{
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
+		}
+		if (m_ItemInfoDisplay != null)
+		{
+			if ((m_ItemInfoDisplay.m_ItemInfoDisplayGO != null ? m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf : false) == true)
+			{
+				if(m_ItemInfoDisplay.m_ItemInfoDisplayRect != null)
+				{
+					m_ItemInfoDisplay.m_ItemInfoDisplayRect.position = Input.mousePosition;
+				}
+			}
 		}
 
 		if (m_MonologueDisplayTime > 0.0f)
@@ -399,6 +411,10 @@ public class PlayerCharacter : CharacterBase
 			if (m_GrabItemSprite == null)
 			{
 				m_GrabItemSprite = m_PlayerCharacterUIScript.m_MouseGrabIcon;
+			}
+			if (m_ItemInfoDisplay == null || m_ItemInfoDisplay != null)
+			{
+				m_ItemInfoDisplay = m_PlayerCharacterUIScript.m_ItemInfoDisplay;
 			}
 			if (m_Inventory != null)
 			{
