@@ -20,10 +20,15 @@ public class GameTime : MonoBehaviour
     [SerializeField]
     float timer = 0;
 
+    bool isTimeStop;
+
+    [SerializeField]
+    int closeTime;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        EventManager.Subscribe(EventType.Work, StartWork);
     }
 
     // Update is called once per frame
@@ -34,6 +39,9 @@ public class GameTime : MonoBehaviour
 
     public void Timer()
     {
+        if (isTimeStop)
+            return;
+
         timer += Time.deltaTime * gameSpeed;
 
         if (timer >= gameTime2RealTime * 60)
@@ -50,15 +58,37 @@ public class GameTime : MonoBehaviour
                 {
                     hour = 0;
                     day++;
-
-                    EventManager.Publish(EventType.Day);
                 }
+
+                if (closeTime == hour)
+                    EventManager.Publish(EventType.CloseShop);
 
                 EventManager.Publish(EventType.hour);
             }
 
             EventManager.Publish(EventType.Minute);
         }
+    }
+
+    void StartWork()
+    {
+        hour = 9;
+        minute = 0;
+        timer = 0;
+    }
+
+    public void TimeStop(bool isTimeStop)
+    {
+        this.isTimeStop = isTimeStop;
+    }
+
+    public void NewDay()
+    {
+        hour = 6;
+        minute = 0;
+        timer = 0;
+        
+        EventManager.Publish(EventType.Day);
     }
 
     public string GetTime()

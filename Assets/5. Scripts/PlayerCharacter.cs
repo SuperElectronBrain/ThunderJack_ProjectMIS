@@ -14,6 +14,10 @@ public interface IGrabable
 
 public class PlayerCharacter : CharacterBase
 {
+	private float m_FadeInTimeBase = 0.0f;
+	private float m_FadeInTime = 0.0f;
+	private float m_FadeOutTimeBase = 0.0f;
+	private float m_FadeOutTime = 0.0f;
 	private float m_MonologueDisplayTime = 0.0f;
 	private float m_GuideDisplayTime = 0.0f;
 
@@ -25,8 +29,11 @@ public class PlayerCharacter : CharacterBase
 	[SerializeField] private CollisionComponent m_CollisionComponent;
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
 	[SerializeField] private PlayerCharacterUIScript m_PlayerCharacterUIScript;
+	[SerializeField] private ParticleSystem m_FootStepEffectInside;
+	[SerializeField] private ParticleSystem m_FootStepEffectOutdoor;
 	public RecipeBook m_RecipeBook;
 	public QuestComponet m_QuestComponet;
+	public TutorialComponent m_TutorialComponent;
 	private IInteraction m_Interaction;
 	private GameObject m_GuideUI;
 
@@ -41,6 +48,16 @@ public class PlayerCharacter : CharacterBase
 		if (m_CollisionComponent == null) { m_CollisionComponent = UniFunc.GetChildComponent<CollisionComponent>(transform); }
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
+		if (m_TutorialComponent == null) { m_TutorialComponent = GetComponent<TutorialComponent>(); }
+
+		if (m_FootStepEffectInside != null)
+		{
+			m_FootStepEffectInside.Stop();
+		}
+		if (m_FootStepEffectOutdoor != null)
+		{
+			m_FootStepEffectInside.Stop();
+		}
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		FindPlayerCharacterUIScript();
@@ -64,18 +81,10 @@ public class PlayerCharacter : CharacterBase
 			{
 				PopUpMonologue("", 0.0f);
 
-				TutorialComponent t_TutorialComponent = GetComponent<TutorialComponent>();
-				if (t_TutorialComponent != null)
-				{
-					if (t_TutorialComponent.GetCurrentStateType() == StateType.PopUpMonologue)
-					{
-						t_TutorialComponent.ProgressTutorial();
-					}
-				}
+				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.PopUpMonologue) { m_TutorialComponent.ProgressTutorial(); } }
 				m_MonologueDisplayTime = 0.0f;
 			}
 		}
-
 		if (m_GuideDisplayTime > 0.0f)
 		{
 			m_GuideDisplayTime = m_GuideDisplayTime - DeltaTime;
@@ -83,17 +92,63 @@ public class PlayerCharacter : CharacterBase
 			{
 				PopUpGuide("", 0.0f);
 
-				TutorialComponent t_TutorialComponent = GetComponent<TutorialComponent>();
-				if (t_TutorialComponent != null)
-				{
-					if (t_TutorialComponent.GetCurrentStateType() == StateType.PopUpGuide)
-					{
-						t_TutorialComponent.ProgressTutorial();
-					}
-				}
+				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.PopUpGuide) { m_TutorialComponent.ProgressTutorial(); } }
 				m_GuideDisplayTime = 0.0f;
 			}
 		}
+		if (m_FadeInTime > 0.0f)
+		{
+			m_FadeInTime = m_FadeInTime - DeltaTime;
+
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_FadeUI != null)
+				{
+					Color t_Color = m_PlayerCharacterUIScript.m_FadeUI.color;
+					t_Color.a = m_FadeInTime / m_FadeInTimeBase;
+					m_PlayerCharacterUIScript.m_FadeUI.color = t_Color;
+				}
+			}
+
+			if (m_FadeInTime < 0.0f)
+			{
+				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.FadeIn) { m_TutorialComponent.ProgressTutorial(); } }
+				m_FadeInTime = 0.0f;
+				m_FadeInTimeBase = 0.0f;
+			}
+		}
+		if (m_FadeOutTime > 0.0f)
+		{
+			m_FadeOutTime = m_FadeOutTime - DeltaTime;
+
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_FadeUI != null)
+				{
+					Color t_Color = m_PlayerCharacterUIScript.m_FadeUI.color;
+					t_Color.a = 1 - (m_FadeOutTime / m_FadeOutTimeBase);
+					m_PlayerCharacterUIScript.m_FadeUI.color = t_Color;
+				}
+			}
+
+			if (m_FadeOutTime < 0.0f)
+			{
+				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.FadeOut) { m_TutorialComponent.ProgressTutorial(); } }
+				m_FadeOutTime = 0.0f;
+				m_FadeOutTimeBase = 0.0f;
+			}
+		}
+
+		//if (m_FootStepEffectInside != null)
+		//{
+		//	m_FootStepEffectInside.Stop();
+		//}
+		//
+		//if (m_Animator != null)
+		//{
+		//	m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
+		//	m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
+		//}
 
 		/*
 		if(m_Interaction != null)
@@ -129,21 +184,32 @@ public class PlayerCharacter : CharacterBase
 		if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
 
 		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
-
 		if (Input.GetKeyDown(KeyCode.E) == true) 
 		{
-			m_Interaction = GetInteractableObject(); 
-			if (m_Interaction != null)
+			if(bMovable == true)
 			{
-				m_Interaction.Interaction(gameObject);
-				CommunicationStart();
+				m_Interaction = GetInteractableObject();
+				if (m_Interaction != null)
+				{
+					m_Interaction.Interaction(gameObject);
+					CommunicationStart();
+				}
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.Q) == true)
 		{ 
 			if (m_Inventory.m_InventoryUIScript != null)
 			{ 
-				m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf); 
+				m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
+				m_Inventory.RefreshInventory();
+			}
+		}
+		if (Input.GetKeyDown(KeyCode.F1) == true)
+		{
+			GameObject t_GameObject = UniFunc.GetChildOfName(GameObject.Find("GuideUIs"), "ManualUI");
+			if(t_GameObject != null)
+			{
+				t_GameObject.SetActive(!t_GameObject.activeSelf);
 			}
 		}
 
@@ -220,6 +286,17 @@ public class PlayerCharacter : CharacterBase
 			if (m_QuestComponet != null)
 			{
 				if (m_QuestComponet.GetQuests().Count <= 0) { m_QuestComponet.TakeQuests(p_PlayerCharacter.m_QuestComponet); }
+			}
+
+			if (m_TutorialComponent == null)
+			{
+				m_TutorialComponent = gameObject.GetComponent<TutorialComponent>();
+				if (m_TutorialComponent == null) { m_TutorialComponent = gameObject.AddComponent<TutorialComponent>(); }
+			}
+			if (m_TutorialComponent != null)
+			{
+				//if (m_TutorialComponent.GetStates().Count <= 0) { m_TutorialComponent.TakeStates(p_PlayerCharacter.m_TutorialComponent); }
+				m_TutorialComponent.TakeStates(p_PlayerCharacter.m_TutorialComponent);
 			}
 		}
 	}
@@ -361,29 +438,32 @@ public class PlayerCharacter : CharacterBase
 	{
 		if(m_PlayerCharacterUIScript != null)
 		{
-			if(m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO != null)
+			if (m_PlayerCharacterUIScript.m_MonologueUI != null)
 			{
-				if(p_Time > 0.0f)
+				if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO != null)
 				{
-					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.activeSelf == false)
+					if (p_Time > 0.0f)
 					{
-						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.SetActive(true);
+						if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.activeSelf == false)
+						{
+							m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.SetActive(true);
+						}
+						if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText != null)
+						{
+							m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText.text = p_Script;
+						}
 					}
-					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText != null)
+					else if (p_Time <= 0.0f)
 					{
-						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText.text = p_Script;
-					}
-				}
-				else if (p_Time <= 0.0f)
-				{
-					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.activeSelf == true)
-					{
-						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.SetActive(false);
-					}
+						if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.activeSelf == true)
+						{
+							m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.SetActive(false);
+						}
 
-					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText != null)
-					{
-						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText.text = "";
+						if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText != null)
+						{
+							m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText.text = "";
+						}
 					}
 				}
 			}
@@ -395,8 +475,7 @@ public class PlayerCharacter : CharacterBase
 	public void PopUpGuide(string p_GuideUIName, float p_Time)
 	{
 		if (m_GuideUI != null) { m_GuideUI.SetActive(false); }
-
-		m_GuideUI = GameObject.Find(p_GuideUIName);
+		m_GuideUI = UniFunc.GetChildOfName(GameObject.Find("GuideUIs"), p_GuideUIName);
 		if(m_GuideUI != null)
 		{
 			if(p_Time > 0.0f)
@@ -411,6 +490,9 @@ public class PlayerCharacter : CharacterBase
 
 		m_GuideDisplayTime = p_Time;
 	}
+
+	public void FadeIn(float p_Time) { m_FadeInTimeBase = p_Time; m_FadeInTime = p_Time; }
+	public void FadeOut(float p_Time) { m_FadeOutTimeBase = p_Time; m_FadeOutTime = p_Time; }
 
 	protected override void OnTriggerEnter(Collider collision)
 	{

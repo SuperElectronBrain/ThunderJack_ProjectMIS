@@ -48,7 +48,7 @@ public class NPC : Character, IInteraction
     float sightRange;
     
     [SerializeField]
-    TextMeshPro dialog;
+    NpcDialog dialogBox;
 
     [SerializeField]
     TimeTableData schedule;
@@ -79,6 +79,7 @@ public class NPC : Character, IInteraction
         InitDay();
 
         EventManager.Subscribe(EventType.NextDialog, TalkEnd);
+        dialogBox.InitDialogBox(characterData.characterName);
         DontDestroyOnLoad(gameObject);
 
         SkAni.Initialize(true);
@@ -133,13 +134,13 @@ public class NPC : Character, IInteraction
 
     public void TalkEnd()
     {
-        dialog.gameObject.SetActive(false);
+        dialogBox.gameObject.SetActive(false);
     }
 
     public void Talk(string talkScript)
     {
-        dialog.gameObject.SetActive(true);
-        dialog.text = talkScript;
+        dialogBox.gameObject.SetActive(true);
+        dialogBox.SetScript(talkScript);
     }
 
     public void SetSchedule(TimeTableData newSchedule)
@@ -172,7 +173,6 @@ public class NPC : Character, IInteraction
 
     void ChangeStateFromSchedule()
     {
-        Debug.Log("ChangeStateFromSchedule");
         switch ((NPCScheduleType)schedule.aiParam1)
         {
             case NPCScheduleType.Interaction:
@@ -188,7 +188,6 @@ public class NPC : Character, IInteraction
                 ChangeState(NPCBehaviour.Move);
                 break;
             case NPCScheduleType.None:
-                Debug.Log("Noce");
                 RandomDestinationPos();
                 ChangeState(NPCBehaviour.Move);
                 break;

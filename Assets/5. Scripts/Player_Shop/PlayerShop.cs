@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class PlayerShop : MonoBehaviour
 {
@@ -24,16 +24,20 @@ public class PlayerShop : MonoBehaviour
     int idx = 0;
 
     [SerializeField]
-    Text compItem;
+    SalesResult salesResult;
 
     [SerializeField]
-    InputField gemField;
+    GameObject salesOver;
+
     [SerializeField]
-    InputField accessoryField;
+    TextMeshProUGUI totalIncome;
     [SerializeField]
-    Button button;
+    TextMeshProUGUI totalFame;
     [SerializeField]
-    Button button2;
+    TextMeshProUGUI totalGuestCount;
+
+    public PlayerShop_Sales Sales { get { return sales; } }
+    public SalesResult SalesResult { get { return salesResult; } }
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +46,7 @@ public class PlayerShop : MonoBehaviour
         sales = GetComponent<PlayerShop_Sales>();
 
         guest = GetComponentInChildren<Guest>();
+        salesResult = new SalesResult();
 
         if (player == null)
             player = FindObjectOfType<PlayerCharacter>();
@@ -49,6 +54,7 @@ public class PlayerShop : MonoBehaviour
         EventManager.Subscribe(EventType.Minute, GuestCheck);
         EventManager.Subscribe(EventType.Dialog, ShowDialog);
         EventManager.Subscribe(EventType.GuestExit, LeavingGuest);
+        EventManager.Subscribe(EventType.CloseShop, ShowSalesResult);
         //EventManager.Subscribe(EventType.SalesFailure, LeavingGuest);
         EventManager.Publish(EventType.Work);
     }
@@ -77,7 +83,7 @@ public class PlayerShop : MonoBehaviour
         if (guest.IsEntry())
             return;
 
-        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
+/*        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
         {
             Debug.Log(guest.questName + " 삭제");
             player.m_QuestComponet.GetTodayGuests().Remove(guest);
@@ -86,7 +92,7 @@ public class PlayerShop : MonoBehaviour
         foreach (var guest in player.m_QuestComponet.GetTodayGuests())
         {
             Debug.Log(guest.questName);
-        }
+        }*/
 
         if (entryWeight >= Random.Range(0, 100))
         {
@@ -104,15 +110,6 @@ public class PlayerShop : MonoBehaviour
     {
         guest.CheckItem(itemCode, 0);
         itemCode = 0;
-    }
-
-    public void MakeItem()
-    {
-        int gemId = GameManager.Instance.ItemManager.GetItemIdByName(gemField.text);
-        int accessoryId = GameManager.Instance.ItemManager.GetItemIdByName(accessoryField.text);
-
-        itemCode = GameManager.Instance.ItemManager.GetCombinationItem(gemId, accessoryId);
-        compItem.text = GameManager.Instance.ItemManager.GetItemName(itemCode);
     }
 
     public void LeavingGuest()
@@ -134,6 +131,15 @@ public class PlayerShop : MonoBehaviour
         dialogBox.ShowDialogBox(false);
     }
 
+    void ShowSalesResult()
+    {
+        salesOver.SetActive(true);
+
+        totalIncome.text = "수익 : " + salesResult.totalIncome + "원";
+        totalFame.text = "얻은 명성 : " + salesResult.totalFame;
+        totalGuestCount.text = "찾아온 손님 : " + salesResult.totalGuestCount + "명";
+    }
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventType.Minute, GuestCheck);
@@ -150,9 +156,26 @@ public class PlayerShop : MonoBehaviour
         //CheckStuff();
         return true;
     }
+}
 
-/*    bool CheckStuff()
+[System.Serializable]
+public class SalesResult
+{
+    public float totalIncome;
+    public int totalFame;
+    public int totalGuestCount;
+
+    public SalesResult()
     {
+        totalIncome = 0;
+        totalFame = 0;
+        totalGuestCount = 0;
+    }
 
-    }*/
+    public void ResultUpdate(float inome, int fame)
+    {
+        totalIncome += inome;
+        totalFame += fame;
+        totalGuestCount++;
+    }
 }

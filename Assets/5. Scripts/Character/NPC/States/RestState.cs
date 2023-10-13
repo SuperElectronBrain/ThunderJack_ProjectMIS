@@ -11,7 +11,7 @@ public class RestState : State<NPC>
         originPos = entity.transform.position;
         entity.agent.isStopped = true;
         entity.agent.enabled = false;
-        entity.gameObject.transform.position = Vector3.zero;
+        entity.gameObject.transform.position = new Vector3(0, 1000, 0);
     }
 
     public override void Execute(NPC entity)

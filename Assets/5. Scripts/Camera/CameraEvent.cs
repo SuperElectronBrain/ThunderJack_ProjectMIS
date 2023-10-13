@@ -6,7 +6,7 @@ using Cinemachine;
 
 public enum CamType
 {
-    Conversation, NoticeBoard, Enter, Prev
+    Conversation, NoticeBoard, Prev
 }
 
 public class CameraEvent : Singleton<CameraEvent>
@@ -21,15 +21,18 @@ public class CameraEvent : Singleton<CameraEvent>
     CinemachineVirtualCamera prevCam;
     [SerializeField]
     CinemachineVirtualCamera noticeBoardCam;
-    [SerializeField]
-    CinemachineVirtualCamera enterCam;
 
     public UnityEvent onCamBlendComplate;
 
     // Start is called before the first frame update
     void Start()
     {
-        brain = Camera.main.GetComponent<CinemachineBrain>(); 
+        Init();
+    }
+
+    public void Init()
+    {
+        brain = Camera.main.GetComponent<CinemachineBrain>();
     }
 
     IEnumerator OnBlendComplate()
@@ -57,9 +60,6 @@ public class CameraEvent : Singleton<CameraEvent>
             case CamType.Prev:
                 PrevCamera();
                 break;
-            case CamType.Enter:
-                EnterCamera();
-                break;
         }                
     }
 
@@ -68,21 +68,38 @@ public class CameraEvent : Singleton<CameraEvent>
         prevCam = liveCam;
         liveCam = vCam;
         liveCam.Priority = 100;
-        if(prevCam!= null)
+        if (prevCam != null && prevCam != vCam)
             prevCam.Priority = 10;        
     }
 
-    public bool IsIgnoreCam(CinemachineVirtualCamera vCam)
+    public bool IsIgnoreCam(List<CinemachineVirtualCamera> vCams)
     {
-        if (prevCam != vCam || vCam == null)
+        if (vCams.Count == 0)
             return false;
-        return true;
+
+        for(int i = 0; i < vCams.Count; i++)
+        {
+            if (liveCam == vCams[i])
+                return true;
+        }
+
+        return false;
+        
     }
 
     void ConversationCamera()
     {
         liveCam = conversationCam;
         conversationCam.Priority = 100;
+        StartCoroutine(OnBlendComplate());
+    }
+
+    public void ChangeCam(CinemachineVirtualCamera vCam)
+    {
+        liveCam.Priority = 10;
+        prevCam = liveCam;
+        liveCam = vCam;
+        liveCam.Priority = 100;
         StartCoroutine(OnBlendComplate());
     }
 
@@ -99,11 +116,5 @@ public class CameraEvent : Singleton<CameraEvent>
         onCamBlendComplate?.RemoveAllListeners();
         prevCam.Priority = 100;
         liveCam = prevCam;
-    }
-
-    void EnterCamera()
-    {
-        liveCam = enterCam;
-        enterCam.Priority = 100;
     }
 }

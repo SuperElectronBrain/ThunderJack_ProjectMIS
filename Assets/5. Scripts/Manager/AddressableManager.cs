@@ -71,8 +71,12 @@ Addressables.LoadAssetAsync<T>(loadObjectName)
 
         if (!AddressableNullCheck<T>(loadObjectName))
         {
-            Debug.Log("실패");
-            loadObjectName = "Icon";
+            Debug.Log("실패" + "object Name = " + loadObjectName);
+
+            if (typeof(T) == typeof(Spine.SkeletonData))
+                loadObjectName = "Icon";
+            else
+                loadObjectName = "stone";
         }
         else
         {
