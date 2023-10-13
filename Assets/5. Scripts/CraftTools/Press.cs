@@ -9,14 +9,15 @@ public class Press : MonoBehaviour
 	public float m_MaxDistance = 3.0f;
 	[HideInInspector] public bool bProgress = false;
 	private float m_Progress = 0.0f;
-	public List<Ingredient> m_Ingredients = new List<Ingredient>();
-	public float[] m_Elements = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-	public AdvencedItem m_AccessoryInput = new AdvencedItem();
-	public AdvencedItem m_CraftedItem = new AdvencedItem();
+	[HideInInspector] public List<Ingredient> m_Ingredients = new List<Ingredient>();
+	[HideInInspector] public float[] m_Elements = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+	[HideInInspector] public AdvencedItem m_AccessoryInput = new AdvencedItem();
+	[HideInInspector] public AdvencedItem m_CraftedItem = new AdvencedItem();
 	private Vector3 m_PreviousHandlePosition;
+	[SerializeField] private float m_HandleMoveRange = 1.0f;
 
 	[SerializeField] private GameObject m_PressHandleBase;
-	//[SerializeField] private TMPro.TextMeshPro m_Text;
+	[SerializeField] private Transform m_HandleDirection;
 	[SerializeField] private List<GameObject> m_MagicCircleGraph;
 	[SerializeField] private List<ParticleSystem> m_MagicCircleVFXs;
 	[SerializeField] private ParticleSystem m_CompleteVFX;
@@ -37,7 +38,7 @@ public class Press : MonoBehaviour
 		m_PreviousHandlePosition = Vector3.left;
 		if (m_SkeletonAnimation!= null)
 		{
-			trackEntry = m_SkeletonAnimation.state.SetAnimation(0, "animation", false);
+			trackEntry = m_SkeletonAnimation.state.SetAnimation(0, "Activate", false);
 		}
 
 		PlayerCharacter t_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
@@ -57,7 +58,7 @@ public class Press : MonoBehaviour
     {
 		if (Input.GetMouseButtonDown(0) == true)
 		{
-			m_PreviousHandlePosition = (Input.mousePosition - Camera.main.WorldToScreenPoint((m_PressHandleBase != null ? m_PressHandleBase : gameObject).transform.position)).normalized;
+			m_PreviousHandlePosition = Input.mousePosition;
 		}
 		if (Input.GetMouseButtonUp(0) == true)
 		{
@@ -70,19 +71,18 @@ public class Press : MonoBehaviour
 		{
 			int count = 0;
 			for (int i = 0; i < m_Elements.Length; i = i + 1) { if (m_Elements[i] > 0.0f) { count = count + 1; } }
-			if (count > 0 && m_AccessoryInput != null)
+			//if (count > 0 && m_AccessoryInput != null)
 			{
-				Vector3 t_CurrentHandlePosition = (Input.mousePosition - Camera.main.WorldToScreenPoint((m_PressHandleBase != null ? m_PressHandleBase : gameObject).transform.position)).normalized;
-
-				//transform.position을 기준으로 이전 프레임과 현재 프레임간의 마우스의 각도 변화량을 계산하는 식
-				float t_X = Vector3.Dot(m_PreviousHandlePosition, t_CurrentHandlePosition);
-				float t_Y = Vector3.Dot((t_CurrentHandlePosition - (m_PreviousHandlePosition * t_X)).normalized, t_CurrentHandlePosition);
-				float t_Progress = (Vector3.Cross(m_PreviousHandlePosition, t_CurrentHandlePosition).z < 0 ? 1 : -1) * (Mathf.Atan2(t_Y, t_X) / Mathf.PI) / 2;
+				Vector3 t_HandleDirection = m_HandleDirection.transform.forward;
+				t_HandleDirection.z = 0.0f;
+				Vector3 t_CurrentHandlePosition = Input.mousePosition;
+				Vector3 t_HandleMovement = (t_CurrentHandlePosition - m_PreviousHandlePosition);
+				t_HandleMovement.z = 0.0f;
+				float t_Progress = Vector3.Dot(t_HandleDirection, t_HandleMovement);
 				if (t_Progress != 0.0f)
 				{
-					m_Progress = m_Progress + (t_Progress * 3.5f);
-					m_Progress = m_Progress > 1.0f ? 1.0f : (m_Progress < 0.0f ? 0.0f : m_Progress);
-
+					m_Progress = m_Progress + (t_Progress / m_HandleMoveRange);
+					m_Progress = m_Progress > 1.0f ? 1.0f : (m_Progress < -1.0f ? -1.0f : m_Progress);
 					if (m_SkeletonAnimation != null) { m_SkeletonAnimation.timeScale = 1.0f; }
 				}
 				else if (t_Progress == 0)
@@ -121,19 +121,55 @@ public class Press : MonoBehaviour
 
 					if (m_SkeletonAnimation != null) { m_SkeletonAnimation.timeScale = 0.0f; }
 				}
+				else if (m_Progress <= -1.0f)
+				{
+					for (int i = 0; i < m_Elements.Length; i = i + 1) { m_Elements[i] = 0.0f; }
+					for (int i = 0; i < m_Ingredients.Count; i = i + 1) { m_Ingredients[i] = null; }
+
+					if (m_Inventory != null)
+					{
+						if(m_AccessoryInput != null)
+						{
+							m_Inventory.AddAItem(m_AccessoryInput);
+							m_AccessoryInput = null;
+						}
+					}
+					RefreshOutput();
+				}
 
 				m_PreviousHandlePosition = t_CurrentHandlePosition;
 			}
 		}
-
-		if (m_PressHandleBase != null)
-		{
-			m_PressHandleBase.transform.rotation = Quaternion.Euler(0f, 0f, 50.0f - (m_Progress * 100.0f));
-		}
-
+		
 		if (trackEntry != null)
 		{
-			trackEntry.TrackTime = m_Progress * trackEntry.AnimationEnd;
+			float t_AnimationProgress = (m_Progress + 1) / 2;
+			trackEntry.TrackTime = t_AnimationProgress * trackEntry.AnimationEnd;
+			/*
+			float t_AnimationProgress = ((m_Progress >= 0 ? m_Progress : -m_Progress) + 1) / 2;
+			if (m_Progress >= 0)
+			{
+				if (trackEntry.Animation.Name != "Activate")
+				{ 
+					if (m_SkeletonAnimation != null)
+					{
+						trackEntry = m_SkeletonAnimation.state.SetAnimation(0, "Activate", false);
+					}
+				}
+				trackEntry.TrackTime = t_AnimationProgress * trackEntry.AnimationEnd;
+			}
+			else if (m_Progress < 0)
+			{
+				if (trackEntry.Animation.Name != "End")
+				{
+					if (m_SkeletonAnimation != null) 
+					{
+						trackEntry = m_SkeletonAnimation.state.SetAnimation(0, "End", false);
+					}
+				}
+				trackEntry.TrackTime = t_AnimationProgress * trackEntry.AnimationEnd;
+			}
+			*/
 		}
 	}
 

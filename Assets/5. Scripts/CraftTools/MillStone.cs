@@ -61,11 +61,11 @@ public class MillStone : MonoBehaviour
 
 					m_SkeletonAnimation.timeScale = 1.0f;
 				}
-				else if (t_Progress < 0)
-				{
-					bProgress = false; //역회전 방지
-					m_SkeletonAnimation.timeScale = 0.0f;
-				}
+				//else if (t_Progress < 0)
+				//{
+				//	bProgress = false; //역회전 방지
+				//	m_SkeletonAnimation.timeScale = 0.0f;
+				//}
 				else if (t_Progress == 0)
 				{
 					m_SkeletonAnimation.timeScale = 0.0f;
