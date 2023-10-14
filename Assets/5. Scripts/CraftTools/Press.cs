@@ -21,10 +21,11 @@ public class Press : MonoBehaviour
 	[SerializeField] private List<GameObject> m_MagicCircleGraph;
 	[SerializeField] private List<ParticleSystem> m_MagicCircleVFXs;
 	[SerializeField] private ParticleSystem m_CompleteVFX;
+	[SerializeField] private ParticleSystem m_FailVFX;
 	[SerializeField] private ParticleSystem m_SmokeVFX;
-	[SerializeField] private MeshRenderer m_MagicCircleMaterial;
+	[SerializeField] private SpriteRenderer m_MagicCircleMaterial;
 	[SerializeField] private SpriteRenderer m_AccessorySprite;
-	[SerializeField] private SpriteRenderer m_OutputSprite;
+	//[SerializeField] private SpriteRenderer m_OutputSprite;
 	[SerializeField] private SkeletonAnimation m_SkeletonAnimation;
 	private TrackEntry trackEntry;
 	private Inventory m_Inventory;
@@ -51,6 +52,11 @@ public class Press : MonoBehaviour
 		//{
 		//	m_MagicCircleMaterial.material = Instantiate(m_MagicCircleMaterial.material);
 		//}
+
+		m_CompleteVFX.Stop();
+		m_FailVFX.Stop();
+		m_SmokeVFX.Stop();
+		RefreshMagicCircleEffect();
 	}
 
     // Update is called once per frame
@@ -71,7 +77,7 @@ public class Press : MonoBehaviour
 		{
 			int count = 0;
 			for (int i = 0; i < m_Elements.Length; i = i + 1) { if (m_Elements[i] > 0.0f) { count = count + 1; } }
-			//if (count > 0 && m_AccessoryInput != null)
+			if (count > 0 || m_AccessoryInput != null)
 			{
 				Vector3 t_HandleDirection = m_HandleDirection.transform.forward;
 				t_HandleDirection.z = 0.0f;
@@ -92,29 +98,31 @@ public class Press : MonoBehaviour
 
 				if (m_Progress >= 1.0f)
 				{
-					if(m_CraftedItem == null)
-					{
-						m_CraftedItem = CraftItem(CraftGem());
+					m_AccessoryInput = CraftItem(CraftGem());
 
-						if(m_CraftedItem.itemCode != 0)
+					if(m_CraftedItem.itemCode != 0)
+					{
+						if (m_Inventory != null)
 						{
-							if (m_Inventory != null)
+							if (m_Inventory.m_Owner != null)
 							{
-								if (m_Inventory.m_Owner != null)
+								PlayerCharacter t_PlayerCharacter = m_Inventory.m_Owner as PlayerCharacter;
+								if(t_PlayerCharacter != null)
 								{
-									if (((PlayerCharacter)m_Inventory.m_Owner).m_RecipeBook != null)
+									if (t_PlayerCharacter.m_RecipeBook != null)
 									{
 										m_Ingredients.Add(new Ingredient(m_AccessoryInput.itemCode, m_AccessoryInput.itemProgress));
-										((PlayerCharacter)m_Inventory.m_Owner).m_RecipeBook.RegistItem(m_CraftedItem.itemCode, m_CraftedItem.itemProgress, m_Ingredients);
+										t_PlayerCharacter.m_RecipeBook.RegistItem(m_CraftedItem.itemCode, m_CraftedItem.itemProgress, m_Ingredients);
 									}
 								}
 							}
 						}
-
-						for (int i = 0; i < m_Elements.Length; i = i + 1) { m_Elements[i] = 0.0f; }
-						for (int i = 0; i < m_Ingredients.Count; i = i + 1) { m_Ingredients[i] = null; }
-						m_AccessoryInput = null;
 					}
+
+					for (int i = 0; i < m_Elements.Length; i = i + 1) { m_Elements[i] = 0.0f; }
+					for (int i = 0; i < m_Ingredients.Count; i = i + 1) { m_Ingredients[i] = null; }
+					//m_AccessoryInput = null;
+					
 					RefreshOutput();
 					m_Progress = 0.0f;
 					bProgress = false;
@@ -192,8 +200,10 @@ public class Press : MonoBehaviour
 						m_Elements[t_MaterialItemData.elementType1 - 1] = m_Elements[t_MaterialItemData.elementType1 - 1] + (t_MaterialItemData.elementPercent1 * 0.01f * p_Progress);
 						m_Elements[t_MaterialItemData.elementType2 - 1] = m_Elements[t_MaterialItemData.elementType2 - 1] + (t_MaterialItemData.elementPercent2 * 0.01f * p_Progress);
 						//m_Elements[t_MaterialItemData.elementType3 - 1] = m_Elements[t_MaterialItemData.elementType3 - 1] + (t_MaterialItemData.elementPercent3 * 0.01f * p_Progress);
-
-						if(t_PrevElement1 <= 0.0f && m_Elements[t_MaterialItemData.elementType1 - 1] > 0.0f)
+						
+						
+						//0
+						if (t_PrevElement1 <= 0.0f && m_Elements[t_MaterialItemData.elementType1 - 1] > 0.0f)
 						{
 							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1].Stop();
 							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1].Play();
@@ -202,6 +212,62 @@ public class Press : MonoBehaviour
 						{
 							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1].Stop();
 							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1].Play();
+						}
+
+						//20
+						if (t_PrevElement1 <= 0.2f && m_Elements[t_MaterialItemData.elementType1 - 1] > 0.2f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 5].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 5].Play();
+						}
+						if (t_PrevElement2 <= 0.2f && m_Elements[t_MaterialItemData.elementType2 - 1] > 0.2f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 5].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 5].Play();
+						}
+
+						//40
+						if (t_PrevElement1 <= 0.4f && m_Elements[t_MaterialItemData.elementType1 - 1] > 0.4f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 5].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 10].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 10].Play();
+						}
+						if (t_PrevElement2 <= 0.4f && m_Elements[t_MaterialItemData.elementType2 - 1] > 0.4f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 5].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 10].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 10].Play();
+						}
+
+						//60
+						if (t_PrevElement1 <= 0.6f && m_Elements[t_MaterialItemData.elementType1 - 1] > 0.6f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 10].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 15].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 15].Play();
+						}
+						if (t_PrevElement2 <= 0.6f && m_Elements[t_MaterialItemData.elementType2 - 1] > 0.6f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 10].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 15].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 15].Play();
+						}
+
+						//80
+						if (t_PrevElement1 <= 0.8f && m_Elements[t_MaterialItemData.elementType1 - 1] > 0.8f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 15].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 20].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType1 - 1 + 20].Play();
+						}
+						if (t_PrevElement2 <= 0.8f && m_Elements[t_MaterialItemData.elementType2 - 1] > 0.8f)
+						{
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 15].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 20].Stop();
+							m_MagicCircleVFXs[t_MaterialItemData.elementType2 - 1 + 20].Play();
 						}
 					}
 				}
@@ -326,9 +392,13 @@ public class Press : MonoBehaviour
 			t_AItem = new AdvencedItem(t_ItemCode, p_AItem.itemProgress, 1);
 			m_AccessoryInput = null;
 
-			
 			m_CompleteVFX.Stop();
 			m_CompleteVFX.Play();
+		}
+		else if (t_ItemCode == 21)
+		{
+			m_FailVFX.Stop();
+			m_FailVFX.Play();
 		}
 
 		RefreshPlate();
@@ -341,18 +411,18 @@ public class Press : MonoBehaviour
 		{
 			if (m_MagicCircleMaterial.material != null)
 			{
-				m_MagicCircleMaterial.material.SetFloat("_Power5", curve.Evaluate(m_Elements[0]) * 50.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power3", curve.Evaluate(m_Elements[1]) * 50.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power1", curve.Evaluate(m_Elements[2]) * 50.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power2", curve.Evaluate(m_Elements[3]) * 50.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power4", curve.Evaluate(m_Elements[4]) * 50.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power5", (1 - curve.Evaluate(m_Elements[0])) * 30.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power3", (1 - curve.Evaluate(m_Elements[1])) * 30.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power1", (1 - curve.Evaluate(m_Elements[2])) * 30.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power2", (1 - curve.Evaluate(m_Elements[3])) * 30.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power4", (1 - curve.Evaluate(m_Elements[4])) * 30.0f);
 			}
 		}
 		
-		for (int i = 0; i < m_MagicCircleGraph.Count; i = i + 1)
-		{
-			m_MagicCircleGraph[i].transform.localScale = new Vector3(1.0f, m_Elements[i], 1.0f);
-		}
+		//for (int i = 0; i < m_MagicCircleGraph.Count; i = i + 1)
+		//{
+		//	m_MagicCircleGraph[i].transform.localScale = new Vector3(1.0f, m_Elements[i], 1.0f);
+		//}
 	}
 
 	public void RefreshPlate()
@@ -370,14 +440,23 @@ public class Press : MonoBehaviour
 	}
 	public void RefreshOutput()
 	{
-		if (m_OutputSprite != null)
-		{
-			m_OutputSprite.sprite = UniFunc.FindSprite(m_CraftedItem.itemCode);
-			if (m_CraftedItem.itemCode == 0) { m_OutputSprite.sprite = null; }
-		}
+		//if (m_OutputSprite != null)
+		//{
+		//	m_OutputSprite.sprite = UniFunc.FindSprite(m_CraftedItem.itemCode);
+		//	if (m_CraftedItem.itemCode == 0) { m_OutputSprite.sprite = null; }
+		//}
+		RefreshPlate();
 		//if (m_Text != null)
 		//{
 		//	m_Text.text = m_CraftedItem.itemCode + "";
 		//}
+	}
+
+	public void RefreshMagicCircleEffect()
+	{
+		for (int i = 0; i < m_MagicCircleVFXs.Count; i = i + 1)
+		{
+			m_MagicCircleVFXs[i].Stop();
+		}
 	}
 }
