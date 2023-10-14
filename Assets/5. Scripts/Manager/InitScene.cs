@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class InitScene : MonoBehaviour
 {
-    private void OnEnable()
+    private void Start()
     {
-        GameManager.Instance.InitScene(SceneType.OutSide);
+        GameManager.Instance.InitScene(SceneType.OutSide);        
     }
 }
