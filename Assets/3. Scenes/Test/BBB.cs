@@ -6,12 +6,12 @@ using DG.Tweening;
 public class BBB : MonoBehaviour
 {
     Rigidbody2D rig;
-    PolygonCollider2D col;
+    CircleCollider2D col;
 
     private void Start()
     {
         rig = GetComponent<Rigidbody2D>();
-        col = GetComponent<PolygonCollider2D>();
+        col = GetComponent<CircleCollider2D>();
     }
 
     public void ResetObj(Vector3 pos, Vector3 rot)
