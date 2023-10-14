@@ -145,6 +145,7 @@ public class Press : MonoBehaviour
 					RefreshGraph();
 					RefreshPlate();
 					RefreshOutput();
+					RefreshMagicCircleEffect();
 				}
 
 				m_PreviousHandlePosition = t_CurrentHandlePosition;
