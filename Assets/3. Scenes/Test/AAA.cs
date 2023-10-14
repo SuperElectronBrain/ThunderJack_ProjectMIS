@@ -28,9 +28,9 @@ public class AAA : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+            var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z + z));
 
-            mPos.z = z;
+            //mPos.z = z;
             transform.position = mPos;
 
             for (int i = 0; i < transform.childCount; i++)
@@ -40,9 +40,9 @@ public class AAA : MonoBehaviour
         }
         else if(Input.GetMouseButton(0))
         {
-            var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+            var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z + z));
 
-            mPos.z = z;
+            //mPos.z = z;
             transform.position = mPos;
         }
         else if(Input.GetMouseButtonUp(0))

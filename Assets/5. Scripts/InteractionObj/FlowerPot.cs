@@ -10,7 +10,7 @@ public class FlowerPot : MonoBehaviour, IInteraction
     MeshRenderer meshRenderer;
     BoxCollider boxCollider;
     [SerializeField]
-    GameObject flower;
+    Flower flower;
 
     private void Start()
     {
@@ -19,8 +19,15 @@ public class FlowerPot : MonoBehaviour, IInteraction
         meshRenderer.enabled = false;
     }
 
+    public void Init()
+    {
+        isPlanted = true;
+        meshRenderer.enabled = true;
+    }
+
     public void Interaction(GameObject user)
     {
+        Invoke("EndInteraction", 0.1f);
         Debug.Log(gameObject.name + " 상호작용");
         if (isPlanted)
             return;
@@ -30,17 +37,33 @@ public class FlowerPot : MonoBehaviour, IInteraction
             // 씨앗이 있는지 없는지 검사
 
             meshRenderer.enabled = true;
-            flower.SetActive(true);
+            flower.Plant();
             boxCollider.enabled = false;   
 
             isPlanted = true;
-        }
+        }        
+    }
 
-        Invoke("EndInteraction", 0.1f);
+    public void Harvesting()
+    {
+        isPlanted = false;
     }
 
     void EndInteraction()
     {
         EventManager.Publish(EventType.EndIteraction);
+    }
+
+    public void SaveFlowerData()
+    {
+        if(isPlanted)
+        {
+            flower.SaveObjectData();
+        }
+    }
+
+    public void LoadFlowerData()
+    {
+        flower.LoadObjectData();
     }
 }
