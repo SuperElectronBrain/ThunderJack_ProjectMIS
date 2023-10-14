@@ -54,6 +54,11 @@ public class MeasurCup : MonoBehaviour, IGrabable
 
 			if(m_Press != null)
 			{
+				Vector3 t_PressInput = m_PressInputPort.transform.position;
+				t_PressInput.z = 0.0f;
+				Vector3 t_Cup = m_PressInputPort.transform.position;
+				t_Cup.z = 0.0f;
+
 				if (m_Press.m_MaxDistance > (m_PressInputPort.transform.position - transform.position).magnitude)
 				{
 					//this의 애니메이션 진행도, 기울기값

@@ -22,12 +22,15 @@ public class AAA : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    float z;
     private void Update()
     {
         if(Input.GetMouseButtonDown(0))
         {
             var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
 
+            mPos.z = z;
             transform.position = mPos;
 
             for (int i = 0; i < transform.childCount; i++)
@@ -39,6 +42,7 @@ public class AAA : MonoBehaviour
         {
             var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
 
+            mPos.z = z;
             transform.position = mPos;
         }
         else if(Input.GetMouseButtonUp(0))
