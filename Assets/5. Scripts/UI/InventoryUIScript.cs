@@ -140,7 +140,6 @@ public class InventoryUIScript : MonoBehaviour
 						t_Buttons.onEnter.RemoveAllListeners();
 						t_Buttons.onEnter.AddListener(() => 
 						{
-							Debug.Log("onEnter");
 							if (m_Inventory != null)
 							{
 								if (m_Inventory.m_Owner != null)
@@ -181,7 +180,6 @@ public class InventoryUIScript : MonoBehaviour
 						t_Buttons.onExit.RemoveAllListeners();
 						t_Buttons.onExit.AddListener(() =>
 						{
-							Debug.Log("onExit");
 							if (m_Inventory != null)
 							{
 								if (m_Inventory.m_Owner != null)
