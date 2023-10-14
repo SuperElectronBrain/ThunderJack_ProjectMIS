@@ -36,6 +36,7 @@ public class PlayerCharacter : CharacterBase
 	public QuestComponet m_QuestComponet;
 	public TutorialComponent m_TutorialComponent;
 	private IInteraction m_Interaction;
+	private List<IInteraction> InteractableObjects = new List<IInteraction>();
 	private GameObject m_GuideUI;
 
 	// Start is called before the first frame update
@@ -47,6 +48,11 @@ public class PlayerCharacter : CharacterBase
 		//m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
 		if (m_CollisionComponent == null) { m_CollisionComponent = UniFunc.GetChildComponent<CollisionComponent>(transform); }
+		if (m_CollisionComponent != null)
+		{
+			m_CollisionComponent.m_OnCollisionEnterUseParam.AddListener(OnInteractableObjectEnter);
+			m_CollisionComponent.m_OnCollisionExitUseParam.AddListener(OnInteractableObjectExit);
+		}
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
 		if (m_TutorialComponent == null) { m_TutorialComponent = GetComponent<TutorialComponent>(); }
@@ -390,6 +396,38 @@ public class PlayerCharacter : CharacterBase
 		return t_Interaction;
 	}
 
+	private void OnInteractableObjectEnter(Collider other)
+	{
+		if(other.gameObject != gameObject)
+		{
+			IInteraction t_Interaction = other.gameObject.GetComponent<IInteraction>();
+			if (t_Interaction != null)
+			{
+				if (InteractableObjects == null) { InteractableObjects = new List<IInteraction>(); }
+				if(t_Interaction != InteractableObjects.Find((IInteraction x) => { return x == t_Interaction; }))
+				{
+					InteractableObjects.Add(t_Interaction);
+				}
+			}
+		}
+		
+		PopUpInteractionIcon(InteractableObjects.Count > 0);
+	}
+
+	private void OnInteractableObjectExit(Collider other)
+	{
+		if (other.gameObject != gameObject)
+		{
+			IInteraction t_Interaction = other.gameObject.GetComponent<IInteraction>();
+			if (t_Interaction != null)
+			{
+				InteractableObjects.Remove(t_Interaction);
+			}
+		}
+
+		PopUpInteractionIcon(InteractableObjects.Count > 0);
+	}
+
 	public void FindPlayerCharacterUIScript()
 	{
 		if (m_PlayerCharacterUIScript == null) { m_PlayerCharacterUIScript = FindObjectOfType<PlayerCharacterUIScript>(); }
@@ -473,6 +511,19 @@ public class PlayerCharacter : CharacterBase
 					{
 						m_QuestComponet.m_MailBoxUIScript = m_PlayerCharacterUIScript.m_MailBoxUIScript;
 					}
+				}
+			}
+		}
+	}
+	public void PopUpInteractionIcon(bool param)
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+			{
+				if(m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.activeSelf != param)
+				{
+					m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.SetActive(param);
 				}
 			}
 		}
