@@ -76,6 +76,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public UnityEngine.UI.Image m_MouseGrabIcon;
 	public MonologueUI m_MonologueUI = new MonologueUI();
 	public ItemInfoDisplay m_ItemInfoDisplay = new ItemInfoDisplay();
+	public UnityEngine.UI.Image m_InteractionIcon;
 	public UnityEngine.UI.Image m_FadeUI;
 
 	// Start is called before the first frame update
@@ -107,9 +108,15 @@ public class PlayerCharacterUIScript : MonoBehaviour
 			if (m_MonologueUI.m_MonologueGO == null)
 			{
 				m_MonologueUI.m_MonologueGO = UniFunc.GetChildOfName(transform, "MonologueUI").GetComponent<GameObject>();
-				if (m_MonologueUI.m_MonologueGO != null)
+			}
+			if (m_MonologueUI.m_MonologueGO != null)
+			{
+				if(m_MonologueUI.m_PortraitImage == null)
 				{
 					m_MonologueUI.m_PortraitImage = UniFunc.GetChildComponent<UnityEngine.UI.Image>(m_MonologueUI.m_MonologueGO);
+				}
+				if (m_MonologueUI.m_MonologueText == null)
+				{
 					m_MonologueUI.m_MonologueText = UniFunc.GetChildComponent<TextMeshProUGUI>(m_MonologueUI.m_MonologueGO);
 				}
 			}
@@ -120,14 +127,24 @@ public class PlayerCharacterUIScript : MonoBehaviour
 			if (m_ItemInfoDisplay.m_ItemInfoDisplayGO == null)
 			{
 				m_ItemInfoDisplay.m_ItemInfoDisplayGO = UniFunc.GetChildOfName(transform, "ItemInformationDisplay").GetComponent<GameObject>();
-				if (m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
+			}
+			if (m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
+			{
+				if(m_ItemInfoDisplay.m_ItemInfoDisplayRect == null)
 				{
 					m_ItemInfoDisplay.m_ItemInfoDisplayRect = m_ItemInfoDisplay.m_ItemInfoDisplayGO.GetComponent<RectTransform>();
+				}
+				if (m_ItemInfoDisplay.m_ItemNameText == null)
+				{ 
 					m_ItemInfoDisplay.m_ItemNameText = UniFunc.GetChildOfName(m_ItemInfoDisplay.m_ItemInfoDisplayGO, "ItemNameText (TMP)").GetComponent<TextMeshProUGUI>();
+				}
+				if (m_ItemInfoDisplay.m_ItemInfoText == null)
+				{ 
 					m_ItemInfoDisplay.m_ItemInfoText = UniFunc.GetChildOfName(m_ItemInfoDisplay.m_ItemInfoDisplayGO, "ItemInformationText (TMP)").GetComponent<TextMeshProUGUI>();
 				}
 			}
 		}
+		if (m_InteractionIcon == null) { m_InteractionIcon = UniFunc.GetChildOfName(transform, "InteractionIcon").GetComponent<UnityEngine.UI.Image>(); }
 		if (m_FadeUI == null) { m_FadeUI = UniFunc.GetChildOfName(transform, "FadeUI").GetComponent<UnityEngine.UI.Image>(); }
 	}
 }

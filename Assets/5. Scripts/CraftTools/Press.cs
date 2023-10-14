@@ -134,6 +134,8 @@ public class Press : MonoBehaviour
 							m_AccessoryInput = null;
 						}
 					}
+					RefreshGraph();
+					RefreshPlate();
 					RefreshOutput();
 				}
 
@@ -294,6 +296,7 @@ public class Press : MonoBehaviour
 
 			t_AItem = new AdvencedItem(t_ItemCode, t_Progress, t_ItemAmount);
 		}
+		RefreshGraph();
 		return t_AItem;
 	}
 
