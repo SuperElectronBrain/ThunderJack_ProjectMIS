@@ -8,18 +8,45 @@ public class BBB : MonoBehaviour
     Rigidbody2D rig;
     CircleCollider2D col;
 
+    bool isInMillstone;
+
+    bool isRelese;
+
+    LayerMask originLayer;
+
+    private void OnMouseDown()
+    {
+        Debug.Log(gameObject.name + " º±≈√");
+        transform.parent.GetComponent<AAA>().SelectObject(gameObject);
+        Select();
+    }
+
     private void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
     }
 
-    public void ResetObj(Vector3 pos, Vector3 rot)
+    public void ChangeLayer(bool isOrigin = false)
     {
+        if (isOrigin)
+            gameObject.layer = originLayer;
+        else
+            gameObject.layer = LayerMask.GetMask("MaterialObj");
+    }
+
+    public void Select()
+    {
+        GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
         col.isTrigger = true;
         rig.gravityScale = 0;
         rig.velocity = Vector2.zero;
         rig.angularVelocity = 0;
+    }
+
+    public void ResetObj(Vector3 pos, Vector3 rot)
+    {
+        Select();
 
         Sequence sequence = DOTween.Sequence().SetRecyclable(true).SetAutoKill(false).Pause();
 
@@ -36,5 +63,13 @@ public class BBB : MonoBehaviour
         var forceX = Random.Range(-2f, 2f);
         var forceY = Random.Range(-2f, 0f);
         rig.AddForce(new Vector2(forceX, forceY),ForceMode2D.Impulse);
+        GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+        isRelese = true;        
+    }
+
+    public void InMillstone()
+    {
+        isInMillstone = true;
+        Destroy(this);
     }
 }
