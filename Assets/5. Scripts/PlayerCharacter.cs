@@ -76,7 +76,7 @@ public class PlayerCharacter : CharacterBase
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		FindPlayerCharacterUIScript();
-	}
+	} 
 
 	// Update is called once per frame
 	protected override void Update()
