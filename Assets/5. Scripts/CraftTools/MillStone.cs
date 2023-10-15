@@ -46,8 +46,8 @@ public class MillStone : MonoBehaviour
 			{
 				Vector3 t_CurrentHandlePosition = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
 
-				float t_X = Vector3.Dot(m_PreviousHandlePosition, t_CurrentHandlePosition);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ m_PreviousHandlePositionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ t_CurrentHandlePositionï¿½ï¿½ xï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
-				float t_Y = Vector3.Dot((t_CurrentHandlePosition - (m_PreviousHandlePosition * t_X)).normalized, t_CurrentHandlePosition);//t_CurrentHandlePositionï¿½ï¿½ï¿½ï¿½ xï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ yï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+				float t_X = Vector3.Dot(m_PreviousHandlePosition, t_CurrentHandlePosition);//³»ÀûÀ¸·Î m_PreviousHandlePosition¸¦ ÃàÀ¸·Î ÇÏ´Â t_CurrentHandlePositionÀÇ xÃà ¼ººÐÀ» °è»êÇÔ
+				float t_Y = Vector3.Dot((t_CurrentHandlePosition - (m_PreviousHandlePosition * t_X)).normalized, t_CurrentHandlePosition);//t_CurrentHandlePosition¿¡»ç xÃà ¼ººÐÀ» Á¦°ÅÇÏ°í yÃà ¼ººÐÀ» ¾òÀ½
 				float t_Progress = (Vector3.Cross(m_PreviousHandlePosition, t_CurrentHandlePosition).z < 0 ? 1 : -1) * (Mathf.Atan2(t_Y, t_X) / Mathf.PI) / 2;
 				if (t_Progress > 0)
 				{
@@ -68,7 +68,7 @@ public class MillStone : MonoBehaviour
 				/*
 				else if (t_Progress < 0)
 				{
-					bProgress = false; //ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+					bProgress = false; //¿ªÈ¸Àü ¹æÁö
 					m_SkeletonAnimation.timeScale = 0.0f;
 				}
 				*/
@@ -125,8 +125,8 @@ public class MillStone : MonoBehaviour
 	{
 		if (m_Input == 0)
 		{
-			if (p_AItem.IsAddable(new AdvencedItem()) == false)
-			{
+			//if (p_AItem.IsAddable(new AdvencedItem()) == false)
+			//{
 				switch (p_AItem.itemCode)
 				{
 					case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15:
@@ -140,7 +140,7 @@ public class MillStone : MonoBehaviour
 						break;
 					}
 				}
-			}
+			//}
 		}
 
 		return false;
