@@ -76,28 +76,35 @@ public class CraftTableCameraController : MonoBehaviour
 
 		if (Screen.height - 1 <= Input.mousePosition.y)
 		{
-			if (m_NextRotation != m_OriginRotation)
+			PlayerCharacter t_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
+			if (t_PlayerCharacter != null)
 			{
-				//Canvas canvas = FindObjectOfType<Canvas>();
-				//if (canvas != null)
-				//{
-				//	GameObject GO = UniFunc.GetChildOfName(canvas.gameObject, "ui_sell_talk");
-				//	if(GO != null)
-				//	{
-				//		GO.SetActive(true);
-				//	}
-				//}
+				if(t_PlayerCharacter.m_GrabItemCode != null)
+				{
+					if (m_NextRotation != m_OriginRotation)
+					{
+						//Canvas canvas = FindObjectOfType<Canvas>();
+						//if (canvas != null)
+						//{
+						//	GameObject GO = UniFunc.GetChildOfName(canvas.gameObject, "ui_sell_talk");
+						//	if(GO != null)
+						//	{
+						//		GO.SetActive(true);
+						//	}
+						//}
 
-				m_NextRotation = m_OriginRotation;
+						m_NextRotation = m_OriginRotation;
+					}
+				}
 			}
 		}
-		else if (1 >= Input.mousePosition.y)
-		{
-			if (m_NextRotation != Quaternion.Euler(m_DownRotation))
-			{
-				m_NextRotation = Quaternion.Euler(m_DownRotation);
-			}
-		}
+		//else if (1 >= Input.mousePosition.y)
+		//{
+		//	if (m_NextRotation != Quaternion.Euler(m_DownRotation))
+		//	{
+		//		m_NextRotation = Quaternion.Euler(m_DownRotation);
+		//	}
+		//}
 
 		if(bMoveable == true)
 		{
@@ -109,5 +116,13 @@ public class CraftTableCameraController : MonoBehaviour
 	{
 		//transform.position = Vector3.Lerp(transform.position, m_NextPosition, 5 * DeltaTime);
 		transform.rotation = Quaternion.Slerp(transform.rotation, m_NextRotation, 5 * DeltaTime);
+	}
+
+	public void GoToCraft()
+	{
+		if (m_NextRotation != m_OriginRotation)
+		{
+			m_NextRotation = m_OriginRotation;
+		}
 	}
 }

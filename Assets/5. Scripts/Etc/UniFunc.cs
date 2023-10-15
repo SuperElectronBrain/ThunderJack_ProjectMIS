@@ -176,6 +176,40 @@ public class UniFunc : MonoBehaviour
 		return t_GemRecipes;
 	}
 
+	public static List<GemRecipe> FindRecipes(List<GemRecipe> p_GemRecipes, int p_Element)
+	{
+		List<GemRecipe> t_GemRecipes = null;
+		if (p_GemRecipes != null)
+		{
+			for (int i = 0; i < p_GemRecipes.Count; i = i + 1)
+			{
+				int count = 0;
+				if (p_GemRecipes[i].material1 == p_Element)
+				{
+					count = count + 1;
+				}
+
+				if (p_GemRecipes[i].material2 == p_Element)
+				{
+					count = count + 1;
+				}
+
+				if (p_GemRecipes[i].material3 == p_Element)
+				{
+					count = count + 1;
+				}
+
+				if(count > 0)
+				{
+					if (t_GemRecipes == null) { t_GemRecipes = new List<GemRecipe>(); }
+					t_GemRecipes.Add(p_GemRecipes[i]);
+				}
+			}
+		}
+
+		return t_GemRecipes;
+	}
+
 	public static Sprite FindSprite(int p_ItemCode)
 	{
 		Sprite t_Sprite = null;
