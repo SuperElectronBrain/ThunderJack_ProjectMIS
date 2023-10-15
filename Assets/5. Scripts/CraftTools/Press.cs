@@ -354,7 +354,7 @@ public class Press : MonoBehaviour
 			if (t_Element1 == t_Element2 || t_Element1 == t_Element3) { count = count + 1; }
 			for (int i = 0; i < m_Elements.Length; i = i + 1) { if (t_ElementPercent3 == m_Elements[i]) { count = count + 1; } }
 
-			Debug.Log("(" + t_Element1 + ", " + t_Element2 + ", " + t_Element3 + "), (" + count + ")");
+			//Debug.Log("(" + t_Element1 + ", " + t_Element2 + ", " + t_Element3 + "), (" + count + ")");
 
 			int t_ItemCode = 21;
 			float t_Progress = 1.0f;
@@ -362,7 +362,9 @@ public class Press : MonoBehaviour
 			if (count < 1)
 			{
 				//List<GemRecipe> t_GRecipes = UniFunc.FindRecipesOfElement(UniFunc.FindRecipesOfElement(UniFunc.FindRecipesOfElement(t_GemRecipes, 1, t_Element1), 2, t_Element2), 3, t_Element3);
-				List<GemRecipe> t_GRecipes = UniFunc.FindRecipesOfElement(t_GemRecipes, 1, t_Element1);
+				//List<GemRecipe> t_GRecipes = UniFunc.FindRecipesOfElement(t_GemRecipes, 1, t_Element1);
+
+				List<GemRecipe> t_GRecipes = UniFunc.FindRecipes(UniFunc.FindRecipes(UniFunc.FindRecipes(t_GemRecipes, t_Element1), t_Element2), t_Element3);
 				if (t_GRecipes != null)
 				{
 					t_ElementPercent1 = Mathf.Abs(1.0f - (t_ElementPercent1 / t_GRecipes[0].materialPercent1)) / 3;
@@ -378,7 +380,6 @@ public class Press : MonoBehaviour
 			t_AItem = new AdvencedItem(t_ItemCode, t_Progress, t_ItemAmount);
 		}
 
-		Debug.Log(t_AItem.itemCode);
 		RefreshGraph();
 		return t_AItem;
 	}
