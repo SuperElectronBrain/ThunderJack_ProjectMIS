@@ -61,6 +61,10 @@ public class MillStone : MonoBehaviour
 						}
 						m_MeasurCup.m_Input = m_Input;
 						m_MeasurCup.m_Progress = m_MeasurCup.m_Progress + (t_Progress / m_MaxTurnCount);
+						if(m_MeasurCup.m_Progress >= 1.0f)
+						{
+							m_MeasurCup.m_Progress = 1.0f;
+						}
 					}
 
 					m_SkeletonAnimation.timeScale = 1.0f;
@@ -123,8 +127,8 @@ public class MillStone : MonoBehaviour
 
 	public bool SetItem(AdvencedItem p_AItem)
 	{
-		if (m_Input == 0)
-		{
+		//if (m_Input == 0)
+		//{
 			//if (p_AItem.IsAddable(new AdvencedItem()) == false)
 			//{
 				switch (p_AItem.itemCode)
@@ -141,7 +145,7 @@ public class MillStone : MonoBehaviour
 					}
 				}
 			//}
-		}
+		//}
 
 		return false;
 	}

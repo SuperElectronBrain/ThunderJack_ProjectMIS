@@ -102,6 +102,7 @@ public class MeasurCup : MonoBehaviour, IGrabable
 				if (m_SkeletonAnimation != null) { m_SkeletonAnimation.timeScale = 0.0f; }
 			}
 
+			/*
 			//this가 MixingBowl과 접촉하고 있는 상태라면
 			if (m_MixingBowl != null)
 			{
@@ -146,6 +147,7 @@ public class MeasurCup : MonoBehaviour, IGrabable
 			{
 				if (m_SkeletonAnimation != null) { m_SkeletonAnimation.timeScale = 0.0f; }
 			}
+			*/
 		}
 
 		if (m_Progress > 0.0f)

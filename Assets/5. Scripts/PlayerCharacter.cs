@@ -76,7 +76,7 @@ public class PlayerCharacter : CharacterBase
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		FindPlayerCharacterUIScript();
-	}
+	} 
 
 	// Update is called once per frame
 	protected override void Update()
@@ -384,11 +384,14 @@ public class PlayerCharacter : CharacterBase
 				float t_DotProduct = -1.0f;
 				for (int i = 0; i < InteractableObjects.Count; i = i + 1)
 				{
-					float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
-					if (t_DotProduct < t_DotProduct1)
+					if(InteractableObjects[i].interactionGO != null)
 					{
-						t_DotProduct = t_DotProduct1;
-						t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+						float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
+						if (t_DotProduct < t_DotProduct1)
+						{
+							t_DotProduct = t_DotProduct1;
+							t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+						}
 					}
 				}
 			}
