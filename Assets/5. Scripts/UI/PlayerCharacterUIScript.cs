@@ -11,6 +11,7 @@ public class MonologueUI
 	public UnityEngine.UI.Image m_PortraitImage;
 	public TextMeshProUGUI m_MonologueText;
 
+
 	//public static implicit operator MonologueUI(string p_String) { return new MonologueUI(); }
 	//public static implicit operator string(MonologueUI p_MonologueUI)
 	//{
@@ -37,32 +38,6 @@ public class MonologueUI
 	}
 }
 
-[Serializable]
-public class ItemInfoDisplay
-{
-	public GameObject m_ItemInfoDisplayGO;
-	public RectTransform m_ItemInfoDisplayRect;
-	public TextMeshProUGUI m_ItemNameText;
-	public TextMeshProUGUI m_ItemInfoText;
-
-	public static implicit operator ItemInfoDisplay(GameObject p_GO)
-	{
-		ItemInfoDisplay t_ItemInfoDisplay = new ItemInfoDisplay();//null;
-		if (p_GO != null)
-		{
-			t_ItemInfoDisplay = new ItemInfoDisplay();
-			t_ItemInfoDisplay.m_ItemInfoDisplayGO = p_GO;
-		}
-		return t_ItemInfoDisplay;
-	}
-	public static implicit operator GameObject(ItemInfoDisplay p_ItemInfoDisplay)
-	{
-		GameObject t_GO = null;
-		if (p_ItemInfoDisplay.m_ItemInfoDisplayGO != null) { t_GO = p_ItemInfoDisplay.m_ItemInfoDisplayGO; }
-		return t_GO;
-	}
-}
-
 public class PlayerCharacterUIScript : MonoBehaviour
 {
 	public ClockUIScript m_ClockUIScript;
@@ -75,8 +50,6 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public MailBoxUIScript m_MailBoxUIScript;
 	public UnityEngine.UI.Image m_MouseGrabIcon;
 	public MonologueUI m_MonologueUI = new MonologueUI();
-	public ItemInfoDisplay m_ItemInfoDisplay = new ItemInfoDisplay();
-	public UnityEngine.UI.Image m_InteractionIcon;
 	public UnityEngine.UI.Image m_FadeUI;
 
 	// Start is called before the first frame update
@@ -108,43 +81,13 @@ public class PlayerCharacterUIScript : MonoBehaviour
 			if (m_MonologueUI.m_MonologueGO == null)
 			{
 				m_MonologueUI.m_MonologueGO = UniFunc.GetChildOfName(transform, "MonologueUI").GetComponent<GameObject>();
-			}
-			if (m_MonologueUI.m_MonologueGO != null)
-			{
-				if(m_MonologueUI.m_PortraitImage == null)
+				if (m_MonologueUI.m_MonologueGO != null)
 				{
 					m_MonologueUI.m_PortraitImage = UniFunc.GetChildComponent<UnityEngine.UI.Image>(m_MonologueUI.m_MonologueGO);
-				}
-				if (m_MonologueUI.m_MonologueText == null)
-				{
 					m_MonologueUI.m_MonologueText = UniFunc.GetChildComponent<TextMeshProUGUI>(m_MonologueUI.m_MonologueGO);
 				}
 			}
 		}
-		if (m_ItemInfoDisplay == null) { m_ItemInfoDisplay = new ItemInfoDisplay(); }
-		if (m_ItemInfoDisplay != null)
-		{
-			if (m_ItemInfoDisplay.m_ItemInfoDisplayGO == null)
-			{
-				m_ItemInfoDisplay.m_ItemInfoDisplayGO = UniFunc.GetChildOfName(transform, "ItemInformationDisplay").GetComponent<GameObject>();
-			}
-			if (m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
-			{
-				if(m_ItemInfoDisplay.m_ItemInfoDisplayRect == null)
-				{
-					m_ItemInfoDisplay.m_ItemInfoDisplayRect = m_ItemInfoDisplay.m_ItemInfoDisplayGO.GetComponent<RectTransform>();
-				}
-				if (m_ItemInfoDisplay.m_ItemNameText == null)
-				{ 
-					m_ItemInfoDisplay.m_ItemNameText = UniFunc.GetChildOfName(m_ItemInfoDisplay.m_ItemInfoDisplayGO, "ItemNameText (TMP)").GetComponent<TextMeshProUGUI>();
-				}
-				if (m_ItemInfoDisplay.m_ItemInfoText == null)
-				{ 
-					m_ItemInfoDisplay.m_ItemInfoText = UniFunc.GetChildOfName(m_ItemInfoDisplay.m_ItemInfoDisplayGO, "ItemInformationText (TMP)").GetComponent<TextMeshProUGUI>();
-				}
-			}
-		}
-		if (m_InteractionIcon == null) { m_InteractionIcon = UniFunc.GetChildOfName(transform, "InteractionIcon").GetComponent<UnityEngine.UI.Image>(); }
 		if (m_FadeUI == null) { m_FadeUI = UniFunc.GetChildOfName(transform, "FadeUI").GetComponent<UnityEngine.UI.Image>(); }
 	}
 }
