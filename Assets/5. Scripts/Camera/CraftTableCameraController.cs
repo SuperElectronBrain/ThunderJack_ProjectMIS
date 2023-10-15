@@ -61,19 +61,32 @@ public class CraftTableCameraController : MonoBehaviour
 			}
 		}
 
+		if (m_NextRotation != m_OriginRotation)
+		{
+			Canvas canvas = FindObjectOfType<Canvas>();
+			if (canvas != null)
+			{
+				GameObject GO = UniFunc.GetChildOfName(canvas.gameObject, "ui_sell_talk");
+				if (GO != null)
+				{
+					GO.SetActive(false);
+				}
+			}
+		}
+
 		if (Screen.height - 1 <= Input.mousePosition.y)
 		{
 			if (m_NextRotation != m_OriginRotation)
 			{
-				Canvas canvas = FindObjectOfType<Canvas>();
-				if (canvas != null)
-				{
-					GameObject GO = UniFunc.GetChildOfName(canvas.gameObject, "ui_sell_talk");
-					if(GO != null)
-					{
-						GO.SetActive(true);
-					}
-				}
+				//Canvas canvas = FindObjectOfType<Canvas>();
+				//if (canvas != null)
+				//{
+				//	GameObject GO = UniFunc.GetChildOfName(canvas.gameObject, "ui_sell_talk");
+				//	if(GO != null)
+				//	{
+				//		GO.SetActive(true);
+				//	}
+				//}
 
 				m_NextRotation = m_OriginRotation;
 			}
@@ -82,16 +95,6 @@ public class CraftTableCameraController : MonoBehaviour
 		{
 			if (m_NextRotation != Quaternion.Euler(m_DownRotation))
 			{
-				Canvas canvas = FindObjectOfType<Canvas>();
-				if (canvas != null)
-				{
-					GameObject GO = UniFunc.GetChildOfName(canvas.gameObject, "ui_sell_talk");
-					if (GO != null)
-					{
-						GO.SetActive(false);
-					}
-				}
-
 				m_NextRotation = Quaternion.Euler(m_DownRotation);
 			}
 		}
