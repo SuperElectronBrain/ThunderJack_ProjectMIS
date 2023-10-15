@@ -23,6 +23,7 @@ public class Press : MonoBehaviour
 	[SerializeField] private ParticleSystem m_CompleteVFX;
 	[SerializeField] private ParticleSystem m_FailVFX;
 	[SerializeField] private ParticleSystem m_SmokeVFX;
+	[SerializeField] private ParticleSystem m_MagicCircleResetVFX;
 	[SerializeField] private SpriteRenderer m_MagicCircleMaterial;
 	[SerializeField] private SpriteRenderer m_AccessorySprite;
 	//[SerializeField] private SpriteRenderer m_OutputSprite;
@@ -56,6 +57,7 @@ public class Press : MonoBehaviour
 		m_CompleteVFX.Stop();
 		m_FailVFX.Stop();
 		m_SmokeVFX.Stop();
+		m_MagicCircleResetVFX.Stop();
 		RefreshMagicCircleEffect();
 	}
 
@@ -124,6 +126,8 @@ public class Press : MonoBehaviour
 					//m_AccessoryInput = null;
 					
 					RefreshOutput();
+					m_MagicCircleResetVFX.Stop();
+					m_MagicCircleResetVFX.Play();
 					m_Progress = 0.0f;
 					bProgress = false;
 
@@ -145,6 +149,8 @@ public class Press : MonoBehaviour
 					RefreshGraph();
 					RefreshPlate();
 					RefreshOutput();
+					m_MagicCircleResetVFX.Stop();
+					m_MagicCircleResetVFX.Play();
 					RefreshMagicCircleEffect();
 				}
 
