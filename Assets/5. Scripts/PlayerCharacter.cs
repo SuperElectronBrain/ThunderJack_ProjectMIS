@@ -11,6 +11,14 @@ public interface IGrabable
 	//bool m_IsMouseGrab;
 }
 
+public struct InteractableObject
+{
+	public IInteraction interaction;
+	public GameObject interactionGO;
+
+	public InteractableObject(IInteraction p_Interaction, GameObject p_GameObject) { interaction = p_Interaction; interactionGO = p_GameObject; }
+}
+
 public class PlayerCharacter : CharacterBase
 {
 	private float m_FadeInTimeBase = 0.0f;
@@ -36,7 +44,7 @@ public class PlayerCharacter : CharacterBase
 	public QuestComponet m_QuestComponet;
 	public TutorialComponent m_TutorialComponent;
 	private IInteraction m_Interaction;
-	private List<IInteraction> InteractableObjects = new List<IInteraction>();
+	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
 	private GameObject m_GuideUI;
 
 	// Start is called before the first frame update
@@ -90,6 +98,24 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 		}
+		if(m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+				{
+					InteractableObject t_InteractableObject = GetInteractableObject();
+					if(t_InteractableObject.interaction != null)
+					{
+						Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
+						t_Vector.x = t_Vector.x + 0;
+						t_Vector.y = t_Vector.y + 75;
+						m_PlayerCharacterUIScript.m_InteractionIcon.rectTransform.position = t_Vector;
+					}
+				}
+			}
+		}
+
 
 		if (m_MonologueDisplayTime > 0.0f)
 		{
@@ -234,7 +260,7 @@ public class PlayerCharacter : CharacterBase
 		{
 			if(bMovable == true)
 			{
-				m_Interaction = GetInteractableObject();
+				m_Interaction = GetInteractableObject().interaction;
 				if (m_Interaction != null)
 				{
 					m_Interaction.Interaction(gameObject);
@@ -347,9 +373,27 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	public IInteraction GetInteractableObject()
+	public InteractableObject GetInteractableObject()
 	{
-		IInteraction t_Interaction = null;
+		InteractableObject t_Interaction = new InteractableObject(null, null);
+		if (InteractableObjects != null)
+		{
+			if (InteractableObjects.Count > 0)
+			{
+				float t_DotProduct = -1.0f;
+				for (int i = 0; i < InteractableObjects.Count; i = i + 1)
+				{
+					float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
+					if (t_DotProduct < t_DotProduct1)
+					{
+						t_DotProduct = t_DotProduct1;
+						t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+					}
+				}
+			}
+		}
+
+		/*
 		if (m_CollisionComponent != null)
 		{
 			float t_DotProduct = -1.0f;
@@ -392,7 +436,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 		}
-
+		*/
 		return t_Interaction;
 	}
 
@@ -403,10 +447,10 @@ public class PlayerCharacter : CharacterBase
 			IInteraction t_Interaction = other.gameObject.GetComponent<IInteraction>();
 			if (t_Interaction != null)
 			{
-				if (InteractableObjects == null) { InteractableObjects = new List<IInteraction>(); }
-				if(t_Interaction != InteractableObjects.Find((IInteraction x) => { return x == t_Interaction; }))
+				if (InteractableObjects == null) { InteractableObjects = new List<InteractableObject>(); }
+				if(t_Interaction != InteractableObjects.Find((InteractableObject x) => { return x.interaction == t_Interaction; }).interaction)
 				{
-					InteractableObjects.Add(t_Interaction);
+					InteractableObjects.Add(new InteractableObject(t_Interaction, other.gameObject));
 				}
 			}
 		}
@@ -421,7 +465,8 @@ public class PlayerCharacter : CharacterBase
 			IInteraction t_Interaction = other.gameObject.GetComponent<IInteraction>();
 			if (t_Interaction != null)
 			{
-				InteractableObjects.Remove(t_Interaction);
+				InteractableObjects.Remove(new InteractableObject(t_Interaction, other.gameObject));
+				InteractableObjects.TrimExcess();
 			}
 		}
 
@@ -515,6 +560,7 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 	}
+
 	public void PopUpInteractionIcon(bool param)
 	{
 		if (m_PlayerCharacterUIScript != null)
