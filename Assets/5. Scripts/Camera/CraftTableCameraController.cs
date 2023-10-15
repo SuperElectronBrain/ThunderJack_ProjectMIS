@@ -122,7 +122,7 @@ public class CraftTableCameraController : MonoBehaviour
 	{
 		if (m_NextRotation != m_OriginRotation)
 		{
-			m_NextRotation = m_OriginRotation;
+			m_NextRotation = Quaternion.Euler(m_DownRotation);
 		}
 	}
 }
