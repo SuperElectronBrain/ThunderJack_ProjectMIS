@@ -255,46 +255,47 @@ public class PlayerCharacter : CharacterBase
 		if (Input.GetAxisRaw("Horizontal") == 0.0f) { m_HorizontalMove = 0.0f; }
 		if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
 
-		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
-		if (Input.GetKeyDown(KeyCode.E) == true) 
+		if(bMovable == true)
 		{
-			if(bMovable == true)
+			if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
+			if (Input.GetKeyDown(KeyCode.E) == true) 
 			{
-				m_Interaction = GetInteractableObject().interaction;
-				if (m_Interaction != null)
+				IInteraction T_Interaction = GetInteractableObject().interaction;
+				if (T_Interaction != null)
 				{
-					m_Interaction.Interaction(gameObject);
+					T_Interaction.Interaction(gameObject);
 					CommunicationStart();
 				}
+				PopUpInteractionIcon(false);
 			}
-		}
-		if (Input.GetKeyDown(KeyCode.Q) == true)
-		{ 
-			if (m_Inventory.m_InventoryUIScript != null)
+			if (Input.GetKeyDown(KeyCode.Q) == true)
 			{ 
-				m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
-				m_Inventory.RefreshInventory();
+				if (m_Inventory.m_InventoryUIScript != null)
+				{ 
+					m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
+					m_Inventory.RefreshInventory();
+				}
 			}
-		}
-		if (Input.GetKeyDown(KeyCode.F1) == true)
-		{
-			GameObject t_GameObject = UniFunc.GetChildOfName(GameObject.Find("GuideUIs"), "ManualUI");
-			if(t_GameObject != null)
+			if (Input.GetKeyDown(KeyCode.F1) == true)
 			{
-				t_GameObject.SetActive(!t_GameObject.activeSelf);
+				GameObject t_GameObject = UniFunc.GetChildOfName(GameObject.Find("GuideUIs"), "ManualUI");
+				if(t_GameObject != null)
+				{
+					t_GameObject.SetActive(!t_GameObject.activeSelf);
+				}
 			}
-		}
 
-		if (Input.GetMouseButtonDown(0) == true)
-		{
-			DoRaycast(true);
-		}
-		if (Input.GetMouseButtonUp(0) == true)
-		{
-			DoRaycast(false);
+			if (Input.GetMouseButtonDown(0) == true)
+			{
+				DoRaycast(true);
+			}
+			if (Input.GetMouseButtonUp(0) == true)
+			{
+				DoRaycast(false);
 
-			m_GrabItemCode = new AdvencedItem();
-			if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
+				m_GrabItemCode = new AdvencedItem();
+				if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
+			}
 		}
 	}
 
@@ -302,18 +303,18 @@ public class PlayerCharacter : CharacterBase
 	{
 		base.Jump();
 
-		RaycastHit hit;
-		Vector3 t_Point = m_Collider != null ? transform.up * ((m_Collider.height / 2) - m_Collider.radius) : transform.position;
-		if (Physics.CapsuleCast(t_Point, -t_Point, m_Collider != null ? m_Collider.radius : transform.localScale.x / 2, transform.forward, out hit, Mathf.Infinity) == true)
-		{
-			if (hit.transform.gameObject != gameObject)
-			{
-				if(m_Rigidbody != null)
-				{
-					m_Rigidbody.AddForce(Vector3.up * jumpForce);
-				}
-			}
-		}
+		//RaycastHit hit;
+		//Vector3 t_Point = m_Collider != null ? transform.up * ((m_Collider.height / 2) - m_Collider.radius) : transform.position;
+		//if (Physics.CapsuleCast(t_Point, -t_Point, m_Collider != null ? m_Collider.radius : transform.localScale.x / 2, transform.forward, out hit, Mathf.Infinity) == true)
+		//{
+		//	if (hit.transform.gameObject != gameObject)
+		//	{
+		//		if(m_Rigidbody != null)
+		//		{
+		//			m_Rigidbody.AddForce(Vector3.up * jumpForce);
+		//		}
+		//	}
+		//}
 	}
 
 	//protected override void HorizontalMove(float DeltaTime)
@@ -471,6 +472,12 @@ public class PlayerCharacter : CharacterBase
 		}
 
 		PopUpInteractionIcon(InteractableObjects.Count > 0);
+	}
+
+	public override void CommunicationEnd()
+	{
+		base.CommunicationEnd();
+		PopUpInteractionIcon(false);
 	}
 
 	public void FindPlayerCharacterUIScript()

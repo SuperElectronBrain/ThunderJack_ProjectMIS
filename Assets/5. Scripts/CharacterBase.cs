@@ -141,12 +141,12 @@ public class CharacterBase : MonoBehaviour
 		}
 	}
 
-	public void CommunicationStart()
+	public virtual void CommunicationStart()
 	{
 		bMovable = false;
 	}
 
-	public void CommunicationEnd()
+	public virtual void CommunicationEnd()
 	{
 		bMovable = true;
 	}
