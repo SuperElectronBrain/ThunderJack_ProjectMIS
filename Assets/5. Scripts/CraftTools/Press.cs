@@ -57,6 +57,7 @@ public class Press : MonoBehaviour
 		m_CompleteVFX.Stop();
 		m_FailVFX.Stop();
 		m_SmokeVFX.Stop();
+		m_MagicCircleResetVFX.loop = false;
 		m_MagicCircleResetVFX.Stop();
 		RefreshMagicCircleEffect();
 	}
@@ -124,10 +125,14 @@ public class Press : MonoBehaviour
 					for (int i = 0; i < m_Elements.Length; i = i + 1) { m_Elements[i] = 0.0f; }
 					for (int i = 0; i < m_Ingredients.Count; i = i + 1) { m_Ingredients[i] = null; }
 					//m_AccessoryInput = null;
-					
+
+					RefreshGraph();
+					RefreshPlate();
 					RefreshOutput();
+					RefreshMagicCircleEffect();
 					m_MagicCircleResetVFX.Stop();
 					m_MagicCircleResetVFX.Play();
+
 					m_Progress = 0.0f;
 					bProgress = false;
 
@@ -149,9 +154,9 @@ public class Press : MonoBehaviour
 					RefreshGraph();
 					RefreshPlate();
 					RefreshOutput();
+					RefreshMagicCircleEffect();
 					m_MagicCircleResetVFX.Stop();
 					m_MagicCircleResetVFX.Play();
-					RefreshMagicCircleEffect();
 				}
 
 				m_PreviousHandlePosition = t_CurrentHandlePosition;
@@ -408,7 +413,12 @@ public class Press : MonoBehaviour
 			m_FailVFX.Play();
 		}
 
+		RefreshGraph();
 		RefreshPlate();
+		RefreshOutput();
+		RefreshMagicCircleEffect();
+		m_MagicCircleResetVFX.Stop();
+		m_MagicCircleResetVFX.Play();
 		return t_AItem;
 	}
 
@@ -461,9 +471,15 @@ public class Press : MonoBehaviour
 
 	public void RefreshMagicCircleEffect()
 	{
-		for (int i = 0; i < m_MagicCircleVFXs.Count; i = i + 1)
+		if(m_MagicCircleVFXs != null)
 		{
-			m_MagicCircleVFXs[i].Stop();
+			for (int i = 0; i < m_MagicCircleVFXs.Count; i = i + 1)
+			{
+				if (m_MagicCircleVFXs[i] != null)
+				{
+					m_MagicCircleVFXs[i].Stop();
+				}
+			}
 		}
 	}
 }

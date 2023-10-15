@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-	[SerializeField] private Vector3 destination;
-	[SerializeField] private string destinationSceneName;
-	[SerializeField] private bool isOverlapping = false;
-	private PlayerCharacter m_PlayerCharacter = null;
+	[SerializeField] protected Vector3 destination;
+	[SerializeField] protected string destinationSceneName;
+	[SerializeField] protected bool isOverlapping = false;
+	protected PlayerCharacter m_PlayerCharacter = null;
 
 	// Start is called before the first frame update
 	void Start()
@@ -26,7 +26,7 @@ public class Portal : MonoBehaviour
 	//    
 	//}
 
-	private void OnSceneLoaded(UnityEngine.SceneManagement.Scene p_Scene, UnityEngine.SceneManagement.LoadSceneMode p_Mode)
+	protected void OnSceneLoaded(UnityEngine.SceneManagement.Scene p_Scene, UnityEngine.SceneManagement.LoadSceneMode p_Mode)
 	{
 		PlayerCharacter t_PlayerCharacter = null;
 		List<PlayerCharacter> t_PlayerCharacters = FindObjectsOfType<PlayerCharacter>().ToList();
