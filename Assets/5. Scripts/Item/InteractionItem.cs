@@ -10,6 +10,9 @@ public class InteractionItem : MonoBehaviour
     GameObject interactionAccessory;
     SkeletonAnimation skAni;
 
+    [SerializeField]
+    bool isActive;
+
     private void Start()
     {
         interactionMaterial = AddressableManager.LoadObject<GameObject>("InteractionMaterial");
@@ -42,11 +45,33 @@ public class InteractionItem : MonoBehaviour
         }                        
     }
 
+    RaycastHit2D hit;
+    Ray2D ray;
+
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        { 
-            ItemInteraction(itemID);            
+        if(!isActive)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                ItemInteraction(itemID);
+            }
         }
+        else
+        {
+            var mPos = Input.mousePosition;
+            mPos = Camera.main.ScreenToWorldPoint(mPos);
+            ray = new Ray2D(mPos, Vector2.zero);
+
+            int layer = 1 << LayerMask.GetMask("MaterialObj1");
+
+            hit = Physics2D.Raycast(mPos, ray.direction, Mathf.Infinity);
+
+            if (hit)
+            {
+                Debug.Log(hit.transform.gameObject.name);
+            }
+        }
+        
     }
 }
