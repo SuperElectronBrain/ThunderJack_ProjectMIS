@@ -74,7 +74,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         PlayerPrefs.DeleteAll();
-        //EventManager.Subscribe(EventType.Enter, EnterShop);
+        EventManager.Subscribe(EventType.Enter, EnterShop);
         EventManager.Subscribe(EventType.Exit, ExitShop);
     }
 
@@ -88,11 +88,13 @@ public class GameManager : Singleton<GameManager>
 
     public void EnterShop()
     {
-        for(int i = 1; i <= characterDB.GetCharacterCount(); i++)
+        /*for(int i = 1; i <= characterDB.GetCharacterCount(); i++)
         {
             characterDB.GetCharacter(i).transform.SetParent(null);
             characterDB.GetCharacter(i).gameObject.SetActive(false);
-        }
+        }*/
+        isWork = true;
+        EventManager.Publish(EventType.Save);
     }
 
     public void InitScene(SceneType sceneType)
@@ -106,9 +108,10 @@ public class GameManager : Singleton<GameManager>
                 CameraEvent.Instance.Init();
                 GameEventManager.Init();
                 EventManager.Publish(EventType.Load);
+                isWork = false;
                 break;
             case SceneType.InSide:
-
+                isWork = true;
                 break;
             case SceneType.Bussiness:
 
@@ -117,12 +120,8 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void ExitShop()
-    {        
-    }
-
-    public void ChangeWorking()
     {
-        isWork = !isWork;
+        isWork = false;
     }
 }
 
