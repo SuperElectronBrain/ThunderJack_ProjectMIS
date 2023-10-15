@@ -9876,6 +9876,14 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7235983085152751069, guid: a3201ceee85e75149b946a916e4ea42c, type: 3}
+      propertyPath: m_MaxTurnCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7235983085152751069, guid: a3201ceee85e75149b946a916e4ea42c, type: 3}
+      propertyPath: m_AnimationProgressSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7345327662504497620, guid: a3201ceee85e75149b946a916e4ea42c, type: 3}
       propertyPath: m_SortingOrder
       value: 0
@@ -22640,9 +22648,12 @@ MonoBehaviour:
   bProgress: 0
   m_Progress: 0
   m_MaxTurnCount: 10
+  m_AnimationProgressSpeed: 1
   m_MeasurCup: {fileID: 3945305521534461941}
   m_ProgressText: {fileID: 57049285180177824}
   m_SkeletonAnimation: {fileID: 7525750830623096224}
+  m_TopAnimator: {fileID: 0}
+  m_BottomAnimator: {fileID: 0}
 --- !u!114 &7422487636226003035
 MonoBehaviour:
   m_ObjectHideFlags: 0

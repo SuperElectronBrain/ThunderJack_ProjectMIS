@@ -13,12 +13,16 @@ public class MillStone : MonoBehaviour
 	public float m_Progress = 0.0f;
 	public float M_Progress { get { return m_Progress; } set { m_Progress = value > 1.0f ? 1.0f : (value < 0 ? 0 : value); } }
 	[SerializeField] private float m_MaxTurnCount = 10.0f;
+	private float m_AnimationProgress = 0.0f;
+	[SerializeField] private float m_AnimationProgressSpeed = 1.0f;
 	private Vector3 m_PreviousHandlePosition;
 
 	public MeasurCup m_MeasurCup;
 	[SerializeField] private TMPro.TextMeshPro m_ProgressText;
 	[SerializeField] private SkeletonAnimation m_SkeletonAnimation;
 	private TrackEntry trackEntry;
+	[SerializeField] private Animator m_TopAnimator;
+	[SerializeField] private Animator m_BottomAnimator;
 
 	// Start is called before the first frame update
 	void Start()
@@ -42,8 +46,8 @@ public class MillStone : MonoBehaviour
 			{
 				Vector3 t_CurrentHandlePosition = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
 
-				float t_X = Vector3.Dot(m_PreviousHandlePosition, t_CurrentHandlePosition);//³»ÀûÀ¸·Î m_PreviousHandlePosition¸¦ ÃàÀ¸·Î ÇÏ´Â t_CurrentHandlePositionÀÇ xÃà ¼ººÐÀ» °è»êÇÔ
-				float t_Y = Vector3.Dot((t_CurrentHandlePosition - (m_PreviousHandlePosition * t_X)).normalized, t_CurrentHandlePosition);//t_CurrentHandlePosition¿¡»ç xÃà ¼ººÐÀ» Á¦°ÅÇÏ°í yÃà ¼ººÐÀ» ¾òÀ½
+				float t_X = Vector3.Dot(m_PreviousHandlePosition, t_CurrentHandlePosition);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ m_PreviousHandlePositionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ t_CurrentHandlePositionï¿½ï¿½ xï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+				float t_Y = Vector3.Dot((t_CurrentHandlePosition - (m_PreviousHandlePosition * t_X)).normalized, t_CurrentHandlePosition);//t_CurrentHandlePositionï¿½ï¿½ï¿½ï¿½ xï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ yï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				float t_Progress = (Vector3.Cross(m_PreviousHandlePosition, t_CurrentHandlePosition).z < 0 ? 1 : -1) * (Mathf.Atan2(t_Y, t_X) / Mathf.PI) / 2;
 				if (t_Progress > 0)
 				{
@@ -61,11 +65,13 @@ public class MillStone : MonoBehaviour
 
 					m_SkeletonAnimation.timeScale = 1.0f;
 				}
+				/*
 				else if (t_Progress < 0)
 				{
-					bProgress = false; //¿ªÈ¸Àü ¹æÁö
+					bProgress = false; //ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 					m_SkeletonAnimation.timeScale = 0.0f;
 				}
+				*/
 				else if (t_Progress == 0)
 				{
 					m_SkeletonAnimation.timeScale = 0.0f;
@@ -84,6 +90,13 @@ public class MillStone : MonoBehaviour
 			bProgress = false;
 			m_SkeletonAnimation.timeScale = 0.0f;
 		}
+
+		if (m_Progress >= 1) { m_AnimationProgress = 1; }
+		if (m_Progress <= 0) { m_AnimationProgress = 0; }
+		float t_ProgressLerp = Mathf.Lerp(m_AnimationProgress, m_Progress, DeltaTime * m_AnimationProgressSpeed);
+		m_TopAnimator.SetFloat("Velocity", m_AnimationProgress - t_ProgressLerp);
+		m_BottomAnimator.SetFloat("Velocity", m_AnimationProgress - t_ProgressLerp);
+		m_AnimationProgress = t_ProgressLerp;
 
 		float t_AnimationProgress = (1 - m_Progress) * m_MaxTurnCount;
 		if (trackEntry != null)
