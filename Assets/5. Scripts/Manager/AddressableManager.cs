@@ -76,7 +76,7 @@ Addressables.LoadAssetAsync<T>(loadObjectName)
             if (typeof(T) == typeof(Spine.SkeletonData))
                 loadObjectName = "Icon";
             else
-                loadObjectName = "Stone";
+                loadObjectName = "stone";
         }
         else
         {

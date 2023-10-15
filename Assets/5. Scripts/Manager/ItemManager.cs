@@ -52,12 +52,12 @@ public class ItemManager : MonoBehaviour
         {
             int itemIdx = Tools.IntParse(element["Item_ID"]) - 1;
 
-            //MaterialItemData newItemData = basicItemData[itemIdx] as MaterialItemData;
+            MaterialItemData newItemData = basicItemData[itemIdx] as MaterialItemData;
 
-            /*if(newItemData != null)
-                newItemData = (MaterialItemData)basicItemData[itemIdx];*/
+            if(newItemData != null)
+                newItemData = (MaterialItemData)basicItemData[itemIdx];
 
-            MaterialItemData newItemData = new MaterialItemData
+            newItemData += new MaterialItemData
             {
                 elementType1 = Tools.IntParse(element["element_Type_1"]),
                 elementType2 = Tools.IntParse(element["element_Type_2"]),
@@ -67,7 +67,8 @@ public class ItemManager : MonoBehaviour
                 //elementPercent3 = Tools.IntParse(element["Element_Percent_3"])
             };
 
-            basicItemData[itemIdx] = newItemData.MergeData((MaterialItemData)basicItemData[itemIdx], newItemData);
+            
+            basicItemData[itemIdx] = newItemData;
             materialItemData.Add(newItemData);
         }
     }
@@ -98,7 +99,6 @@ public class ItemManager : MonoBehaviour
                         itemNameKo = ir["Item_Name_KO"].ToString(),
                         itemType = (ItemType)Tools.IntParse(ir["Item_Type"]),
                         itemResourceImage = resourceImage,
-                        particlesName = ir["Particles_Name"].ToString(),
                         itemText = ir["Item_Text"].ToString()
                     }
                     );
@@ -112,7 +112,6 @@ public class ItemManager : MonoBehaviour
                         itemNameKo = ir["Item_Name_KO"].ToString(),
                         itemType = (ItemType)Tools.IntParse(ir["Item_Type"]),
                         itemResourceImage = resourceImage,
-                        particlesName = ir["Particles_Name"].ToString(),
                         itemText = ir["Item_Text"].ToString(),
                     }
                     );
@@ -126,7 +125,6 @@ public class ItemManager : MonoBehaviour
                         itemNameKo = ir["Item_Name_KO"].ToString(),
                         itemType = (ItemType)Tools.IntParse(ir["Item_Type"]),
                         itemResourceImage = resourceImage,
-                        particlesName = ir["Particles_Name"].ToString(),
                         itemText = ir["Item_Text"].ToString()
                     }
                     );
@@ -240,11 +238,6 @@ public class ItemManager : MonoBehaviour
     public string GetItemText(int itemID)
     {
         return basicItemData[itemID - 1].itemText;
-    }
-
-    public ItemType GetItemType(int itemID)
-    {
-        return basicItemData[itemID - 1].itemType;
     }
 
     public List<GemRecipe> GetGemRecipe()
@@ -361,7 +354,6 @@ public class BasicItemData
     public string itemNameKo;
     public string itemNameEg;        
     public Sprite itemResourceImage;
-    public string particlesName;
     public ItemType itemType;
     public string itemText;
 }
@@ -381,8 +373,7 @@ public class MaterialItemData : BasicItemData
     public float elementPercent1;
     public float elementPercent2;
     public float elementPercent3;
-
-    public MaterialItemData MergeData(MaterialItemData mid1, MaterialItemData mid2)
+    public static MaterialItemData operator +(MaterialItemData mid1, MaterialItemData mid2)
     {
         return new MaterialItemData
         {
@@ -392,7 +383,6 @@ public class MaterialItemData : BasicItemData
             itemResourceImage = mid1.itemResourceImage,
             itemType = mid1.itemType,
             itemText = mid1.itemText,
-            particlesName = mid1.particlesName,
             elementType1 = mid2.elementType1,
             elementType2 = mid2.elementType2,
             elementType3 = mid2.elementType3,
@@ -401,26 +391,6 @@ public class MaterialItemData : BasicItemData
             elementPercent3 = mid2.elementPercent3
         };
     }
-/*    public static MaterialItemData operator +(MaterialItemData mid1, MaterialItemData mid2)
-    {
-        Debug.Log("¾Æ ¸ÁÇß´Ù ¤»¤»");
-        return new MaterialItemData
-        {
-            itemID = mid1.itemID,
-            itemNameKo = mid1.itemNameKo,
-            itemNameEg = mid1.itemNameEg,
-            itemResourceImage = mid1.itemResourceImage,
-            itemType = mid1.itemType,
-            itemText = mid1.itemText,
-            particlesName = mid1.particlesName,
-            elementType1 = mid2.elementType1,
-            elementType2 = mid2.elementType2,
-            elementType3 = mid2.elementType3,
-            elementPercent1 = mid2.elementPercent1,
-            elementPercent2 = mid2.elementPercent2,
-            elementPercent3 = mid2.elementPercent3
-        };
-    }*/
 }
 #endregion
 

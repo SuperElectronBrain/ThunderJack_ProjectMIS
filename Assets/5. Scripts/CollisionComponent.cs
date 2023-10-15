@@ -8,10 +8,8 @@ public class CollisionComponent : MonoBehaviour
 	[HideInInspector] public List<Collision> m_Collisions = new List<Collision>();
 	[HideInInspector] public List<Collider> m_Colliders = new List<Collider>();
 
-	public UnityEvent m_OnCollisionEnter = new UnityEvent();
-	public UnityEvent m_OnCollisionExit = new UnityEvent();
-	[HideInInspector] public UnityEvent<Collider> m_OnCollisionEnterUseParam = new UnityEvent<Collider>();
-	[HideInInspector] public UnityEvent<Collider> m_OnCollisionExitUseParam = new UnityEvent<Collider>();
+	[SerializeField] private UnityEvent m_OnCollisionEnter = new UnityEvent();
+	[SerializeField] private UnityEvent m_OnCollisionExit = new UnityEvent();
 
 	private void OnCollisionEnter(Collision collision)
 	{
@@ -22,7 +20,6 @@ public class CollisionComponent : MonoBehaviour
 		}
 		if(count < 1) { m_Collisions.Add(collision); }
 		m_OnCollisionEnter.Invoke();
-		m_OnCollisionEnterUseParam.Invoke(collision.collider);
 	}
 	private void OnCollisionExit(Collision collision) 
 	{
@@ -36,7 +33,6 @@ public class CollisionComponent : MonoBehaviour
 			}
 		}
 		m_OnCollisionExit.Invoke();
-		m_OnCollisionExitUseParam.Invoke(collision.collider);
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -48,7 +44,6 @@ public class CollisionComponent : MonoBehaviour
 		}
 		if (count < 1) { m_Colliders.Add(other); }
 		m_OnCollisionEnter.Invoke();
-		m_OnCollisionEnterUseParam.Invoke(other);
 	}
 	private void OnTriggerExit(Collider other)
 	{
@@ -62,6 +57,5 @@ public class CollisionComponent : MonoBehaviour
 			}
 		}
 		m_OnCollisionExit.Invoke();
-		m_OnCollisionExitUseParam.Invoke(other);
 	}
 }

@@ -61,11 +61,11 @@ public class MillStone : MonoBehaviour
 
 					m_SkeletonAnimation.timeScale = 1.0f;
 				}
-				//else if (t_Progress < 0)
-				//{
-				//	bProgress = false; //역회전 방지
-				//	m_SkeletonAnimation.timeScale = 0.0f;
-				//}
+				else if (t_Progress < 0)
+				{
+					bProgress = false; //역회전 방지
+					m_SkeletonAnimation.timeScale = 0.0f;
+				}
 				else if (t_Progress == 0)
 				{
 					m_SkeletonAnimation.timeScale = 0.0f;
@@ -112,8 +112,8 @@ public class MillStone : MonoBehaviour
 	{
 		if (m_Input == 0)
 		{
-			//if (p_AItem.IsAddable(new AdvencedItem()) == false)
-			//{
+			if (p_AItem.IsAddable(new AdvencedItem()) == false)
+			{
 				switch (p_AItem.itemCode)
 				{
 					case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15:
@@ -127,7 +127,7 @@ public class MillStone : MonoBehaviour
 						break;
 					}
 				}
-			//}
+			}
 		}
 
 		return false;

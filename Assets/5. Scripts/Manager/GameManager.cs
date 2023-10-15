@@ -70,17 +70,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        PlayerPrefs.DeleteAll();
-        //EventManager.Subscribe(EventType.Enter, EnterShop);
+  /*      EventManager.Subscribe(EventType.Enter, EnterShop);*/
         EventManager.Subscribe(EventType.Exit, ExitShop);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-            EventManager.Publish(EventType.Day);
-        else if (Input.GetKeyDown(KeyCode.X))
-            EventManager.Publish(EventType.EndIteraction);
     }
 
     public void EnterShop()
@@ -98,8 +89,6 @@ public class GameManager : Singleton<GameManager>
         {
             case SceneType.OutSide:
                 CameraEvent.Instance.Init();
-                GameEventManager.Init();
-                EventManager.Publish(EventType.Load);
                 break;
             case SceneType.InSide:
 
@@ -111,7 +100,8 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void ExitShop()
-    {        
+    {
+        
     }
 
     public void ChangeWorking()
