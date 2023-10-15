@@ -11,17 +11,11 @@ public class CustomButton : Button
 	[FormerlySerializedAs("onDown")]
 	[SerializeField]
 	private ButtonClickedEvent m_OnDown = new ButtonClickedEvent();
-	public ButtonClickedEvent onDown { get { return m_OnDown; } set { m_OnDown = value; } }
-
-	[FormerlySerializedAs("onEnter")]
-	[SerializeField]
-	private ButtonClickedEvent m_OnEnter = new ButtonClickedEvent();
-	public ButtonClickedEvent onEnter { get { return m_OnEnter; } set { m_OnEnter = value; } }
-
-	[FormerlySerializedAs("onExit")]
-	[SerializeField]
-	private ButtonClickedEvent m_OnExit = new ButtonClickedEvent();
-	public ButtonClickedEvent onExit { get { return m_OnExit; } set { m_OnExit = value; } }
+	public ButtonClickedEvent onDown
+	{
+		get { return m_OnDown; }
+		set { m_OnDown = value; }
+	}
 
 	private void Press()
 	{
@@ -73,21 +67,5 @@ public class CustomButton : Button
 		{
 			EvaluateAndTransitionToSelectionState(currentSelectionState);
 		}
-	}
-
-	public override void OnPointerEnter(PointerEventData eventData)
-	{
-		base.OnPointerEnter(eventData);
-
-		UISystemProfilerApi.AddMarker("Button.onEnter", this);
-		onEnter.Invoke();
-	}
-
-	public override void OnPointerExit(PointerEventData eventData)
-	{
-		base.OnPointerExit(eventData);
-
-		UISystemProfilerApi.AddMarker("Button.onExit", this);
-		onExit.Invoke();
 	}
 }
