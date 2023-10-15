@@ -68,6 +68,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     Transform characters;
 
+    public SceneType prevSceneType;
+    public SceneType curSceneType;
+
     private void Start()
     {
         PlayerPrefs.DeleteAll();
@@ -94,6 +97,9 @@ public class GameManager : Singleton<GameManager>
 
     public void InitScene(SceneType sceneType)
     {
+        prevSceneType = curSceneType;
+        curSceneType = sceneType;
+
         switch(sceneType)
         {
             case SceneType.OutSide:

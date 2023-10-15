@@ -10,7 +10,8 @@ public class QuestManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var questDB = GameManager.Instance.DataBase.Parser("Quest_Table");
+        questList = new List<QuestData>();
+        var questDB = GameManager.Instance.DataBase.Parser("Quest_Master");
 
         foreach (var quest in questDB)
         {
