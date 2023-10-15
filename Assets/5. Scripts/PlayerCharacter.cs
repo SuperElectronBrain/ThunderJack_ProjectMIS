@@ -886,6 +886,7 @@ public class PlayerCharacter : CharacterBase
 				*/
 			}
 
+			/*
 			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
 			if (t_AccessoryPlate != null)
 			{
@@ -916,6 +917,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
@@ -945,6 +947,18 @@ public class PlayerCharacter : CharacterBase
 					{
 						t_PlayerShop.itemCode = t_AItem.itemCode;
 						t_PlayerShop.HandOverItem();
+					}
+				}
+			}
+
+			TrashCan t_TrashCan = hit.transform.GetComponent<TrashCan>();
+			if (t_TrashCan != null) 
+			{
+				if (m_GrabItemCode != null)
+				{
+					if (m_GrabItemCode.itemCode == 21)
+					{
+						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 					}
 				}
 			}
@@ -1140,19 +1154,20 @@ public class PlayerCharacter : CharacterBase
 				}
 
 				/*
-				//if (t_MillStone.M_Input == 0)
-				//{
-				//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
-				//	{
-				//
-				//		t_MillStone.M_Input = t_AItem.itemCode;
-				//		t_MillStone.m_Progress = t_AItem.itemProgress;
-				//	}
-				//}
+				if (t_MillStone.M_Input == 0)
+				{
+					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+					if(t_AItem.IsAddable(new AdvencedItem()) == false)
+					{
+				
+						t_MillStone.M_Input = t_AItem.itemCode;
+						t_MillStone.m_Progress = t_AItem.itemProgress;
+					}
+				}
 				*/
 			}
 
+			/*
 			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
 			if (t_AccessoryPlate != null)
 			{
@@ -1183,6 +1198,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
@@ -1212,6 +1228,18 @@ public class PlayerCharacter : CharacterBase
 					{
 						t_PlayerShop.itemCode = t_AItem.itemCode;
 						t_PlayerShop.HandOverItem();
+					}
+				}
+			}
+
+			TrashCan t_TrashCan = hit.transform.GetComponent<TrashCan>();
+			if (t_TrashCan != null)
+			{
+				if (m_GrabItemCode != null)
+				{
+					if (m_GrabItemCode.itemCode == 21)
+					{
+						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 					}
 				}
 			}
