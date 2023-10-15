@@ -14,6 +14,7 @@ public class InteractionItem : MonoBehaviour
     {
         interactionMaterial = AddressableManager.LoadObject<GameObject>("InteractionMaterial");
         interactionAccessory = AddressableManager.LoadObject<GameObject>("InteractionAccessory");
+
     }
     
     public void ItemInteraction(int itemID)
@@ -39,5 +40,13 @@ public class InteractionItem : MonoBehaviour
             default:
                 return;
         }                        
+    }
+
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+        { 
+            ItemInteraction(itemID);            
+        }
     }
 }

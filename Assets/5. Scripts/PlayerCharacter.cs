@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public interface IGrabable
@@ -10,6 +9,14 @@ public interface IGrabable
 	public void GrabMoving();
 	//bool m_IsMouseGrabable;
 	//bool m_IsMouseGrab;
+}
+
+public struct InteractableObject
+{
+	public IInteraction interaction;
+	public GameObject interactionGO;
+
+	public InteractableObject(IInteraction p_Interaction, GameObject p_GameObject) { interaction = p_Interaction; interactionGO = p_GameObject; }
 }
 
 public class PlayerCharacter : CharacterBase
@@ -25,6 +32,8 @@ public class PlayerCharacter : CharacterBase
 	private CapsuleCollider m_Collider;
 	public UnityEngine.UI.Image m_GrabItemSprite;
 	[HideInInspector] public AdvencedItem m_GrabItemCode = new AdvencedItem();
+	[HideInInspector] public AdvencedItem m_HoverItemCode = new AdvencedItem();
+	public ItemInfoDisplay m_ItemInfoDisplay;
 	//[HideInInspector] public GameObject m_HitObject;
 	[SerializeField] private CollisionComponent m_CollisionComponent;
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
@@ -35,6 +44,7 @@ public class PlayerCharacter : CharacterBase
 	public QuestComponet m_QuestComponet;
 	public TutorialComponent m_TutorialComponent;
 	private IInteraction m_Interaction;
+	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
 	private GameObject m_GuideUI;
 
 	// Start is called before the first frame update
@@ -46,6 +56,11 @@ public class PlayerCharacter : CharacterBase
 		//m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
 		if (m_CollisionComponent == null) { m_CollisionComponent = UniFunc.GetChildComponent<CollisionComponent>(transform); }
+		if (m_CollisionComponent != null)
+		{
+			m_CollisionComponent.m_OnCollisionEnterUseParam.AddListener(OnInteractableObjectEnter);
+			m_CollisionComponent.m_OnCollisionExitUseParam.AddListener(OnInteractableObjectExit);
+		}
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
 		if (m_TutorialComponent == null) { m_TutorialComponent = GetComponent<TutorialComponent>(); }
@@ -56,7 +71,7 @@ public class PlayerCharacter : CharacterBase
 		}
 		if (m_FootStepEffectOutdoor != null)
 		{
-			m_FootStepEffectInside.Stop();
+			m_FootStepEffectOutdoor.Stop();
 		}
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
@@ -73,8 +88,36 @@ public class PlayerCharacter : CharacterBase
 		{
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
 		}
+		if (m_ItemInfoDisplay != null)
+		{
+			if ((m_ItemInfoDisplay.m_ItemInfoDisplayGO != null ? m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf : false) == true)
+			{
+				if(m_ItemInfoDisplay.m_ItemInfoDisplayRect != null)
+				{
+					m_ItemInfoDisplay.m_ItemInfoDisplayRect.position = Input.mousePosition;
+				}
+			}
+		}
+		if(m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+				{
+					InteractableObject t_InteractableObject = GetInteractableObject();
+					if(t_InteractableObject.interaction != null)
+					{
+						Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
+						t_Vector.x = t_Vector.x + 0;
+						t_Vector.y = t_Vector.y + 75;
+						m_PlayerCharacterUIScript.m_InteractionIcon.rectTransform.position = t_Vector;
+					}
+				}
+			}
+		}
 
-		if(m_MonologueDisplayTime > 0.0f)
+
+		if (m_MonologueDisplayTime > 0.0f)
 		{
 			m_MonologueDisplayTime = m_MonologueDisplayTime - DeltaTime;
 			if(m_MonologueDisplayTime < 0.0f)
@@ -139,17 +182,46 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 
-		//if (m_FootStepEffectInside != null)
-		//{
-		//	m_FootStepEffectInside.Stop();
-		//}
-		//
-		//if (m_Animator != null)
-		//{
-		//	m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
-		//	m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
-		//}
+		if(m_FootStepEffectInside != null || m_FootStepEffectOutdoor != null)
+		{
+			if (m_FootStepEffectInside != null)
+			{
+				if (m_HorizontalMove != 0)
+				{
+					if (m_FootStepEffectInside.isPlaying != true)
+					{
+						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "ShopScene")
+						{
+							m_FootStepEffectInside.Play();
+						}
+					}
+				}
+				else if (m_HorizontalMove == 0)
+				{
+					m_FootStepEffectInside.Stop();
+				}
+			}
+			if (m_FootStepEffectOutdoor != null)
+			{
+				if (m_HorizontalMove != 0)
+				{
+					if (m_FootStepEffectOutdoor.isPlaying != true)
+					{
+						m_FootStepEffectOutdoor.Play();
+					}
+				}
+				else if (m_HorizontalMove == 0)
+				{
+					m_FootStepEffectOutdoor.Stop();
+				}
+			}
 
+			Vector3 t_ModelingScale = (m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale;
+			if (m_HorizontalMove > 0) { t_ModelingScale.x = -1.0f; }
+			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 1.0f; }
+			(m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale = t_ModelingScale;
+		}
+		
 		/*
 		if(m_Interaction != null)
 		{
@@ -302,9 +374,27 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	public IInteraction GetInteractableObject()
+	public InteractableObject GetInteractableObject()
 	{
-		IInteraction t_Interaction = null;
+		InteractableObject t_Interaction = new InteractableObject(null, null);
+		if (InteractableObjects != null)
+		{
+			if (InteractableObjects.Count > 0)
+			{
+				float t_DotProduct = -1.0f;
+				for (int i = 0; i < InteractableObjects.Count; i = i + 1)
+				{
+					float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
+					if (t_DotProduct < t_DotProduct1)
+					{
+						t_DotProduct = t_DotProduct1;
+						t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+					}
+				}
+			}
+		}
+
+		/*
 		if (m_CollisionComponent != null)
 		{
 			float t_DotProduct = -1.0f;
@@ -347,7 +437,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 		}
-
+		*/
 		return t_Interaction;
 	}
 
@@ -412,6 +502,10 @@ public class PlayerCharacter : CharacterBase
 			{
 				m_GrabItemSprite = m_PlayerCharacterUIScript.m_MouseGrabIcon;
 			}
+			if (m_ItemInfoDisplay == null || m_ItemInfoDisplay != null)
+			{
+				m_ItemInfoDisplay = m_PlayerCharacterUIScript.m_ItemInfoDisplay;
+			}
 			if (m_Inventory != null)
 			{
 				if (m_Inventory.m_InventoryUIScript == null)
@@ -469,6 +563,20 @@ public class PlayerCharacter : CharacterBase
 					{
 						m_QuestComponet.m_MailBoxUIScript = m_PlayerCharacterUIScript.m_MailBoxUIScript;
 					}
+				}
+			}
+		}
+	}
+
+	public void PopUpInteractionIcon(bool param)
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+			{
+				if(m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.activeSelf != param)
+				{
+					m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.SetActive(param);
 				}
 			}
 		}

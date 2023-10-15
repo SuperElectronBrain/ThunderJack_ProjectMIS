@@ -30,8 +30,6 @@ public class GameEventManager : MonoBehaviour
     {
         gameEventData = new();
 
-        //noticeBoard = GameObject.Find("Notice Board").GetComponent<NoticeBoard>();
-
         var eventData = GameManager.Instance.DataBase.Parser("Random_Event_DataTable");
 
         foreach (var e in eventData)
@@ -51,6 +49,11 @@ public class GameEventManager : MonoBehaviour
 
         EventManager.Subscribe(EventType.Day, NewDayEvent);
         EventManager.Publish(EventType.Day);
+    }
+
+    public void Init()
+    {
+        noticeBoard = FindObjectOfType<NoticeBoard>();
     }
 
     public void Notice(NoticeData noticeData)
