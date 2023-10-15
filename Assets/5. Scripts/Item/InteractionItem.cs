@@ -40,12 +40,4 @@ public class InteractionItem : MonoBehaviour
                 return;
         }                        
     }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            ItemInteraction(itemID);
-        }
-    }
 }
