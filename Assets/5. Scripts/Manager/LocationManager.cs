@@ -60,7 +60,7 @@ public class LocationManager : MonoBehaviour
     {
         LayerMask layerMask = locationType == LocationType.Interaction ? LayerMask.GetMask("InteractionObj") : LayerMask.GetMask("Entrance");
 
-        Collider[] colliders = Physics.OverlapSphere(locationPos, 3, layerMask);
+        Collider[] colliders = Physics.OverlapSphere(locationPos, 1.5f, layerMask);
 
         if(colliders.Length > 1)
         {
