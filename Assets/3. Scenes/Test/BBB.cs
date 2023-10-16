@@ -10,13 +10,12 @@ public class BBB : MonoBehaviour
 
     bool isInMillstone;
 
-    bool isRelese;
-
     LayerMask originLayer;
 
     private void OnMouseDown()
     {
-        Debug.Log(gameObject.name + " º±≈√");
+        if (isInMillstone)
+            return;
         transform.parent.GetComponent<AAA>().SelectObject(gameObject);
         Select();
     }
@@ -63,8 +62,7 @@ public class BBB : MonoBehaviour
         var forceX = Random.Range(-2f, 2f);
         var forceY = Random.Range(-2f, 0f);
         rig.AddForce(new Vector2(forceX, forceY),ForceMode2D.Impulse);
-        GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-        isRelese = true;        
+        GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;     
     }
 
     public void InMillstone()

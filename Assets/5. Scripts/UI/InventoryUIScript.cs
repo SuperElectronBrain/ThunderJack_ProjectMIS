@@ -140,7 +140,25 @@ public class InventoryUIScript : MonoBehaviour
 											}
 											else if (t_PlayerCharacter.GetInteractionItem() != null)
 											{
-												t_PlayerCharacter.GetInteractionItem().ItemInteraction(t_AItem.itemCode);
+												if(t_AItem.itemCode >= 16)
+												{
+													if (t_PlayerCharacter.m_GrabItemSprite != null)
+													{
+														t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
+														t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
+													}
+												}
+												else if(t_AItem.itemCode < 16)
+												{
+													MillStone t_MillStone = FindObjectOfType<MillStone>();
+													if (t_MillStone != null)
+													{
+														if (t_MillStone.m_Progress <= 0)
+														{
+															t_PlayerCharacter.GetInteractionItem().ItemInteraction(t_PlayerCharacter.m_Inventory.PopAItem(t_PlayerCharacter.m_GrabItemCode).itemCode);
+														}
+													}
+												}
 											}
 										}
 									}
