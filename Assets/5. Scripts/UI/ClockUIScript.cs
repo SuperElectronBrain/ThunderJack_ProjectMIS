@@ -121,16 +121,23 @@ public class ClockUIScript : MonoBehaviour
 	private void RefreshClock()
 	{
 		float t_Progress = (m_CurrentTime % m_MaxTime) / m_MaxTime;
-		string t_Date = "Day " + m_CurrentDay + " / ";
-		if (m_CurrentWeekday == 0) { t_Date = t_Date + "Mon"; }
-		else if (m_CurrentWeekday == 1) { t_Date = t_Date + "Tue"; }
-		else if (m_CurrentWeekday == 2) { t_Date = t_Date + "Wed"; }
-		else if (m_CurrentWeekday == 3) { t_Date = t_Date + "Thu"; }
-		else if (m_CurrentWeekday == 4) { t_Date = t_Date + "Fri"; }
-		else if (m_CurrentWeekday == 5) { t_Date = t_Date + "Sat"; }
-		else if (m_CurrentWeekday == 6) { t_Date = t_Date + "Sun"; }
-		else { t_Date = "NUL"; }
-		t_Date = t_Date + ".";
+		string t_Date = "NULL";
+		if (GameManager.Instance != null)
+		{
+			if (GameManager.Instance.GameTime != null)
+			{
+				t_Date = GameManager.Instance.GameTime.GetDay() + "ÀÏÂ÷ " + GameManager.Instance.GameTime.GetHour() + ":" + GameManager.Instance.GameTime.GetMinute();
+			}
+		}
+		///if (m_CurrentWeekday == 0) { t_Date = t_Date + "Mon"; }
+		///else if (m_CurrentWeekday == 1) { t_Date = t_Date + "Tue"; }
+		///else if (m_CurrentWeekday == 2) { t_Date = t_Date + "Wed"; }
+		///else if (m_CurrentWeekday == 3) { t_Date = t_Date + "Thu"; }
+		///else if (m_CurrentWeekday == 4) { t_Date = t_Date + "Fri"; }
+		///else if (m_CurrentWeekday == 5) { t_Date = t_Date + "Sat"; }
+		///else if (m_CurrentWeekday == 6) { t_Date = t_Date + "Sun"; }
+		///else { t_Date = "NUL"; }
+		//t_Date = t_Date + ".";
 
 		if(m_ClockHand != null)
 		{

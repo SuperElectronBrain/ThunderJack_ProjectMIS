@@ -117,7 +117,7 @@ public class MillStone : MonoBehaviour
 
 		if(m_Funnel != null)
 		{
-			m_Funnel.transform.position = m_FunnelOriginPosition + new Vector3(0.0f, (m_Progress - 1) / 2, 0.0f); 
+			m_Funnel.transform.position = m_FunnelOriginPosition + new Vector3(0.0f, m_Progress - 1, 0.0f); 
 		}
 
 		if (m_Progress >= 1) { m_AnimationProgress = 1; }
