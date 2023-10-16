@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &870171842112105779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8336583850735511690}
+  - component: {fileID: 3266573115341406409}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8336583850735511690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870171842112105779}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.09, y: 0.37022495, z: 0.23}
+  m_LocalScale: {x: 4.6830587, y: 3.3537, z: 6.4418926}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6950364050114697388}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3266573115341406409
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870171842112105779}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7493460064783974215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10,7 +63,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 66b373f0e0fb8214bb5496054816c248, type: 3}
       propertyPath: m_RootOrder
-      value: 1126
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 66b373f0e0fb8214bb5496054816c248, type: 3}
       propertyPath: m_LocalPosition.x
@@ -54,7 +107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 66b373f0e0fb8214bb5496054816c248, type: 3}
       propertyPath: m_Name
-      value: F_Rock07 (1)
+      value: P_Rock07_Moss01
       objectReference: {fileID: 0}
     - target: {fileID: 4407187375235809858, guid: 66b373f0e0fb8214bb5496054816c248, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -62,6 +115,14 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 73896382f95851340a678155efe54ec3, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 66b373f0e0fb8214bb5496054816c248, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8336583850735511690}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66b373f0e0fb8214bb5496054816c248, type: 3}
+--- !u!4 &6950364050114697388 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 66b373f0e0fb8214bb5496054816c248, type: 3}
+  m_PrefabInstance: {fileID: 7493460064783974215}
+  m_PrefabAsset: {fileID: 0}
