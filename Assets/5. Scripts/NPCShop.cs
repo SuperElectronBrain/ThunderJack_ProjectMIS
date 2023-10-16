@@ -30,8 +30,8 @@ public class NPCShop : MonoBehaviour
 		{
 			m_Inventory = GetComponent<Inventory>();
 		}
-		ResetInventory();
-		EventManager.Subscribe(EventType.Day, ResetInventory);
+		//ResetInventory();
+		//EventManager.Subscribe(EventType.Day, ResetInventory);
 	}
 
     // Update is called once per frame
