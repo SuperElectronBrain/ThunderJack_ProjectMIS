@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public interface IGrabable
@@ -10,6 +9,14 @@ public interface IGrabable
 	public void GrabMoving();
 	//bool m_IsMouseGrabable;
 	//bool m_IsMouseGrab;
+}
+
+public struct InteractableObject
+{
+	public IInteraction interaction;
+	public GameObject interactionGO;
+
+	public InteractableObject(IInteraction p_Interaction, GameObject p_GameObject) { interaction = p_Interaction; interactionGO = p_GameObject; }
 }
 
 public class PlayerCharacter : CharacterBase
@@ -25,6 +32,8 @@ public class PlayerCharacter : CharacterBase
 	private CapsuleCollider m_Collider;
 	public UnityEngine.UI.Image m_GrabItemSprite;
 	[HideInInspector] public AdvencedItem m_GrabItemCode = new AdvencedItem();
+	[HideInInspector] public AdvencedItem m_HoverItemCode = new AdvencedItem();
+	public ItemInfoDisplay m_ItemInfoDisplay;
 	//[HideInInspector] public GameObject m_HitObject;
 	[SerializeField] private CollisionComponent m_CollisionComponent;
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
@@ -35,6 +44,7 @@ public class PlayerCharacter : CharacterBase
 	public QuestComponet m_QuestComponet;
 	public TutorialComponent m_TutorialComponent;
 	private IInteraction m_Interaction;
+	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
 	private GameObject m_GuideUI;
 
 	// Start is called before the first frame update
@@ -46,6 +56,11 @@ public class PlayerCharacter : CharacterBase
 		//m_CameraCon = Camera.main.gameObject.GetComponent<CameraController>();
 		m_Collider = gameObject.GetComponent<CapsuleCollider>();
 		if (m_CollisionComponent == null) { m_CollisionComponent = UniFunc.GetChildComponent<CollisionComponent>(transform); }
+		if (m_CollisionComponent != null)
+		{
+			m_CollisionComponent.m_OnCollisionEnterUseParam.AddListener(OnInteractableObjectEnter);
+			m_CollisionComponent.m_OnCollisionExitUseParam.AddListener(OnInteractableObjectExit);
+		}
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
 		if (m_TutorialComponent == null) { m_TutorialComponent = GetComponent<TutorialComponent>(); }
@@ -56,12 +71,12 @@ public class PlayerCharacter : CharacterBase
 		}
 		if (m_FootStepEffectOutdoor != null)
 		{
-			m_FootStepEffectInside.Stop();
+			m_FootStepEffectOutdoor.Stop();
 		}
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		FindPlayerCharacterUIScript();
-	}
+	} 
 
 	// Update is called once per frame
 	protected override void Update()
@@ -73,8 +88,36 @@ public class PlayerCharacter : CharacterBase
 		{
 			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
 		}
+		if (m_ItemInfoDisplay != null)
+		{
+			if ((m_ItemInfoDisplay.m_ItemInfoDisplayGO != null ? m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf : false) == true)
+			{
+				if(m_ItemInfoDisplay.m_ItemInfoDisplayRect != null)
+				{
+					m_ItemInfoDisplay.m_ItemInfoDisplayRect.position = Input.mousePosition;
+				}
+			}
+		}
+		if(m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+				{
+					InteractableObject t_InteractableObject = GetInteractableObject();
+					if(t_InteractableObject.interaction != null)
+					{
+						Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
+						t_Vector.x = t_Vector.x + 0;
+						t_Vector.y = t_Vector.y + 75;
+						m_PlayerCharacterUIScript.m_InteractionIcon.rectTransform.position = t_Vector;
+					}
+				}
+			}
+		}
 
-		if(m_MonologueDisplayTime > 0.0f)
+
+		if (m_MonologueDisplayTime > 0.0f)
 		{
 			m_MonologueDisplayTime = m_MonologueDisplayTime - DeltaTime;
 			if(m_MonologueDisplayTime < 0.0f)
@@ -139,17 +182,46 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 
-		//if (m_FootStepEffectInside != null)
-		//{
-		//	m_FootStepEffectInside.Stop();
-		//}
-		//
-		//if (m_Animator != null)
-		//{
-		//	m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
-		//	m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
-		//}
+		if(m_FootStepEffectInside != null || m_FootStepEffectOutdoor != null)
+		{
+			if (m_FootStepEffectInside != null)
+			{
+				if (m_HorizontalMove != 0)
+				{
+					if (m_FootStepEffectInside.isPlaying != true)
+					{
+						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "ShopScene")
+						{
+							m_FootStepEffectInside.Play();
+						}
+					}
+				}
+				else if (m_HorizontalMove == 0)
+				{
+					m_FootStepEffectInside.Stop();
+				}
+			}
+			if (m_FootStepEffectOutdoor != null)
+			{
+				if (m_HorizontalMove != 0)
+				{
+					if (m_FootStepEffectOutdoor.isPlaying != true)
+					{
+						m_FootStepEffectOutdoor.Play();
+					}
+				}
+				else if (m_HorizontalMove == 0)
+				{
+					m_FootStepEffectOutdoor.Stop();
+				}
+			}
 
+			Vector3 t_ModelingScale = (m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale;
+			if (m_HorizontalMove > 0) { t_ModelingScale.x = -1.0f; }
+			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 1.0f; }
+			(m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale = t_ModelingScale;
+		}
+		
 		/*
 		if(m_Interaction != null)
 		{
@@ -183,46 +255,47 @@ public class PlayerCharacter : CharacterBase
 		if (Input.GetAxisRaw("Horizontal") == 0.0f) { m_HorizontalMove = 0.0f; }
 		if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
 
-		if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
-		if (Input.GetKeyDown(KeyCode.E) == true) 
+		if(bMovable == true)
 		{
-			if(bMovable == true)
+			if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
+			if (Input.GetKeyDown(KeyCode.E) == true) 
 			{
-				m_Interaction = GetInteractableObject();
-				if (m_Interaction != null)
+				IInteraction T_Interaction = GetInteractableObject().interaction;
+				if (T_Interaction != null)
 				{
-					m_Interaction.Interaction(gameObject);
+					T_Interaction.Interaction(gameObject);
 					CommunicationStart();
 				}
+				PopUpInteractionIcon(false);
 			}
-		}
-		if (Input.GetKeyDown(KeyCode.Q) == true)
-		{ 
-			if (m_Inventory.m_InventoryUIScript != null)
+			if (Input.GetKeyDown(KeyCode.Q) == true)
 			{ 
-				m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
-				m_Inventory.RefreshInventory();
+				if (m_Inventory.m_InventoryUIScript != null)
+				{ 
+					m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
+					m_Inventory.RefreshInventory();
+				}
 			}
-		}
-		if (Input.GetKeyDown(KeyCode.F1) == true)
-		{
-			GameObject t_GameObject = UniFunc.GetChildOfName(GameObject.Find("GuideUIs"), "ManualUI");
-			if(t_GameObject != null)
+			if (Input.GetKeyDown(KeyCode.F1) == true)
 			{
-				t_GameObject.SetActive(!t_GameObject.activeSelf);
+				GameObject t_GameObject = UniFunc.GetChildOfName(GameObject.Find("GuideUIs"), "ManualUI");
+				if(t_GameObject != null)
+				{
+					t_GameObject.SetActive(!t_GameObject.activeSelf);
+				}
 			}
-		}
 
-		if (Input.GetMouseButtonDown(0) == true)
-		{
-			DoRaycast(true);
-		}
-		if (Input.GetMouseButtonUp(0) == true)
-		{
-			DoRaycast(false);
+			if (Input.GetMouseButtonDown(0) == true)
+			{
+				DoRaycast(true);
+			}
+			if (Input.GetMouseButtonUp(0) == true)
+			{
+				DoRaycast(false);
 
-			m_GrabItemCode = new AdvencedItem();
-			if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
+				m_GrabItemCode = new AdvencedItem();
+				if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
+			}
 		}
 	}
 
@@ -230,18 +303,18 @@ public class PlayerCharacter : CharacterBase
 	{
 		base.Jump();
 
-		RaycastHit hit;
-		Vector3 t_Point = m_Collider != null ? transform.up * ((m_Collider.height / 2) - m_Collider.radius) : transform.position;
-		if (Physics.CapsuleCast(t_Point, -t_Point, m_Collider != null ? m_Collider.radius : transform.localScale.x / 2, transform.forward, out hit, Mathf.Infinity) == true)
-		{
-			if (hit.transform.gameObject != gameObject)
-			{
-				if(m_Rigidbody != null)
-				{
-					m_Rigidbody.AddForce(Vector3.up * jumpForce);
-				}
-			}
-		}
+		//RaycastHit hit;
+		//Vector3 t_Point = m_Collider != null ? transform.up * ((m_Collider.height / 2) - m_Collider.radius) : transform.position;
+		//if (Physics.CapsuleCast(t_Point, -t_Point, m_Collider != null ? m_Collider.radius : transform.localScale.x / 2, transform.forward, out hit, Mathf.Infinity) == true)
+		//{
+		//	if (hit.transform.gameObject != gameObject)
+		//	{
+		//		if(m_Rigidbody != null)
+		//		{
+		//			m_Rigidbody.AddForce(Vector3.up * jumpForce);
+		//		}
+		//	}
+		//}
 	}
 
 	//protected override void HorizontalMove(float DeltaTime)
@@ -301,9 +374,30 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	public IInteraction GetInteractableObject()
+	public InteractableObject GetInteractableObject()
 	{
-		IInteraction t_Interaction = null;
+		InteractableObject t_Interaction = new InteractableObject(null, null);
+		if (InteractableObjects != null)
+		{
+			if (InteractableObjects.Count > 0)
+			{
+				float t_DotProduct = -1.0f;
+				for (int i = 0; i < InteractableObjects.Count; i = i + 1)
+				{
+					if(InteractableObjects[i].interactionGO != null)
+					{
+						float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
+						if (t_DotProduct < t_DotProduct1)
+						{
+							t_DotProduct = t_DotProduct1;
+							t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+						}
+					}
+				}
+			}
+		}
+
+		/*
 		if (m_CollisionComponent != null)
 		{
 			float t_DotProduct = -1.0f;
@@ -346,8 +440,47 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 		}
-
+		*/
 		return t_Interaction;
+	}
+
+	private void OnInteractableObjectEnter(Collider other)
+	{
+		if(other.gameObject != gameObject)
+		{
+			IInteraction t_Interaction = other.gameObject.GetComponent<IInteraction>();
+			if (t_Interaction != null)
+			{
+				if (InteractableObjects == null) { InteractableObjects = new List<InteractableObject>(); }
+				if(t_Interaction != InteractableObjects.Find((InteractableObject x) => { return x.interaction == t_Interaction; }).interaction)
+				{
+					InteractableObjects.Add(new InteractableObject(t_Interaction, other.gameObject));
+				}
+			}
+		}
+		
+		PopUpInteractionIcon(InteractableObjects.Count > 0);
+	}
+
+	private void OnInteractableObjectExit(Collider other)
+	{
+		if (other.gameObject != gameObject)
+		{
+			IInteraction t_Interaction = other.gameObject.GetComponent<IInteraction>();
+			if (t_Interaction != null)
+			{
+				InteractableObjects.Remove(new InteractableObject(t_Interaction, other.gameObject));
+				InteractableObjects.TrimExcess();
+			}
+		}
+
+		PopUpInteractionIcon(InteractableObjects.Count > 0);
+	}
+
+	public override void CommunicationEnd()
+	{
+		base.CommunicationEnd();
+		PopUpInteractionIcon(false);
 	}
 
 	public void FindPlayerCharacterUIScript()
@@ -371,6 +504,10 @@ public class PlayerCharacter : CharacterBase
 			if (m_GrabItemSprite == null)
 			{
 				m_GrabItemSprite = m_PlayerCharacterUIScript.m_MouseGrabIcon;
+			}
+			if (m_ItemInfoDisplay == null || m_ItemInfoDisplay != null)
+			{
+				m_ItemInfoDisplay = m_PlayerCharacterUIScript.m_ItemInfoDisplay;
 			}
 			if (m_Inventory != null)
 			{
@@ -429,6 +566,20 @@ public class PlayerCharacter : CharacterBase
 					{
 						m_QuestComponet.m_MailBoxUIScript = m_PlayerCharacterUIScript.m_MailBoxUIScript;
 					}
+				}
+			}
+		}
+	}
+
+	public void PopUpInteractionIcon(bool param)
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+			{
+				if(m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.activeSelf != param)
+				{
+					m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.SetActive(param);
 				}
 			}
 		}
@@ -745,6 +896,7 @@ public class PlayerCharacter : CharacterBase
 				*/
 			}
 
+			/*
 			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
 			if (t_AccessoryPlate != null)
 			{
@@ -775,6 +927,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
@@ -799,11 +952,26 @@ public class PlayerCharacter : CharacterBase
 			{
 				if (t_PlayerShop.itemCode == 0)
 				{
-					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-					if (t_AItem.IsAddable(new AdvencedItem()) == false)
+					if (m_GrabItemCode.itemCode >= 28 && m_GrabItemCode.itemCode <= 57)
 					{
-						t_PlayerShop.itemCode = t_AItem.itemCode;
-						t_PlayerShop.HandOverItem();
+						//AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						if (m_Inventory.FindAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount) == true)
+						{
+							t_PlayerShop.itemCode = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount).itemCode;
+							t_PlayerShop.HandOverItem();
+						}
+					}
+				}
+			}
+
+			TrashCan t_TrashCan = hit.transform.GetComponent<TrashCan>();
+			if (t_TrashCan != null) 
+			{
+				if (m_GrabItemCode != null)
+				{
+					if (m_GrabItemCode.itemCode == 21)
+					{
+						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 					}
 				}
 			}
@@ -999,19 +1167,20 @@ public class PlayerCharacter : CharacterBase
 				}
 
 				/*
-				//if (t_MillStone.M_Input == 0)
-				//{
-				//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
-				//	{
-				//
-				//		t_MillStone.M_Input = t_AItem.itemCode;
-				//		t_MillStone.m_Progress = t_AItem.itemProgress;
-				//	}
-				//}
+				if (t_MillStone.M_Input == 0)
+				{
+					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+					if(t_AItem.IsAddable(new AdvencedItem()) == false)
+					{
+				
+						t_MillStone.M_Input = t_AItem.itemCode;
+						t_MillStone.m_Progress = t_AItem.itemProgress;
+					}
+				}
 				*/
 			}
 
+			/*
 			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
 			if (t_AccessoryPlate != null)
 			{
@@ -1042,6 +1211,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
@@ -1066,11 +1236,26 @@ public class PlayerCharacter : CharacterBase
 			{
 				if (t_PlayerShop.itemCode == 0)
 				{
-					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-					if (t_AItem.IsAddable(new AdvencedItem()) == false)
+					if (m_GrabItemCode.itemCode >= 28 && m_GrabItemCode.itemCode <= 57)
 					{
-						t_PlayerShop.itemCode = t_AItem.itemCode;
-						t_PlayerShop.HandOverItem();
+						//AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						if (m_Inventory.FindAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount) == true)
+						{
+							t_PlayerShop.itemCode = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount).itemCode;
+							t_PlayerShop.HandOverItem();
+						}
+					}
+				}
+			}
+
+			TrashCan t_TrashCan = hit.transform.GetComponent<TrashCan>();
+			if (t_TrashCan != null)
+			{
+				if (m_GrabItemCode != null)
+				{
+					if (m_GrabItemCode.itemCode == 21)
+					{
+						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 					}
 				}
 			}

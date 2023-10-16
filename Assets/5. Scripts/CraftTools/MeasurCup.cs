@@ -54,7 +54,12 @@ public class MeasurCup : MonoBehaviour, IGrabable
 
 			if(m_Press != null)
 			{
-				if (m_Press.m_MaxDistance > (m_PressInputPort.transform.position - transform.position).magnitude)
+				Vector3 t_PressInput = m_PressInputPort.transform.position;
+				t_PressInput.z = 0.0f;
+				Vector3 t_Cup = m_PressInputPort.transform.position;
+				t_Cup.z = 0.0f;
+
+				if (m_Press.m_MaxDistance > (t_PressInput - t_Cup).magnitude)
 				{
 					//this의 애니메이션 진행도, 기울기값
 					float t_Gradient = 1 - ((m_PressInputPort.transform.position - transform.position).magnitude / m_Press.m_MaxDistance);
@@ -97,6 +102,7 @@ public class MeasurCup : MonoBehaviour, IGrabable
 				if (m_SkeletonAnimation != null) { m_SkeletonAnimation.timeScale = 0.0f; }
 			}
 
+			/*
 			//this가 MixingBowl과 접촉하고 있는 상태라면
 			if (m_MixingBowl != null)
 			{
@@ -141,6 +147,7 @@ public class MeasurCup : MonoBehaviour, IGrabable
 			{
 				if (m_SkeletonAnimation != null) { m_SkeletonAnimation.timeScale = 0.0f; }
 			}
+			*/
 		}
 
 		if (m_Progress > 0.0f)

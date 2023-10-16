@@ -69,7 +69,6 @@ public class Loading : MonoBehaviour
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
         bool isDone = false;
-        bool canBreak = false;
 
         skGraphic.AnimationState.Complete += (Spine.TrackEntry te) =>
         {

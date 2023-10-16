@@ -13,12 +13,16 @@ public class MillStone : MonoBehaviour
 	public float m_Progress = 0.0f;
 	public float M_Progress { get { return m_Progress; } set { m_Progress = value > 1.0f ? 1.0f : (value < 0 ? 0 : value); } }
 	[SerializeField] private float m_MaxTurnCount = 10.0f;
+	private float m_AnimationProgress = 0.0f;
+	[SerializeField] private float m_AnimationProgressSpeed = 1.0f;
 	private Vector3 m_PreviousHandlePosition;
 
 	public MeasurCup m_MeasurCup;
 	[SerializeField] private TMPro.TextMeshPro m_ProgressText;
 	[SerializeField] private SkeletonAnimation m_SkeletonAnimation;
 	private TrackEntry trackEntry;
+	[SerializeField] private Animator m_TopAnimator;
+	[SerializeField] private Animator m_BottomAnimator;
 
 	// Start is called before the first frame update
 	void Start()
@@ -57,15 +61,21 @@ public class MillStone : MonoBehaviour
 						}
 						m_MeasurCup.m_Input = m_Input;
 						m_MeasurCup.m_Progress = m_MeasurCup.m_Progress + (t_Progress / m_MaxTurnCount);
+						if(m_MeasurCup.m_Progress >= 1.0f)
+						{
+							m_MeasurCup.m_Progress = 1.0f;
+						}
 					}
 
 					m_SkeletonAnimation.timeScale = 1.0f;
 				}
+				/*
 				else if (t_Progress < 0)
 				{
 					bProgress = false; //역회전 방지
 					m_SkeletonAnimation.timeScale = 0.0f;
 				}
+				*/
 				else if (t_Progress == 0)
 				{
 					m_SkeletonAnimation.timeScale = 0.0f;
@@ -84,6 +94,13 @@ public class MillStone : MonoBehaviour
 			bProgress = false;
 			m_SkeletonAnimation.timeScale = 0.0f;
 		}
+
+		if (m_Progress >= 1) { m_AnimationProgress = 1; }
+		if (m_Progress <= 0) { m_AnimationProgress = 0; }
+		float t_ProgressLerp = Mathf.Lerp(m_AnimationProgress, m_Progress, DeltaTime * m_AnimationProgressSpeed);
+		m_TopAnimator.SetFloat("Velocity", m_AnimationProgress - t_ProgressLerp);
+		m_BottomAnimator.SetFloat("Velocity", m_AnimationProgress - t_ProgressLerp);
+		m_AnimationProgress = t_ProgressLerp;
 
 		float t_AnimationProgress = (1 - m_Progress) * m_MaxTurnCount;
 		if (trackEntry != null)
@@ -110,10 +127,10 @@ public class MillStone : MonoBehaviour
 
 	public bool SetItem(AdvencedItem p_AItem)
 	{
-		if (m_Input == 0)
-		{
-			if (p_AItem.IsAddable(new AdvencedItem()) == false)
-			{
+		//if (m_Input == 0)
+		//{
+			//if (p_AItem.IsAddable(new AdvencedItem()) == false)
+			//{
 				switch (p_AItem.itemCode)
 				{
 					case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15:
@@ -127,8 +144,8 @@ public class MillStone : MonoBehaviour
 						break;
 					}
 				}
-			}
-		}
+			//}
+		//}
 
 		return false;
 	}

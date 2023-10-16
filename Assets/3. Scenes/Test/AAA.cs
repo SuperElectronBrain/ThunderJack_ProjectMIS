@@ -5,53 +5,97 @@ using UnityEngine;
 public class AAA : MonoBehaviour
 {
     [SerializeField]
-    Vector3[] vectors = new Vector3[3];
+    List<Vector3> vectors = new List<Vector3>();
     [SerializeField]
-    Vector3[] rotations = new Vector3[3];
+    List<Vector3> rotations = new List<Vector3>();
     [SerializeField]
-    GameObject[] objects = new GameObject[3];
+    List<GameObject> objects = new List<GameObject> ();
+
+    bool isRelese;
+
+    [SerializeField]
+    GameObject selectObject;
 
     // Start is called before the first frame update
     void Start()
     {
         for(int i = 0; i < transform.childCount; i++)
         {
-            objects[i] = transform.GetChild(i).gameObject;
-            vectors[i] = transform.GetChild(i).transform.localPosition;
-            rotations[i] = transform.GetChild(i).transform.rotation.eulerAngles;
+            vectors.Add(transform.GetChild(i).transform.localPosition);
+            rotations.Add(transform.GetChild(i).transform.rotation.eulerAngles);
+            objects.Add(transform.GetChild(i).gameObject);
         }
     }
+
+    public void SelectObject(GameObject newSelectObject)
+    {
+        if (selectObject == null)
+        {
+            selectObject = newSelectObject;
+            selectObject.GetComponent<BBB>().Select();
+        }            
+    }
+
+    public void DropObject()
+    {
+
+    }
+
+    [SerializeField]
+    float z;
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(!isRelese)
         {
-            var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-
-            transform.position = mPos;
-
-            for (int i = 0; i < transform.childCount; i++)
+            if (Input.GetMouseButtonDown(0))
             {
-                objects[i].GetComponent<BBB>().ResetObj(vectors[i], rotations[i]);                
+                var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z + z));
+
+                //mPos.z = z;
+                transform.position = mPos;
+
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    objects[i].GetComponent<BBB>().ResetObj(vectors[i], rotations[i]);
+                }
+            }
+            if (Input.GetMouseButton(0))
+            {
+                var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z + z));
+
+                //mPos.z = z;
+                transform.position = mPos;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    objects[i].GetComponent<BBB>().ReleseObj();
+                }
+                isRelese = true;
             }
         }
-        else if(Input.GetMouseButton(0))
+        else
         {
-            var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-
-            transform.position = mPos;
-        }
-        else if(Input.GetMouseButtonUp(0))
-        {
-            for (int i = 0; i < transform.childCount; i++)
+            if (Input.GetMouseButton(0))
             {
-                objects[i].GetComponent<BBB>().ReleseObj();
-            }
-        }
-    }
+                if(selectObject != null)
+                {
+                    Debug.Log("drag");
+                    var mPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z + z));
 
-    private void OnMouseDown()
-    {
-        
+                    selectObject.transform.position = mPos;
+                }                
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                if(selectObject != null)
+                {
+                    selectObject.GetComponent<BBB>().ReleseObj();
+                    selectObject = null;
+                }                
+            }
+        }        
     }
 }
