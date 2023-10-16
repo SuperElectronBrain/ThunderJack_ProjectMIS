@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7207575325606625970}
   - component: {fileID: 7612257257822648219}
   - component: {fileID: 3649681084239781319}
+  - component: {fileID: 3180755634154941816}
   m_Layer: 18
   m_Name: Item1
   m_TagString: Untagged
@@ -161,6 +162,30 @@ CircleCollider2D:
   m_Offset: {x: 0.0000009536743, y: -0.00000047683716}
   serializedVersion: 2
   m_Radius: 2.5599997
+--- !u!114 &3180755634154941816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3360437802831275930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6f98e4202808d478b80a4699eb4274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImage: 0
+  isFadeOut: 1
+  duration: 1
+  idleDuration: 0
+  rewindDuration: 0
+  isEnable: 0
+  isIncludeChild: 0
+  childImage: []
+  childText: []
+  onFadeEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3549191696593677797
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,6 +199,7 @@ GameObject:
   - component: {fileID: 2928765857323770995}
   - component: {fileID: 7215473996379911406}
   - component: {fileID: 7091941799844853010}
+  - component: {fileID: 8939131568940728643}
   m_Layer: 19
   m_Name: Item2
   m_TagString: Untagged
@@ -322,6 +348,30 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.00000023841858}
   serializedVersion: 2
   m_Radius: 2.5600002
+--- !u!114 &8939131568940728643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3549191696593677797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6f98e4202808d478b80a4699eb4274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImage: 0
+  isFadeOut: 1
+  duration: 1
+  idleDuration: 0
+  rewindDuration: 0
+  isEnable: 0
+  isIncludeChild: 0
+  childImage: []
+  childText: []
+  onFadeEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4629215635144431976
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,6 +432,7 @@ MonoBehaviour:
   - {fileID: 3549191696593677797}
   - {fileID: 5986388029261431223}
   selectObject: {fileID: 0}
+  m_ItemCode: 0
   z: -20
 --- !u!1 &5986388029261431223
 GameObject:
@@ -396,6 +447,7 @@ GameObject:
   - component: {fileID: 6406348245355736154}
   - component: {fileID: 2281190358925312020}
   - component: {fileID: 285172064743684839}
+  - component: {fileID: 7572946504366533006}
   m_Layer: 20
   m_Name: Item3
   m_TagString: Untagged
@@ -544,3 +596,27 @@ CircleCollider2D:
   m_Offset: {x: 0.00000071525574, y: 0}
   serializedVersion: 2
   m_Radius: 2.56
+--- !u!114 &7572946504366533006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5986388029261431223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6f98e4202808d478b80a4699eb4274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImage: 0
+  isFadeOut: 1
+  duration: 1
+  idleDuration: 0
+  rewindDuration: 0
+  isEnable: 0
+  isIncludeChild: 0
+  childImage: []
+  childText: []
+  onFadeEvent:
+    m_PersistentCalls:
+      m_Calls: []

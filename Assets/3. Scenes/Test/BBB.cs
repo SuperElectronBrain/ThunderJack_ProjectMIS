@@ -69,6 +69,11 @@ public class BBB : MonoBehaviour
 
     public void DestroyObject()
     {
+        fade.onFadeEvent.AddListener(() =>
+        {
+            Destroy(gameObject);
+        });
+
         fade.StartFade();
     }
 
