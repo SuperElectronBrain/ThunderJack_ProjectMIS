@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Rotate : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+{    
+    [SerializeField]
+    Windmill windmill;
 
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0f, 0f, 120f * Time.deltaTime, Space.Self);
+        transform.GetChild(1).Rotate(0f, 0f, windmill.smallSpinSpeed * Time.deltaTime, Space.Self);
+        transform.GetChild(2).Rotate(0f, 0f, windmill.bigSpinSpeed * Time.deltaTime, Space.Self);
     }
 }
