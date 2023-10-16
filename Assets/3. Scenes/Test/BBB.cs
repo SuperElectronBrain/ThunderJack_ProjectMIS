@@ -11,8 +11,6 @@ public class BBB : MonoBehaviour
 
     bool isInMillstone;
 
-    LayerMask originLayer;
-
     private void OnMouseDown()
     {
         if (isInMillstone)
@@ -26,14 +24,6 @@ public class BBB : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
         fade = GetComponent<FadeIO>();
-    }
-
-    public void ChangeLayer(bool isOrigin = false)
-    {
-        if (isOrigin)
-            gameObject.layer = originLayer;
-        else
-            gameObject.layer = LayerMask.GetMask("MaterialObj");
     }
 
     public void Select()
@@ -71,7 +61,7 @@ public class BBB : MonoBehaviour
     {
         fade.onFadeEvent.AddListener(() =>
         {
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         });
 
         fade.StartFade();
