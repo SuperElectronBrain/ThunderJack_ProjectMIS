@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3360437802831275930}
   m_LocalRotation: {x: -0, y: -0, z: 0.40389565, w: -0.91480505}
-  m_LocalPosition: {x: 1.2716465, y: 1.7218786, z: -1.6940516}
+  m_LocalPosition: {x: 1.34, y: -0.46, z: -3.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!50 &7207575325606625970
 Rigidbody2D:
@@ -101,7 +101,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 3
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 2928765857323770995}
   - component: {fileID: 7215473996379911406}
   - component: {fileID: 7091941799844853010}
-  m_Layer: 18
+  m_Layer: 19
   m_Name: Item2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3549191696593677797}
   m_LocalRotation: {x: -0.002280598, y: -0.002792922, z: 0.7779811, w: 0.62827736}
-  m_LocalPosition: {x: -0.74423957, y: 3.063834, z: -1.0599211}
+  m_LocalPosition: {x: -0.6758868, y: 0.881955, z: -3.0658703}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -246,7 +246,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!50 &2928765857323770995
 Rigidbody2D:
@@ -262,7 +262,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 3
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -335,10 +335,10 @@ GameObject:
   m_Layer: 0
   m_Name: InteractionMaterial
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1719891327792851443
 Transform:
   m_ObjectHideFlags: 0
@@ -348,14 +348,14 @@ Transform:
   m_GameObject: {fileID: 4629215635144431976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.107878506, y: 0.107878506, z: 0.107878506}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1747861225607134192}
   - {fileID: 7830014248290783990}
   - {fileID: 673663688282111095}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7784325137385790352
 MonoBehaviour:
@@ -381,7 +381,8 @@ MonoBehaviour:
   - {fileID: 3360437802831275930}
   - {fileID: 3549191696593677797}
   - {fileID: 5986388029261431223}
-  z: 1.96
+  selectObject: {fileID: 0}
+  z: -20
 --- !u!1 &5986388029261431223
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,7 +396,7 @@ GameObject:
   - component: {fileID: 6406348245355736154}
   - component: {fileID: 2281190358925312020}
   - component: {fileID: 285172064743684839}
-  m_Layer: 18
+  m_Layer: 20
   m_Name: Item3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,7 +411,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5986388029261431223}
   m_LocalRotation: {x: -0, y: -0, z: 0.27518153, w: 0.96139234}
-  m_LocalPosition: {x: 1.4716465, y: 4.0618787, z: -1.2504424}
+  m_LocalPosition: {x: 1.5399992, y: 1.8800001, z: -3.2563915}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -467,7 +468,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!50 &6406348245355736154
 Rigidbody2D:
@@ -483,7 +484,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 3
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:

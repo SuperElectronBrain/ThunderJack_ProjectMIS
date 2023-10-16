@@ -127,10 +127,21 @@ public class InventoryUIScript : MonoBehaviour
 									{
 										AdvencedItem t_AItem = m_Inventory.GetAItems()[t_Number];
 										t_PlayerCharacter.m_GrabItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, 1);
-										if (t_PlayerCharacter.m_GrabItemSprite != null)
+
+										if(t_AItem.itemCode > 0)
 										{
-											t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
-											t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
+											if (t_PlayerCharacter.GetInteractionItem() == null)
+											{
+												if (t_PlayerCharacter.m_GrabItemSprite != null)
+												{
+													t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
+													t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
+												}
+											}
+											else if (t_PlayerCharacter.GetInteractionItem() != null)
+											{
+												t_PlayerCharacter.GetInteractionItem().ItemInteraction(t_AItem.itemCode);
+											}
 										}
 									}
 								}
