@@ -10,9 +10,21 @@ public class BusinessState : State<NPC>
         entity.agent.enabled = false;
         entity.gameObject.transform.position = entity.destinationPos;
 
+        entity.SkAni.AnimationName = "A_idle_F";
+
         GetComponent<NPCShop>().enabled = true;
 
-        var shopItems = GameManager.Instance.ItemManager.GetShopItemDataBySalesType(SalesItemType.Materials);
+        List<ShopItemData> shopItems = null;
+
+        switch(entity.CharacterData.characterEgName)
+        {
+            case "Gaga":
+                shopItems = GameManager.Instance.ItemManager.GetShopItemDataBySalesType(SalesItemType.Accessory);
+                break;
+            case "Beil":
+                shopItems = GameManager.Instance.ItemManager.GetShopItemDataBySalesType(SalesItemType.Materials);
+                break;
+        }
 
         Inventory inventory = GetComponent<Inventory>();
 

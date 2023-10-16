@@ -53,6 +53,8 @@ public class NPC : Character, IInteraction
     [SerializeField]
     TimeTableData schedule;
 
+    public CharacterData CharacterData {  get { return characterData; } }
+
     public TimeTableData Schedule { get { return schedule; } }
 
     protected override void Awake()
