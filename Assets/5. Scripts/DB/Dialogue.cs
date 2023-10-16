@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+public enum DialogEventType
+{
+    None = -1, ShopGemOpen = 1, ShopJewelryOpen, QuestStart, Quest_Complate
+}
+
 public class Dialogue : MonoBehaviour
 {
     [System.Serializable]
@@ -18,6 +23,7 @@ public class Dialogue : MonoBehaviour
         public string textSelect2;       
         public int textNext1;
         public int textNext2;
+        public DialogEventType eventID;
     }
 
     public string currentDialogue;
@@ -64,7 +70,8 @@ public class Dialogue : MonoBehaviour
                     textSelect1 = dict["Text_Select1"].ToString(),
                     textSelect2 = dict["Text_Select2"].ToString(),
                     textNext1 = Tools.IntParse(dict["Text_Next"]),
-                    textNext2 = Tools.IntParse(dict["Text_Next2"])
+                    textNext2 = Tools.IntParse(dict["Text_Next2"]),
+                    eventID = (DialogEventType)Tools.IntParse(dict["Event_ID"])
                 }
             );
         }
@@ -89,7 +96,7 @@ public class Dialogue : MonoBehaviour
         {
             if(IsOption())
             {
-                if (Input.GetKeyDown(KeyCode.Q))
+                if (Input.GetKeyDown(KeyCode.E))
                 {
                     NextDialog();
                     GameManager.Instance.CharacterDB.GetNPC(dialogueList[dialogueIdx].characterID).TalkEnd();
@@ -100,7 +107,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.Q))
+                if (Input.GetKeyDown(KeyCode.E))
                 {
                     EventManager.Publish(EventType.NextDialog);
                     playerDialogBox.gameObject.SetActive(false);
@@ -112,7 +119,7 @@ public class Dialogue : MonoBehaviour
         }
         while(true)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 playerDialogBox.gameObject.SetActive(false);
                 EndDialogue();
@@ -160,6 +167,7 @@ public class Dialogue : MonoBehaviour
         var dData = dialogueList[dialogueIdx];
 
         dialogueIdx = dData.textNext1;
+        EventManager.Publish(dData.eventID);
         playerDialogBox.gameObject.SetActive(false);
         playerDialogBox.ActiveButton(false);
 
@@ -172,6 +180,7 @@ public class Dialogue : MonoBehaviour
         var dData = dialogueList[dialogueIdx];
 
         dialogueIdx = dData.textNext2;
+        EventManager.Publish(dData.eventID);
         playerDialogBox.gameObject.SetActive(false);
         playerDialogBox.ActiveButton(false);
         
