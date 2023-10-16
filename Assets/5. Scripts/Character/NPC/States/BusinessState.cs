@@ -16,15 +16,21 @@ public class BusinessState : State<NPC>
 
         Inventory inventory = GetComponent<Inventory>();
 
-        for(int i = 0; i < shopItems.Count; i++)
+        inventory.CleanInventory();
+        for (int i = 0; i < shopItems.Count; i = i + 1)
         {
-            AdvencedItem newItem = new AdvencedItem
-            {
-                itemCode = shopItems[i].itemId,
-                itemProgress = 1
-            };
-            inventory.AddAItem(newItem);
-        }        
+            inventory.AddAItem(shopItems[i].itemId, 1.0f, shopItems[i].buyValue, shopItems[i].sellValue);
+        }
+
+        //for (int i = 0; i < shopItems.Count; i++)
+        //{
+        //    AdvencedItem newItem = new AdvencedItem
+        //    {
+        //        itemCode = shopItems[i].itemId,
+        //        itemProgress = 1
+        //    };
+        //    inventory.AddAItem(newItem);
+        //}
     }
 
     public override void Execute(NPC entity)

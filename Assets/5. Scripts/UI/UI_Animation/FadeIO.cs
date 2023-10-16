@@ -9,7 +9,11 @@ using TMPro;
 public class FadeIO : MonoBehaviour
 {
     Image image;
+    SpriteRenderer sr;
     Sequence sequence;
+
+    [SerializeField]
+    bool isImage;
 
     [SerializeField]
     bool isFadeOut;    
@@ -45,6 +49,14 @@ public class FadeIO : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        if (isImage)
+            Image();
+        else
+            Sprite();
+    }
+
+    void Image()
+    {
         image = GetComponent<UnityEngine.UI.Image>();
 
         sequence = DOTween.Sequence().Pause().SetAutoKill(false);
@@ -54,9 +66,9 @@ public class FadeIO : MonoBehaviour
         else
             sequence.Append(image.DOFade(0, duration));
 
-            sequence.AppendInterval(idleDuration);
+        sequence.AppendInterval(idleDuration);
 
-        if(rewindDuration > 0)
+        if (rewindDuration > 0)
         {
             if (!isFadeOut)
                 sequence.Append(image.DOFade(1, rewindDuration));
@@ -64,17 +76,17 @@ public class FadeIO : MonoBehaviour
                 sequence.Append(image.DOFade(0, rewindDuration));
         }
 
-        foreach(TextMeshProUGUI text in GetComponentsInChildren<TextMeshProUGUI>())
+        foreach (TextMeshProUGUI text in GetComponentsInChildren<TextMeshProUGUI>())
         {
             childText.Add(text);
         }
 
-        foreach(Image image in GetComponentsInChildren<Image>())
+        foreach (Image image in GetComponentsInChildren<Image>())
         {
             childImage.Add(image);
         }
 
-        if(isIncludeChild)
+        if (isIncludeChild)
         {
             sequence.OnUpdate(() =>
             {
@@ -92,12 +104,77 @@ public class FadeIO : MonoBehaviour
                     childImage[i].color = c;
                 }
             });
-        }        
+        }
 
         sequence.OnComplete(() =>
         {
             onFadeEvent?.Invoke();
-        });        
+        });
+    }
+
+    void Sprite()
+    {
+        sr = GetComponent<SpriteRenderer>();
+
+        sequence = DOTween.Sequence().Pause().SetAutoKill(false);
+
+        if (isFadeOut)
+            sequence.Append(sr.DOFade(1, duration));
+        else
+            sequence.Append(sr.DOFade(0, duration));
+
+        sequence.AppendInterval(idleDuration);
+
+        if (rewindDuration > 0)
+        {
+            if (!isFadeOut)
+                sequence.Append(sr.DOFade(1, rewindDuration));
+            else
+                sequence.Append(sr.DOFade(0, rewindDuration));
+        }
+
+/*        foreach (TextMeshProUGUI text in GetComponentsInChildren<TextMeshProUGUI>())
+        {
+            childText.Add(text);
+        }*/
+
+/*        foreach (SpriteRenderer sprite in GetComponentsInChildren<SpriteRenderer>())
+        {
+            childImage.Add(sprite);
+        }*/
+
+/*        if (isIncludeChild)
+        {
+            sequence.OnUpdate(() =>
+            {
+                for (int i = 0; i < childText.Count; i++)
+                {
+                    Color c = childText[i].color;
+                    c.a = sr.color.a;
+                    childText[i].color = c;
+                }
+
+                for (int i = 0; i < childImage.Count; i++)
+                {
+                    Color c = childImage[i].color;
+                    c.a = sr.color.a;
+                    childImage[i].color = c;
+                }
+            });
+        }*/
+
+        sequence.OnComplete(() =>
+        {
+            onFadeEvent?.Invoke();
+        });
+    }
+
+    public void StartFade()
+    {
+        if (isImage)
+            Image();
+        else
+            Sprite();
     }
 
     public void ChangeText()

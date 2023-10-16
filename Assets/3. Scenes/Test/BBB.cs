@@ -7,6 +7,7 @@ public class BBB : MonoBehaviour
 {
     Rigidbody2D rig;
     CircleCollider2D col;
+    FadeIO fade;
 
     bool isInMillstone;
 
@@ -24,6 +25,7 @@ public class BBB : MonoBehaviour
     {
         rig = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
+        fade = GetComponent<FadeIO>();
     }
 
     public void ChangeLayer(bool isOrigin = false)
@@ -63,6 +65,11 @@ public class BBB : MonoBehaviour
         var forceY = Random.Range(-2f, 0f);
         rig.AddForce(new Vector2(forceX, forceY),ForceMode2D.Impulse);
         GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;     
+    }
+
+    public void DestroyObject()
+    {
+        fade.StartFade();
     }
 
     public void InMillstone()
