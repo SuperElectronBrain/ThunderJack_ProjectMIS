@@ -305,12 +305,15 @@ public class UniFunc : MonoBehaviour
 	public static BasicItemData FindItemData(int p_ItemCode)
 	{
 		BasicItemData t_BasicItemData = null;
-		if(GameManager.Instance != null)
+
+		if(p_ItemCode > 0)
 		{
-			if (GameManager.Instance.ItemManager != null)
+			if (GameManager.Instance != null)
 			{
-				if (p_ItemCode < 1) { p_ItemCode = 1; }
-				t_BasicItemData = GameManager.Instance.ItemManager.GetBasicItemData(p_ItemCode);
+				if (GameManager.Instance.ItemManager != null)
+				{
+					t_BasicItemData = GameManager.Instance.ItemManager.GetBasicItemData(p_ItemCode);
+				}
 			}
 		}
 		return t_BasicItemData;

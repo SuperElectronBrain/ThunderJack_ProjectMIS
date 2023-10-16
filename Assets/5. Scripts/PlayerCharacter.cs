@@ -46,6 +46,7 @@ public class PlayerCharacter : CharacterBase
 	private IInteraction m_Interaction;
 	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
 	private GameObject m_GuideUI;
+	private InteractionItem m_InteractionItem;
 
 	// Start is called before the first frame update
 	protected override void Start()
@@ -74,6 +75,11 @@ public class PlayerCharacter : CharacterBase
 			m_FootStepEffectOutdoor.Stop();
 		}
 
+		if (m_InteractionItem == null)
+		{
+			m_InteractionItem = GetComponent<InteractionItem>();
+		}
+
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		FindPlayerCharacterUIScript();
 	} 
@@ -97,21 +103,32 @@ public class PlayerCharacter : CharacterBase
 					m_ItemInfoDisplay.m_ItemInfoDisplayRect.position = Input.mousePosition;
 				}
 			}
+
+			if(m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
+			{
+				if(m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_InventoryUIScript != null)
+					{
+						if(m_PlayerCharacterUIScript.m_InventoryUIScript.gameObject.activeSelf == false)
+						{
+							m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(false);
+						}
+					}
+				}
+			}
 		}
 		if(m_PlayerCharacterUIScript != null)
 		{
-			if (m_PlayerCharacterUIScript != null)
+			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
 			{
-				if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+				InteractableObject t_InteractableObject = GetInteractableObject();
+				if(t_InteractableObject.interaction != null)
 				{
-					InteractableObject t_InteractableObject = GetInteractableObject();
-					if(t_InteractableObject.interaction != null)
-					{
-						Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
-						t_Vector.x = t_Vector.x + 0;
-						t_Vector.y = t_Vector.y + 75;
-						m_PlayerCharacterUIScript.m_InteractionIcon.rectTransform.position = t_Vector;
-					}
+					Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
+					t_Vector.x = t_Vector.x + 0;
+					t_Vector.y = t_Vector.y + 75;
+					m_PlayerCharacterUIScript.m_InteractionIcon.rectTransform.position = t_Vector;
 				}
 			}
 		}
@@ -372,6 +389,11 @@ public class PlayerCharacter : CharacterBase
 				m_TutorialComponent.TakeStates(p_PlayerCharacter.m_TutorialComponent);
 			}
 		}
+	}
+
+	public InteractionItem GetInteractionItem()
+	{
+		return m_InteractionItem;
 	}
 
 	public InteractableObject GetInteractableObject()
