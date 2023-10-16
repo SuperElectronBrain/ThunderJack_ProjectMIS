@@ -21,7 +21,6 @@ public class BusinessState : State<NPC>
             AdvencedItem newItem = new AdvencedItem
             {
                 itemCode = shopItems[i].itemId,
-                itemAmount = 99,
                 itemProgress = 1
             };
             inventory.AddAItem(newItem);
