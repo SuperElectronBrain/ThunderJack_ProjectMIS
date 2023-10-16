@@ -37,6 +37,7 @@ public class InteractionItem : MonoBehaviour
 				break;
             case ItemType.Accessory:
             case ItemType.Jewelry:
+                Debug.Log("¾Ç¾Ç");
                 item = Instantiate(interactionAccessory);
                 //item.GetComponent<SkeletonAnimation>().Animat
                 break;
