@@ -18,7 +18,8 @@ public class Dialogue : MonoBehaviour
         public int animationID;
         public int textType;
         public int textFormal;          
-        public string textScript;
+        public string textScript1;
+        public string textScript2;
         public string textSelect1;
         public string textSelect2;       
         public int textNext1;
@@ -66,10 +67,11 @@ public class Dialogue : MonoBehaviour
                     textType = Tools.IntParse(dict["Text_Type"]),
                     animationID = Tools.IntParse(dict["Animation_ID"]),
                     textFormal = Tools.IntParse(dict["Text_Formal"]),
-                    textScript = dict["Text_Script"].ToString(),
+                    textScript1 = dict["Text_Script_1"].ToString(),
+                    textScript2 = dict["Text_Script_2"].ToString(),
                     textSelect1 = dict["Text_Select1"].ToString(),
                     textSelect2 = dict["Text_Select2"].ToString(),
-                    textNext1 = Tools.IntParse(dict["Text_Next"]),
+                    textNext1 = Tools.IntParse(dict["Text_Next1"]),
                     textNext2 = Tools.IntParse(dict["Text_Next2"]),
                     eventID = (DialogEventType)Tools.IntParse(dict["Event_ID"])
                 }
@@ -135,16 +137,16 @@ public class Dialogue : MonoBehaviour
         if (dData.characterID == 0)
         {
             playerDialogBox.gameObject.SetActive(true);
-            playerDialogBox.SetPlayerDialog(dData.textScript);
+            playerDialogBox.SetPlayerDialog(dData.textScript1);
         }
         else
         {
             var npc = GameManager.Instance.CharacterDB.GetNPC(dData.characterID);
-            npc.Talk(dData.textScript);
+            npc.Talk(dData.textScript1);
         }
             /*dialogBox.SetName(GameManager.Instance.CharacterDB.GetCharacterName(dData.Character_ID));
         dialogBox.SetDialog(dData.Text_Script);*/
-        Debug.Log(dData.textScript);
+        Debug.Log(dData.textScript1);
         
 
         if (IsOption())

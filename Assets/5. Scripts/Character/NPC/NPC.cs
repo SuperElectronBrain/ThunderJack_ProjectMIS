@@ -20,9 +20,9 @@ public class NPC : Character, IInteraction
     [SerializeField]
     private State<NPC>[] states;
     [SerializeField]
-    NPCBehaviour prevBehaviour;
+    public NPCBehaviour prevBehaviour;
     [SerializeField]
-    NPCBehaviour curBehaviour;
+    public NPCBehaviour curBehaviour;
 
     public NPCBehaviour PrevBehaviour { get { return prevBehaviour; } }
 
@@ -52,6 +52,9 @@ public class NPC : Character, IInteraction
 
     [SerializeField]
     TimeTableData schedule;
+
+    public string shopDialog;
+    public bool isSales;
 
     public CharacterData CharacterData {  get { return characterData; } }
 
@@ -131,11 +134,16 @@ public class NPC : Character, IInteraction
 
     public void TalkEvent()
     {
-        GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue", formal);
+        GameManager.Instance.GameTime.TimeStop(true);
+        if (prevBehaviour == NPCBehaviour.Business)
+            GameManager.Instance.Dialogue.InitDialogue(shopDialog, formal);
+        else
+            GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue", formal);
     }
 
     public void TalkEnd()
     {
+        GameManager.Instance.GameTime.TimeStop(false);
         dialogBox.gameObject.SetActive(false);
     }
 
@@ -182,6 +190,8 @@ public class NPC : Character, IInteraction
                 ChangeState(NPCBehaviour.Move);
                 break;
             case NPCScheduleType.Business:
+                if (curBehaviour == NPCBehaviour.Business)
+                    break;
                 TargetDestinationPos();
                 ChangeState(NPCBehaviour.Move);
                 break;
