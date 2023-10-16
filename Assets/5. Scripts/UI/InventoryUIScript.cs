@@ -75,9 +75,14 @@ public class InventoryUIScript : MonoBehaviour
 
 			for (int i = 0; i < m_Buttons.Count; i = i + 1)
 			{
-				if(m_Buttons[i].GetComponent<CustomButton>() != null)
+				if(m_Buttons[i] as CustomButton != null)
 				{
 					int t_Number = i;
+
+					if (t_AItems[t_Number].itemCode <= 0 || t_AItems[t_Number].itemCode == 1000 || t_AItems[t_Number].itemCode == 1001)
+					{
+						m_Buttons[i].gameObject.SetActive(false);
+					}
 
 					GameObject t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "ItemImage");
 					if(t_GO != null)

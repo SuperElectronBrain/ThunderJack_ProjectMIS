@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public interface IGrabable
@@ -81,6 +82,8 @@ public class PlayerCharacter : CharacterBase
 		}
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
+		EventManager.Subscribe(DialogEventType.ShopGemOpen, OpenNPCShop);
+		EventManager.Subscribe(DialogEventType.ShopJewelryOpen, OpenNPCShop);
 		FindPlayerCharacterUIScript();
 	} 
 
@@ -355,7 +358,8 @@ public class PlayerCharacter : CharacterBase
 			}
 			if (m_Inventory != null)
 			{
-				if (m_Inventory.GetAItems().Count <= 0) { m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory); }
+				//if (m_Inventory.GetAItems().Count <= 0) { m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory); }
+				m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory);
 			}
 
 			if(m_RecipeBook == null)
@@ -365,7 +369,8 @@ public class PlayerCharacter : CharacterBase
 			}
 			if (m_RecipeBook != null)
 			{
-				if (m_RecipeBook.GetItemRecipes().Count <= 0) { m_RecipeBook.TakeItemRecipes(p_PlayerCharacter.m_RecipeBook); }
+				//if (m_RecipeBook.GetItemRecipes().Count <= 0) { m_RecipeBook.TakeItemRecipes(p_PlayerCharacter.m_RecipeBook); }
+				m_RecipeBook.TakeItemRecipes(p_PlayerCharacter.m_RecipeBook);
 			}
 
 			if(m_QuestComponet == null)
@@ -375,7 +380,8 @@ public class PlayerCharacter : CharacterBase
 			}
 			if (m_QuestComponet != null)
 			{
-				if (m_QuestComponet.GetQuests().Count <= 0) { m_QuestComponet.TakeQuests(p_PlayerCharacter.m_QuestComponet); }
+				//if (m_QuestComponet.GetQuests().Count <= 0) { m_QuestComponet.TakeQuests(p_PlayerCharacter.m_QuestComponet); }
+				m_QuestComponet.TakeQuests(p_PlayerCharacter.m_QuestComponet);
 			}
 
 			if (m_TutorialComponent == null)
@@ -387,6 +393,39 @@ public class PlayerCharacter : CharacterBase
 			{
 				//if (m_TutorialComponent.GetStates().Count <= 0) { m_TutorialComponent.TakeStates(p_PlayerCharacter.m_TutorialComponent); }
 				m_TutorialComponent.TakeStates(p_PlayerCharacter.m_TutorialComponent);
+			}
+		}
+	}
+
+	public void OpenNPCShop()
+	{
+		InteractableObject t_InteractableObject = GetInteractableObject();
+		if (t_InteractableObject.interactionGO != null)
+		{
+			NPCShop t_NPCShop = t_InteractableObject.interactionGO.GetComponent<NPCShop>();
+			if (t_NPCShop != null)
+			{
+				if (m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+					{
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(true);
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = t_NPCShop.m_Inventory;
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
+				}
+			}
+			else if (t_NPCShop == null)
+			{
+				if (m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+					{
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
+				}
 			}
 		}
 	}
@@ -756,6 +795,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			/*
 			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
 			if (t_AccessoryPlate != null)
 			{
@@ -778,6 +818,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
@@ -1039,6 +1080,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			/*
 			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
 			if (t_AccessoryPlate != null)
 			{
@@ -1061,6 +1103,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
