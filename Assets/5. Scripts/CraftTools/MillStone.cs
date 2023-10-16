@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class MillStone : MonoBehaviour
 {
+	private List<BBB> m_MaterialCount = new List<BBB>();
 	public int m_Input = 0;
 	public int M_Input { get { return m_Input; } set { m_Input = value; InputEvent(); } }
 	public bool bProgress = false;
@@ -23,12 +24,19 @@ public class MillStone : MonoBehaviour
 	private TrackEntry trackEntry;
 	[SerializeField] private Animator m_TopAnimator;
 	[SerializeField] private Animator m_BottomAnimator;
+	[SerializeField] private GameObject m_Funnel;
+	private Vector3 m_FunnelOriginPosition;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		m_PreviousHandlePosition = Vector3.left;
 		trackEntry = m_SkeletonAnimation.state.SetAnimation(0, "animation", false);
+
+		if (m_Funnel != null)
+		{
+			m_FunnelOriginPosition = m_Funnel.transform.position;
+		}
 	}
 
 	// Update is called once per frame
@@ -67,6 +75,18 @@ public class MillStone : MonoBehaviour
 						}
 					}
 
+					if(m_Progress <= 0.0f)
+					{
+						if(m_MaterialCount != null)
+						{
+							if (m_MaterialCount.Count > 0)
+							{
+								Destroy(m_MaterialCount[0].transform.parent.gameObject);
+								m_MaterialCount.Clear();
+							}
+						}
+					}
+
 					m_SkeletonAnimation.timeScale = 1.0f;
 				}
 				/*
@@ -93,6 +113,11 @@ public class MillStone : MonoBehaviour
 		{
 			bProgress = false;
 			m_SkeletonAnimation.timeScale = 0.0f;
+		}
+
+		if(m_Funnel != null)
+		{
+			m_Funnel.transform.position = m_FunnelOriginPosition + new Vector3(0.0f, (m_Progress - 1) / 2, 0.0f); 
 		}
 
 		if (m_Progress >= 1) { m_AnimationProgress = 1; }
@@ -148,5 +173,46 @@ public class MillStone : MonoBehaviour
 		//}
 
 		return false;
+	}
+
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if(collision.gameObject != gameObject)
+		{
+			BBB t_BBB = collision.gameObject.GetComponent<BBB>();
+			if (t_BBB != null)
+			{
+				if (m_MaterialCount.Find((BBB b) => { return b == t_BBB; }) == null)
+				{
+					m_MaterialCount.Add(t_BBB);
+				}
+
+				if(m_MaterialCount.Count > 2)
+				{
+					if (t_BBB.gameObject.transform.parent != null)
+					{
+						AAA t_AAA = t_BBB.gameObject.transform.parent.GetComponent<AAA>();
+						if(t_AAA != null)
+						{
+							SetItem(new AdvencedItem(t_AAA.m_ItemCode, 1, 1));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.gameObject != gameObject)
+		{
+			BBB t_BBB = collision.gameObject.GetComponent<BBB>();
+			if (t_BBB != null)
+			{
+				m_MaterialCount.Remove(t_BBB);
+				m_MaterialCount.TrimExcess();
+			}
+		}
 	}
 }

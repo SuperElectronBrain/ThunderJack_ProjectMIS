@@ -54,6 +54,7 @@ public class Press : MonoBehaviour
 		//	m_MagicCircleMaterial.material = Instantiate(m_MagicCircleMaterial.material);
 		//}
 
+		RefreshGraph();
 		m_CompleteVFX.Stop();
 		m_FailVFX.Stop();
 		m_SmokeVFX.Stop();
@@ -434,11 +435,11 @@ public class Press : MonoBehaviour
 		{
 			if (m_MagicCircleMaterial.material != null)
 			{
-				m_MagicCircleMaterial.material.SetFloat("_Power5", (1 - curve.Evaluate(m_Elements[0])) * 30.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power3", (1 - curve.Evaluate(m_Elements[1])) * 30.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power1", (1 - curve.Evaluate(m_Elements[2])) * 30.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power2", (1 - curve.Evaluate(m_Elements[3])) * 30.0f);
-				m_MagicCircleMaterial.material.SetFloat("_Power4", (1 - curve.Evaluate(m_Elements[4])) * 30.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power1", (1 - curve.Evaluate(m_Elements[0])) * 35.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power3", (1 - curve.Evaluate(m_Elements[1])) * 35.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power5", (1 - curve.Evaluate(m_Elements[2])) * 35.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power4", (1 - curve.Evaluate(m_Elements[3])) * 35.0f);
+				m_MagicCircleMaterial.material.SetFloat("_Power2", (1 - curve.Evaluate(m_Elements[4])) * 35.0f);
 			}
 		}
 		
