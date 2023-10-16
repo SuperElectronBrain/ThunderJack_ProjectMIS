@@ -16,6 +16,11 @@ public class AAA : MonoBehaviour
     [SerializeField]
     GameObject selectObject;
 
+
+    //
+    public int m_ItemCode = 0;
+    //
+    
     // Start is called before the first frame update
     void Start()
     {

@@ -30,7 +30,11 @@ public class InteractionItem : MonoBehaviour
                     item.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite = itemSprite;
                     item.transform.GetChild(i).gameObject.AddComponent<CircleCollider2D>();
                 }
-                break;
+
+                AAA t_AAA = item.GetComponent<AAA>();
+                if(t_AAA != null)  { t_AAA.m_ItemCode = itemID; }
+
+				break;
             case ItemType.Accessory:
             case ItemType.Jewelry:
                 item = Instantiate(interactionAccessory);
