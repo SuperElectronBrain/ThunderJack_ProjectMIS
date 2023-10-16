@@ -160,6 +160,12 @@ public class InventoryUIScript : MonoBehaviour
 													{
 														if (t_MillStone.m_Progress <= 0)
 														{
+															BBB[] t_AAA = FindObjectsOfType<BBB>();
+															for(int i = 0; i < t_AAA.Length; i = i + 1)
+															{
+																t_AAA[i].DestroyObject();
+															}
+
 															t_PlayerCharacter.GetInteractionItem().ItemInteraction(t_PlayerCharacter.m_Inventory.PopAItem(t_PlayerCharacter.m_GrabItemCode).itemCode);
 														}
 													}
