@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 79144963}
-  m_IndirectSpecularColor: {r: 0.18269733, g: 0.22840542, b: 0.3071067, a: 1}
+  m_IndirectSpecularColor: {r: 0.18269713, g: 0.22840506, b: 0.3071059, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -429,10 +429,24 @@ MonoBehaviour:
     itemProgress: 0
     itemAmount: 0
     selectCount: 0
+  m_HoverItemCode:
+    itemCode: 0
+    itemProgress: 0
+    itemAmount: 0
+    selectCount: 0
+  m_ItemInfoDisplay:
+    m_ItemInfoDisplayGO: {fileID: 0}
+    m_ItemInfoDisplayRect: {fileID: 0}
+    m_ItemNameText: {fileID: 0}
+    m_ItemInfoText: {fileID: 0}
   m_CollisionComponent: {fileID: 0}
   m_PlayerCharacterUIPrefab: {fileID: 0}
   m_PlayerCharacterUIScript: {fileID: 0}
+  m_FootStepEffectInside: {fileID: 0}
+  m_FootStepEffectOutdoor: {fileID: 0}
   m_RecipeBook: {fileID: 0}
+  m_QuestComponet: {fileID: 0}
+  m_TutorialComponent: {fileID: 0}
 --- !u!4 &72959460
 Transform:
   m_ObjectHideFlags: 0
@@ -1540,7 +1554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 932d98c34c618804ea4d6c4c23ee38a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LeftPosition: {x: 2.769, y: 3.534894, z: -18.02181}
   m_DownRotation: {x: 22.33, y: -0.014, z: -0.267}
 --- !u!1 &204722192
 GameObject:
@@ -2121,8 +2134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4da617ee0f0eed24e83ea69ef1fbe23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: {fileID: 2107337597}
-  dialogBox: {fileID: 584212525}
+  nameText: {fileID: 0}
+  dialogBox: {fileID: 0}
 --- !u!1 &398691675
 GameObject:
   m_ObjectHideFlags: 0
@@ -4094,7 +4107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2bf906ff48741458a6a967dd234353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPos: {fileID: 2067289041}
   dataBase: {fileID: 1131807231}
   characterDB: {fileID: 1582699921}
   addressableManager: {fileID: 1131807235}
@@ -4102,8 +4114,14 @@ MonoBehaviour:
   gameTime: {fileID: 1131807236}
   behaviourMaster: {fileID: 0}
   locationManager: {fileID: 0}
+  gameEventManager: {fileID: 0}
+  questManager: {fileID: 0}
+  uiManager: {fileID: 0}
   dialogue: {fileID: 0}
+  isWork: 0
   characters: {fileID: 0}
+  prevScene: 0
+  curScene: 0
 --- !u!4 &1131807233
 Transform:
   m_ObjectHideFlags: 0
@@ -4177,6 +4195,7 @@ MonoBehaviour:
   gameTime2RealTime: 1
   gameSpeed: 30
   timer: 0
+  closeTime: 0
 --- !u!1 &1178186980
 GameObject:
   m_ObjectHideFlags: 0
@@ -4730,6 +4749,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -14
       objectReference: {fileID: 0}
+    - target: {fileID: 5749750772005404201, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6990894605001997294, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7246435179590393994, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -4760,11 +4787,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7837205789170239174, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.9693027
+      value: 4.653401
       objectReference: {fileID: 0}
     - target: {fileID: 7837205789170239174, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.49305597
+      value: 0.42317545
       objectReference: {fileID: 0}
     - target: {fileID: 7837205789170239174, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4772,7 +4799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7837205789170239174, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.70920175
+      value: 0.7025879
       objectReference: {fileID: 0}
     - target: {fileID: 7837205789170239174, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4784,7 +4811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7837205789170239174, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.7050056
+      value: 0.71159697
       objectReference: {fileID: 0}
     - target: {fileID: 7900841179559450866, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       propertyPath: m_RootOrder
@@ -4899,9 +4926,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4817306373608514317, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1452842084}
-    - targetCorrespondingSourceObject: {fileID: 907309795375779549, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 1876206675489194530, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1067545675}
@@ -4911,9 +4935,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1572615286872634895, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
       insertIndex: -1
       addedObject: {fileID: 778817843}
-    - targetCorrespondingSourceObject: {fileID: 4430768324000986162, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: f711f8ee6fdc9df46a667f455554a970, type: 3}
 --- !u!1 &1348458973
 GameObject:
@@ -5016,6 +5037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requestList: []
+  inventory: {fileID: 0}
 --- !u!114 &1348458981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5042,18 +5064,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogBox: {fileID: 379914190}
-  guestQueue:
-    guestQueue: []
-    maxGuestCount: 0
-    guestCount: 0
+  guest: {fileID: 0}
+  player: {fileID: 0}
   entryWeight: 50
   weightValue: 32000000320000003c00000046000000500000005a00000064000000640000006400000064000000
   idx: 0
-  compItem: {fileID: 0}
-  gemField: {fileID: 0}
-  accessoryField: {fileID: 0}
-  button: {fileID: 0}
-  button2: {fileID: 0}
+  salesResult:
+    totalIncome: 0
+    totalFame: 0
+    totalGuestCount: 0
+  salesOver: {fileID: 0}
+  totalIncome: {fileID: 0}
+  totalFame: {fileID: 0}
+  totalGuestCount: {fileID: 0}
   itemImage: {fileID: 313879536}
   itemCode: 0
 --- !u!1 &1358426211
@@ -7536,11 +7559,6 @@ Transform:
   m_Father: {fileID: 1887990019}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0.111, y: -180, z: 0.262}
---- !u!4 &2067289041 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6469142511625493178, guid: e0ed1bd5c9df0bb40b81a817a141ed4c, type: 3}
-  m_PrefabInstance: {fileID: 1582699920}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2072645036
 GameObject:
   m_ObjectHideFlags: 0
