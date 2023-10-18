@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6194203615881184473}
   - component: {fileID: 2409237789227636195}
   - component: {fileID: 8545182840729536771}
+  - component: {fileID: 786927525810895915}
   m_Layer: 5
   m_Name: OptionIconPanel
   m_TagString: Untagged
@@ -80,6 +81,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &786927525810895915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233137515532566655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd098efb8a04f0a4984c2cf8b10d5374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &446148832232025158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2204,6 +2217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6312896005316862864}
   - component: {fileID: 4041020114830329432}
+  - component: {fileID: 6202694897729374219}
   m_Layer: 5
   m_Name: PlayerCharacterUI
   m_TagString: Untagged
@@ -2278,6 +2292,20 @@ MonoBehaviour:
     m_ItemInfoText: {fileID: 8061243824071792810}
   m_InteractionIcon: {fileID: 0}
   m_FadeUI: {fileID: 6558691784987442269}
+--- !u!114 &6202694897729374219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7797226417942440491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af27768b526505749b4ac394a4cc0b49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TargetUI: {fileID: 233137515532566655}
+  m_Key: 27
 --- !u!1 &7932029674251320380
 GameObject:
   m_ObjectHideFlags: 0
