@@ -421,7 +421,24 @@ public class Inventory : MonoBehaviour
 		if (count < 1)
 		{
 			m_AItems.Add(p_AItem);
-			//m_AItems.Sort((a, b) => { return (a.itemCode < b.itemCode) ? -1 : 1; });
+			m_AItems.Sort((a, b) => { return (a.itemCode < b.itemCode) ? -1 : 1; });
+		}
+
+		if(p_AItem.itemCode == 1000)
+		{
+			PlayerCharacter t_PlayerCharacter = m_Owner as PlayerCharacter;
+			if(t_PlayerCharacter != null)
+			{
+				t_PlayerCharacter.m_PlayerCharacterUIScript.AddMoneyText(p_AItem.itemAmount + "");
+			}
+		}
+		else if (p_AItem.itemCode == 1001)
+		{
+			PlayerCharacter t_PlayerCharacter = m_Owner as PlayerCharacter;
+			if (t_PlayerCharacter != null)
+			{
+				t_PlayerCharacter.m_PlayerCharacterUIScript.AddHonerText(p_AItem.itemAmount + "");
+			}
 		}
 
 		RefreshInventory();
