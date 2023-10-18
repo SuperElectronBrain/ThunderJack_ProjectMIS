@@ -25,15 +25,16 @@ public class SpineAnimationBehaviour : StateMachineBehaviour
 		}
 	}
 
-	//public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-	//{
-	//	base.OnStateUpdate(animator, stateInfo, layerIndex);
-	//
-	//	if (trackEntry != null)
-	//	{
-	//		trackEntry.TrackTime = stateInfo.normalizedTime * trackEntry.TrackComplete;
-	//	}
-	//}
+	public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+	{
+		base.OnStateUpdate(animator, stateInfo, layerIndex);
+
+		if (trackEntry != null)
+		{
+			trackEntry.TimeScale = stateInfo.speedMultiplier;
+			//trackEntry.TrackTime = stateInfo.normalizedTime * trackEntry.TrackComplete;
+		}
+	}
 
 	//public override void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	//{
@@ -41,7 +42,8 @@ public class SpineAnimationBehaviour : StateMachineBehaviour
 	//
 	//	if (trackEntry != null)
 	//	{
-	//		trackEntry.TrackTime = stateInfo.normalizedTime * trackEntry.TrackComplete;
+	//		trackEntry.TimeScale = stateInfo.speed;
+	//		//trackEntry.TrackTime = stateInfo.normalizedTime * trackEntry.TrackComplete;
 	//	}
 	//}
 }

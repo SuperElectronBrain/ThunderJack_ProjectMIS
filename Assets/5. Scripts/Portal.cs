@@ -74,7 +74,7 @@ public class Portal : MonoBehaviour
 			{
 				if (other.gameObject.GetComponent<PlayerCharacter>() != null)
 				{
-					if(other.gameObject.GetComponent<PortalMarker>() == null)
+					if (other.gameObject.GetComponent<PortalMarker>() == null)
 					{
 						if(isOverlapping == true)
 						{

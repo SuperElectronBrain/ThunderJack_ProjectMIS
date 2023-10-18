@@ -28,6 +28,7 @@ public class PlayerCharacter : CharacterBase
 	private float m_FadeOutTime = 0.0f;
 	private float m_MonologueDisplayTime = 0.0f;
 	private float m_GuideDisplayTime = 0.0f;
+	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
 
 	//private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
@@ -41,9 +42,10 @@ public class PlayerCharacter : CharacterBase
 	[SerializeField] private PlayerCharacterUIScript m_PlayerCharacterUIScript;
 	[SerializeField] private ParticleSystem m_FootStepEffectInside;
 	[SerializeField] private ParticleSystem m_FootStepEffectOutdoor;
-	public RecipeBook m_RecipeBook;
-	public QuestComponet m_QuestComponet;
-	public TutorialComponent m_TutorialComponent;
+	[HideInInspector] public RecipeBook m_RecipeBook;
+	[HideInInspector] public QuestComponet m_QuestComponet;
+	[HideInInspector] public TutorialComponent m_TutorialComponent;
+	[SerializeField] private Animator m_ShadowAnimator;
 	private IInteraction m_Interaction;
 	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
 	private GameObject m_GuideUI;
@@ -82,6 +84,7 @@ public class PlayerCharacter : CharacterBase
 		}
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
+		EventManager.Subscribe(EventType.EndIteraction, CloseNPCShop);
 		EventManager.Subscribe(DialogEventType.ShopGemOpen, OpenNPCShop);
 		EventManager.Subscribe(DialogEventType.ShopJewelryOpen, OpenNPCShop);
 		FindPlayerCharacterUIScript();
@@ -210,7 +213,7 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_FootStepEffectInside.isPlaying != true)
 					{
-						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "ShopScene")
+						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Build_Inside")
 						{
 							m_FootStepEffectInside.Play();
 						}
@@ -227,7 +230,10 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_FootStepEffectOutdoor.isPlaying != true)
 					{
-						m_FootStepEffectOutdoor.Play();
+						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Build_Inside")
+						{
+							m_FootStepEffectOutdoor.Play();
+						}
 					}
 				}
 				else if (m_HorizontalMove == 0)
@@ -241,7 +247,18 @@ public class PlayerCharacter : CharacterBase
 			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 1.0f; }
 			(m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale = t_ModelingScale;
 		}
-		
+
+		if(m_Animator != null)
+		{
+			m_Animator.SetFloat("MoveSpeed", (m_Velocity / m_Speed) * m_MoveAnimationSpeed);
+		}
+		if (m_ShadowAnimator != null)
+		{
+			m_ShadowAnimator.SetFloat("MoveSpeed", (m_Velocity / m_Speed) * m_MoveAnimationSpeed);
+			m_ShadowAnimator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
+			m_ShadowAnimator.SetFloat("VerticalSpeed", m_VerticalMove);
+		}
+
 		/*
 		if(m_Interaction != null)
 		{
@@ -417,15 +434,20 @@ public class PlayerCharacter : CharacterBase
 			}
 			else if (t_NPCShop == null)
 			{
-				if (m_PlayerCharacterUIScript != null)
-				{
-					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-					{
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
-					}
-				}
+				CloseNPCShop();
+			}
+		}
+	}
+
+	public void CloseNPCShop()
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+			{
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
 			}
 		}
 	}
