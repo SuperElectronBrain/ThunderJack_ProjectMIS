@@ -39,7 +39,7 @@ public class PlayerCharacter : CharacterBase
 	//[HideInInspector] public GameObject m_HitObject;
 	[SerializeField] private CollisionComponent m_CollisionComponent;
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
-	[SerializeField] private PlayerCharacterUIScript m_PlayerCharacterUIScript;
+	public PlayerCharacterUIScript m_PlayerCharacterUIScript;
 	[SerializeField] private ParticleSystem m_FootStepEffectInside;
 	[SerializeField] private ParticleSystem m_FootStepEffectOutdoor;
 	[HideInInspector] public RecipeBook m_RecipeBook;
@@ -85,8 +85,8 @@ public class PlayerCharacter : CharacterBase
 
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		EventManager.Subscribe(EventType.EndIteraction, CloseNPCShop);
-		EventManager.Subscribe(DialogEventType.ShopGemOpen, OpenNPCShop);
-		EventManager.Subscribe(DialogEventType.ShopJewelryOpen, OpenNPCShop);
+		EventManager.Subscribe(DialogEventType.ShopGemOpen, OpenBeilShop);
+		EventManager.Subscribe(DialogEventType.ShopJewelryOpen, OpenGagaShop);
 		FindPlayerCharacterUIScript();
 	} 
 
@@ -437,6 +437,30 @@ public class PlayerCharacter : CharacterBase
 				CloseNPCShop();
 			}
 		}
+	}
+
+	public void OpenBeilShop()
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+			{
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.SetShopType(true);
+			}
+		}
+		OpenNPCShop();
+	}
+
+	public void OpenGagaShop()
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+			{
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.SetShopType(false);
+			}
+		}
+		OpenNPCShop();
 	}
 
 	public void CloseNPCShop()
