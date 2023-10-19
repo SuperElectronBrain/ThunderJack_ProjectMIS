@@ -10,6 +10,7 @@ public class LocationList : EditorWindow
 {
     static List<EditorLocationData> locationList = new List<EditorLocationData>();
     static CinemachineVirtualCamera topCam;
+    private Vector2 scrollPos = Vector2.zero;
 
     public enum LocationType
     {
@@ -152,12 +153,15 @@ public class LocationList : EditorWindow
 
         GUILayout.Label("Location List");
 
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        
         if (locationList.Count > 0)
         {
             ShowLocationList();
         }
 
         GUILayout.EndVertical();
+        EditorGUILayout.EndScrollView();
     }
 
     void WriteLocationInfo()
