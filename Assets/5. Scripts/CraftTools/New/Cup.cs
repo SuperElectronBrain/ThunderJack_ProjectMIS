@@ -71,7 +71,11 @@ namespace RavenCraftCore
             
             track.TrackTime = speed;
 
-            transform.position = mainCam.ScreenToWorldPoint(CursorManager.GetCursorPosition());
+            Vector3 newPos = mainCam.ScreenToWorldPoint(CursorManager.GetCursorPosition());
+
+            newPos.z = zOffset;
+
+            transform.position = newPos;
 
             /*
             if (isGrab)
