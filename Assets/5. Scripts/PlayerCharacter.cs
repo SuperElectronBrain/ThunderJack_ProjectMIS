@@ -1046,12 +1046,10 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (t_Press.m_AccessoryInput == null)
 					{
-						//AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-						//if (t_AItem != null)
-						if (m_GrabItemCode != null)
+						AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						if (t_AItem != null)
 						{
-							//t_Press.m_AccessoryInput = t_AItem;
-							t_Press.m_AccessoryInput = m_GrabItemCode;
+							t_Press.m_AccessoryInput = t_AItem;
 							t_Press.RefreshPlate();
 						}
 					}
@@ -1066,13 +1064,11 @@ public class PlayerCharacter : CharacterBase
 					if (m_GrabItemCode.itemCode >= 28 && m_GrabItemCode.itemCode <= 57)
 					{
 						//AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-						//if (m_Inventory.FindAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount) == true)
-						//{
-						//	t_PlayerShop.itemCode = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount).itemCode;
-						//	t_PlayerShop.HandOverItem();
-						//}
-						t_PlayerShop.itemCode = m_GrabItemCode.itemCode;
-						t_PlayerShop.HandOverItem();
+						if (m_Inventory.FindAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount) == true)
+						{
+							t_PlayerShop.itemCode = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount).itemCode;
+							t_PlayerShop.HandOverItem();
+						}
 					}
 				}
 			}
@@ -1084,7 +1080,7 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_GrabItemCode.itemCode == 21)
 					{
-						//m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 					}
 				}
 			}
@@ -1282,16 +1278,16 @@ public class PlayerCharacter : CharacterBase
 					m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 				}
 
-				//if (t_MillStone.M_Input == 0)
-				//{
-				//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
-				//	{
-				//
-				//		t_MillStone.M_Input = t_AItem.itemCode;
-				//		t_MillStone.m_Progress = t_AItem.itemProgress;
-				//	}
-				//}
+				if (t_MillStone.M_Input == 0)
+				{
+					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+					if(t_AItem.IsAddable(new AdvencedItem()) == false)
+					{
+				
+						t_MillStone.M_Input = t_AItem.itemCode;
+						t_MillStone.m_Progress = t_AItem.itemProgress;
+					}
+				}
 			}
 			*/
 
@@ -1336,12 +1332,10 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (t_Press.m_AccessoryInput == null)
 					{
-						//AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-						//if (t_AItem != null)
-						if (m_GrabItemCode != null)
+						AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						if (t_AItem != null)
 						{
-							//t_Press.m_AccessoryInput = t_AItem;
-							t_Press.m_AccessoryInput = m_GrabItemCode;
+							t_Press.m_AccessoryInput = t_AItem;
 							t_Press.RefreshPlate();
 						}
 					}
@@ -1356,13 +1350,11 @@ public class PlayerCharacter : CharacterBase
 					if (m_GrabItemCode.itemCode >= 28 && m_GrabItemCode.itemCode <= 57)
 					{
 						//AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-						//if (m_Inventory.FindAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount) == true)
-						//{
-						//	t_PlayerShop.itemCode = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount).itemCode;
-						//	t_PlayerShop.HandOverItem();
-						//}
-						t_PlayerShop.itemCode = m_GrabItemCode.itemCode;
-						t_PlayerShop.HandOverItem();
+						if (m_Inventory.FindAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount) == true)
+						{
+							t_PlayerShop.itemCode = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount).itemCode;
+							t_PlayerShop.HandOverItem();
+						}
 					}
 				}
 			}
@@ -1374,7 +1366,7 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_GrabItemCode.itemCode == 21)
 					{
-						//m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
+						m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 					}
 				}
 			}
