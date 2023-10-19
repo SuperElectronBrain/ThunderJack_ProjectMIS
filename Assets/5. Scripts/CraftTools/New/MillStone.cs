@@ -11,29 +11,38 @@ namespace RavenCraftCore
         private bool isUsed;
         private bool isGrab;
         private Camera mainCam;
-        [SerializeField]
-        private float zOffset;
-        private float yOffset;
+
 
         [SerializeField]
-        private SkeletonAnimation skAni;
+        private GameObject handle;
 
-        [SerializeField] private float delta;
+        [SerializeField]
+        private float r;
 
-        private Vector3 originPos;
+        [SerializeField]
+        private float prevTheta;
+        [SerializeField]
+        private float theta;
 
-        [SerializeField, Range(0f, 1f)] private float speed;
-        private TrackEntry track;
-        [SerializeField] private Transform inlet;
-        [SerializeField] private float accuracy;
+
+        [Header("Debug")]
+        [SerializeField]
+        int insertedItemID;
+        [SerializeField]
+        int itemCount;
+
+        [SerializeField]
+        List<float> insertedItemProgress;
+
+        [SerializeField]
+        float resultValue;
+        [SerializeField]
+        float grindingSpeed;
+
         private void Start()
         {
             mainCam = Camera.main;
-            originPos = transform.position;
-            zOffset = originPos.z;
-            yOffset = originPos.y;
-            
-            track = skAni.state.SetAnimation(0, "animation", false);
+            resultValue = 100;
         }
 
         private void OnMouseDown()
@@ -51,30 +60,15 @@ namespace RavenCraftCore
             isUsed = false;
         }
 
-        [SerializeField]
-        private GameObject go;
-
-        [SerializeField]
-        private float r;
-
-        [SerializeField]
-        private float prevTheta;
-
-        [SerializeField]
-        private float theta;
-
-        [SerializeField]
-        private float deg;
-        
         // Update is called once per frame
         void Update()
         {
-            var mPos = Input.mousePosition;
-            mPos = mainCam.ScreenToWorldPoint(CursorManager.GetCursorPosition());
+            if (itemCount == 0)
+                return;
+
+            var mPos = mainCam.ScreenToWorldPoint(CursorManager.GetCursorPosition());
 
             theta = Mathf.Atan2(mPos.y, mPos.x);
-            
-            deg = theta * Mathf.Rad2Deg;
             
             if (theta > 0)
             {
@@ -88,13 +82,21 @@ namespace RavenCraftCore
                     return;
             }
 
+            resultValue = 0;
+
+            for(int i = 0; i < insertedItemProgress.Count; i++)
+            {
+                insertedItemProgress[i] += Time.deltaTime * grindingSpeed;
+                resultValue += Mathf.Lerp(0, 33.3333f, insertedItemProgress[i] / 100);
+            }
+
             Vector3 newPos;
 
             newPos.x = r * Mathf.Cos(theta);
             newPos.y = r * Mathf.Sin(theta);
             newPos.z = 3;
 
-            go.transform.position = newPos;
+            handle.transform.position = newPos;
             prevTheta = theta;
         }
     }

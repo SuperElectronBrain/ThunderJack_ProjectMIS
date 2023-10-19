@@ -29,15 +29,14 @@ public class CursorManager : MonoBehaviour
     }
 
     private void OnEnable()
-    {
-        Cursor.visible = false;
-        
+    {               
         var mousePosition = Input.mousePosition;
 
-        mPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y,
-            -Camera.main.transform.position.z + 10f));
-
+        mPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, -Camera.main.transform.position.z));
+        mPos.z = 0;
         cursorImage.rectTransform.position = mPos;
+
+        Cursor.visible = false;
     }
 
     private void OnDisable()
