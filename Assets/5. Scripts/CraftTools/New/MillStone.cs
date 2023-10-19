@@ -38,6 +38,7 @@ namespace RavenCraftCore
 
         private void OnMouseDown()
         {
+            Debug.Log("sff");
             isGrab = true;
         }
         
