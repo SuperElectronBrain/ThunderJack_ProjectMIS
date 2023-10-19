@@ -45,19 +45,15 @@ public class Portal : MonoBehaviour
 
 		if (t_PlayerCharacter != null)
 		{
-			if (isOverlapping == true)
-			{
-				t_PlayerCharacter.gameObject.AddComponent<PortalMarker>();
-			}
+			if (isOverlapping == true) { t_PlayerCharacter.gameObject.AddComponent<PortalMarker>(); }
 			t_PlayerCharacter.gameObject.transform.position = destination;
-			if (m_PlayerCharacter != null)
-			{
-				t_PlayerCharacter.TakeComponents(m_PlayerCharacter);
-			}
+			if (m_PlayerCharacter != null) { t_PlayerCharacter.TakeComponents(m_PlayerCharacter); }
 			t_PlayerCharacter.FindPlayerCharacterUIScript();
-			CameraController t_CameraController = Camera.main.GetComponent<CameraController>();
-			if(t_CameraController != null) { t_CameraController.m_PlayerCharacter = t_PlayerCharacter; }
+			//CameraController t_CameraController = Camera.main.GetComponent<CameraController>();
+			//if(t_CameraController != null) { t_CameraController.m_PlayerCharacter = t_PlayerCharacter; }
 			if (t_PlayerCharacter.GetComponent<Rigidbody>() != null) { t_PlayerCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero; }
+
+			Debug.Log(t_PlayerCharacter.m_Inventory.GetAItems().Count);
 		}
 
 		if (m_PlayerCharacter != null) { Destroy(m_PlayerCharacter.gameObject); }
