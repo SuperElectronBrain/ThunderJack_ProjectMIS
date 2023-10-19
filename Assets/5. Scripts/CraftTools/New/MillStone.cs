@@ -78,7 +78,7 @@ namespace RavenCraftCore
             
             if (theta > 0)
             {
-                if (prevTheta <= -3.1f) ;
+                if (prevTheta <= -3f) ;
                 else if (theta >= prevTheta)
                     return;
             }
