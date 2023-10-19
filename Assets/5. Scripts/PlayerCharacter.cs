@@ -1,7 +1,11 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public interface IGrabable
 {
@@ -46,7 +50,7 @@ public class PlayerCharacter : CharacterBase
 	[HideInInspector] public QuestComponet m_QuestComponet;
 	[HideInInspector] public TutorialComponent m_TutorialComponent;
 	[SerializeField] private Animator m_ShadowAnimator;
-	private IInteraction m_Interaction;
+	//private IInteraction m_Interaction;
 	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
 	private GameObject m_GuideUI;
 	private InteractionItem m_InteractionItem;
@@ -752,14 +756,31 @@ public class PlayerCharacter : CharacterBase
 	public void FadeIn(float p_Time) { m_FadeInTimeBase = p_Time; m_FadeInTime = p_Time; }
 	public void FadeOut(float p_Time) { m_FadeOutTimeBase = p_Time; m_FadeOutTime = p_Time; }
 
-	protected override void OnTriggerEnter(Collider collision)
+	public void SetPlayerGrabItem(AdvencedItem p_AItem)
 	{
-		m_CPAComponent = collision.gameObject.GetComponent<CameraPresetAreaComponent>();
-		if (m_CPAComponent != null)
+		m_GrabItemCode = p_AItem;
+		if(m_InteractionItem == null)
 		{
-			m_CPAComponent.m_PlayerCharacter = this;
+			if (m_GrabItemSprite != null)
+			{
+				m_GrabItemSprite.sprite = m_InteractionItem == null ? UniFunc.FindSprite(m_GrabItemCode.itemCode) : null;
+				m_GrabItemSprite.gameObject.SetActive(m_InteractionItem == null ? (m_GrabItemCode.itemCode > 0 ? true : false) : false);
+			}
+		}
+		else if(m_InteractionItem != null)
+		{
+			m_InteractionItem.ItemInteraction(m_GrabItemCode.itemCode);
 		}
 	}
+
+	//protected override void OnTriggerEnter(Collider collision)
+	//{
+	//	m_CPAComponent = collision.gameObject.GetComponent<CameraPresetAreaComponent>();
+	//	if (m_CPAComponent != null)
+	//	{
+	//		m_CPAComponent.m_PlayerCharacter = this;
+	//	}
+	//}
 
 	/// <summary>
 	/// MouseButtonDown = true, MouseButtonUp = false
@@ -768,51 +789,40 @@ public class PlayerCharacter : CharacterBase
 	protected virtual void DoRaycast(bool p_MouseDown = true)
 	{
 		bool bMouseOnUI = UnityEngine.EventSystems.EventSystem.current != null ? UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() : false;
-		if (p_MouseDown == true)
+		Vector3 t_MousePosition = Vector3.zero;
+		t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+		bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
+		if (result == true)
 		{
-			Vector3 t_MousePosition = Vector3.zero;
-			if (Camera.main.orthographic == false)
-			{
-				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
-				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
-				// bMouseOnUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
-				if (result == true)// && bMouseOnUI == false)
-				{ OnClickHit(hit, bMouseOnUI); }
-				else if (result == false)// || bMouseOnUI == true)
-				{ OnClickMiss(bMouseOnUI); }
-			}
-			else if (Camera.main.orthographic == true)
-			{
-				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
-				if (hit2D == true)// && bMouseOnUI == false)
-				{ OnClickHit2D(hit2D, bMouseOnUI); }
-				else if (hit2D == false)// || bMouseOnUI == true)
-				{ OnClickMiss2D(bMouseOnUI); }
-			}
+			if (p_MouseDown == true)
+			{ OnClickHit(hit, bMouseOnUI); }
+			else if (p_MouseDown == false)
+			{ OnReleaseHit(hit, bMouseOnUI); }
 		}
-		else if(p_MouseDown == false)
+		else if (result == false)
 		{
-			Vector3 t_MousePosition = Vector3.zero;
-			if (Camera.main.orthographic == false)
-			{
-				t_MousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
-				bool result = Physics.Raycast(Camera.main.transform.position, t_MousePosition, out RaycastHit hit, Mathf.Infinity);
-				if (result == true)// && bMouseOnUI == false)
-				{ OnReleaseHit(hit, bMouseOnUI); }
-				else if (result == false)// || bMouseOnUI == true)
-				{ OnReleaseMiss(bMouseOnUI); }
-			}
-			else if (Camera.main.orthographic == true)
-			{
-				t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
-				if (hit2D == true)// && bMouseOnUI == false)
-				{ OnReleaseHit2D(hit2D, bMouseOnUI); }
-				else if (hit2D == false)// || bMouseOnUI == true)
-				{ OnReleaseMiss2D(bMouseOnUI); }
-			}
+			if (p_MouseDown == true)
+			{ OnClickMiss(bMouseOnUI); }
+			else if (p_MouseDown == false)
+			{ OnReleaseMiss(bMouseOnUI); }
 		}
+		t_MousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		RaycastHit2D hit2D = Physics2D.Raycast(t_MousePosition, new Vector3(t_MousePosition.x, t_MousePosition.y, t_MousePosition.z + 100));
+		if (hit2D == true)
+		{
+			if(p_MouseDown == true)
+			{ OnClickHit2D(hit2D, bMouseOnUI); }
+			else if (p_MouseDown == false)
+			{ OnReleaseHit2D(hit2D, bMouseOnUI); }
+		}
+		else if (hit2D == false)
+		{
+			if (p_MouseDown == true)
+			{ OnClickMiss2D(bMouseOnUI); }
+			else if (p_MouseDown == false)
+			{ OnReleaseMiss2D(bMouseOnUI); }
+		}
+		
 	}
 
 	//3DHit
@@ -878,13 +888,8 @@ public class PlayerCharacter : CharacterBase
 						{
 							if (m_GrabItemCode == null)
 							{
-								m_Inventory.AddAItem(t_Press.m_AccessoryInput);
-								m_GrabItemCode = t_Press.m_AccessoryInput;
-								if (m_GrabItemSprite != null)
-								{
-									m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
-									m_GrabItemSprite.gameObject.SetActive(true);
-								}
+								//m_Inventory.AddAItem(t_Press.m_AccessoryInput);
+								SetPlayerGrabItem(t_Press.m_AccessoryInput);
 								t_Press.m_AccessoryInput = null;
 								t_Press.RefreshPlate();
 							}
@@ -893,6 +898,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			/*
 			PressOutput t_PressOutput = hit.transform.GetComponent<PressOutput>();
 			if (t_PressOutput != null)
 			{
@@ -919,6 +925,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 
 			IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
 			if (t_GrabableObject != null)
@@ -929,6 +936,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			/*
 			NPCShop t_NPCShop = hit.transform.GetComponent<NPCShop>();
 			if (t_NPCShop != null)
 			{
@@ -954,25 +962,27 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 		}
 		else if (bMouseOnUI == true)
 		{
 
 		}
 	}
+
 	protected virtual void OnClickMiss(bool bMouseOnUI)
 	{
 		if (bMouseOnUI == false)
 		{
-			if (m_PlayerCharacterUIScript != null)
-			{
-				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-				{
-					m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
-					m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
-					m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
-				}
-			}
+			//if (m_PlayerCharacterUIScript != null)
+			//{
+			//	if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+			//	{
+			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+			//	}
+			//}
 		}
 		else if (bMouseOnUI == true)
 		{
@@ -1058,6 +1068,8 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			/*
+			*/
 			PlayerShop t_PlayerShop = hit.transform.GetComponent<PlayerShop>();
 			if (t_PlayerShop != null)
 			{
@@ -1091,6 +1103,38 @@ public class PlayerCharacter : CharacterBase
 		}
 		else if (bMouseOnUI == true)
 		{
+			Canvas t_Canvas = FindObjectOfType<Canvas>();
+			if(t_Canvas != null)
+			{
+				GraphicRaycaster t_GraphicRaycaster = t_Canvas.GetComponent<GraphicRaycaster>();
+				if(t_GraphicRaycaster != null)
+				{
+					PointerEventData t_PointerEventData = new PointerEventData(null);
+					t_PointerEventData.position = Input.mousePosition;
+					List<RaycastResult> results = new List<RaycastResult>();
+					t_GraphicRaycaster.Raycast(t_PointerEventData, results);
+
+					for(int i = 0; i < results.Count; i = i + 1)
+					{
+						InventoryUIScript t_InventoryUIScript = UniFunc.GetParentComponent<InventoryUIScript>(results[i].gameObject);
+						if (t_InventoryUIScript != null)
+						{
+							m_Inventory.AddAItem(m_GrabItemCode);
+
+							List<AAA> t_AAA = FindObjectsOfType<AAA>().ToList();
+							for(int j = 0; j < results.Count; j = j + 1)
+							{
+								if (t_AAA[i].m_ItemCode == m_GrabItemCode.itemCode)
+								{
+									Destroy(t_AAA[i].gameObject);
+									break;
+								}
+							}
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -1161,19 +1205,14 @@ public class PlayerCharacter : CharacterBase
 				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressAccessoryPlate.gameObject);
 				if (t_Press != null)
 				{
-					if(t_Press.m_AccessoryInput != null)
+					if (t_Press.m_AccessoryInput != null)
 					{
 						if (t_Press.m_AccessoryInput.itemAmount > 0)
 						{
-							if(m_GrabItemCode == null)
+							if (m_GrabItemCode == null)
 							{
-								m_Inventory.AddAItem(t_Press.m_AccessoryInput);
-								m_GrabItemCode = t_Press.m_AccessoryInput;
-								if (m_GrabItemSprite != null)
-								{
-									m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
-									m_GrabItemSprite.gameObject.SetActive(true);
-								}
+								//m_Inventory.AddAItem(t_Press.m_AccessoryInput);
+								SetPlayerGrabItem(t_Press.m_AccessoryInput);
 								t_Press.m_AccessoryInput = null;
 								t_Press.RefreshPlate();
 							}
@@ -1182,6 +1221,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			/*
 			PressOutput t_PressOutput = hit.transform.GetComponent<PressOutput>();
 			if (t_PressOutput != null)
 			{
@@ -1208,6 +1248,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 
 			IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
 			if (t_GrabableObject != null)
@@ -1218,6 +1259,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			/*
 			NPCShop t_NPCShop = hit.transform.GetComponent<NPCShop>();
 			if (t_NPCShop != null)
 			{
@@ -1243,6 +1285,7 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			*/
 		}
 		else if (bMouseOnUI == true)
 		{
@@ -1254,15 +1297,15 @@ public class PlayerCharacter : CharacterBase
 	{
 		if (bMouseOnUI == false)
 		{
-			if (m_PlayerCharacterUIScript != null)
-			{
-				if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-				{
-					m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
-					m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
-					m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
-				}
-			}
+			//if (m_PlayerCharacterUIScript != null)
+			//{
+			//	if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+			//	{
+			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+			//	}
+			//}
 		}
 		else if (bMouseOnUI == true)
 		{
@@ -1348,6 +1391,8 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
+			/*
+			*/
 			PlayerShop t_PlayerShop = hit.transform.GetComponent<PlayerShop>();
 			if (t_PlayerShop != null)
 			{
@@ -1381,6 +1426,38 @@ public class PlayerCharacter : CharacterBase
 		}
 		else if (bMouseOnUI == true)
 		{
+			Canvas t_Canvas = FindObjectOfType<Canvas>();
+			if (t_Canvas != null)
+			{
+				GraphicRaycaster t_GraphicRaycaster = t_Canvas.GetComponent<GraphicRaycaster>();
+				if (t_GraphicRaycaster != null)
+				{
+					PointerEventData t_PointerEventData = new PointerEventData(null);
+					t_PointerEventData.position = Input.mousePosition;
+					List<RaycastResult> results = new List<RaycastResult>();
+					t_GraphicRaycaster.Raycast(t_PointerEventData, results);
+
+					for (int i = 0; i < results.Count; i = i + 1)
+					{
+						InventoryUIScript t_InventoryUIScript = UniFunc.GetParentComponent<InventoryUIScript>(results[i].gameObject);
+						if (t_InventoryUIScript != null)
+						{
+							m_Inventory.AddAItem(m_GrabItemCode);
+
+							List<AAA> t_AAA = FindObjectsOfType<AAA>().ToList();
+							for (int j = 0; j < results.Count; j = j + 1)
+							{
+								if (t_AAA[i].m_ItemCode == m_GrabItemCode.itemCode)
+								{
+									Destroy(t_AAA[i].gameObject);
+									break;
+								}
+							}
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 
