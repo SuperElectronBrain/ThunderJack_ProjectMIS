@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class CharacterBase : MonoBehaviour
 {
-	[SerializeField][Range(0, 100)] protected float speed = 5.0f;
+	[SerializeField][Range(0, 100)] protected float m_Speed = 5.0f;
 	[SerializeField] protected float jumpForce = 250.0f;
 	[HideInInspector] public Vector3 m_HorizontalMoveDirection;
 	[HideInInspector] public Vector3 m_VerticalMoveDirection;
@@ -113,13 +113,13 @@ public class CharacterBase : MonoBehaviour
 	protected virtual void HorizontalMove(float DeltaTime)
 	{
 		//transform.Translate(new Vector3(m_HorizontalMove, 0.0f, 0.0f) * DeltaTime * speed);
-		transform.Translate(m_HorizontalMoveDirection * m_HorizontalMove * DeltaTime * speed);
+		transform.Translate(m_HorizontalMoveDirection * m_HorizontalMove * DeltaTime * m_Speed);
 	}
 
 	protected virtual void VerticalMove(float DeltaTime)
 	{
 		//transform.Translate(new Vector3(0.0f, 0.0f, m_VerticalMove) * DeltaTime * speed);
-		transform.Translate(m_VerticalMoveDirection * m_VerticalMove * DeltaTime * speed);
+		transform.Translate(m_VerticalMoveDirection * m_VerticalMove * DeltaTime * m_Speed);
 	}
 
 	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection, Vector3 p_VerticalMoveDirection)

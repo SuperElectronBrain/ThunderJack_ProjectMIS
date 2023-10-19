@@ -236,4 +236,22 @@ public class NPCStoreUIScript : MonoBehaviour
 			}
 		}
 	}
+
+	/// <summary>
+	/// true = Beil, false = Gaga
+	/// </summary>
+	/// <returns></returns>
+	public void SetShopType(bool param)
+	{
+		GameObject t_GO = UniFunc.GetChildOfName(gameObject, param ? "BeilTitleImageTop" : "GagaTitleImageTop");
+		if(t_GO != null)
+		{
+			t_GO.SetActive(true);
+		}
+		t_GO = UniFunc.GetChildOfName(gameObject, param ? "GagaTitleImageTop" : "BeilTitleImageTop");
+		if(t_GO != null)
+		{
+			t_GO.SetActive(false);
+		}
+	}
 }
