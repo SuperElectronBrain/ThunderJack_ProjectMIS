@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class MillStone : MonoBehaviour
 {
-	private List<BBB> m_MaterialCount = new List<BBB>();
+	private List<BBB> m_Materials = new List<BBB>();
 	public int m_Input = 0;
 	public int M_Input { get { return m_Input; } set { m_Input = value; InputEvent(); } }
 	public bool bProgress = false;
@@ -77,12 +77,12 @@ public class MillStone : MonoBehaviour
 
 					if(m_Progress <= 0.0f)
 					{
-						if(m_MaterialCount != null)
+						if(m_Materials != null)
 						{
-							if (m_MaterialCount.Count > 0)
+							if (m_Materials.Count > 0)
 							{
-								Destroy(m_MaterialCount[0].transform.parent.gameObject);
-								m_MaterialCount.Clear();
+								Destroy(m_Materials[0].transform.parent.gameObject);
+								m_Materials.Clear();
 							}
 						}
 					}
@@ -117,7 +117,7 @@ public class MillStone : MonoBehaviour
 
 		if(m_Funnel != null)
 		{
-			m_Funnel.transform.position = m_FunnelOriginPosition + new Vector3(0.0f, (m_Progress - 1) * 0.8f, 0.0f); 
+			m_Funnel.transform.position = m_FunnelOriginPosition + new Vector3(0.0f, (m_Progress - (m_Materials.Count * 0.333f)) * 0.8f, 0.0f); 
 		}
 
 		if (m_Progress >= 1) { m_AnimationProgress = 1; }
@@ -150,25 +150,45 @@ public class MillStone : MonoBehaviour
 
 	}
 
+	public bool AddIngredient(AdvencedItem p_AItem)
+	{
+		if (p_AItem.itemCode >= 1 && p_AItem.itemCode <= 15)
+		{
+			m_Input = p_AItem.itemCode;
+			m_Progress = m_Progress + p_AItem.itemProgress;
+			m_Progress = m_Progress > 1 ? 1 : (m_Progress < 0 ? 0 : m_Progress);
+			return true;
+		}
+		return false;
+	}
+
 	public bool SetItem(AdvencedItem p_AItem)
 	{
+		if(p_AItem.itemCode >= 1 && p_AItem.itemCode <= 15)
+		{
+			m_Input = p_AItem.itemCode;
+			m_Progress = p_AItem.itemProgress;
+			m_Progress = m_Progress > 1 ? 1 : (m_Progress < 0 ? 0 : m_Progress);
+			return true;
+		}
+
 		//if (m_Input == 0)
 		//{
 			//if (p_AItem.IsAddable(new AdvencedItem()) == false)
 			//{
-				switch (p_AItem.itemCode)
-				{
-					case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15:
-					{
-						m_Input = p_AItem.itemCode;
-						m_Progress = p_AItem.itemProgress;
-						return true;
-					}
-					default:
-					{
-						break;
-					}
-				}
+				//switch (p_AItem.itemCode)
+				//{
+				//	case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15:
+				//	{
+				//		m_Input = p_AItem.itemCode;
+				//		m_Progress = p_AItem.itemProgress;
+				//		return true;
+				//	}
+				//	default:
+				//	{
+				//		break;
+				//	}
+				//}
 			//}
 		//}
 
@@ -183,19 +203,16 @@ public class MillStone : MonoBehaviour
 			BBB t_BBB = collision.gameObject.GetComponent<BBB>();
 			if (t_BBB != null)
 			{
-				if (m_MaterialCount.Find((BBB b) => { return b == t_BBB; }) == null)
+				if (m_Materials.Find((BBB b) => { return b == t_BBB; }) == null)
 				{
-					m_MaterialCount.Add(t_BBB);
-				}
+					m_Materials.Add(t_BBB);
 
-				if(m_MaterialCount.Count > 2)
-				{
 					if (t_BBB.gameObject.transform.parent != null)
 					{
 						AAA t_AAA = t_BBB.gameObject.transform.parent.GetComponent<AAA>();
-						if(t_AAA != null)
+						if (t_AAA != null)
 						{
-							SetItem(new AdvencedItem(t_AAA.m_ItemCode, 1, 1));
+							AddIngredient(new AdvencedItem(t_AAA.m_ItemCode, 0.333f, 1));
 						}
 					}
 				}
@@ -210,8 +227,9 @@ public class MillStone : MonoBehaviour
 			BBB t_BBB = collision.gameObject.GetComponent<BBB>();
 			if (t_BBB != null)
 			{
-				m_MaterialCount.Remove(t_BBB);
-				m_MaterialCount.TrimExcess();
+				m_Materials.Remove(t_BBB);
+				m_Materials.TrimExcess();
+				AddIngredient(new AdvencedItem(m_Input, -0.333f, 1));
 			}
 		}
 	}
