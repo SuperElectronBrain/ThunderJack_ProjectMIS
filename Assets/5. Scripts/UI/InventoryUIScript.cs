@@ -162,11 +162,11 @@ public class InventoryUIScript : MonoBehaviour
 											{
 												if(t_AItem.itemCode >= 16)
 												{
-													//if (t_PlayerCharacter.m_GrabItemSprite != null)
-													//{
-													//	t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
-													//	t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
-													//}
+													if (t_PlayerCharacter.m_GrabItemSprite != null)
+													{
+														t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
+														t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
+													}
 											
 													t_PlayerCharacter.SetPlayerGrabItem(t_PlayerCharacter.m_Inventory.PopAItem(t_AItem.itemCode, t_AItem.itemProgress, 1));
 												}
