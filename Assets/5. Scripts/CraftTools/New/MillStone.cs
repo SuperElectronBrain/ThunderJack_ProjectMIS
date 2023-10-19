@@ -38,7 +38,6 @@ namespace RavenCraftCore
 
         private void OnMouseDown()
         {
-            Debug.Log("sff");
             isGrab = true;
         }
         
@@ -79,7 +78,7 @@ namespace RavenCraftCore
             
             if (theta > 0)
             {
-                if (prevTheta <= -3.13f) ;
+                if (prevTheta <= -3.1f) ;
                 else if (theta >= prevTheta)
                     return;
             }
