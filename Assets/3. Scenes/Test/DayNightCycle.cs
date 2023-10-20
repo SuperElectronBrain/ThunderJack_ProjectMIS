@@ -6,7 +6,6 @@ public class DayNightCycle : MonoBehaviour
 {
     [SerializeField] private Light sun;
     [SerializeField,Range(0,24)] private float timeOfDay;
-    [SerializeField] private float sunRotationSpeed;
     [Header("LightingPreset")]
     [SerializeField] private Gradient skyColor;
     [SerializeField] private Gradient equatorColor;
@@ -18,7 +17,7 @@ public class DayNightCycle : MonoBehaviour
 
     private void Update()
     {
-        timeOfDay += Time.deltaTime * sunRotationSpeed;
+        timeOfDay += Time.deltaTime;
         if (timeOfDay>24)
             timeOfDay = 0;
         UpdateSunRotation();
