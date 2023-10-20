@@ -109,14 +109,14 @@ public class CraftTableCameraController : MonoBehaviour
 				{
 					if(t_MeshRenderer.enabled == true)
 					{
-						DialogueBox t_DialogueBox = FindObjectOfType<DialogueBox>();
-						if(t_DialogueBox != null)
-						{
-							if(t_DialogueBox.gameObject.activeSelf == false)
-							{
-								bMove = true;
-							}
-						}
+						bMove = true;
+						//DialogueBox t_DialogueBox = FindObjectOfType<DialogueBox>();
+						//if(t_DialogueBox != null)
+						//{
+						//	if(t_DialogueBox.gameObject.activeSelf == false)
+						//	{
+						//	}
+						//}
 					}
 				}
 			}
