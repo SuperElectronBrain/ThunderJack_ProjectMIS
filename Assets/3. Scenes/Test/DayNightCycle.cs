@@ -11,6 +11,10 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private Gradient skyColor;
     [SerializeField] private Gradient equatorColor;
     [SerializeField] private Gradient sunColor;
+    [Header("SkyBoxPreset")]
+    [SerializeField] private Material SkyboxM;
+    [SerializeField,Range(0,360)] private float rotation;
+    [SerializeField] private Gradient SkyBoxColor;
 
     private void Update()
     {
@@ -19,12 +23,14 @@ public class DayNightCycle : MonoBehaviour
             timeOfDay = 0;
         UpdateSunRotation();
         UpdateLighting();
+        UpdateMaterialParameter();
     }
 
     private void OnValidate()
     {
         UpdateSunRotation();
-        UpdateLighting();   
+        UpdateLighting();
+        UpdateMaterialParameter();
     }
 
     private void UpdateSunRotation()
@@ -40,4 +46,11 @@ public class DayNightCycle : MonoBehaviour
         RenderSettings.ambientSkyColor=skyColor.Evaluate(timeFraction);
         sun.color = sunColor.Evaluate(timeFraction);
     }
+
+    private void UpdateMaterialParameter()
+    {
+        SkyboxM.SetFloat("_Rotation", rotation);
+        float timeFration = timeOfDay / 24;
+        SkyboxM.SetColor("_Tint", SkyBoxColor.Evaluate(timeFration));
+   }
 }
