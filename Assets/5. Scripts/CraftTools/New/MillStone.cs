@@ -9,24 +9,22 @@ namespace RavenCraftCore
 {
     public class MillStone : MonoBehaviour
     {
-        private bool isUsed;
         private bool isGrab;
         private Camera mainCam;
 
-
+        [Header("MillStion Setting")]
+        [SerializeField]
+        private GameObject handle;
         [SerializeField]
         private Vector2 millStoneCenterPos;
         [SerializeField]
-        private GameObject handle;
-
-        [SerializeField]
         private float r;
-
-        [SerializeField]
         private float prevTheta;
-        [SerializeField]
         private float theta;
 
+        [Header("Crefting Tools")]
+        [SerializeField]
+        private Cup cup;
 
         [Header("Debug")]
         [SerializeField]
@@ -38,14 +36,17 @@ namespace RavenCraftCore
         List<float> insertedItemProgress;
 
         [SerializeField]
+        float grindingValue;
+        [SerializeField]
         float resultValue;
         [SerializeField]
         float grindingSpeed;
+        [SerializeField]
+        float flowSpeed;
 
         private void Start()
         {
             mainCam = Camera.main;
-            resultValue = 100;
         }
 
         public void GrabHandle(bool isGrab)
@@ -56,8 +57,18 @@ namespace RavenCraftCore
         // Update is called once per frame
         void Update()
         {
-            if (itemCount == 0 && !isGrab)
+            if(resultValue > 0 && grindingValue > 0)
+            {
+                FlowMaterialSolution();
+            }
+
+            if (itemCount == 0 || !isGrab)
                 return;
+
+            if(Input.GetMouseButtonUp(0))
+            {
+                isGrab = false;
+            }
 
             var mPos = mainCam.ScreenToWorldPoint(CursorManager.GetCursorPosition());
 
@@ -75,12 +86,14 @@ namespace RavenCraftCore
                     return;
             }
 
-            resultValue = 0;
+            grindingValue = 0;
 
             for(int i = 0; i < insertedItemProgress.Count; i++)
             {
-                insertedItemProgress[i] += Time.deltaTime * grindingSpeed;
-                resultValue += Mathf.Lerp(0, 33.33333f, insertedItemProgress[i] / 100);
+                if (insertedItemProgress[i] <= 0)
+                    continue;
+                insertedItemProgress[i] -= Time.deltaTime * grindingSpeed;
+                grindingValue += Mathf.Lerp(33.33333f, 0, insertedItemProgress[i] / 100f);
             }
 
             Vector3 newPos;
@@ -93,6 +106,17 @@ namespace RavenCraftCore
             handle.transform.position = newPos;
             
             prevTheta = theta;
+        }
+
+        public void FlowMaterialSolution()
+        {
+            if (100 - grindingValue > resultValue)
+                return;
+
+            var flowValue = Time.deltaTime * flowSpeed;
+            resultValue -= flowValue;
+
+            cup.FillMaterialSoultion(flowValue);
         }
 
         private void OnDrawGizmosSelected()

@@ -112,6 +112,12 @@ public class LocationList : EditorWindow
             {
                 locationList.Remove(locationList[i]);
             }
+            if(GUILayout.Button("ÃßÀû"))
+            {
+                var newPos = locationList[i].locationPos;
+                newPos.y = topCam.transform.position.y;
+                topCam.transform.position = newPos;
+            }
             GUILayout.EndHorizontal();
         }
     }
