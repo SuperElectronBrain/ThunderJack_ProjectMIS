@@ -29,6 +29,10 @@ namespace RavenCraftCore
         private TrackEntry track;
         [SerializeField] private Transform inlet;
         [SerializeField] private float accuracy;
+
+        [SerializeField]
+        float AmountValue;
+
         private void Start()
         {
             mainCam = Camera.main;
@@ -72,17 +76,11 @@ namespace RavenCraftCore
             newPos.z = zOffset;
 
             transform.position = newPos;
+        }
 
-            /*
-            if (isGrab)
-            {
-                var mPos = Input.mousePosition;
-
-                mPos = mainCam.ScreenToWorldPoint(new Vector3(mPos.x, mPos.y,
-                    -mainCam.transform.position.z + zOffset));
-
-                transform.position = mPos;
-            }*/
+        public void FillMaterialSoultion(float flowValue)
+        {
+            AmountValue += flowValue;
         }
     }
 }
