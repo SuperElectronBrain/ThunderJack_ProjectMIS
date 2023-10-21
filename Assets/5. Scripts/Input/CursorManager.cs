@@ -7,12 +7,11 @@ using UnityEngine.UI;
 
 public class CursorManager : MonoBehaviour
 {
-    [SerializeField]
-    private Sprite defaultCursor;
-    [SerializeField]
-    private Sprite clickCursor;
-    [SerializeField]
-    private Image cursorImage;
+    [SerializeField] private Canvas canvas;
+    private static Camera cam;
+    [SerializeField] private Sprite defaultCursor;
+    [SerializeField] private Sprite clickCursor;
+    [SerializeField] private Image cursorImage;
 
     public static float mouseSensitivity;
     [SerializeField] private float speed;
@@ -21,22 +20,28 @@ public class CursorManager : MonoBehaviour
     private static Vector3 mPos;
 
     public static UnityEvent<bool> onActive = new();
-    
+    public static UnityEvent onActiveComplate = new();
+
     private void Start()
     {
         mouseSensitivity = 1;
+        cam = Camera.main;
         onActive.AddListener(CursorActive);
+        gameObject.SetActive(false);
     }
 
     private void OnEnable()
-    {               
+    {
         var mousePosition = Input.mousePosition;
 
-        mPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, -Camera.main.transform.position.z));
-        mPos.z = 0;
-        cursorImage.rectTransform.position = mPos;
+        //RectTransformUtility.ScreenPointToLocalPointInRectangle(cursorImage.rectTransform, mousePosition, canvas.worldCamera, out pos);
+
+        /*mPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 0));
+        cursorImage.rectTransform.anchoredPosition = mPos;*/
 
         Cursor.visible = false;
+        onActiveComplate?.Invoke();
+        onActiveComplate?.RemoveAllListeners();
     }
 
     private void OnDisable()
@@ -44,14 +49,20 @@ public class CursorManager : MonoBehaviour
         Cursor.visible = true;
     }
 
-    public void CursorActive(bool isActive)
+    private void CursorActive(bool isActive)
     {
         gameObject.SetActive(isActive);
     }
 
+    public static void SetCursorPosition(Vector3 objectPosition)
+    {
+        mPos = cam.WorldToScreenPoint(objectPosition);
+        mPos.z = 0;
+    }
+
     public static Vector3 GetCursorPosition()
     {
-        return mPos;
+        return mPos - new Vector3(0, 0, -cam.transform.position.z);
     }
 
     // Update is called once per frame

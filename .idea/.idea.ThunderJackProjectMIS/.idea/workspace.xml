@@ -106,10 +106,10 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="35280">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="35280" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -138,7 +138,8 @@
       <workItem from="1697570336480" duration="14736000" />
       <workItem from="1697596831224" duration="1689000" />
       <workItem from="1697598601231" duration="27581000" />
-      <workItem from="1697714143507" duration="4574000" />
+      <workItem from="1697714143507" duration="9965000" />
+      <workItem from="1697769664246" duration="15342000" />
     </task>
     <servers />
   </component>
@@ -149,5 +150,37 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Input/CursorManager.cs</url>
+          <line>34</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Input\CursorManager.cs" initialLine="37" containingFunctionPresentation="메서드 'OnEnable'">
+            <startOffsets>
+              <option value="891" />
+            </startOffsets>
+            <endOffsets>
+              <option value="931" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/CraftTools/New/Cup.cs</url>
+          <line>56</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\CraftTools\New\Cup.cs" initialLine="56" containingFunctionPresentation="메서드 'Update'">
+            <startOffsets>
+              <option value="1503" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1504" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
