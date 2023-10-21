@@ -5,6 +5,7 @@ using Spine;
 using Spine.Unity;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RavenCraftCore
 {
@@ -40,30 +41,25 @@ namespace RavenCraftCore
 
         private void OnMouseDown()
         {
-            isGrab = true;
+            CursorManager.SetCursorPosition(transform.position);
             CursorManager.onActive?.Invoke(true);
-        }
-        
-        private void OnMouseEnter()
-        {
+            CursorManager.onActiveComplate.AddListener(() => isGrab = true);
             isUsed = true;
-        }
-
-        private void OnMouseExit()
-        {
-            isUsed = false;
         }
         
         // Update is called once per frame
         void Update()
         {
-            if (!isGrab)
+            if (!isUsed)
                 return;
 
             if (Input.GetMouseButtonUp(0))
             {
                 transform.position = originPos;
+                isUsed = false;
                 isGrab = false;
+                track.TrackTime = 0;
+                return;
             }
             
             var dis = Vector2.Distance(transform.position, inlet.position) * accuracy;
@@ -71,7 +67,11 @@ namespace RavenCraftCore
             
             track.TrackTime = speed;
 
-            transform.position = mainCam.ScreenToWorldPoint(CursorManager.GetCursorPosition());
+            var newPos = mainCam.ScreenToWorldPoint(CursorManager.GetCursorPosition());
+
+            newPos.z = zOffset;
+
+            transform.position = newPos;
 
             /*
             if (isGrab)
