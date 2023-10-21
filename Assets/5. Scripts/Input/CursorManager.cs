@@ -85,9 +85,4 @@ public class CursorManager : MonoBehaviour
 
         cursorImage.rectTransform.position = mPos;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        throw new Exception("충돌");
-    }
 }
