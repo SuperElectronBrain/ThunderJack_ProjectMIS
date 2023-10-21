@@ -114,6 +114,7 @@ public class LocationList : EditorWindow
             }
             if(GUILayout.Button("ÃßÀû"))
             {
+                Selection.activeGameObject = GameObject.Find(locationList[i].locationName);
                 var newPos = locationList[i].locationPos;
                 newPos.y = topCam.transform.position.y;
                 topCam.transform.position = newPos;
