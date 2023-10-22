@@ -34,6 +34,7 @@ public class PlayerCharacter : CharacterBase
 	private float m_MonologueDisplayTime = 0.0f;
 	private float m_GuideDisplayTime = 0.0f;
 	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
+	private bool bUseDustEffect = false;
 
 	//private CameraController m_CameraCon;
 	private CapsuleCollider m_Collider;
@@ -225,7 +226,7 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_FootStepEffectInside.isPlaying != true)
 					{
-						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Build_Inside")
+						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Build_Inside" || bUseDustEffect == true)
 						{
 							m_FootStepEffectInside.Play();
 						}
@@ -242,7 +243,7 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_FootStepEffectOutdoor.isPlaying != true)
 					{
-						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Build_Inside")
+						if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Build_Inside" && bUseDustEffect == false)
 						{
 							m_FootStepEffectOutdoor.Play();
 						}
@@ -794,6 +795,24 @@ public class PlayerCharacter : CharacterBase
 		else if(m_InteractionItem != null)
 		{
 			m_InteractionItem.ItemInteraction(m_GrabItemCode.itemCode);
+		}
+	}
+
+	protected override void OnCollisionEnter(Collision collision)
+	{
+		base.OnCollisionEnter(collision);
+
+		if(collision.gameObject.name.Contains("F_Bridge") == true)
+		{
+			bUseDustEffect = true;
+		}
+	}
+
+	protected virtual void OnCollisionExit(Collision collision)
+	{
+		if (collision.gameObject.name.Contains("F_Bridge") == true)
+		{
+			bUseDustEffect = false;
 		}
 	}
 
