@@ -13,11 +13,14 @@ public class UIOpenerComponent : MonoBehaviour
     {
 		if (Input.GetKeyDown(m_Key) == true)
         {
-			if (m_TargetUI != null)
+			if(CloseableUICounter.GetCloseableUICounter().GetRecentlyOpenedUI() == null)
 			{
-				if (m_TargetUI.activeSelf == false)
+				if (m_TargetUI != null)
 				{
-					m_TargetUI.SetActive(true);
+					if (m_TargetUI.activeSelf == false)
+					{
+						m_TargetUI.SetActive(true);
+					}
 				}
 			}
 		}

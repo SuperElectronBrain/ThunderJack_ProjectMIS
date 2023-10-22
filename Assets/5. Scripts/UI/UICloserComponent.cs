@@ -11,8 +11,21 @@ public class UICloserComponent : MonoBehaviour
 		{
 			if (Input.GetKeyDown(KeyCode.Escape) == true)
 			{
-				gameObject.SetActive(false);
+				if(CloseableUICounter.GetCloseableUICounter().GetRecentlyOpenedUI() == this)
+				{
+					gameObject.SetActive(false);
+				}
 			}
 		}
+	}
+
+	private void OnEnable()
+	{
+		CloseableUICounter.GetCloseableUICounter().AddOpenUI(this);
+	}
+
+	private void OnDisable()
+	{
+		CloseableUICounter.GetCloseableUICounter().RemoveCloseUI(this);
 	}
 }
