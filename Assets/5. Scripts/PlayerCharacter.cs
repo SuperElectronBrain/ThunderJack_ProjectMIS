@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -92,6 +93,13 @@ public class PlayerCharacter : CharacterBase
 		EventManager.Subscribe(DialogEventType.ShopGemOpen, OpenBeilShop);
 		EventManager.Subscribe(DialogEventType.ShopJewelryOpen, OpenGagaShop);
 		FindPlayerCharacterUIScript();
+
+		//DataSaver t_DataSaver = FindObjectOfType<DataSaver>();
+		//if (t_DataSaver == null)
+		//{
+		//	GameObject t_GO = new GameObject();
+		//	t_GO.AddComponent<DataSaver>();
+		//}
 	} 
 
 	// Update is called once per frame
@@ -285,6 +293,22 @@ public class PlayerCharacter : CharacterBase
 		float DeltaTime = Time.fixedDeltaTime;
 		SetMoveDirection(Camera.main.transform.right, new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized);
 	}
+
+	//protected virtual void OnDestroy()
+	//{
+	//	DataSaver t_DataSaver = FindObjectOfType<DataSaver>();
+	//	if (t_DataSaver == null)
+	//	{
+	//		GameObject t_GO = new GameObject();
+	//		t_DataSaver = t_GO.AddComponent<DataSaver>();
+	//	}
+	//	if(t_DataSaver != null)
+	//	{
+	//		//t_DataSaver.m_PlayerInventory;
+	//		t_DataSaver.m_PlayerInventory = t_DataSaver.AddComponent<Inventory>();
+	//		t_DataSaver.m_PlayerInventory.TakeInventoryItems(m_Inventory);
+	//	}
+	//}
 
 	protected override void KeyInput()
 	{
@@ -963,6 +987,23 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 			*/
+
+			//BBB t_BBB = hit.transform.GetComponent<BBB>();
+			//if (t_BBB != null)
+			//{
+			//	AAA t_AAA = UniFunc.GetParentComponent<AAA>(t_BBB.transform);
+			//	if (t_AAA != null)
+			//	{
+			//		SetPlayerGrabItem(new AdvencedItem(t_AAA.m_ItemCode, 1, 1));
+			//	}
+			//}
+
+			//AAA t_AAA = hit.transform.GetComponent<AAA>();
+			//if (t_AAA != null)
+			//{
+			//	Debug.Log("î");
+			//	SetPlayerGrabItem(new AdvencedItem(t_AAA.m_ItemCode, 1, 1));
+			//}
 		}
 		else if (bMouseOnUI == true)
 		{
@@ -1282,6 +1323,22 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 			*/
+
+			//BBB t_BBB = hit.transform.GetComponent<BBB>();
+			//if(t_BBB != null)
+			//{
+			//	AAA t_AAA = UniFunc.GetParentComponent<AAA>(t_BBB.transform);
+			//	if(t_AAA != null)
+			//	{
+			//		SetPlayerGrabItem(new AdvencedItem(t_AAA.m_ItemCode, 1, 1));
+			//	}
+			//}
+
+			//AAA t_AAA = hit.transform.GetComponent<AAA>();
+			//if (t_AAA != null)
+			//{
+			//	SetPlayerGrabItem(new AdvencedItem(t_AAA.m_ItemCode, 1, 1));
+			//}
 		}
 		else if (bMouseOnUI == true)
 		{
