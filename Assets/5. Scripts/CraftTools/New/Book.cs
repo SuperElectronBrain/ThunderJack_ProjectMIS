@@ -12,7 +12,7 @@ namespace RavenCraftCore
     public class Book : MonoBehaviour
     {
         [SerializeField]
-        public ElementCircles elementCircles; 
+        public ElementCircles elementCircles;
 
         // Start is called before the first frame update
         void Start()
@@ -28,10 +28,18 @@ namespace RavenCraftCore
         [System.Serializable]
         public class ElementCircles
         {
+            [SerializeField]
+            private Material magicCircleMaterial;
             public float[] upgradeValue;
             public int[] elementCircleLv;
             public float[] elementCircleValue;
             public ParticleObject[] elementCircleParticles;
+            
+            private readonly int power1 = Shader.PropertyToID("_Power1");
+            private readonly int power2 = Shader.PropertyToID("_Power2");
+            private readonly int power3 = Shader.PropertyToID("_Power3");
+            private readonly int power4 = Shader.PropertyToID("_Power4");
+            private readonly int power5 = Shader.PropertyToID("_Power5");
 
             public void Init()
             {
@@ -47,12 +55,34 @@ namespace RavenCraftCore
             {
                 if (elementCircleLv[((int)elementType)] > 4)
                     return;
+
+                var circlePowerValue = Mathf.Lerp(2, 35, updateValue / 100);
+                
+                switch (elementType)
+                {
+                    case ElementType.Justice:
+                        magicCircleMaterial.SetFloat(power1, circlePowerValue);
+                        break;
+                    case ElementType.Wisdom:
+                        magicCircleMaterial.SetFloat(power2, circlePowerValue);
+                        break;
+                    case ElementType.Nature:
+                        magicCircleMaterial.SetFloat(power3, circlePowerValue);
+                        break;
+                    case ElementType.Mystic:
+                        magicCircleMaterial.SetFloat(power4, circlePowerValue);
+                        break;
+                    case ElementType.Insight:
+                        magicCircleMaterial.SetFloat(power5, circlePowerValue);
+                        break;
+                }
+                
                 elementCircleValue[(int)elementType] = updateValue;
                 var elementLv = elementCircleLv[((int)elementType)];
 
                 if (elementCircleValue[(int)elementType] < upgradeValue[elementLv])
                     return;
-
+                
                 ActiveElementCircle(elementType, elementLv);
                 elementCircleLv[((int)elementType)]++;
             }
@@ -66,9 +96,9 @@ namespace RavenCraftCore
             public class ParticleObject
             {
                 [SerializeField]
-                GameObject particleParent;
+                private GameObject particleParent;
                 [SerializeField]
-                ParticleSystem[] particles;
+                private ParticleSystem[] particles;
 
                 public void Init()
                 {
@@ -84,7 +114,8 @@ namespace RavenCraftCore
                 
                 public void PlayParticle(int lv)
                 {
-                    Debug.Log(particles[lv].name);
+                    if(lv > 0)
+                        particles[lv].Stop();
                     particles[lv].Play();
                 }
             }
