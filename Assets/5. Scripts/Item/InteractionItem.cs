@@ -37,7 +37,7 @@ public class InteractionItem : MonoBehaviour
 				break;
             case ItemType.Accessory:
             case ItemType.Jewelry:               
-                Debug.Log("¾Ç¾Ç");
+                Debug.Log("ì•…ì•…");
                 item = Instantiate(interactionAccessory);
                 SkeletonAnimation skAni = item.GetComponent<SkeletonAnimation>();
                 skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(GameManager.Instance.ItemManager.GetBasicItemData(itemID).particlesName);
