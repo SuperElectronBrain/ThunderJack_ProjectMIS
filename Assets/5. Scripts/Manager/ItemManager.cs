@@ -60,8 +60,8 @@ public class ItemManager : MonoBehaviour
                 elementType1 = Tools.IntParse(element["element_Type_1"]),
                 elementType2 = Tools.IntParse(element["element_Type_2"]),
                 //elementType3 = Tools.IntParse(element["element_Type_3"]),
-                elementPercent1 = Tools.IntParse(element["Element_Percent_1"]),
-                elementPercent2 = Tools.IntParse(element["Element_Percent_2"]),
+                elementPercent1 = Tools.FloatParse(element["Element_Percent_1"]),
+                elementPercent2 = Tools.FloatParse(element["Element_Percent_2"]),
                 //elementPercent3 = Tools.IntParse(element["Element_Percent_3"])
             };
 

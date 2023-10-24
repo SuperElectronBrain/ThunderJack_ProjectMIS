@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entrance : MonoBehaviour, IInteraction
+public class Entrance : MonoBehaviour, IInteraction, INpcOnly
 {
     public bool IsUsed { get; set; }
 

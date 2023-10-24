@@ -16,29 +16,36 @@ namespace RavenCraftCore
         private Camera mainCam;
         [SerializeField]
         private float zOffset;
-        private float yOffset;
 
         [SerializeField]
         private SkeletonAnimation skAni;
 
-        [SerializeField] private float delta;
-
         private Vector3 originPos;
 
-        [SerializeField, Range(0f, 1f)] private float speed;
+        [SerializeField, Range(0f, 1f)] 
+        private float speed;
+        [SerializeField, Range(0f, 1f)] 
+        private float inputAngle;
+        [SerializeField]
+        private float inputSpeed;
+
         private TrackEntry track;
+
         [SerializeField] private Transform inlet;
         [SerializeField] private float accuracy;
 
         [SerializeField]
-        float AmountValue;
+        float amountValue;
+
+        [Header("CraftingTools")]
+        [SerializeField]
+        Press press;
 
         private void Start()
         {
             mainCam = Camera.main;
             originPos = transform.position;
             zOffset = originPos.z;
-            yOffset = originPos.y;
             
             track = skAni.state.SetAnimation(0, "animation", false);
         }
@@ -49,6 +56,11 @@ namespace RavenCraftCore
             CursorManager.onActive?.Invoke(true);
             CursorManager.onActiveComplate.AddListener(() => isGrab = true);
             isUsed = true;
+        }
+
+        public void SetInputItemID(int itemID)
+        {
+            press.SetPutInItemID(itemID);
         }
         
         // Update is called once per frame
@@ -71,16 +83,36 @@ namespace RavenCraftCore
             
             track.TrackTime = speed;
 
-            var newPos = mainCam.ScreenToWorldPoint(CursorManager.GetCursorPosition());
+            if(speed >= inputAngle)
+            {
+                InputSoultion();
+            }
+
+            var newPos = CursorManager.GetCursorPosition();
 
             newPos.z = zOffset;
 
             transform.position = newPos;
         }
 
+        public void InputSoultion()
+        {
+            if (amountValue < 0)
+                return;
+
+            var putInValue = Time.deltaTime * inputSpeed;
+
+            if (amountValue - putInValue < 0)
+                putInValue = amountValue;
+
+            amountValue -= putInValue;
+
+            press.PutInSoultion(putInValue);
+        }
+
         public void FillMaterialSoultion(float flowValue)
         {
-            AmountValue += flowValue;
+            amountValue += flowValue;
         }
     }
 }

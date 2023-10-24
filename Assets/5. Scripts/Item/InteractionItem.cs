@@ -6,14 +6,19 @@ using Spine.Unity;
 public class InteractionItem : MonoBehaviour
 {
     public int itemID;
+    [SerializeField]
     GameObject interactionMaterial;
+    [SerializeField]
     GameObject interactionAccessory;
     SkeletonAnimation skAni;
 
     private void Start()
     {
         interactionMaterial = AddressableManager.LoadObject<GameObject>("InteractionMaterial");
+        interactionMaterial = AddressableManager.LoadObject<GameObject>("InteractionMaterial");
+        interactionMaterial = AddressableManager.LoadObject<GameObject>("InteractionMaterial");
         interactionAccessory = AddressableManager.LoadObject<GameObject>("InteractionAccessory");
+        interactionMaterial = AddressableManager.LoadObject<GameObject>("InteractionMaterial");
     }
     
     public void ItemInteraction(int itemID)

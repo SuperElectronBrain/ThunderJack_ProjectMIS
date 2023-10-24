@@ -14,4 +14,14 @@ public class MillStoneHandle : MonoBehaviour
         CursorManager.onActive?.Invoke(true);
         CursorManager.onActiveComplate.AddListener(() => millStone.GrabHandle(true));
     }
+
+    private void OnMouseEnter()
+    {
+        millStone.EnterHandle();
+    }
+
+    private void OnMouseExit()
+    {
+        millStone.ExitHandle();
+    }
 }
