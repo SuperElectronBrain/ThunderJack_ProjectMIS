@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryUIScript : MonoBehaviour
+public class InventoryUIScript : UIScript
 {
 	public GameObject m_ButtonsPrefab;
 	public GameObject m_ButtonsParent;
@@ -13,8 +13,9 @@ public class InventoryUIScript : MonoBehaviour
 	public Inventory m_Inventory;
 
 	// Start is called before the first frame update
-	void Start()
+	protected override void Start()
 	{
+		base.Start();
 		ReFindButton();
 	}
 
@@ -272,5 +273,14 @@ public class InventoryUIScript : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	protected override void RefresfAction()
+	{
+		base.RefresfAction();
+
+		ReFindButton();
+		ReGenerateButton();
+		ResetButtonAction();
 	}
 }

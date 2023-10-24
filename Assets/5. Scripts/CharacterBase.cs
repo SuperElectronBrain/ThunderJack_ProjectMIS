@@ -14,6 +14,8 @@ public class CharacterBase : MonoBehaviour
 	protected float m_VerticalMove = 0.0f;
 	private Vector3 m_PrevPosition;
 	protected float m_Velocity;
+	protected Vector3 m_GroundNormalVector = Vector3.up;
+	protected int m_CollisionCount = 0;
 	protected bool m_UseScaleFlip = true;
 	protected bool bMovable = true;
 	protected Transform m_Destination = null;
@@ -27,7 +29,7 @@ public class CharacterBase : MonoBehaviour
 
 	// Start is called before the first frame update
 	protected virtual void Start()
-    {
+	{
 		m_HorizontalMoveDirection = Vector3.right;
 		m_VerticalMoveDirection = Vector3.forward;
 		m_PrevPosition = transform.position;
@@ -38,26 +40,21 @@ public class CharacterBase : MonoBehaviour
 		//if (m_Rigidbody == null) { m_Rigidbody = gameObject.AddComponent<Rigidbody>(); }
 		m_Animator = gameObject.GetComponent<Animator>();
 		m_Inventory = gameObject.GetComponent<Inventory>();
+		if (m_SD != null)
+		{
+			m_SD.AddComponent<LookAtCameraComponent>();
+		}
 	}
 
     // Update is called once per frame
     protected virtual void Update()
     {
 		float DeltaTime = Time.deltaTime;
-		if (m_Destination == null)
-		{
-			KeyInput();
-		}
+		//if (m_Destination == null) { }
+		//KeyInput();
 
 		if (m_SD != null)
         {
-			Vector3 t_ModelingRotation = m_SD.transform.rotation.eulerAngles;
-            if(m_MainCamera != null)
-            {
-			    t_ModelingRotation.y = m_MainCamera.transform.rotation.eulerAngles.y;
-            }
-			m_SD.transform.rotation = Quaternion.Euler(t_ModelingRotation);
-
 			if(m_UseScaleFlip == true)
 			{
 				Vector3 t_ModelingScale = m_SD.transform.localScale;
@@ -78,21 +75,21 @@ public class CharacterBase : MonoBehaviour
 	{
 		float DeltaTime = Time.fixedDeltaTime;
 
-		//if(m_CPAComponent != null) { SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward); }
-
+		/*
+		if(m_CPAComponent != null) { SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward); }
 		if(bMovable == true)
 		{
 			if(m_Destination != null)
 			{
 				Vector3 t_Vector = (m_Destination.position - transform.position).normalized;
-
 				m_HorizontalMove = t_Vector.x;
 				m_VerticalMove = t_Vector.z;
 			}
-
-			HorizontalMove(DeltaTime);
-			VerticalMove(DeltaTime);
 		}
+		*/
+
+		HorizontalMove(DeltaTime);
+		VerticalMove(DeltaTime);
 
 		m_Velocity = (transform.position - m_PrevPosition).magnitude / DeltaTime;
 		m_PrevPosition = transform.position;
@@ -128,8 +125,8 @@ public class CharacterBase : MonoBehaviour
 		m_VerticalMoveDirection = p_VerticalMoveDirection;
 	}
 
-	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection) { SetMoveDirection(p_HorizontalMoveDirection, Vector3.right); }
-	public void SetMoveDirection() { SetMoveDirection(Vector3.forward, Vector3.right); }
+	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection) { SetMoveDirection(p_HorizontalMoveDirection, Vector3.forward); }
+	public void SetMoveDirection() { SetMoveDirection(Vector3.right, Vector3.forward); }
 
 	public void SetDestination(Transform p_Transform)
 	{
@@ -141,24 +138,52 @@ public class CharacterBase : MonoBehaviour
 		}
 	}
 
-	public virtual void CommunicationStart()
-	{
-		bMovable = false;
-	}
-
-	public virtual void CommunicationEnd()
-	{
-		bMovable = true;
-	}
+	//public virtual void CommunicationStart()
+	//{
+	//	bMovable = false;
+	//}
+	//
+	//public virtual void CommunicationEnd()
+	//{
+	//	bMovable = true;
+	//}
 
 	protected virtual void OnCollisionEnter(Collision collision)
 	{
 		if (collision.gameObject != gameObject)
 		{
+			m_CollisionCount = m_CollisionCount + 1;
+
+			if (collision.contacts != null)
+			{
+				//m_GroundNormalVector = collision.contacts[0].normal;
+				//Vector3 t_HorizontalMoveDirection  = Vector3.Cross(collision.contacts[0].normal, m_VerticalMoveDirection).normalized;
+				//Vector3 t_VerticalMoveDirection = Vector3.Cross(collision.contacts[0].normal, t_HorizontalMoveDirection).normalized;
+				//Vector3.ProjectOnPlane(collision.contacts[0].normal, m_VerticalMoveDirection);
+				//
+				//SetMoveDirection(t_HorizontalMoveDirection, t_VerticalMoveDirection);
+			}
+
 			if (m_Animator != null)
 			{
 				m_Animator.SetTrigger("Landing");
 			}
+		}
+	}
+	protected virtual void OnCollisionExit(Collision collision)
+	{
+		if (collision.gameObject != gameObject)
+		{
+			m_CollisionCount = m_CollisionCount - 1;
+
+			//m_GroundNormalVector = Vector3.up;
+			//if (collision.contacts != null)
+			//{
+			//	Vector3 t_HorizontalMoveDirection = Vector3.Cross(Vector3.up, m_VerticalMoveDirection).normalized;
+			//	Vector3 t_VerticalMoveDirection = Vector3.Cross(Vector3.up, t_HorizontalMoveDirection).normalized;
+			//
+			//	SetMoveDirection(t_HorizontalMoveDirection, t_VerticalMoveDirection);
+			//}
 		}
 	}
 

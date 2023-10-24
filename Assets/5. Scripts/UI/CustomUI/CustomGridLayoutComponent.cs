@@ -36,13 +36,9 @@ public class CustomGridLayoutComponent : LayoutGroup, IPointerEnterHandler, IPoi
 			rows = Mathf.CeilToInt(sqrt);
 		}
 		if (constraint == Constraint.Columns)
-		{
-			rows = Mathf.CeilToInt(rectChildren.Count / (float)columns);
-		}
+		{ rows = Mathf.CeilToInt(rectChildren.Count / (float)columns); }
 		if (constraint == Constraint.Rows)
-		{
-			columns = Mathf.CeilToInt(rectChildren.Count / (float)rows);
-		}
+		{ columns = Mathf.CeilToInt(rectChildren.Count / (float)rows); }
 
 		float child_xSize = childSize.x * (TargetRect.rect.width / columns);
 		float child_ySize = childSize.y * (TargetRect.rect.height / rows);
