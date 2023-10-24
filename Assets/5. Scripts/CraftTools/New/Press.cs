@@ -6,8 +6,12 @@ namespace RavenCraftCore
 {
     public class Press : MonoBehaviour
     {
+        bool isGrab;
+
         [SerializeField]
-        private float inputValue;
+        private int putInItemID;
+        [SerializeField]
+        private float putInValue;
         [SerializeField]
         private MaterialItemData inputMaterialItem;
 
@@ -30,11 +34,40 @@ namespace RavenCraftCore
 
         [SerializeField]
         private PressAccessoryPlate accessoryPlate;
+
+        [SerializeField]
+        MaterialItemData putInItemData;
+
+        [SerializeField]
+        Transform buttonPosition;
+        [SerializeField]
+        Transform handleObject;
+        Vector3 originHandlePos;
+        [SerializeField]
+        Cinemachine.DollyCartMove track;
         
         // Start is called before the first frame update
         void Start()
         {
             SetItemData(d_ItemData);
+            originHandlePos = handleObject.position;
+        }
+
+        public void EnterHandle()
+        {
+
+        }
+
+        public void ExitHandle()
+        {
+
+        }
+
+        public void GrabHandle()
+        {
+            isGrab = true;
+            CursorManager.SetCursorPosition(handleObject.position);
+            prevPos = CursorManager.GetCursorPosition();
         }
 
         void ResetPress()
@@ -42,10 +75,27 @@ namespace RavenCraftCore
             
         }
 
+        public void SetPutInItemID(int itemID)
+        {
+            putInItemID = itemID;
+            putInItemData = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
+        }
+
+        public void PutInSoultion(float inputValue)
+        {
+            putInValue += inputValue;
+
+            value[putInItemData.elementType1 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent1, putInValue * 0.01f);
+            value[putInItemData.elementType2 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent2, putInValue * 0.01f);
+            //value[putInItemData.elementType3 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent3, inputValue);
+        }
+
         public void SetItemData(int itemID)
         {
             inputMaterialItem = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
         }
+
+        Vector3 prevPos;
 
         // Update is called once per frame
         void Update()
@@ -59,6 +109,27 @@ namespace RavenCraftCore
             {
                 PressHandle();
             }
+
+            if (!isGrab)
+                return;
+
+            if(Input.GetMouseButtonUp(0))
+            {
+                isGrab = false;
+                handleObject.position = originHandlePos;
+            }
+
+            var hd = buttonPosition.forward;
+            var mPos = CursorManager.GetCursorPosition();
+            var hm = mPos - prevPos;
+            hm.z = 0f;
+
+            float progress = Vector3.Dot(hd, hm);
+            Debug.Log(progress);
+
+            handleObject.position = CursorManager.GetCursorPosition();
+            track.m_Position += progress;
+            prevPos = mPos;
         }
 
         // ReSharper disable Unity.PerformanceAnalysis

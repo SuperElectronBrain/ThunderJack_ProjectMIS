@@ -62,7 +62,7 @@ public class CursorManager : MonoBehaviour
 
     public static Vector3 GetCursorPosition()
     {
-        return mPos - new Vector3(0, 0, -cam.transform.position.z);
+        return cam.ScreenToWorldPoint(mPos - new Vector3(0, 0, cam.transform.position.z));
     }
 
     // Update is called once per frame

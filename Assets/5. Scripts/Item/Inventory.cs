@@ -13,6 +13,8 @@ namespace RavenCraftCore
         private GameObject itemSlot;
         [SerializeField]
         private Transform inventory;
+        [SerializeField]
+        InteractionItem interactionItem; 
 
         [SerializeField]
         private int selectItemID;
@@ -62,8 +64,9 @@ namespace RavenCraftCore
 
         void OnClick(int itemID)
         {
-            //인터렉션 아이템
             selectItemID = itemID;
+
+            interactionItem.ItemInteraction(selectItemID);
         }
         
         void OnEnter(int itemID)
@@ -75,6 +78,8 @@ namespace RavenCraftCore
         {
             //아이템 설명창X
         }
+
+        //Todo Inventory Save Load
     }
 }
 
