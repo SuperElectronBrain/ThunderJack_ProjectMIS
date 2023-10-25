@@ -219,7 +219,6 @@ public class PlayerCharacter : CharacterBase
 				if (T_Interaction != null)
 				{
 					T_Interaction.Interaction(gameObject);
-					
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.Q) == true)
@@ -303,17 +302,7 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	public void PopUpInventory(bool param)
-	{
-		if(m_Inventory != null)
-		{
-			if (m_Inventory.m_InventoryUIScript != null)
-			{
-				m_Inventory.m_InventoryUIScript.gameObject.SetActive(param);
-				m_Inventory.RefreshInventory();
-			}
-		}
-	}
+	
 
 	public void OpenNPCShop()
 	{
@@ -374,11 +363,11 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	public void SetTradeableTarget(ITradeable param)
-	{
-		m_TradeTarget = param;
-		PopUpInventory(param != null);
-	}
+	//public void SetTradeableTarget(ITradeable param)
+	//{
+	//	m_TradeTarget = param;
+	//	PopUpInventory(param != null);
+	//}
 
 	public InteractionItem GetInteractionItem()
 	{
@@ -1166,12 +1155,16 @@ public class PlayerCharacter : CharacterBase
 							m_Inventory.AddAItem(m_GrabItemCode);
 
 							List<AAA> t_AAA = FindObjectsOfType<AAA>().ToList();
-							for(int j = 0; j < results.Count; j = j + 1)
+							if(t_AAA != null)
 							{
-								if (t_AAA[i].m_ItemCode == m_GrabItemCode.itemCode)
+								for (int j = 0; j < results.Count; j = j + 1)
 								{
-									Destroy(t_AAA[i].gameObject);
-									break;
+									if (t_AAA[i].m_ItemCode == m_GrabItemCode.itemCode)
+									{
+										Destroy(t_AAA[i].gameObject);
+										t_AAA.TrimExcess();
+										break;
+									}
 								}
 							}
 							break;
