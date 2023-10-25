@@ -6,7 +6,7 @@ using UnityEngine;
 
 public interface ITradeable
 {
-	public bool TryTrade(AdvencedItem param);
+	public void TryTrade(PlayerCharacter p_PC, AdvencedItem p_Item);
 }
 
 
@@ -19,42 +19,53 @@ public class FishCleaner : MonoBehaviour, IInteraction, ITradeable
 	private PlayerCharacter m_PlayerCharacter;
 	public void Interaction(GameObject user)
 	{
-		Debug.Log("인터렉션0");
 		PlayerCharacter t_PlayerCharacter = user.GetComponent<PlayerCharacter>();
-		if (t_PlayerCharacter == null) { return; }
-		Debug.Log("인터렉션1");
+		if (t_PlayerCharacter == null) { return; };
 		m_PlayerCharacter = t_PlayerCharacter;
-		isUsed = true;
-		Debug.Log("인터렉션2");
-		EventManager.Publish(EventType.StartInteraction);
-		Debug.Log("인터렉션 시작");
-		m_PlayerCharacter.ChangeState(PlayerCharacterState.Communication);
-		Debug.Log("인벤토리 팝업");
-		m_PlayerCharacter.PopUpInventory(true);
+		StartInteraction();
 	}
 
-	public bool TryTrade(AdvencedItem param)
+	public void TryTrade(PlayerCharacter p_PC, AdvencedItem p_Item)
 	{
-		if(m_TradeableItems == null) { return false; }
+		if(m_TradeableItems == null) { return; }
 
 		for (int i = 0; i < m_TradeableItems.Count; i = i + 1) 
 		{
-			if(param.itemCode == m_TradeableItems[i].requestItemCode)
+			if(p_Item.itemCode == m_TradeableItems[i].requestItemCode)
 			{
+				//m_PlayerCharacter.SetPlayerGrabItem(null);
 				m_PlayerCharacter.m_Inventory.PopAItem(m_TradeableItems[i].requestItemCode, 1, 1);
 				m_PlayerCharacter.m_Inventory.AddAItem(m_TradeableItems[i].rewardItemCode, 1, 1);
-				return true;
+				EndInteraction();
+				return;
+				//return true;
 			}
 		}
 
-		return false;
+		//return false;
 	}
 
 	// Start is called before the first frame update
-	void Start()
+	private void StartInteraction()
     {
-        
-    }
+		isUsed = true;
+		EventManager.Publish(EventType.StartInteraction);
+		if(m_PlayerCharacter != null)
+		{
+			m_PlayerCharacter.ChangeState(PlayerCharacterState.Communication);
+			Inventory.main.PopUpInventory(true);
+		}
+		Inventory.main.m_OnItemClick.AddListener(TryTrade);
+	}
+
+	private void EndInteraction()
+	{
+		isUsed = false;
+		EventManager.Publish(EventType.EndIteraction);
+		m_PlayerCharacter.ChangeState(PlayerCharacterState.Moveable);
+		Inventory.main.PopUpInventory(false);
+		Inventory.main.m_OnItemClick.RemoveListener(TryTrade);
+	}
 
     // Update is called once per frame
     void Update()
@@ -63,17 +74,7 @@ public class FishCleaner : MonoBehaviour, IInteraction, ITradeable
 		{
 			if(Input.GetKeyDown(KeyCode.Escape) == true)
 			{
-				isUsed = false;
-				EventManager.Publish(EventType.EndIteraction);
-				m_PlayerCharacter.ChangeState(PlayerCharacterState.Moveable);
-				m_PlayerCharacter.PopUpInventory(false);
-			}
-			if(Input.GetMouseButtonDown(0) == true)
-			{
-				if (m_PlayerCharacter.m_GrabItemCode != null)
-				{
-					TryTrade(m_PlayerCharacter.m_GrabItemCode);
-				}
+				EndInteraction();
 			}
 		}
     }

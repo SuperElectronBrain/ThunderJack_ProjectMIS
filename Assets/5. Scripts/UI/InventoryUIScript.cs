@@ -191,6 +191,7 @@ public class InventoryUIScript : UIScript
 											}
 											*/
 										}
+										m_Inventory.OnItemClick(t_PlayerCharacter, t_AItem);
 									}
 								}
 							}

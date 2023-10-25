@@ -1,8 +1,10 @@
+using RavenCraftCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum ItemCode
 {
@@ -83,23 +85,6 @@ public struct AdvencedItem
 		if (p_AItem.itemCode != 0 && p_AItem.itemProgress != 0.0f) { t_String = p_AItem.ToString(); }
 		return t_String;
 	}
-
-	//public static bool operator ==(AdvencedItem p_AdvencedItem0, AdvencedItem p_AdvencedItem1)
-	//{
-	//	int count = 0;
-	//	if (p_AdvencedItem0.itemCode != p_AdvencedItem1.itemCode) { count = count + 1; }
-	//	if (p_AdvencedItem0.itemProgress != p_AdvencedItem1.itemProgress) { count = count + 1; }
-	//
-	//	return count < 1 ? true : false;
-	//}
-	//public static bool operator !=(AdvencedItem p_AdvencedItem0, AdvencedItem p_AdvencedItem1)
-	//{
-	//	int count = 0;
-	//	if (p_AdvencedItem0.itemCode != p_AdvencedItem1.itemCode) { count = count + 1; }
-	//	if (p_AdvencedItem0.itemProgress != p_AdvencedItem1.itemProgress) { count = count + 1; }
-	//
-	//	return count > 0 ? true : false;
-	//}
 }
 
 [Serializable]
@@ -129,23 +114,48 @@ public struct SelectedItem
 
 public class Inventory : MonoBehaviour
 {
-	//private List<Item> m_Items = new List<Item>();
-	//private List<SelectedItem> m_SelectedItems = new List<SelectedItem>();
 	[SerializeField]private List<AdvencedItem> m_AItems = new List<AdvencedItem>();
 	public AdvencedItem this[int index] { get { return m_AItems[index]; } set { m_AItems[index] = value; } }
-	//[SerializeField] private GameObject inventoryPanelPrefab;
-	//[SerializeField] private GameObject inventoryPanel;
-	//private GameObject itemPanel;
-	//[SerializeField] private GameObject moneyPanelPrefab;
-	//private GameObject moneyPanel;
 	public TextMeshProUGUI m_MoneyText;
 	public TextMeshProUGUI m_HonerText;
 
 	public CharacterBase m_Owner;
 	public InventoryUIScript m_InventoryUIScript;
-	//[SerializeField] private InventoryInitializeData initializeData;
-	//[HideInInspector] public UnityEvent itemSelectEvent = new UnityEvent();
-	//[SerializeField] private GameObject m_InventoryUIPrefab;
+
+	public static Inventory main
+	{
+		get
+		{
+			Inventory t_Inventory = null;
+			PlayerCharacter t_PC = FindObjectOfType<PlayerCharacter>();
+			if (t_PC != null)
+			{
+				t_Inventory = t_PC.GetComponent<Inventory>();
+			}
+			return null;
+		}
+		set {; }
+	}
+
+	[HideInInspector] public UnityEvent<PlayerCharacter, AdvencedItem> m_OnItemClick = new UnityEvent<PlayerCharacter, AdvencedItem>();
+	//public static UnityEvent<PlayerCharacter, AdvencedItem> onItemClick
+	//{
+	//	get 
+	//	{
+	//		UnityEvent<PlayerCharacter, AdvencedItem> t_OnItemClick = null;
+	//		PlayerCharacter t_PC = FindObjectOfType<PlayerCharacter>();
+	//		if(t_PC != null)
+	//		{
+	//			Inventory t_Inventory = t_PC.GetComponent<Inventory>();
+	//			if(t_Inventory != null)
+	//			{
+	//				t_OnItemClick = t_Inventory.m_OnItemClick;
+	//			}
+	//		}
+	//		return t_OnItemClick;
+	//	} 
+	//	set{; }
+	//}
 
 	// Start is called before the first frame update
 	void Start()
@@ -662,6 +672,20 @@ public class Inventory : MonoBehaviour
 
 		UpdateMoney();
 		UpdateHoner();
+	}
+
+	public void PopUpInventory(bool param)
+	{ 
+		if (m_InventoryUIScript != null)
+		{
+			m_InventoryUIScript.gameObject.SetActive(param);
+			RefreshInventory();
+		}
+	}
+
+	public void OnItemClick(PlayerCharacter p_PC,AdvencedItem p_Item)
+	{
+		m_OnItemClick.Invoke(p_PC, p_Item);
 	}
 
 	//public void DisplayItems(bool param)
