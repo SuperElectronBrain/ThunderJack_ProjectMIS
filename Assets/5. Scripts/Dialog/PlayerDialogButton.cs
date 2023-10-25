@@ -25,6 +25,12 @@ public class PlayerDialogButton : MonoBehaviour
 
     public UnityAction selectOption;
 
+    private void OnEnable()
+    {
+        var camRot = Camera.main.transform.rotation;
+        transform.localRotation = camRot;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
