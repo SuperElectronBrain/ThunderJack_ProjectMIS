@@ -138,7 +138,7 @@ public class NPC : Character, IInteraction
         if (prevBehaviour == NPCBehaviour.Business)
             GameManager.Instance.Dialogue.InitDialogue(shopDialog, formal);
         else
-            GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue", formal);
+            GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Text_Master", formal);
     }
 
     public void TalkEnd()
@@ -231,6 +231,7 @@ public class NPC : Character, IInteraction
 
     public void Interaction(GameObject user)
     {
+        EventManager.Publish(EventType.StartInteraction);
         StartConversation();
     }
 

@@ -165,8 +165,8 @@ public class ItemManager : MonoBehaviour
             {
                 int itemComb1 = Tools.IntParse(recipe["Make_Material_1"]);
                 int itemComb2 = Tools.IntParse(recipe["Make_Material_2"]);
-                ((JewelryItemData)basicItemData[Tools.IntParse(recipe["Item_ID"]) - 1]).itemComb1 = itemComb1;
-                ((JewelryItemData)basicItemData[Tools.IntParse(recipe["Item_ID"]) - 1]).itemComb2 = itemComb2;
+                ((JewelryItemData)basicItemData[Tools.IntParse(recipe["Item_ID"])]).itemComb1 = itemComb1;
+                ((JewelryItemData)basicItemData[Tools.IntParse(recipe["Item_ID"])]).itemComb2 = itemComb2;
             }
         }
     }

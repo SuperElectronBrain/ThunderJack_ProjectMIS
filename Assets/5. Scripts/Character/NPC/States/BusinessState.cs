@@ -25,7 +25,7 @@ public class BusinessState : State<NPC>
                 shopItems = GameManager.Instance.ItemManager.GetShopItemDataBySalesType(SalesItemType.Accessory);
                 break;
             case "Beil":
-                entity.shopDialog = "Material Shop_Text_Master";
+                entity.shopDialog = "Material_Shop_Text_Master";
                 shopItems = GameManager.Instance.ItemManager.GetShopItemDataBySalesType(SalesItemType.Materials);
                 break;
         }
