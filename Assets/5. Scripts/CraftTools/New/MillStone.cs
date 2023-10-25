@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Spine;
@@ -101,6 +102,8 @@ namespace RavenCraftCore
             GetMousePosToDeg();
             millStoneTrack.m_Position = deg / 360f;
             prevTheta = deg;
+            
+            StartCoroutine(InitMousePosition());
         }
 
         void GetMousePosToDeg()
@@ -110,10 +113,20 @@ namespace RavenCraftCore
             theta = Mathf.Atan2(mPos.y, mPos.x);
             deg = (theta * Mathf.Rad2Deg) + 180;
 
-            if (deg < 0)
-                deg *= -2;
+            /*if (deg < 0)
+                deg *= -1;*/
 
-            theta = deg * Mathf.Deg2Rad;
+            //theta = deg * Mathf.Deg2Rad;
+        }
+
+        IEnumerator InitMousePosition()
+        {
+            while (true)
+            {
+                if(deg - prevTheta > 3f)
+                    CursorManager.SetCursorPosition(handle.transform.position);
+                yield return new WaitForSeconds(0.2f);
+            }
         }
 
         // Update is called once per frame
@@ -135,19 +148,26 @@ namespace RavenCraftCore
 
             GetMousePosToDeg();
 
+            // 360 -> 0
             //CursorManager.SetCursorPosition(handle.transform.position);            
-
+            
             if(deg > prevTheta)
             {
-                if(deg - prevTheta <= 350f)
+                if (deg - prevTheta > 355f) ;
+                else
+                {
                     return;
+                }
             }
-
-            if (Mathf.Abs(deg - prevTheta) > 10f)
+            
+            //if(deg - prevTheta > 5f)
+                
+            
+            /*if (Mathf.Abs(deg - prevTheta) > 10f)
                 return;
 
             if (deg == prevTheta)
-                return;
+                return;*/
 
             /*grindingValue = 0f;
             resultValue = 100f;
