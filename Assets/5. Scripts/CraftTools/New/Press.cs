@@ -119,13 +119,12 @@ namespace RavenCraftCore
                 handleObject.position = originHandlePos;
             }
 
-            var hd = buttonPosition.forward;
+            var handleDir = buttonPosition.forward;
             var mPos = CursorManager.GetCursorPosition();
             var hm = mPos - prevPos;
             hm.z = 0f;
 
-            float progress = Vector3.Dot(hd, hm);
-            Debug.Log(progress);
+            float progress = Vector3.Dot(handleDir, hm);
 
             handleObject.position = CursorManager.GetCursorPosition();
             track.m_Position += progress;

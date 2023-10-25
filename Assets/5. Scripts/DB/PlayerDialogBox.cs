@@ -20,6 +20,8 @@ public class PlayerDialogBox : MonoBehaviour
 
     private void OnEnable()
     {
+        transform.localRotation = Camera.main.transform.rotation;
+
         var seq = DOTween.Sequence();
 
         seq.Append(transform.DOScale(1.1f, 0.2f));
