@@ -48,26 +48,36 @@ public class PlayerCharacter : CharacterBase
 	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
 	private bool bUseDustEffect = false;
 
-	//private CameraController m_CameraCon;
+	//Component
 	private CapsuleCollider m_Collider;
-	public UnityEngine.UI.Image m_GrabItemSprite;
-	[HideInInspector] public AdvencedItem m_GrabItemCode = new AdvencedItem();
-	[HideInInspector] public AdvencedItem m_HoverItemCode = new AdvencedItem();
-	public ItemInfoDisplay m_ItemInfoDisplay;
-	//[HideInInspector] public GameObject m_HitObject;
 	[SerializeField] private CollisionComponent m_CollisionComponent;
-	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
-	public PlayerCharacterUIScript m_PlayerCharacterUIScript;
-	[SerializeField] private ParticleSystem m_FootStepEffectInside;
-	[SerializeField] private ParticleSystem m_FootStepEffectOutdoor;
 	[HideInInspector] public RecipeBook m_RecipeBook;
 	[HideInInspector] public QuestComponet m_QuestComponet;
 	[HideInInspector] public TutorialComponent m_TutorialComponent;
+
+	//UI
+	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
+	public PlayerCharacterUIScript m_PlayerCharacterUIScript;
+	public UnityEngine.UI.Image m_GrabItemSprite;
+	[HideInInspector] public AdvencedItem m_GrabItemCode = new AdvencedItem();
+	public ItemInfoDisplay m_ItemInfoDisplay;
+	[HideInInspector] public AdvencedItem m_HoverItemCode = new AdvencedItem();
+
+	//VFX
+	[SerializeField] private ParticleSystem m_FootStepEffectInside;
+	[SerializeField] private ParticleSystem m_FootStepEffectOutdoor;
+
+	//Animation
 	[SerializeField] private Animator m_ShadowAnimator;
-	//private IInteraction m_Interaction;
+
+	//Interaction Target(NPC or Etc...)
 	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
-	private GameObject m_GuideUI;
+	private ITradeable m_TradeTarget;
+
+	//Interaction Item
 	private InteractionItem m_InteractionItem;
+
+	private GameObject m_GuideUI;
 	public static PlayerCharacter main
 	{ 
 		get { return FindObjectOfType<PlayerCharacter>(); }
@@ -175,7 +185,7 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (newState == PlayerCharacterAnimation.FishingStart)
 			{
-				m_Animator.SetTrigger("StartFishing");
+				//m_Animator.SetTrigger("StartFishing");
 			}
 			else if (newState == PlayerCharacterAnimation.FishingHit)
 			{
@@ -209,6 +219,7 @@ public class PlayerCharacter : CharacterBase
 				if (T_Interaction != null)
 				{
 					T_Interaction.Interaction(gameObject);
+					
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.Q) == true)
@@ -292,6 +303,18 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
+	public void PopUpInventory(bool param)
+	{
+		if(m_Inventory != null)
+		{
+			if (m_Inventory.m_InventoryUIScript != null)
+			{
+				m_Inventory.m_InventoryUIScript.gameObject.SetActive(param);
+				m_Inventory.RefreshInventory();
+			}
+		}
+	}
+
 	public void OpenNPCShop()
 	{
 		InteractableObject t_InteractableObject = GetInteractableObject();
@@ -351,6 +374,12 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
+	public void SetTradeableTarget(ITradeable param)
+	{
+		m_TradeTarget = param;
+		PopUpInventory(param != null);
+	}
+
 	public InteractionItem GetInteractionItem()
 	{
 		return m_InteractionItem;
@@ -384,6 +413,7 @@ public class PlayerCharacter : CharacterBase
 		if(other.gameObject != gameObject)
 		{
 			IInteraction t_Interaction = other.gameObject.GetComponent<IInteraction>();
+			//INPCOnly
 			if (t_Interaction != null)
 			{
 				if (InteractableObjects == null) { InteractableObjects = new List<InteractableObject>(); }
