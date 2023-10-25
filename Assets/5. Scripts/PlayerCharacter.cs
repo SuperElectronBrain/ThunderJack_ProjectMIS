@@ -413,13 +413,16 @@ public class PlayerCharacter : CharacterBase
 		if(other.gameObject != gameObject)
 		{
 			IInteraction t_Interaction = other.gameObject.GetComponent<IInteraction>();
-			//INPCOnly
 			if (t_Interaction != null)
 			{
-				if (InteractableObjects == null) { InteractableObjects = new List<InteractableObject>(); }
-				if(t_Interaction != InteractableObjects.Find((InteractableObject x) => { return x.interaction == t_Interaction; }).interaction)
+				if(other.gameObject.GetComponent<INpcOnly>() == null)
 				{
-					InteractableObjects.Add(new InteractableObject(t_Interaction, other.gameObject));
+					if (InteractableObjects == null) { InteractableObjects = new List<InteractableObject>(); }
+					if (t_Interaction != InteractableObjects.Find((InteractableObject x) => { return x.interaction == t_Interaction; }).interaction)
+					{
+						InteractableObjects.Add(new InteractableObject(t_Interaction, other.gameObject));
+					}
+
 				}
 			}
 		}
