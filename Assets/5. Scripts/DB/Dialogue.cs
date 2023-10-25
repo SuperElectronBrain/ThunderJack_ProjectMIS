@@ -54,6 +54,7 @@ public class Dialogue : MonoBehaviour
     public void InitDialogue(string newDialogue, int formal)
     {
         var dialogue = GameManager.Instance.DataBase.Parser(newDialogue);
+        Debug.Log(newDialogue + "Read Dialogue " + formal);
 
         foreach (var dict in dialogue)
         {
