@@ -24,7 +24,8 @@ public class Dialogue : MonoBehaviour
         public string textSelect2;       
         public int textNext1;
         public int textNext2;
-        public DialogEventType eventID;
+        public DialogEventType eventID1;
+        public DialogEventType eventID2;
     }
 
     public string currentDialogue;
@@ -74,7 +75,8 @@ public class Dialogue : MonoBehaviour
                     textSelect2 = dict["Text_Select2"].ToString(),
                     textNext1 = Tools.IntParse(dict["Text_Next1"]),
                     textNext2 = Tools.IntParse(dict["Text_Next2"]),
-                    eventID = (DialogEventType)Tools.IntParse(dict["Event_ID"])
+                    eventID1 = (DialogEventType)Tools.IntParse(dict["Event_ID_1"]),
+                    eventID2 = (DialogEventType)Tools.IntParse(dict["Event_ID_2"])
                 }
             );
         }
@@ -103,10 +105,10 @@ public class Dialogue : MonoBehaviour
                 {
                     NextDialog();
                     GameManager.Instance.CharacterDB.GetNPC(dialogueList[dialogueIdx].characterID).TalkEnd();
-                    playerDialogBox.gameObject.SetActive(true);
+                    //playerDialogBox.gameObject.SetActive(true);
                     playerDialogBox.ActiveButton(true);
                     yield return new WaitUntil(() => isSelect == true);
-                }                    
+                }
             }
             else
             {
@@ -170,10 +172,10 @@ public class Dialogue : MonoBehaviour
         var dData = dialogueList[dialogueIdx];
 
         dialogueIdx = dData.textNext1;
-        EventManager.Publish(dData.eventID);
+        EventManager.Publish(dData.eventID1);
         playerDialogBox.gameObject.SetActive(false);
         playerDialogBox.ActiveButton(false);
-
+        
         NextDialog();
     }
 
@@ -183,7 +185,7 @@ public class Dialogue : MonoBehaviour
         var dData = dialogueList[dialogueIdx];
 
         dialogueIdx = dData.textNext2;
-        EventManager.Publish(dData.eventID);
+        EventManager.Publish(dData.eventID2);
         playerDialogBox.gameObject.SetActive(false);
         playerDialogBox.ActiveButton(false);
         
@@ -194,6 +196,7 @@ public class Dialogue : MonoBehaviour
     {
         if (dialogueIdx == -1)
             return false;
+        Debug.Log(dialogueIdx);
         return dialogueList[dialogueIdx].textType == 2;
     }
 
@@ -203,5 +206,6 @@ public class Dialogue : MonoBehaviour
         dialogueList.Clear();
         EventManager.Publish(EventType.EndConversation);
         EventManager.Publish(EventType.EndIteraction);
+        GameManager.Instance.GameTime.TimeStop(false);
     }
 }
