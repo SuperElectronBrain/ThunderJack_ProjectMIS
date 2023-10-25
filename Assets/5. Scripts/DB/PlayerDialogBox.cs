@@ -59,7 +59,7 @@ public class PlayerDialogBox : MonoBehaviour
     {
         button1.SetOptionText(option1);
         button2.SetOptionText(option2);
-        button1.transform.parent.gameObject.SetActive(true);
+        //button1.transform.parent.gameObject.SetActive(true);
     }
 
     public void ActiveButton(bool active)

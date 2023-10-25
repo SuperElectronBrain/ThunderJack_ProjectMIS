@@ -84,6 +84,7 @@ public class NPC : Character, IInteraction
         InitDay();
 
         EventManager.Subscribe(EventType.NextDialog, TalkEnd);
+        EventManager.Subscribe(EventType.EndConversation, EndConversation);
         dialogBox.InitDialogBox(characterData.characterName);
         DontDestroyOnLoad(gameObject);
 
@@ -143,7 +144,7 @@ public class NPC : Character, IInteraction
 
     public void TalkEnd()
     {
-        GameManager.Instance.GameTime.TimeStop(false);
+        //GameManager.Instance.GameTime.TimeStop(false);
         dialogBox.gameObject.SetActive(false);
     }
 
@@ -151,6 +152,11 @@ public class NPC : Character, IInteraction
     {
         dialogBox.gameObject.SetActive(true);
         dialogBox.SetScript(talkScript);
+    }
+
+    void EndConversation()
+    {
+        dialogBox.gameObject.SetActive(false);
     }
 
     public void SetSchedule(TimeTableData newSchedule)
