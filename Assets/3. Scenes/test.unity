@@ -1806,7 +1806,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 656499504}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.3586864, y: 4.5913153, z: -0}
+  m_LocalPosition: {x: -9.771556, y: -1.378834, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2024,6 +2024,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemID: 0
+  interactionMaterial: {fileID: 0}
+  interactionAccessory: {fileID: 0}
 --- !u!1001 &748176149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3058,8 +3060,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 980469957}
-  m_LocalRotation: {x: 0.2733247, y: -0.6526916, z: 0.27388138, w: 0.6513649}
-  m_LocalPosition: {x: -3.6393433, y: 3.6456578, z: -1.6475171}
+  m_LocalRotation: {x: 0.5348022, y: 0.42459592, z: -0.35592663, w: 0.6379822}
+  m_LocalPosition: {x: -4.8457775, y: 0.660583, z: -1.4474685}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3082,7 +3084,7 @@ MonoBehaviour:
   m_UpdateMethod: 0
   m_PositionUnits: 2
   m_Speed: 0
-  m_Position: 0.8800006
+  m_Position: 0
   moveObject: {fileID: 656499504}
 --- !u!1001 &980477103
 PrefabInstance:
@@ -3411,7 +3413,7 @@ MonoBehaviour:
   defaultCursor: {fileID: 21300000, guid: 95f5da73d2e27934589e6f9e1c8137ab, type: 3}
   clickCursor: {fileID: 21300000, guid: 95f5da73d2e27934589e6f9e1c8137ab, type: 3}
   cursorImage: {fileID: 1102175717}
-  speed: 5
+  speed: 2
 --- !u!114 &1102175717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6390,7 +6392,7 @@ MonoBehaviour:
   inputSpeed: 5
   inlet: {fileID: 736637188}
   accuracy: 0.6
-  amountValue: 100
+  amountValue: 0
   press: {fileID: 1026354541}
 --- !u!1001 &1752289839
 PrefabInstance:
@@ -6678,7 +6680,7 @@ MonoBehaviour:
   - 100
   grindingValue: 0
   resultValue: 100
-  grindingSpeed: 20
+  grindingSpeed: 0.1
   flowSpeed: 0
   skAni: {fileID: 0}
 --- !u!1 &1799653451

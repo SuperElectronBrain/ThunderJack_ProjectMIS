@@ -135,14 +135,16 @@ namespace RavenCraftCore
 
             GetMousePosToDeg();
 
-            //CursorManager.SetCursorPosition(handle.transform.position);
+            //CursorManager.SetCursorPosition(handle.transform.position);            
 
             if(deg > prevTheta)
             {
-                return;
+                if(deg - prevTheta <= 350f)
+                    return;
             }
-/*            if (prevTheta > 180f && deg > 181f)
-                return;*/
+
+            if (Mathf.Abs(deg - prevTheta) > 10f)
+                return;
 
             if (deg == prevTheta)
                 return;
@@ -190,7 +192,7 @@ namespace RavenCraftCore
             //handle.transform.position = newPos;
 
             millStoneTrack.m_Position = deg / 360f;
-            
+
             prevTheta = deg;            
         }
 

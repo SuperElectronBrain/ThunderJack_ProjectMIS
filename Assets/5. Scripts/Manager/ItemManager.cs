@@ -65,7 +65,7 @@ public class ItemManager : MonoBehaviour
                 //elementPercent3 = Tools.IntParse(element["Element_Percent_3"])
             };
 
-            basicItemData[itemIdx] = newItemData.MergeData((MaterialItemData)basicItemData[itemIdx], newItemData);
+            basicItemData[itemIdx] = newItemData.MergeData(basicItemData[itemIdx], newItemData);
             materialItemData.Add(newItemData);
         }
     }
@@ -424,7 +424,7 @@ public class MaterialItemData : BasicItemData
     public float elementPercent2;
     public float elementPercent3;
 
-    public MaterialItemData MergeData(MaterialItemData mid1, MaterialItemData mid2)
+    public MaterialItemData MergeData(BasicItemData mid1, MaterialItemData mid2)
     {
         return new MaterialItemData
         {
