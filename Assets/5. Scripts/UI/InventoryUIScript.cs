@@ -42,6 +42,18 @@ public class InventoryUIScript : UIScript
 		{
 			if (m_Inventory != null)
 			{
+				int count0 = m_Buttons.Count;
+				for (int i = 0; i < count0; i = i + 1)
+				{
+					Button t_Button = m_Buttons[m_Buttons.Count - 1];
+					m_Buttons.RemoveAt(m_Buttons.Count - 1);
+					m_Buttons.TrimExcess();
+					if (t_Button != null)
+					{
+						Destroy(t_Button.gameObject);
+					}
+				}
+
 				int ItemsCount = m_Inventory.GetAItems().Count;
 				if (m_Buttons.Count < ItemsCount)
 				{
