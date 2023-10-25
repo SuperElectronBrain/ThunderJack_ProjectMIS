@@ -20,7 +20,10 @@ public class PlayerDialogBox : MonoBehaviour
 
     private void OnEnable()
     {
-        transform.localRotation = Camera.main.transform.rotation;
+        var camRot = Camera.main.transform.rotation;
+        transform.localRotation = camRot;
+        button1.transform.localRotation = camRot;
+        button2.transform.localRotation = camRot;
 
         var seq = DOTween.Sequence();
 

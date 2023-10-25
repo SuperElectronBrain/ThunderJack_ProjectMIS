@@ -126,7 +126,7 @@ public class NPC : Character, IInteraction
     public void StartConversation()
     {
         formal++;
-        Debug.Log(characterData.characterEgName + "¿Í ´ëÈ­¸¦ ½ÃÀÛÇÕ´Ï´Ù");
+        Debug.Log(characterData.characterEgName + "ì™€ ëŒ€í™”ë¥¼ ì‹œìž‘í•©ë‹ˆë‹¤");
         curInteractionObj = player;
         ChangeState(NPCBehaviour.Conversation);
         CameraEvent.Instance.onCamBlendComplate.AddListener(TalkEvent);
@@ -155,16 +155,12 @@ public class NPC : Character, IInteraction
 
     public void SetSchedule(TimeTableData newSchedule)
     {
-        bool isMove = schedule.aiParam2 != newSchedule.aiParam2;
-
+        bool isMove = schedule.aiParam1 != newSchedule.aiParam1;
+        
         schedule = newSchedule;
-
-        /*if(isMove)
-        {
-            RandomDestinationPos();
-            ChangeState(NPCBehaviour.Move);
-        }*/
-        ChangeStateFromSchedule();
+        
+        if(isMove)
+            ChangeStateFromSchedule();
     }
 
     void RandomDestinationPos()

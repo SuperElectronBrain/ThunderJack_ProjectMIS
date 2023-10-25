@@ -5,7 +5,7 @@ using TMPro;
 
 public enum DialogEventType
 {
-    None = -1, ShopGemOpen = 1, ShopJewelryOpen, QuestStart, Quest_Complate
+    None = -1, ShopGemOpen = 1, ShopJewelryOpen, QuestStart, QuestComplate
 }
 
 public class Dialogue : MonoBehaviour
@@ -152,7 +152,7 @@ public class Dialogue : MonoBehaviour
 
         if (IsOption())
         {
-            Debug.Log("¤·¤¤¤±");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             isSelect = false;            
             playerDialogBox.SetPlayerDialogOption(dData.textSelect1, dData.textSelect2);
         }
