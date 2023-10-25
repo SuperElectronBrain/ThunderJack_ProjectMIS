@@ -19,6 +19,7 @@ public class FishingPointComponent : MonoBehaviour, IInteraction
 		if(t_PlayerCharacter == null) { return; }
 
 		m_PlayerCharacter = t_PlayerCharacter;
+		EventManager.Publish(EventType.StartInteraction);
 		m_PlayerCharacter.ChangeState(PlayerCharacterState.Fishing);
 		Invoke("FishingStart", Random.Range(watingTimeMin, watingTimeMax));
 	}
@@ -44,6 +45,7 @@ public class FishingPointComponent : MonoBehaviour, IInteraction
 	{
 		if (m_PlayerCharacter != null)
 		{
+			EventManager.Publish(EventType.EndIteraction);
 			m_PlayerCharacter.ChangeState(PlayerCharacterState.Moveable);
 			m_PlayerCharacter.ChangeAnimationState(PlayerCharacterAnimation.FishingEnd);
 			m_PlayerCharacter = null;
