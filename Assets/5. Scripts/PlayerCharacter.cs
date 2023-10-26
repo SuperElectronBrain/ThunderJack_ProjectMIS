@@ -264,6 +264,7 @@ public class PlayerCharacter : CharacterBase
 			if (m_Inventory != null)
 			{
 				//if (m_Inventory.GetAItems().Count <= 0) { m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory); }
+				m_Inventory.CleanInventory();
 				m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory);
 			}
 
@@ -301,8 +302,6 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 	}
-
-	
 
 	public void OpenNPCShop()
 	{

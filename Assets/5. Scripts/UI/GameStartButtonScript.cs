@@ -22,42 +22,45 @@ public class GameStartButtonScript : ButtonScript
 	//
 	//}
 
-	private void OnSceneLoaded(UnityEngine.SceneManagement.Scene p_Scene, UnityEngine.SceneManagement.LoadSceneMode p_Mode)
+	protected void OnSceneLoaded(UnityEngine.SceneManagement.Scene p_Scene, UnityEngine.SceneManagement.LoadSceneMode p_Mode)
 	{
-		PlayerCharacter t_PlayerCharacter = null;
-		List<PlayerCharacter> t_PlayerCharacters = FindObjectsOfType<PlayerCharacter>().ToList();
-		for (int i = 0; i < t_PlayerCharacters.Count; i = i + 1)
+		if (p_Scene.name != "loading")
 		{
-			if (t_PlayerCharacters[i] != m_PlayerCharacter)
+			PlayerCharacter t_PlayerCharacter = null;
+			List<PlayerCharacter> t_PlayerCharacters = FindObjectsOfType<PlayerCharacter>().ToList();
+			for (int i = 0; i < t_PlayerCharacters.Count; i = i + 1)
 			{
-				t_PlayerCharacter = t_PlayerCharacters[i];
-				break;
+				if (t_PlayerCharacters[i] != m_PlayerCharacter)
+				{
+					t_PlayerCharacter = t_PlayerCharacters[i];
+					break;
+				}
 			}
-		}
-		if (t_PlayerCharacter == null)
-		{
-			t_PlayerCharacter = Instantiate(m_PlayerCharacter.gameObject).GetComponent<PlayerCharacter>();
-		}
-
-		if (t_PlayerCharacter != null)
-		{
-			t_PlayerCharacter.gameObject.transform.position = destination;
-			if (m_PlayerCharacter != null)
+			if (t_PlayerCharacter == null)
 			{
-				t_PlayerCharacter.TakeComponents(m_PlayerCharacter);
+				t_PlayerCharacter = Instantiate(m_PlayerCharacter.gameObject).GetComponent<PlayerCharacter>();
 			}
-			t_PlayerCharacter.FindPlayerCharacterUIScript();
-			CameraController t_CameraController = Camera.main.GetComponent<CameraController>();
-			if (t_CameraController != null) { t_CameraController.m_PlayerCharacter = t_PlayerCharacter; }
-			if (t_PlayerCharacter.GetComponent<Rigidbody>() != null) { t_PlayerCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero; }
-		}
 
-		if(m_PlayerCharacter != null) { Destroy(m_PlayerCharacter.gameObject); }
-		m_PlayerCharacter = null;
-		UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
-		if(gameObject != null)
-		{
-			Destroy(gameObject);
+			if (t_PlayerCharacter != null)
+			{
+				t_PlayerCharacter.gameObject.transform.position = destination;
+				if (m_PlayerCharacter != null)
+				{
+					t_PlayerCharacter.TakeComponents(m_PlayerCharacter);
+				}
+				t_PlayerCharacter.FindPlayerCharacterUIScript();
+				CameraController t_CameraController = Camera.main.GetComponent<CameraController>();
+				if (t_CameraController != null) { t_CameraController.m_PlayerCharacter = t_PlayerCharacter; }
+				if (t_PlayerCharacter.GetComponent<Rigidbody>() != null) { t_PlayerCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero; }
+			}
+
+			if (m_PlayerCharacter != null) { Destroy(m_PlayerCharacter.gameObject); }
+			m_PlayerCharacter = null;
+			UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+			if (gameObject != null)
+			{
+				Destroy(gameObject);
+			}
 		}
 	}
 

@@ -439,7 +439,10 @@ public class Inventory : MonoBehaviour
 			PlayerCharacter t_PlayerCharacter = m_Owner as PlayerCharacter;
 			if(t_PlayerCharacter != null)
 			{
-				t_PlayerCharacter.m_PlayerCharacterUIScript.AddMoneyText(p_AItem.itemAmount + "");
+				if(t_PlayerCharacter.m_PlayerCharacterUIScript != null)
+				{
+					t_PlayerCharacter.m_PlayerCharacterUIScript.AddMoneyText(p_AItem.itemAmount + "");
+				}
 			}
 		}
 		else if (p_AItem.itemCode == 1001)
@@ -447,7 +450,10 @@ public class Inventory : MonoBehaviour
 			PlayerCharacter t_PlayerCharacter = m_Owner as PlayerCharacter;
 			if (t_PlayerCharacter != null)
 			{
-				t_PlayerCharacter.m_PlayerCharacterUIScript.AddHonerText(p_AItem.itemAmount + "");
+				if (t_PlayerCharacter.m_PlayerCharacterUIScript != null)
+				{
+					t_PlayerCharacter.m_PlayerCharacterUIScript.AddHonerText(p_AItem.itemAmount + "");
+				}
 			}
 		}
 
