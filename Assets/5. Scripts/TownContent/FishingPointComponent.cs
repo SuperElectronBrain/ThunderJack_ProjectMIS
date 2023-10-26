@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class FishingPointComponent : MonoBehaviour, IInteraction
 {
-	[SerializeField] private float watingTimeMin = 0.0f;
-	[SerializeField] private float watingTimeMax = 1.0f;
-	[SerializeField] private float fishingTime = 3.0f;
+	[SerializeField] private KeyCode fishingKey;
+	[SerializeField] float firstImpactTimeMin = 0.0f;
+	[SerializeField] float firstImpactTimeMax = 3.0f;
+	[SerializeField] float secondImpactTimeMin = 0.0f;
+	[SerializeField] float secondImpactTimeMax = 3.0f;
 	private float currentFishingTime = 0.0f;
 
 	[SerializeField] private List<AdvencedItem> m_CatchableItemlist = new List<AdvencedItem>();
@@ -21,7 +23,24 @@ public class FishingPointComponent : MonoBehaviour, IInteraction
 		m_PlayerCharacter = t_PlayerCharacter;
 		EventManager.Publish(EventType.StartInteraction);
 		m_PlayerCharacter.ChangeState(PlayerCharacterState.Fishing);
-		Invoke("FishingStart", Random.Range(watingTimeMin, watingTimeMax));
+		
+		//Invoke("FirstImpact", Random.Range(firstImpactTimeMin, firstImpactTimeMax));
+		FirstImpact();
+	}
+
+	private void FirstImpact()
+	{
+		m_PlayerCharacter.ChangeAnimationState(PlayerCharacterAnimation.FishingHit);
+		Invoke("SecondImpact", Random.Range(firstImpactTimeMin, firstImpactTimeMax));
+	}
+
+	private void SecondImpact()
+	{
+		currentFishingTime = Random.Range(secondImpactTimeMin, secondImpactTimeMax);
+		if (m_PlayerCharacter != null)
+		{
+			m_PlayerCharacter.ChangeAnimationState(PlayerCharacterAnimation.FishingHit);
+		}
 	}
 
 	public void FishingSuccessed()
@@ -32,17 +51,10 @@ public class FishingPointComponent : MonoBehaviour, IInteraction
 		}
 	}
 
-	private void FishingStart()
-	{
-		currentFishingTime = fishingTime;
-		if (m_PlayerCharacter != null)
-		{
-			m_PlayerCharacter.ChangeAnimationState(PlayerCharacterAnimation.FishingStart);
-		}
-	}
-
 	private void FishingEnd()
 	{
+		currentFishingTime = 0;
+		CancelInvoke("SecondImpact");
 		if (m_PlayerCharacter != null)
 		{
 			EventManager.Publish(EventType.EndIteraction);
@@ -64,8 +76,21 @@ public class FishingPointComponent : MonoBehaviour, IInteraction
 
 		if(currentFishingTime > 0)
 		{
+			if (Input.GetKeyDown(fishingKey) == true)
+			{
+				FishingSuccessed();
+				FishingEnd();
+			}
+
 			currentFishingTime = currentFishingTime - DeltaTime;
 			if(currentFishingTime <= 0)
+			{
+				FishingEnd();
+			}
+		}
+		else if(currentFishingTime <= 0)
+		{
+			if (Input.GetKeyDown(fishingKey) == true)
 			{
 				FishingEnd();
 			}
