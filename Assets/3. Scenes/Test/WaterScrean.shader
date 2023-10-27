@@ -1,10 +1,10 @@
-Shader "Unlit/NewUnlitShader"
+Shader "Water/waterScrean"
 {
     Properties
     {
         _BaseMap("Base Map", 2D) = "black" {}
         _Cutoff("Cutoff",Range(0.01,0.2)) = 0.1
-        _Color("BaseColor", Color) = (0,0,1,1)
+        [HDR]_Color("BaseColor", Color) = (0,0,1,1)
      }
     SubShader
     {
