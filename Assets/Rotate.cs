@@ -15,12 +15,18 @@ public class Rotate : MonoBehaviour
 	{
 		if (isSingle)
 		{
-			transform.GetChild(1).Rotate(0f, 0f, windmill.smallSpinSpeed * Time.fixedDeltaTime, Space.Self);
+			if (transform.childCount > 1)
+			{ 
+				transform.GetChild(1).Rotate(0f, 0f, windmill.smallSpinSpeed * Time.fixedDeltaTime, Space.Self);
+			}
 		}
 		else
 		{
-			transform.GetChild(1).Rotate(0f, 0f, windmill.smallSpinSpeed * Time.fixedDeltaTime, Space.Self);
-			transform.GetChild(2).Rotate(0f, 0f, windmill.bigSpinSpeed * Time.fixedDeltaTime, Space.Self);
+			if (transform.childCount > 2)
+			{
+				transform.GetChild(1).Rotate(0f, 0f, windmill.smallSpinSpeed * Time.fixedDeltaTime, Space.Self);
+				transform.GetChild(2).Rotate(0f, 0f, windmill.bigSpinSpeed * Time.fixedDeltaTime, Space.Self);
+			}
 		}
 	}
 }

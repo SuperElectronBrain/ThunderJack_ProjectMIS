@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpineAnimationBehaviour : StateMachineBehaviour
 {
-	[SerializeField] private AnimationClip clip;
+	private AnimationClip clip;
 
 	//private Spine.Unity.SkeletonAnimation skeletonAnimation;
 	//private Spine.AnimationState spineAnimationState;
@@ -18,7 +18,8 @@ public class SpineAnimationBehaviour : StateMachineBehaviour
 	{
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        if(clip != null)
+		if (clip == null) { clip = animator.GetCurrentAnimatorClipInfo(0)[0].clip; }
+		if (clip != null)
         {
             trackEntry = animator.GetComponentInChildren<Spine.Unity.SkeletonAnimation>().state.SetAnimation(layerIndex, clip.name, stateInfo.loop);
 			trackEntry.TimeScale = stateInfo.speed;
