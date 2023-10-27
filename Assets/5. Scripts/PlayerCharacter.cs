@@ -11,6 +11,7 @@ using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.XR;
+using static Unity.VisualScripting.Member;
 
 public interface IGrabable
 {
@@ -33,7 +34,7 @@ public enum PlayerCharacterState
 { Moveable, Communication, Fishing, }
 
 public enum PlayerCharacterAnimation
-{ FishingStart, FishingHit, FishingEnd, FishingSuccessed, }
+{ FishingStart, FishingHit, FishingEnd, FishingSuccessed, FishingFailed, Panic, }
 
 public class PlayerCharacter : CharacterBase
 {
@@ -72,7 +73,7 @@ public class PlayerCharacter : CharacterBase
 
 	//Interaction Target(NPC or Etc...)
 	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
-	private ITradeable m_TradeTarget;
+	//private ITradeable m_TradeTarget;
 
 	//Interaction Item
 	private InteractionItem m_InteractionItem;
@@ -104,6 +105,7 @@ public class PlayerCharacter : CharacterBase
 		if (m_FootStepEffectOutdoor != null) { m_FootStepEffectOutdoor.Stop(); }
 		if (m_InteractionItem == null) { m_InteractionItem = GetComponent<InteractionItem>(); }
 
+		EventManager.Subscribe(EventType.WorkTime, ForceStartBusiness);
 		EventManager.Subscribe(EventType.StartInteraction, CommunicationStart);
 		EventManager.Subscribe(EventType.EndIteraction, CommunicationEnd);
 		EventManager.Subscribe(DialogEventType.ShopGemOpen, OpenBeilShop);
@@ -362,11 +364,16 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	//public void SetTradeableTarget(ITradeable param)
-	//{
-	//	m_TradeTarget = param;
-	//	PopUpInventory(param != null);
-	//}
+	public void ForceStartBusiness()
+	{
+		ChangeAnimationState(PlayerCharacterAnimation.Panic);
+
+		GameObject go = new GameObject();
+		go.name = "Portal";
+		Portal portal = go.AddComponent<Portal>();
+		portal.destinationSceneName = "BusinessScene";
+		portal.LoadingScene();
+	}
 
 	public InteractionItem GetInteractionItem()
 	{

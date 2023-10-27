@@ -30,7 +30,10 @@ public class FishingPointComponent : MonoBehaviour, IInteraction
 
 	private void FirstImpact()
 	{
-		m_PlayerCharacter.ChangeAnimationState(PlayerCharacterAnimation.FishingHit);
+		if (m_PlayerCharacter != null)
+		{
+			m_PlayerCharacter.ChangeAnimationState(PlayerCharacterAnimation.FishingHit);
+		}
 		Invoke("SecondImpact", Random.Range(firstImpactTimeMin, firstImpactTimeMax));
 	}
 

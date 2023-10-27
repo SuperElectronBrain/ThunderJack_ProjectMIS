@@ -6,7 +6,7 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
 	[SerializeField] protected Vector3 destination;
-	[SerializeField] protected string destinationSceneName;
+	public string destinationSceneName;
 	[SerializeField] protected bool isOverlapping = false;
 	protected PlayerCharacter m_PlayerCharacter = null;
 
