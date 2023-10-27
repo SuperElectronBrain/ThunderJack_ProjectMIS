@@ -163,6 +163,7 @@ public class PlayerCharacter : CharacterBase
 	{
 		base.FixedUpdate();
 		float DeltaTime = Time.fixedDeltaTime;
+		//GroundCheck();
 
 		Vector3 t_HorizontalMoveDirection = Camera.main.transform.right;
 		Vector3 t_VerticalMoveDirection = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized;
@@ -170,40 +171,6 @@ public class PlayerCharacter : CharacterBase
 		//Vector3 t_VerticalMoveDirection = Vector3.ProjectOnPlane(new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized, m_GroundNormalVector);
 		SetMoveDirection(t_HorizontalMoveDirection, t_VerticalMoveDirection);
 	}
-
-	public void ChangeState(PlayerCharacterState newState)
-	{
-		currentState = newState;
-
-		if (currentState == PlayerCharacterState.Fishing)
-		{
-			ChangeAnimationState(PlayerCharacterAnimation.FishingStart);
-		}
-	}
-
-	public void ChangeAnimationState(PlayerCharacterAnimation newState)
-	{
-		if (m_Animator != null)
-		{
-			if (newState == PlayerCharacterAnimation.FishingStart)
-			{
-				//m_Animator.SetTrigger("StartFishing");
-			}
-			else if (newState == PlayerCharacterAnimation.FishingHit)
-			{
-
-			}
-			else if (newState == PlayerCharacterAnimation.FishingSuccessed)
-			{
-
-			}
-			else if (newState == PlayerCharacterAnimation.FishingEnd)
-			{
-
-			}
-		}
-	}
-
 	protected override void KeyInput()
 	{
 		//if (Camera.main.orthographic == false) { }
@@ -253,6 +220,63 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 	}
+
+	protected virtual void GroundCheck()
+	{
+		Vector3 startPosition = transform.position;
+		startPosition.y = startPosition.y - 1;
+		Vector3 direction = new Vector3(0, -1, 0);
+		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.1f);
+		if (result == true)
+		{
+			if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == true)
+			{
+				bUseDustEffect = true;
+			}
+			else if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == false)
+			{
+				bUseDustEffect = false; 
+			}
+		}
+		else if (result == false)
+		{
+			bUseDustEffect = false;
+		}
+	}
+
+	public void ChangeState(PlayerCharacterState newState)
+	{
+		currentState = newState;
+
+		if (currentState == PlayerCharacterState.Fishing)
+		{
+			ChangeAnimationState(PlayerCharacterAnimation.FishingStart);
+		}
+	}
+
+	public void ChangeAnimationState(PlayerCharacterAnimation newState)
+	{
+		if (m_Animator != null)
+		{
+			if (newState == PlayerCharacterAnimation.FishingStart)
+			{
+				//m_Animator.SetTrigger("StartFishing");
+			}
+			else if (newState == PlayerCharacterAnimation.FishingHit)
+			{
+
+			}
+			else if (newState == PlayerCharacterAnimation.FishingSuccessed)
+			{
+
+			}
+			else if (newState == PlayerCharacterAnimation.FishingEnd)
+			{
+
+			}
+		}
+	}
+
 
 	public void TakeComponents(PlayerCharacter p_PlayerCharacter)
 	{
@@ -707,6 +731,7 @@ public class PlayerCharacter : CharacterBase
 								m_FootStepEffectInside.Play();
 							}
 						}
+						if (m_FootStepEffectOutdoor != null) { m_FootStepEffectOutdoor.Stop(); }
 					}
 					else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Build_Inside" && bUseDustEffect == false)
 					{
@@ -717,6 +742,7 @@ public class PlayerCharacter : CharacterBase
 								m_FootStepEffectOutdoor.Play();
 							}
 						}
+						if (m_FootStepEffectInside != null) { m_FootStepEffectInside.Stop(); }
 					}
 				}
 				else if (m_HorizontalMove == 0)
@@ -796,7 +822,7 @@ public class PlayerCharacter : CharacterBase
 	{
 		base.OnCollisionEnter(collision);
 
-		if(collision.gameObject.name.Contains("F_Bridge") == true)
+		if (collision.gameObject.name.Contains("F_Bridge") == true)
 		{
 			bUseDustEffect = true;
 		}
