@@ -214,7 +214,7 @@ public class NPCStoreUIScript : UIScript
 						TextMeshProUGUI t_Text = t_GO.GetComponent<TextMeshProUGUI>();
 						if (t_Text != null)
 						{
-							t_Text.text = "$" + t_AItems[i].itemAmount;
+							t_Text.text = t_AItems[i].itemAmount + "";
 						}
 					}
 					t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "Text (TMP)");
@@ -256,6 +256,14 @@ public class NPCStoreUIScript : UIScript
 		if(t_GO != null)
 		{
 			t_GO.SetActive(false);
+		}
+
+		RectTransform rectTransform = GetComponent<RectTransform>();
+		if (rectTransform != null)
+		{
+			Vector3 vector = rectTransform.position;
+			vector.x = param == true ? 0 : -400.0f;
+			rectTransform.position = vector;
 		}
 	}
 
