@@ -20,6 +20,11 @@ public class PlayerDialogBox : MonoBehaviour
 
     private void OnEnable()
     {
+        var camRot = Camera.main.transform.rotation;
+        transform.localRotation = camRot;
+        /*button1.transform.localRotation = camRot;
+        button2.transform.localRotation = camRot;*/
+
         var seq = DOTween.Sequence();
 
         seq.Append(transform.DOScale(1.1f, 0.2f));
@@ -54,7 +59,7 @@ public class PlayerDialogBox : MonoBehaviour
     {
         button1.SetOptionText(option1);
         button2.SetOptionText(option2);
-        button1.transform.parent.gameObject.SetActive(true);
+        //button1.transform.parent.gameObject.SetActive(true);
     }
 
     public void ActiveButton(bool active)

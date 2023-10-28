@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryUIScript : MonoBehaviour
+public class InventoryUIScript : UIScript
 {
 	public GameObject m_ButtonsPrefab;
 	public GameObject m_ButtonsParent;
@@ -12,8 +13,9 @@ public class InventoryUIScript : MonoBehaviour
 	public Inventory m_Inventory;
 
 	// Start is called before the first frame update
-	void Start()
+	protected override void Start()
 	{
+		base.Start();
 		ReFindButton();
 	}
 
@@ -40,6 +42,18 @@ public class InventoryUIScript : MonoBehaviour
 		{
 			if (m_Inventory != null)
 			{
+				int count0 = m_Buttons.Count;
+				for (int i = 0; i < count0; i = i + 1)
+				{
+					Button t_Button = m_Buttons[m_Buttons.Count - 1];
+					m_Buttons.RemoveAt(m_Buttons.Count - 1);
+					m_Buttons.TrimExcess();
+					if (t_Button != null)
+					{
+						Destroy(t_Button.gameObject);
+					}
+				}
+
 				int ItemsCount = m_Inventory.GetAItems().Count;
 				if (m_Buttons.Count < ItemsCount)
 				{
@@ -135,25 +149,39 @@ public class InventoryUIScript : MonoBehaviour
 
 										if(t_AItem.itemCode > 0)
 										{
+											if (t_AItem.itemCode < 16)
+											{
+												List<BBB> t_BBB = FindObjectsOfType<BBB>().ToList<BBB>();
+												for (int i = 0; i < t_BBB.Count; i = i + 1)
+												{
+													t_BBB[i].DestroyObject();
+												}
+											}
+
+											MillStone t_MillStone = FindObjectOfType<MillStone>();
+											if (t_MillStone != null)
+											{
+												if (t_MillStone.m_Progress <= 0)
+												{
+													t_PlayerCharacter.SetPlayerGrabItem(t_PlayerCharacter.m_Inventory.PopAItem(t_AItem.itemCode, t_AItem.itemProgress, 1));
+												}
+											}
+
+											/*
 											if (t_PlayerCharacter.GetInteractionItem() == null)
 											{
-												if (t_PlayerCharacter.m_GrabItemSprite != null)
-												{
-													t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
-													t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
-												}
 											}
 											else if (t_PlayerCharacter.GetInteractionItem() != null)
 											{
 												if(t_AItem.itemCode >= 16)
 												{
-													//if (t_PlayerCharacter.m_GrabItemSprite != null)
-													//{
-													//	t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
-													//	t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
-													//}
-
-													t_PlayerCharacter.GetInteractionItem().ItemInteraction(t_PlayerCharacter.m_Inventory.PopAItem(t_PlayerCharacter.m_GrabItemCode).itemCode);
+													if (t_PlayerCharacter.m_GrabItemSprite != null)
+													{
+														t_PlayerCharacter.m_GrabItemSprite.sprite = UniFunc.FindSprite(t_AItem.itemCode);
+														t_PlayerCharacter.m_GrabItemSprite.gameObject.SetActive(true);
+													}
+											
+													t_PlayerCharacter.SetPlayerGrabItem(t_PlayerCharacter.m_Inventory.PopAItem(t_AItem.itemCode, t_AItem.itemProgress, 1));
 												}
 												else if(t_AItem.itemCode < 16)
 												{
@@ -162,18 +190,20 @@ public class InventoryUIScript : MonoBehaviour
 													{
 														if (t_MillStone.m_Progress <= 0)
 														{
-															BBB[] t_AAA = FindObjectsOfType<BBB>();
-															for(int i = 0; i < t_AAA.Length; i = i + 1)
+															BBB[] t_BBB = FindObjectsOfType<BBB>();
+															for(int i = 0; i < t_BBB.Length; i = i + 1)
 															{
-																t_AAA[i].DestroyObject();
+																t_BBB[i].DestroyObject();
 															}
-
+											
 															t_PlayerCharacter.GetInteractionItem().ItemInteraction(t_PlayerCharacter.m_Inventory.PopAItem(t_PlayerCharacter.m_GrabItemCode).itemCode);
 														}
 													}
 												}
 											}
+											*/
 										}
+										m_Inventory.OnItemClick(t_PlayerCharacter, t_AItem);
 									}
 								}
 							}
@@ -256,5 +286,14 @@ public class InventoryUIScript : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	protected override void RefresfAction()
+	{
+		base.RefresfAction();
+
+		ReFindButton();
+		ReGenerateButton();
+		ResetButtonAction();
 	}
 }

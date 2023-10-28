@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 
 public enum ItemType
 {
-    Materials = 1, Gem, Accessory, Jewelry
+    Noen = 0, Materials = 1, Gem, Accessory, Jewelry
 }
 
 public enum SalesItemType
@@ -28,9 +29,6 @@ public class ItemManager : MonoBehaviour
 
     [SerializeField]
     List<MaterialItemData> materialItemData;
-
-    [SerializeField]
-    int itemA, ItemB;
 
     // Start is called before the first frame update
     void Start()
@@ -62,12 +60,12 @@ public class ItemManager : MonoBehaviour
                 elementType1 = Tools.IntParse(element["element_Type_1"]),
                 elementType2 = Tools.IntParse(element["element_Type_2"]),
                 //elementType3 = Tools.IntParse(element["element_Type_3"]),
-                elementPercent1 = Tools.IntParse(element["Element_Percent_1"]),
-                elementPercent2 = Tools.IntParse(element["Element_Percent_2"]),
+                elementPercent1 = Tools.FloatParse(element["Element_Percent_1"]),
+                elementPercent2 = Tools.FloatParse(element["Element_Percent_2"]),
                 //elementPercent3 = Tools.IntParse(element["Element_Percent_3"])
             };
 
-            basicItemData[itemIdx] = newItemData.MergeData((MaterialItemData)basicItemData[itemIdx], newItemData);
+            basicItemData[itemIdx] = newItemData.MergeData(basicItemData[itemIdx], newItemData);
             materialItemData.Add(newItemData);
         }
     }
@@ -197,7 +195,7 @@ public class ItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛ Á¶ÇÕ½Ä È®ÀÎ ¾ÆÀÌÅÛ ID ¹İÈ¯ ¾øÀ¸¸é -1¹İÈ¯
+    /// ì•„ì´í…œ ì¡°í•©ì‹ í™•ì¸ ì•„ì´í…œ ID ë°˜í™˜ ì—†ìœ¼ë©´ -1ë°˜í™˜
     /// </summary>
     /// <param name="gem"></param>
     /// <param name="accessory"></param>
@@ -250,6 +248,50 @@ public class ItemManager : MonoBehaviour
     public List<GemRecipe> GetGemRecipe()
     {
         return gemRecipes;
+    }
+
+    public GemRecipe GetGemRecipe(ElementType et1, ElementType et2, ElementType et3)
+    {
+        GemRecipe returnRecipe = null;
+        et1++;
+        et2++;
+        et3++;
+
+        for (int i = 0; i < gemRecipes.Count; i++)
+        {
+            var count = 0;
+
+            if (gemRecipes[i].material1 == (int)et1)
+                count++;
+            else if (gemRecipes[i].material1 == (int)et2)
+                count++;
+            else if (gemRecipes[i].material1 == (int)et3)
+                count++;
+            if (count != 1)
+                continue;
+            
+            if (gemRecipes[i].material2 == (int)et1)
+                count++;
+            else if (gemRecipes[i].material2 == (int)et2)
+                count++;
+            else if (gemRecipes[i].material2 == (int)et3)
+                count++;
+            if(count != 2)
+                continue;
+            
+            if (gemRecipes[i].material3 == (int)et1)
+                count++;
+            else if (gemRecipes[i].material3 == (int)et2)
+                count++;
+            else if (gemRecipes[i].material3 == (int)et3)
+                count++;
+            if(count != 3)
+                continue;
+
+            returnRecipe = gemRecipes[i];
+        }
+
+        return returnRecipe;
     }
 
     public RequestStuff GetRequestStuffByItemID(int itemID)
@@ -382,7 +424,7 @@ public class MaterialItemData : BasicItemData
     public float elementPercent2;
     public float elementPercent3;
 
-    public MaterialItemData MergeData(MaterialItemData mid1, MaterialItemData mid2)
+    public MaterialItemData MergeData(BasicItemData mid1, MaterialItemData mid2)
     {
         return new MaterialItemData
         {
@@ -403,7 +445,7 @@ public class MaterialItemData : BasicItemData
     }
 /*    public static MaterialItemData operator +(MaterialItemData mid1, MaterialItemData mid2)
     {
-        Debug.Log("¾Æ ¸ÁÇß´Ù ¤»¤»");
+        Debug.Log("ì•„ ë§í–ˆë‹¤ ã…‹ã…‹");
         return new MaterialItemData
         {
             itemID = mid1.itemID,

@@ -72,7 +72,7 @@ public class Furnace : MonoBehaviour
 
 			int count = 0;
 
-			//Ã¹¹øÂ°·Î ¸¹Àº ¼Ó¼º
+			//ì²«ë²ˆì§¸ë¡œ ë§ì€ ì†ì„±
 			for (int i = 0; i < m_Elements.Length; i = i + 1)
 			{
 				if(t_ElementPercent1 < m_Elements[i])
@@ -84,7 +84,7 @@ public class Furnace : MonoBehaviour
 			if (t_Element1 != -1) { m_Elements[t_Element1 - 1] = 0.0f; }
 			else if (t_Element1 == -1) { count = count + 1; }
 
-			//µÎ¹øÂ°·Î ¸¹Àº ¼Ó¼º
+			//ë‘ë²ˆì§¸ë¡œ ë§ì€ ì†ì„±
 			for (int i = 0; i < m_Elements.Length; i = i + 1)
 			{
 				if (t_ElementPercent2 < m_Elements[i])
@@ -96,7 +96,7 @@ public class Furnace : MonoBehaviour
 			if (t_Element2 != -1) { m_Elements[t_Element2 - 1] = 0.0f; }
 			else if (t_Element2 == -1) { count = count + 1; }
 
-			//¼¼¹øÂ°·Î ¸¹Àº ¼Ó¼º
+			//ì„¸ë²ˆì§¸ë¡œ ë§ì€ ì†ì„±
 			for (int i = 0; i < m_Elements.Length; i = i + 1)
 			{
 				if (t_ElementPercent3 < m_Elements[i])
@@ -188,7 +188,7 @@ public class Furnace : MonoBehaviour
 		//
 		//if(count > 1)
 		//{
-		//	//µ¹
+		//	//ëŒ
 		//}
 		//else if(count <= 1)
 		//{

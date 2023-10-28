@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class NPCStoreUIScript : MonoBehaviour
+public class NPCStoreUIScript : UIScript
 {
 	private int m_ItemCode = 0;
 	[HideInInspector] public int m_ItemPrice = 0;
@@ -19,8 +19,10 @@ public class NPCStoreUIScript : MonoBehaviour
 	[HideInInspector] public Inventory m_NPCInventory;
 
 	// Start is called before the first frame update
-	void Start()
+	protected override void Start()
 	{
+		base.Start();
+
 		DefineTradePanelAction();
 		ReFindButton();
 	}
@@ -31,8 +33,10 @@ public class NPCStoreUIScript : MonoBehaviour
 	//
 	//}
 
-	private void OnDisable()
+	protected override void OnDisable()
 	{
+		base.OnDisable();
+
 		m_ItemCode = 0;
 		m_SelectCount = 0;
 		m_SelectCount = 0;
@@ -253,5 +257,12 @@ public class NPCStoreUIScript : MonoBehaviour
 		{
 			t_GO.SetActive(false);
 		}
+	}
+
+	protected override void RefresfAction()
+	{
+		base.RefresfAction();
+
+		RefreshUI();
 	}
 }

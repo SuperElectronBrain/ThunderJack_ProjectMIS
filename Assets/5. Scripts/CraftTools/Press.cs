@@ -53,12 +53,13 @@ public class Press : MonoBehaviour
 		//{
 		//	m_MagicCircleMaterial.material = Instantiate(m_MagicCircleMaterial.material);
 		//}
-
+		m_Progress = 0.0f;
+		for (int i = 0; i < 5; i = i + 1) { m_Elements[i] = 0; }
 		RefreshGraph();
 		m_CompleteVFX.Stop();
 		m_FailVFX.Stop();
 		m_SmokeVFX.Stop();
-		m_MagicCircleResetVFX.loop = false;
+		//m_MagicCircleResetVFX.loop = false;
 		m_MagicCircleResetVFX.Stop();
 		RefreshMagicCircleEffect();
 	}
@@ -316,7 +317,7 @@ public class Press : MonoBehaviour
 			float t_ElementPercent1 = 0.0f; float t_ElementPercent2 = 0.0f; float t_ElementPercent3 = 0.0f;
 
 			int count = 0;
-			//Ã¹¹øÂ°·Î ¸¹Àº ¼Ó¼º
+			//ì²«ë²ˆì§¸ë¡œ ë§Žì€ ì†ì„±
 			for (int i = 0; i < m_Elements.Length; i = i + 1)
 			{
 				if (t_ElementPercent1 < m_Elements[i])
@@ -328,7 +329,7 @@ public class Press : MonoBehaviour
 			if (t_Element1 != -1) { m_Elements[t_Element1 - 1] = 0.0f; }
 			else if (t_Element1 == -1) { count = count + 1; }
 
-			//µÎ¹øÂ°·Î ¸¹Àº ¼Ó¼º
+			//ë‘ë²ˆì§¸ë¡œ ë§Žì€ ì†ì„±
 			for (int i = 0; i < m_Elements.Length; i = i + 1)
 			{
 				if (t_ElementPercent2 < m_Elements[i])
@@ -340,7 +341,7 @@ public class Press : MonoBehaviour
 			if (t_Element2 != -1) { m_Elements[t_Element2 - 1] = 0.0f; }
 			else if (t_Element2 == -1) { count = count + 1; }
 
-			//¼¼¹øÂ°·Î ¸¹Àº ¼Ó¼º
+			//ì„¸ë²ˆì§¸ë¡œ ë§Žì€ ì†ì„±
 			for (int i = 0; i < m_Elements.Length; i = i + 1)
 			{
 				if (t_ElementPercent3 < m_Elements[i])
@@ -368,12 +369,24 @@ public class Press : MonoBehaviour
 				List<GemRecipe> t_GRecipes = UniFunc.FindRecipes(UniFunc.FindRecipes(UniFunc.FindRecipes(t_GemRecipes, t_Element1), t_Element2), t_Element3);
 				if (t_GRecipes != null)
 				{
-					t_ElementPercent1 = Mathf.Abs(1.0f - (t_ElementPercent1 / t_GRecipes[0].materialPercent1)) / 3;
-					t_ElementPercent2 = Mathf.Abs(1.0f - (t_ElementPercent2 / t_GRecipes[0].materialPercent2)) / 3;
-					t_ElementPercent3 = Mathf.Abs(1.0f - (t_ElementPercent3 / t_GRecipes[0].materialPercent3)) / 3;
+					t_ElementPercent1 = 1 - ((t_GRecipes[0].materialPercent1 - t_ElementPercent1) / t_GRecipes[0].materialPercent1);
+					t_ElementPercent2 = 1 - ((t_GRecipes[0].materialPercent2 - t_ElementPercent2) / t_GRecipes[0].materialPercent2);
+					t_ElementPercent3 = 1 - ((t_GRecipes[0].materialPercent3 - t_ElementPercent3) / t_GRecipes[0].materialPercent2);
 
+					t_ElementPercent1 = t_ElementPercent1 <= 1 ? t_ElementPercent1 - 1 : 1 - t_ElementPercent1;
+					t_ElementPercent2 = t_ElementPercent2 <= 1 ? t_ElementPercent2 - 1 : 1 - t_ElementPercent2;
+					t_ElementPercent3 = t_ElementPercent3 <= 1 ? t_ElementPercent3 - 1 : 1 - t_ElementPercent3;
+
+					t_ElementPercent1 = t_ElementPercent1 / 3;
+					t_ElementPercent2 = t_ElementPercent2 / 3;
+					t_ElementPercent3 = t_ElementPercent3 / 3;
+
+					t_Progress = Mathf.Round((1 + t_ElementPercent1 + t_ElementPercent2 + t_ElementPercent3) * 100.0f) / 100.0f;
+					t_Progress = t_Progress > 1 ? 1 - (t_Progress - 1) : t_Progress;
+
+					t_Progress = t_Progress > 0 ? t_Progress : 0;
+					
 					t_ItemCode = t_GRecipes[0].itemID;
-					t_Progress = 1 - (t_ElementPercent1 + t_ElementPercent2 + t_ElementPercent3);
 					t_ItemAmount = 1;
 				}
 			}
@@ -453,7 +466,18 @@ public class Press : MonoBehaviour
 	{
 		if (m_AccessorySprite != null)
 		{
-			m_AccessorySprite.sprite = UniFunc.FindSprite(m_AccessoryInput.itemCode);
+			if(m_AccessoryInput.itemCode != 0)
+			{
+				m_AccessorySprite.sprite = UniFunc.FindSprite(m_AccessoryInput.itemCode);
+				if(m_AccessoryInput.itemCode == 21)
+				{
+					m_AccessorySprite.gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+				}
+				else if(m_AccessoryInput.itemCode != 21)
+				{
+					m_AccessorySprite.gameObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+				}
+			}
 			if(m_AccessoryInput.itemCode == 0) { m_AccessorySprite.sprite = null; }
 		}
 		//if (m_Text != null)

@@ -84,6 +84,7 @@ public class NPC : Character, IInteraction
         InitDay();
 
         EventManager.Subscribe(EventType.NextDialog, TalkEnd);
+        EventManager.Subscribe(EventType.EndConversation, EndConversation);
         dialogBox.InitDialogBox(characterData.characterName);
         DontDestroyOnLoad(gameObject);
 
@@ -126,7 +127,7 @@ public class NPC : Character, IInteraction
     public void StartConversation()
     {
         formal++;
-        Debug.Log(characterData.characterEgName + "¿Í ´ëÈ­¸¦ ½ÃÀÛÇÕ´Ï´Ù");
+        Debug.Log(characterData.characterEgName + "ì™€ ëŒ€í™”ë¥¼ ì‹œìž‘í•©ë‹ˆë‹¤");
         curInteractionObj = player;
         ChangeState(NPCBehaviour.Conversation);
         CameraEvent.Instance.onCamBlendComplate.AddListener(TalkEvent);
@@ -138,12 +139,12 @@ public class NPC : Character, IInteraction
         if (prevBehaviour == NPCBehaviour.Business)
             GameManager.Instance.Dialogue.InitDialogue(shopDialog, formal);
         else
-            GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Dialogue", formal);
+            GameManager.Instance.Dialogue.InitDialogue(characterData.characterEgName + "_Text_Master", formal);
     }
 
     public void TalkEnd()
     {
-        GameManager.Instance.GameTime.TimeStop(false);
+        //GameManager.Instance.GameTime.TimeStop(false);
         dialogBox.gameObject.SetActive(false);
     }
 
@@ -153,18 +154,19 @@ public class NPC : Character, IInteraction
         dialogBox.SetScript(talkScript);
     }
 
+    void EndConversation()
+    {
+        dialogBox.gameObject.SetActive(false);
+    }
+
     public void SetSchedule(TimeTableData newSchedule)
     {
-        bool isMove = schedule.aiParam2 != newSchedule.aiParam2;
-
+        bool isMove = schedule.aiParam1 != newSchedule.aiParam1;
+        
         schedule = newSchedule;
-
-        /*if(isMove)
-        {
-            RandomDestinationPos();
-            ChangeState(NPCBehaviour.Move);
-        }*/
-        ChangeStateFromSchedule();
+        
+        if(isMove)
+            ChangeStateFromSchedule();
     }
 
     void RandomDestinationPos()
@@ -231,6 +233,7 @@ public class NPC : Character, IInteraction
 
     public void Interaction(GameObject user)
     {
+        EventManager.Publish(EventType.StartInteraction);
         StartConversation();
     }
 

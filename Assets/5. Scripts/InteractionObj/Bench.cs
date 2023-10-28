@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bench : MonoBehaviour, IInteraction
+public class Bench : MonoBehaviour, IInteraction, INpcOnly
 {
     Transform seatTransform;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,45 +18,62 @@ public class PlayerDialogButton : MonoBehaviour
 
     [SerializeField]
     TextMeshPro optionText;
-
-    bool isClick;
-    bool isMouseOver;
+    
+    bool isSelect;
+    [SerializeField]
+    private bool isDown;
 
     public UnityAction selectOption;
 
-    private void OnMouseOver()
+    private void OnEnable()
     {
-        isMouseOver = true;
-        if (isClick) return;
-        sr.sprite = mouseOverSprite;        
+        var camRot = Camera.main.transform.rotation;
+        transform.localRotation = camRot;
     }
-
-    private void OnMouseExit()
-    {
-        isMouseOver = false;
-        sr.sprite = defaultSprite;        
-    }
-
-    private void OnMouseDown()
-    {
-        isClick = true;
-        sr.sprite = mouseClickSprite;
-    }
-
-    private void OnMouseUp()
-    {
-        isClick = false;       
-        if (isMouseOver)
-            selectOption?.Invoke();
-
-        sr.sprite = defaultSprite;
-    }      
 
     // Start is called before the first frame update
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         optionText = GetComponentInChildren<TextMeshPro>();
+    }
+
+    private void Update()
+    {
+        if (isDown)
+        {
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                sr.sprite = mouseOverSprite;
+                isSelect = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                sr.sprite = defaultSprite;
+                isSelect = false;
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                sr.sprite = mouseOverSprite;
+                isSelect = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                sr.sprite = defaultSprite;
+                isSelect = false;
+            }
+        }
+
+        if (isSelect)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                selectOption?.Invoke();
+            }    
+        }
     }
 
     public void SetOptionText(string newOptionText)

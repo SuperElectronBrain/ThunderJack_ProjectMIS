@@ -10,6 +10,11 @@ public class NpcDialog : MonoBehaviour
     [SerializeField]
     TextMeshPro cName;
 
+    private void OnEnable()
+    {
+        transform.localRotation = Camera.main.transform.rotation;
+    }
+
     public void InitDialogBox(string name)
     {
         cName.text = name;

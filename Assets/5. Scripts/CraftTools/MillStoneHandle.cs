@@ -1,20 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MillStoneHandle : MonoBehaviour
 {
-	//[SerializeField][Range(0.0f, 5.0f)] private float segment = 0.0f;
+    [SerializeField]
+    private RavenCraftCore.MillStone millStone;
 
-	// Start is called before the first frame update
-	//void Start()
-	//{
-	//    
-	//}
+    private void OnMouseDown()
+    {
+        CursorManager.SetCursorPosition(transform.position);
+        CursorManager.onActive?.Invoke(true);
+        CursorManager.onActiveComplate.AddListener(() => millStone.GrabHandle(true));
+    }
 
-	// Update is called once per frame
-	//void Update()
-	//{
-	//  Debug.Log(((segment / 5.0f) * 360.0f) + "(" + Mathf.Cos(((segment / 5.0f) * 360.0f) * Mathf.Deg2Rad) + ", " + Mathf.Sin(((segment / 5.0f) * 360.0f) * Mathf.Deg2Rad) + ")");
-	//}
+    private void OnMouseEnter()
+    {
+        millStone.EnterHandle();
+    }
+
+    private void OnMouseExit()
+    {
+        millStone.ExitHandle();
+    }
 }
