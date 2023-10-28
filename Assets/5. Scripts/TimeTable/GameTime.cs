@@ -132,4 +132,9 @@ public class GameTime : MonoBehaviour
     {
         return hour * 6 + minute / 10; 
     }
+
+    public float GetTimer()
+    {
+        return timer;
+    }
 }

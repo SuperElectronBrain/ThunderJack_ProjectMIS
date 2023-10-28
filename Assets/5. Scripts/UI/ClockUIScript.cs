@@ -59,6 +59,12 @@ public class ClockUIScript : MonoBehaviour
 	[SerializeField] private bool bProgressTime = true;
 	[SerializeField] private float m_TimeSpeed = 180;
 
+	[SerializeField] private int gameTime2RealTime;
+	[SerializeField] private float gameSpeed;
+	[SerializeField] private float timer = 0;
+	
+	[SerializeField] private int hour;
+	[SerializeField] private int minute;
 
 	// Start is called before the first frame update
 	void Start()
@@ -75,27 +81,8 @@ public class ClockUIScript : MonoBehaviour
 		{
 			if (GameManager.Instance.GameTime != null)
 			{
-				float t_CurrentTime = GameManager.Instance.GameTime.GetHour() + (GameManager.Instance.GameTime.GetMinute() / 60.0f);
-				if (CurrentTime != t_CurrentTime)
-				{
-					CurrentTime = t_CurrentTime;
-
-					if (t_CurrentTime == 0.0f)
-					{
-						CurrentDay = CurrentDay + 1;
-						m_CurrentWeekday = m_CurrentWeekday + 1;
-						if (m_CurrentWeekday >= m_MaxWeekday)
-						{
-							m_CurrentWeekday = 0;
-						}
-					}
-				}
-
-				//CurrentTime = CurrentTime + (DeltaTime / (360.0f / (60.0f / GameManager.Instance.GameTime.GetGameSpeed())));
-				//if(CurrentTime >= m_MaxTime)
-				//{
-				//	CurrentTime = 0.0f;
-				//}
+				CurrentTime = GameManager.Instance.GameTime.GetHour() + (GameManager.Instance.GameTime.GetMinute() / 60.0f) + (GameManager.Instance.GameTime.GetTimer() / 360.0f);
+				CurrentDay = GameManager.Instance.GameTime.GetDay();
 			}
 		}
 
@@ -103,19 +90,19 @@ public class ClockUIScript : MonoBehaviour
 		RefreshClock();
 	}
 
-	private void ProgressTime(float p_DeltaTime)
+	private void ProgressTime(float DeltaTime)
 	{
-		m_CurrentTime = m_CurrentTime + (p_DeltaTime / m_TimeSpeed);
-		if (m_CurrentTime >= m_MaxTime)
-		{
-			m_CurrentTime = m_CurrentTime - m_MaxTime;
-			CurrentDay = CurrentDay + 1;
-			m_CurrentWeekday = m_CurrentWeekday + 1;
-			if (m_CurrentWeekday >= m_MaxWeekday)
-			{
-				m_CurrentWeekday = 0;
-			}
-		}
+		//m_CurrentTime = m_CurrentTime + (DeltaTime * (60 / GameManager.Instance.GameTime.GetGameSpeed()));
+		//if (m_CurrentTime >= 60)
+		//{
+		//	m_CurrentTime = 0;
+		//	//CurrentDay = CurrentDay + 1;
+		//	//m_CurrentWeekday = m_CurrentWeekday + 1;
+		//	//if (m_CurrentWeekday >= m_MaxWeekday)
+		//	//{
+		//	//	m_CurrentWeekday = 0;
+		//	//}
+		//}
 	}
 
 	private void RefreshClock()
@@ -126,18 +113,9 @@ public class ClockUIScript : MonoBehaviour
 		{
 			if (GameManager.Instance.GameTime != null)
 			{
-				t_Date = GameManager.Instance.GameTime.GetDay() + "일차 " + GameManager.Instance.GameTime.GetHour() + ":" + GameManager.Instance.GameTime.GetMinute();
+				t_Date = GameManager.Instance.GameTime.GetDay() + "일차 " + GameManager.Instance.GameTime.GetHour() + ":" + (GameManager.Instance.GameTime.GetMinute() == 0? "00" : GameManager.Instance.GameTime.GetMinute());
 			}
 		}
-		///if (m_CurrentWeekday == 0) { t_Date = t_Date + "Mon"; }
-		///else if (m_CurrentWeekday == 1) { t_Date = t_Date + "Tue"; }
-		///else if (m_CurrentWeekday == 2) { t_Date = t_Date + "Wed"; }
-		///else if (m_CurrentWeekday == 3) { t_Date = t_Date + "Thu"; }
-		///else if (m_CurrentWeekday == 4) { t_Date = t_Date + "Fri"; }
-		///else if (m_CurrentWeekday == 5) { t_Date = t_Date + "Sat"; }
-		///else if (m_CurrentWeekday == 6) { t_Date = t_Date + "Sun"; }
-		///else { t_Date = "NUL"; }
-		//t_Date = t_Date + ".";
 
 		if(m_ClockHand != null)
 		{
