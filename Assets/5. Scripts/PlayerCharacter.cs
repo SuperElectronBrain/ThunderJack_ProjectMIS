@@ -722,28 +722,28 @@ public class PlayerCharacter : CharacterBase
 			{
 				if (m_HorizontalMove != 0)
 				{
-					if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Build_Inside" || bUseDustEffect == true)
+					if (m_FootStepEffectInside != null)
 					{
-						if (m_FootStepEffectInside != null)
+						if (m_FootStepEffectInside.isPlaying != true)
 						{
-							if (m_FootStepEffectInside.isPlaying != true)
-							{
-								m_FootStepEffectInside.Play();
-							}
+							m_FootStepEffectInside.Play();
 						}
-						if (m_FootStepEffectOutdoor != null) { m_FootStepEffectOutdoor.Stop(); }
 					}
-					else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Build_Inside" && bUseDustEffect == false)
-					{
-						if (m_FootStepEffectOutdoor != null)
-						{
-							if (m_FootStepEffectOutdoor.isPlaying != true)
-							{
-								m_FootStepEffectOutdoor.Play();
-							}
-						}
-						if (m_FootStepEffectInside != null) { m_FootStepEffectInside.Stop(); }
-					}
+					//if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Build_Inside" || bUseDustEffect == true)
+					//{
+					//	if (m_FootStepEffectOutdoor != null) { m_FootStepEffectOutdoor.Stop(); }
+					//}
+					//else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Build_Inside" && bUseDustEffect == false)
+					//{
+					//	if (m_FootStepEffectOutdoor != null)
+					//	{
+					//		if (m_FootStepEffectOutdoor.isPlaying != true)
+					//		{
+					//			m_FootStepEffectOutdoor.Play();
+					//		}
+					//	}
+					//	if (m_FootStepEffectInside != null) { m_FootStepEffectInside.Stop(); }
+					//}
 				}
 				else if (m_HorizontalMove == 0)
 				{
