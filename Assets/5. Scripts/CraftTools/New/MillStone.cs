@@ -9,7 +9,7 @@ namespace RavenCraftCore
 {
     public class MillStone : MonoBehaviour
     {
-        private bool isOver;
+        [SerializeField]
         private bool isGrab;
         private Camera mainCam;
 
@@ -17,7 +17,7 @@ namespace RavenCraftCore
         [SerializeField]
         private GameObject handle;
         [SerializeField]
-        private Vector2 millStoneCenterPos;
+        private Transform millStoneCenterPos;
         [SerializeField]
         private float r;
         [SerializeField]
@@ -56,6 +56,14 @@ namespace RavenCraftCore
         SkeletonAnimation skAni;
         [SerializeField]
         private TrackEntry track;
+
+        [SerializeField] private Animator topAni;
+        [SerializeField] private Animator bottomAni;
+
+        [SerializeField] private float topFloatValue;
+        [SerializeField] private float bottomFloatValue;
+        [SerializeField] private float liquidFlowSpeed;
+        [SerializeField] private const string aniFLoatProperty = "Velocity";
 
         private void Start()
         {
@@ -99,16 +107,16 @@ namespace RavenCraftCore
         {
             this.isGrab = isGrab;
             track.TrackTime = 1;
-            GetMousePosToDeg();
+            /*GetMousePosToDeg();
             millStoneTrack.m_Position = deg / 360f;
-            prevTheta = deg;
+            prevTheta = deg;*/
             
             StartCoroutine(InitMousePosition());
         }
 
         void GetMousePosToDeg()
         {
-            var mPos = CursorManager.GetCursorPosition();
+            var mPos = CursorManager.GetCursorPosition() - millStoneCenterPos.position;
 
             theta = Mathf.Atan2(mPos.y, mPos.x);
             deg = (theta * Mathf.Rad2Deg) + 180;
@@ -121,10 +129,16 @@ namespace RavenCraftCore
 
         IEnumerator InitMousePosition()
         {
-            while (true)
+            while (isGrab)
             {
-                if(deg - prevTheta > 3f)
+                if (deg - prevTheta > 3f)
+                {
                     CursorManager.SetCursorPosition(handle.transform.position);
+                    //prevTheta = deg;
+                    deg = prevTheta;
+                }
+                /*else if(Vector2.Distance(CursorManager.GetCursorPosition(), handle.transform.position) > 3f)
+                    CursorManager.SetCursorPosition(handle.transform.position);*/
                 yield return new WaitForSeconds(0.2f);
             }
         }
@@ -132,12 +146,14 @@ namespace RavenCraftCore
         // Update is called once per frame
         void Update()
         {
+            FlowLiquid();
+            
             if(resultValue > 0 && grindingValue > 0)
             {
                 FlowMaterialSolution();
             }
 
-            if (itemCount == 0 || !isGrab)
+            if (itemCount == 0)
                 return;
 
             if(Input.GetMouseButtonUp(0))
@@ -146,19 +162,22 @@ namespace RavenCraftCore
                 track.TrackTime = 0;
             }
 
-            GetMousePosToDeg();
-
-            // 360 -> 0
-            //CursorManager.SetCursorPosition(handle.transform.position);            
-            
-            if(deg > prevTheta)
+            if (isGrab)
             {
-                if (deg - prevTheta > 355f) ;
-                else
+                GetMousePosToDeg();
+                
+                if(deg > prevTheta)
                 {
-                    return;
+                    if (deg - prevTheta > 355f) ;
+                    else
+                    {
+                        return;
+                    }
                 }
             }
+            
+            // 360 -> 0
+            //CursorManager.SetCursorPosition(handle.transform.position);            
             
             //if(deg - prevTheta > 5f)
                 
@@ -169,68 +188,96 @@ namespace RavenCraftCore
             if (deg == prevTheta)
                 return;*/
 
-            /*grindingValue = 0f;
-            resultValue = 100f;
-
-            if(deg - prevTheta < 0)
-            {
-                for (int i = 0; i < insertedItemProgress.Count; i++)
-                {
-                    if (insertedItemProgress[i] <= 0)
-                    {
-                        grindingValue += 33.33333333f;
-                        resultValue -= 33.33333333f;
-                        continue;
-                    }                        
-                    insertedItemProgress[i] += (deg - prevTheta) * grindingSpeed;
-                    insertedItemProgress[i] = Mathf.Max(0, insertedItemProgress[i]);
-                    resultValue -= insertedItemProgress[i];
-                    grindingValue += Mathf.Lerp(33.33333f, 0, insertedItemProgress[i] * 0.01f);
-                }
-            }*/
-
+            grindingValue = 0f;
+            var tv = 0f;
+            
             for (int i = 0; i < insertedItemProgress.Count; i++)
             {
                 if (insertedItemProgress[i] <= 0)
-                {   
+                {
+                    grindingValue += 33.33333333f;
                     continue;
                 }
+
                 var gv = (deg - prevTheta) * grindingSpeed;
-                insertedItemProgress[i] += gv;
+                if (gv < 0)
+                {
+                    tv = gv * -0.1f;
+                    insertedItemProgress[i] += gv;
+                }
                 insertedItemProgress[i] = Mathf.Max(0, insertedItemProgress[i]);
-                resultValue -= insertedItemProgress[i];
                 grindingValue += Mathf.Lerp(33.33333f, 0, insertedItemProgress[i] * 0.01f);
             }
 
+            topFloatValue += tv;
+
+            /*for (int i = 0; i < insertedItemProgress.Count; i++)
+            {
+                if (insertedItemProgress[i] <= 0)
+                {
+                    continue;
+                }
+                
+                insertedItemProgress[i] = Mathf.Max(0, insertedItemProgress[i]);
+                resultValue -= insertedItemProgress[i];
+                grindingValue += Mathf.Lerp(33.33333f, 0, insertedItemProgress[i] * 0.01f);
+            }*/
+
             /*Vector3 newPos;
 
-            newPos.x = (r * Mathf.Cos(theta)) + millStoneCenterPos.x;
-            newPos.y = (r * Mathf.Sin(theta)) + millStoneCenterPos.y;
+            newPos.x = (r * Mathf.Cos(theta)) + millStoneCenterPos.position.x;
+            newPos.y = (r * Mathf.Sin(theta)) + millStoneCenterPos.position.y;
             newPos.z = 3;
 
-            Debug.DrawLine(handle.transform.position, newPos, Color.blue, 100f);*/
-            //handle.transform.position = newPos;
+            Debug.DrawLine(handle.transform.position, newPos, Color.blue, 100f);
+            handle.transform.position = newPos;*/
 
-            millStoneTrack.m_Position = deg / 360f;
+            if (isGrab)
+            {
+                millStoneTrack.m_Position = deg / 360f;
 
-            prevTheta = deg;            
+                prevTheta = deg;
+            }
+        }
+
+        void FlowLiquid()
+        {
+            topAni.SetFloat(aniFLoatProperty, topFloatValue);
+            bottomAni.SetFloat(aniFLoatProperty, bottomFloatValue);
+
+            if (topFloatValue > 0)
+            {
+                var tv = Time.deltaTime * liquidFlowSpeed;
+                bottomFloatValue += tv * 2;
+                topFloatValue = Mathf.Max(0, topFloatValue - tv);
+            }
+            if (bottomFloatValue > 0)
+            {
+                var bv = Time.deltaTime * liquidFlowSpeed * 1.8f;
+                bottomFloatValue = Mathf.Max(0, bottomFloatValue - bv);
+            }
         }
 
         public void FlowMaterialSolution()
         {
             if (100 - grindingValue > resultValue)
+            {
+                cup.SetUse(true);
                 return;
+            }
 
-            var flowValue = Time.deltaTime * flowSpeed;
-            resultValue -= flowValue;
+            cup.SetUse(false);
+            resultValue -= Time.deltaTime * flowSpeed;
 
-            cup.FillMaterialSoultion(flowValue);
+            resultValue = Mathf.Max(0, resultValue);
+            
+            cup.FillMaterialSoultion(resultValue);
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawSphere(millStoneCenterPos, 0.3f);
+            Gizmos.DrawSphere(millStoneCenterPos.position, 0.3f);
         }
     }
 }

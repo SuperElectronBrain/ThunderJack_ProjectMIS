@@ -50,7 +50,7 @@ namespace RavenCraftCore
         void Start()
         {
             SetItemData(d_ItemData);
-            originHandlePos = handleObject.position;
+            originHandlePos = buttonPosition.position;
         }
 
         public void EnterHandle()
@@ -105,20 +105,22 @@ namespace RavenCraftCore
                 book.UpdateElementCircle((ElementType)i, value[i]);
             }
 
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                PressHandle();
-            }
-
             if (!isGrab)
                 return;
 
             if(Input.GetMouseButtonUp(0))
             {
                 isGrab = false;
-                handleObject.position = originHandlePos;
+                track.m_Position = 0;
+                //handleObject.position = originHandlePos;
+                buttonPosition.position = originHandlePos;
             }
 
+            if (track.m_Position >= 0.99f)
+            {
+                PressHandle();
+            }
+            
             var handleDir = buttonPosition.forward;
             var mPos = CursorManager.GetCursorPosition();
             var hm = mPos - prevPos;
@@ -126,12 +128,11 @@ namespace RavenCraftCore
 
             float progress = Vector3.Dot(handleDir, hm);
 
-            handleObject.position = CursorManager.GetCursorPosition();
+            //handleObject.position = CursorManager.GetCursorPosition();
             track.m_Position += progress;
             prevPos = mPos;
         }
-
-        // ReSharper disable Unity.PerformanceAnalysis
+        
         void PressHandle()
         {
             GetRankElement();
