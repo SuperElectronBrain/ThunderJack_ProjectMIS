@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class InteractionAccessory : MonoBehaviour
 {
@@ -10,14 +9,16 @@ public class InteractionAccessory : MonoBehaviour
     private PressAccessoryPlate accessoryPlate;
     [SerializeField] private GameObject target;
     private RaycastHit hit;
+    private int itemID;
 
     private void Start()
     {
         cam = Camera.main;
     }
 
-    public void Init(PressAccessoryPlate accessoryPlate)
+    public void Init(int itemID, PressAccessoryPlate accessoryPlate)
     {
+        this.itemID = itemID;
         this.accessoryPlate = accessoryPlate;
     }
     
@@ -44,7 +45,7 @@ public class InteractionAccessory : MonoBehaviour
         {
             if (target != null)
             {
-                Debug.Log("주기");
+                target.GetComponent<Guest>().CheckItem(itemID, 100);
             }
             else
             {

@@ -109,7 +109,8 @@ namespace RavenCraftCore
             track.TrackTime = 1;
             /*GetMousePosToDeg();
             millStoneTrack.m_Position = deg / 360f;
-            prevTheta = deg;*/
+            */
+            prevTheta = deg;
             
             StartCoroutine(InitMousePosition());
         }

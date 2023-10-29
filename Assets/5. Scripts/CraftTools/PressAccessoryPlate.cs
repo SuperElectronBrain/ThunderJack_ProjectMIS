@@ -26,7 +26,7 @@ public class PressAccessoryPlate : MonoBehaviour
         
         isSelect = true;
         var item = interactionItem.ItemInteraction(itemID);
-        item.GetComponent<InteractionAccessory>().Init(this);
+        item.GetComponent<InteractionAccessory>().Init(itemID,this);
         spriteRenderer.enabled = false;
     }
 

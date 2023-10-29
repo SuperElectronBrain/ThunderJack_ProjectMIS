@@ -47,8 +47,6 @@ namespace RavenCraftCore
             mainCam = Camera.main;
             originPos = transform.position;
             zOffset = originPos.z;
-            
-            track = skAni.state.SetAnimation(2, "Tilting", false);
         }
 
         public void SetUse(bool canUse)
@@ -84,6 +82,8 @@ namespace RavenCraftCore
             CursorManager.onActive?.Invoke(true);
             skAni.timeScale = 0;
             skAni.AnimationName = "Tilting";
+            track = skAni.state.SetAnimation(2, "Tilting", false);
+            skAni.state.TimeScale = 1;
             isUsed = true;
         }
 
@@ -95,7 +95,7 @@ namespace RavenCraftCore
         // Update is called once per frame
         void Update()
         {
-            if (!canUse)
+            if (!canUse || amountValue == 100)
                 return;
             if (!isUsed)
                 return;
