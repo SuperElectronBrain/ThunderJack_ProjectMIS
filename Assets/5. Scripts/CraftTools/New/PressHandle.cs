@@ -13,8 +13,8 @@ namespace RavenCraftCore
         private void OnMouseDown()
         {
             CursorManager.SetCursorPosition(transform.position);
-            CursorManager.onActive?.Invoke(true);
             CursorManager.onActiveComplate.AddListener(() => press.GrabHandle());
+            CursorManager.onActive?.Invoke(true);
         }
 
         private void OnMouseEnter()

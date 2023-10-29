@@ -46,6 +46,7 @@ namespace Cinemachine
         [FormerlySerializedAs("m_CurrentDistance")]
         public float m_Position;
         public GameObject moveObject;
+        public Vector3 prevPos;
         void FixedUpdate()
         {
             if (m_UpdateMethod == UpdateMethod.FixedUpdate)
@@ -71,6 +72,7 @@ namespace Cinemachine
         {
             if (m_Path != null)
             {
+                prevPos = transform.position;
                 m_Position = m_Path.StandardizeUnit(distanceAlongPath, m_PositionUnits);
                 transform.position = m_Path.EvaluatePositionAtUnit(m_Position, m_PositionUnits);
                 transform.rotation = m_Path.EvaluateOrientationAtUnit(m_Position, m_PositionUnits);

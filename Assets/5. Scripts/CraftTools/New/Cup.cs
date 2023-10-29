@@ -13,6 +13,7 @@ namespace RavenCraftCore
     {
         private bool isUsed;
         private bool isGrab;
+        private bool canUse;
         private Camera mainCam;
         [SerializeField]
         private float zOffset;
@@ -46,15 +47,43 @@ namespace RavenCraftCore
             mainCam = Camera.main;
             originPos = transform.position;
             zOffset = originPos.z;
+        }
+
+        public void SetUse(bool canUse)
+        {
+            this.canUse = canUse;
+        }
+
+        private void OnMouseEnter()
+        {
+            if (isUsed || amountValue == 0)
+                return;
             
-            track = skAni.state.SetAnimation(0, "animation", false);
+            skAni.skeleton.SetSkin("Hand");
+            skAni.skeleton.SetSlotsToSetupPose();
+            skAni.timeScale = 1;
+            skAni.AnimationName = "HandOn";
+        }
+
+        private void OnMouseExit()
+        {
+            if (isUsed || amountValue == 0)
+                return;
+            skAni.timeScale = 1;
+            skAni.AnimationName = "HandOff";
         }
 
         private void OnMouseDown()
         {
+            if (isUsed || amountValue == 0)
+                return;
             CursorManager.SetCursorPosition(transform.position);
-            CursorManager.onActive?.Invoke(true);
             CursorManager.onActiveComplate.AddListener(() => isGrab = true);
+            CursorManager.onActive?.Invoke(true);
+            skAni.timeScale = 0;
+            skAni.AnimationName = "Tilting";
+            track = skAni.state.SetAnimation(2, "Tilting", false);
+            skAni.state.TimeScale = 1;
             isUsed = true;
         }
 
@@ -66,6 +95,8 @@ namespace RavenCraftCore
         // Update is called once per frame
         void Update()
         {
+            if (!canUse || amountValue == 100)
+                return;
             if (!isUsed)
                 return;
 
@@ -75,6 +106,10 @@ namespace RavenCraftCore
                 isUsed = false;
                 isGrab = false;
                 track.TrackTime = 0;
+                track.TimeScale = 0;
+
+                skAni.skeleton.SetSkin("NoHand");
+                skAni.skeleton.SetSlotsToSetupPose();
                 return;
             }
             
@@ -112,7 +147,7 @@ namespace RavenCraftCore
 
         public void FillMaterialSoultion(float flowValue)
         {
-            amountValue += flowValue;
+            amountValue = 100 - flowValue;
         }
     }
 }

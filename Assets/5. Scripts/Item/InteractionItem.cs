@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
 
+public enum AccessoryColor
+{
+    N, R, B, G, Y, F, V
+}
+
 public class InteractionItem : MonoBehaviour
 {
     public int itemID;
@@ -11,6 +16,8 @@ public class InteractionItem : MonoBehaviour
     [SerializeField]
     GameObject interactionAccessory;
     SkeletonAnimation skAni;
+
+    private GameObject returnItem;
 
     private void Start()
     {
@@ -21,35 +28,47 @@ public class InteractionItem : MonoBehaviour
         interactionMaterial = AddressableManager.LoadObject<GameObject>("InteractionMaterial");
     }
     
-    public void ItemInteraction(int itemID)
+    public GameObject ItemInteraction(int itemID)
     {
+        this.itemID = itemID;
         ItemType itemType = GameManager.Instance.ItemManager.GetItemType(itemID);
-        GameObject item;
+        returnItem = null;
         switch (itemType)
         {
             case ItemType.Materials:
-                item = Instantiate(interactionMaterial);
+                returnItem = Instantiate(interactionMaterial);
                 Sprite itemSprite = AddressableManager.LoadObject<Sprite>(GameManager.Instance.ItemManager.GetBasicItemData(itemID).particlesName);
                 for (int i = 0; i < 3; i++)
                 {
-                    item.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite = itemSprite;
-                    item.transform.GetChild(i).gameObject.AddComponent<CircleCollider2D>();
+                    returnItem.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite = itemSprite;
+                    returnItem.transform.GetChild(i).gameObject.AddComponent<CircleCollider2D>();
                 }
 
-                AAA t_AAA = item.GetComponent<AAA>();
+                AAA t_AAA = returnItem.GetComponent<AAA>();
                 if(t_AAA != null)  { t_AAA.m_ItemCode = itemID; }
 
 				break;
             case ItemType.Accessory:
             case ItemType.Jewelry:               
                 Debug.Log("악악");
-                item = Instantiate(interactionAccessory);
-                SkeletonAnimation skAni = item.GetComponent<SkeletonAnimation>();
-                skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(GameManager.Instance.ItemManager.GetBasicItemData(itemID).particlesName);
-                skAni.Initialize(true);
+                StartCoroutine(IsDataSetting());
                 break;
-            default:
-                return;
-        }                        
+            default: 
+                return returnItem;
+        } 
+        return returnItem;
+    }
+
+    IEnumerator IsDataSetting()
+    {
+        returnItem = Instantiate(interactionAccessory);
+        skAni = returnItem.GetComponent<SkeletonAnimation>();
+        skAni.skeletonDataAsset =
+            AddressableManager.LoadObject<SkeletonDataAsset>(GameManager.Instance.ItemManager.GetBasicItemData(itemID)
+                .particlesName);
+        yield return new WaitForSeconds(0.02f);
+        skAni.Initialize(true);
+        skAni.skeleton.SetSkin(AccessoryColor.Y.ToString());
+        skAni.skeleton.SetToSetupPose();
     }
 }

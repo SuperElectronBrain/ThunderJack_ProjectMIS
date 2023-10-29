@@ -13,7 +13,7 @@ public class CursorManager : MonoBehaviour
     [SerializeField] private Sprite clickCursor;
     [SerializeField] private Image cursorImage;
 
-    public static float mouseSensitivity;
+    static float mouseSensitivity;
     [SerializeField] private float speed;
 
     private float mouseX, mouseY;
@@ -40,6 +40,7 @@ public class CursorManager : MonoBehaviour
         cursorImage.rectTransform.anchoredPosition = mPos;*/
 
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         onActiveComplate?.Invoke();
         onActiveComplate?.RemoveAllListeners();
     }
@@ -47,6 +48,7 @@ public class CursorManager : MonoBehaviour
     private void OnDisable()
     {
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void CursorActive(bool isActive)
@@ -56,8 +58,10 @@ public class CursorManager : MonoBehaviour
 
     public static void SetCursorPosition(Vector3 objectPosition)
     {
-        mPos = cam.WorldToScreenPoint(objectPosition);
-        mPos.z = 0;
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(cam, objectPosition);
+        mPos = screenPoint;
+        //mPos = cam.WorldToScreenPoint(objectPosition);
+        //mPos.z = 0;
     }
 
     public static Vector3 GetCursorPosition()
