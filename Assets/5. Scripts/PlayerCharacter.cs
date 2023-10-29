@@ -1199,10 +1199,10 @@ public class PlayerCharacter : CharacterBase
 									for (int j = 0; j < t_AAA.Count; j = j + 1)
 									{
 										//현재 씬에 존재하는 물리 아이템중, 현재 캐릭터가 마우스로 드래그하여 들고 있는 아이템과 아이템 코드가 일치하는 것이 있다면
-										if (t_AAA[i].m_ItemCode == m_GrabItemCode.itemCode)
+										if (t_AAA[j].m_ItemCode == m_GrabItemCode.itemCode)
 										{
 											//해당 물리 아이템을 삭제함
-											Destroy(t_AAA[i].gameObject);
+											Destroy(t_AAA[j].gameObject);
 											t_AAA.TrimExcess();
 											break;
 										}
