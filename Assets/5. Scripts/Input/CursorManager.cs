@@ -18,7 +18,9 @@ public class CursorManager : MonoBehaviour
 
     private float mouseX, mouseY;
     private static Vector3 mPos;
-
+    [SerializeField] private Vector3 cursorOffset;
+    [SerializeField] private static Vector3 CursorOffset;
+    
     public static UnityEvent<bool> onActive = new();
     public static UnityEvent onActiveComplate = new();
 
@@ -33,7 +35,9 @@ public class CursorManager : MonoBehaviour
     private void OnEnable()
     {
         var mousePosition = Input.mousePosition;
+        CursorOffset = cursorOffset;
 
+        Debug.Log(cam.name + " " + cam.transform.position);
         //RectTransformUtility.ScreenPointToLocalPointInRectangle(cursorImage.rectTransform, mousePosition, canvas.worldCamera, out pos);
 
         /*mPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 0));
@@ -59,7 +63,7 @@ public class CursorManager : MonoBehaviour
     public static void SetCursorPosition(Vector3 objectPosition)
     {
         Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(cam, objectPosition);
-        mPos = screenPoint;
+        mPos = (Vector3)screenPoint + CursorOffset;
         //mPos = cam.WorldToScreenPoint(objectPosition);
         //mPos.z = 0;
     }

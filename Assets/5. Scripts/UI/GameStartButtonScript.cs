@@ -67,7 +67,7 @@ public class GameStartButtonScript : ButtonScript
 	public override void OnButtonClick()
 	{
 		base.OnButtonClick();
-		if (UnityEngine.SceneManagement.SceneManager.GetSceneByName(destinationSceneName) != null)
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != destinationSceneName)
 		{
 			m_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
 			if (m_PlayerCharacter != null)
