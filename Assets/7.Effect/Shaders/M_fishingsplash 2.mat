@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_waterwave
-  m_Shader: {fileID: -6465566751694194690, guid: f0687fdb027056942b517039acae4e73, type: 3}
+  m_Name: M_fishingsplash 2
+  m_Shader: {fileID: -6465566751694194690, guid: e49e18f3fde5e7e4a9466898cbe91245, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,16 +23,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Gradation:
-        m_Texture: {fileID: 2800000, guid: 0a92b58a37f70df47af24ba40388e7d4, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MAinTex:
-        m_Texture: {fileID: 2800000, guid: f0e91084190a7f648897744d2d2abe82, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_5367aaaf6040473da1c1dac931e27061_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: fe9b57e75c4b42d43898003825cb200a, type: 3}
+    - _Texture2D:
+        m_Texture: {fileID: 2800000, guid: 6902241538ce7ac458046a65627f0985, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -49,21 +41,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Float: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _TImespeed: -0.51
-    - _Time_Y: 0.06
-    - _Timespeed_y: 0.33
-    - _Y_uv: 0.22
-    - _intencity: 1.06
-    - _step: 1.3
-    - _subtract: -0.92
-    - _tilling: 2
+    - _intencity: 1.35
+    - _tiling: 1
+    - _time: 0
     m_Colors:
-    - _Tilling: {r: 2, g: 1, b: 0, a: 0}
-    - _Tilling2: {r: 2, g: -1, b: 0, a: 0}
+    - _tiling_1: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &8167079669408951406
+--- !u!114 &4734138503619157829
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
