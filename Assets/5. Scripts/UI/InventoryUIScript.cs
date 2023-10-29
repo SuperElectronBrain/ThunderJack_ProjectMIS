@@ -145,8 +145,6 @@ public class InventoryUIScript : UIScript
 									if (t_PlayerCharacter != null)
 									{
 										AdvencedItem t_AItem = m_Inventory.GetAItems()[t_Number];
-										t_PlayerCharacter.m_GrabItemCode = new AdvencedItem(t_AItem.itemCode, t_AItem.itemProgress, 1);
-
 										if(t_AItem.itemCode > 0)
 										{
 											if (t_AItem.itemCode < 16)
@@ -165,6 +163,10 @@ public class InventoryUIScript : UIScript
 												{
 													t_PlayerCharacter.SetPlayerGrabItem(t_PlayerCharacter.m_Inventory.PopAItem(t_AItem.itemCode, t_AItem.itemProgress, 1));
 												}
+											}
+											else if (t_MillStone == null)
+											{
+												t_PlayerCharacter.SetPlayerGrabItem(t_PlayerCharacter.m_Inventory.PopAItem(t_AItem.itemCode, t_AItem.itemProgress, 1));
 											}
 
 											/*
