@@ -8,6 +8,7 @@ public class InteractionAccessory : MonoBehaviour
     private Camera cam;
     private PressAccessoryPlate accessoryPlate;
     [SerializeField] private GameObject target;
+    [SerializeField] private float zOffset;
     private RaycastHit hit;
     private int itemID;
 
@@ -34,6 +35,7 @@ public class InteractionAccessory : MonoBehaviour
         {
             var mPos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,
                 -Camera.main.transform.position.z));
+            mPos.z = zOffset;
 
             var ray = cam.ScreenPointToRay(Input.mousePosition);
             int layerMask = 1 << LayerMask.NameToLayer("Guest") | 1 << LayerMask.NameToLayer("Press");
