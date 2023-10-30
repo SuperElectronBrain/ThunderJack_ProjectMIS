@@ -141,11 +141,13 @@ namespace RavenCraftCore
         void Update()
         {
             FlowLiquid();
-            
-            if(resultValue > 0 && grindingValue > 0)
+
+            if (resultValue > 0 && grindingValue > 0)
             {
                 FlowMaterialSolution();
             }
+            else if (resultValue == 0)
+                cup.SetUse(true);
 
             if (itemCount == 0)
                 return;

@@ -15,6 +15,7 @@ namespace RavenCraftCore
         private bool isUsed;
         [SerializeField]
         private bool isGrab;
+        [SerializeField]
         private bool canUse;
         [SerializeField]
         private float zOffset;
@@ -109,7 +110,7 @@ namespace RavenCraftCore
         // Update is called once per frame
         void Update()
         {
-            if (!canUse || amountValue == 100)
+            if (!canUse)
                 return;
             if (!isGrab)
                 return;
