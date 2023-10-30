@@ -34,8 +34,7 @@ public class InteractionAccessory : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             var mPos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,
-                -Camera.main.transform.position.z));
-            mPos.z = zOffset;
+                -Camera.main.transform.position.z + zOffset));
 
             var ray = cam.ScreenPointToRay(Input.mousePosition);
             int layerMask = 1 << LayerMask.NameToLayer("Guest") | 1 << LayerMask.NameToLayer("Press");

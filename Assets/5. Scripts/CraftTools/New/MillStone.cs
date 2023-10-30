@@ -54,8 +54,6 @@ namespace RavenCraftCore
         [Header("SpineAni")]
         [SerializeField]
         SkeletonAnimation skAni;
-        [SerializeField]
-        private TrackEntry track;
 
         [SerializeField] private Animator topAni;
         [SerializeField] private Animator bottomAni;
@@ -70,7 +68,6 @@ namespace RavenCraftCore
             mainCam = Camera.main;
             millStoneTrack = GetComponentInChildren<Cinemachine.DollyCartMove>();
             skAni = GetComponentInChildren<SkeletonAnimation>();
-            track = skAni.state.SetAnimation(0, "animation", false);
         }
 
         void SetInputItem()
@@ -78,45 +75,32 @@ namespace RavenCraftCore
             cup.SetInputItemID(insertedItemID);
         }
 
-        IEnumerator CStartAnimation(bool isBack = false)
-        {
-            var animationProgress = 0f;
-
-            while (animationProgress <= 1f)
-            {
-                animationProgress += Time.deltaTime;
-                track.TrackTime = animationProgress;
-                yield return null;
-            }
-            track.TrackTime = 1;
-        }
-
         public void EnterHandle()
         {
             if (isGrab)
                 return;
-            StopAllCoroutines();
-            StartCoroutine(CStartAnimation());
+
+            skAni.AnimationName = "HandOn";
         }
 
         public void ExitHandle()
         {
             if (isGrab)
                 return;
-            StopAllCoroutines();
-            track.TrackTime = 0;
+
+            skAni.AnimationName = "HandOff";
         }
 
         public void GrabHandle(bool isGrab)
         {
             this.isGrab = isGrab;
-            track.TrackTime = 1;
             /*GetMousePosToDeg();
             millStoneTrack.m_Position = deg / 360f;
             */
             prevTheta = deg;
             
             StartCoroutine(InitMousePosition());
+
         }
 
         void GetMousePosToDeg()
@@ -172,7 +156,7 @@ namespace RavenCraftCore
                 if (Input.GetMouseButtonUp(0))
                 {
                     isGrab = false;
-                    track.TrackTime = 0;
+                    skAni.AnimationName = "HandOff";
                 }
 
                 GetMousePosToDeg();
