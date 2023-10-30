@@ -27,7 +27,6 @@ public class FlowerPot : MonoBehaviour, IInteraction
 
     public void Interaction(GameObject user)
     {
-        Invoke("EndInteraction", 0.1f);
         Debug.Log(gameObject.name + " 상호작용");
         if (isPlanted)
             return;
@@ -46,12 +45,9 @@ public class FlowerPot : MonoBehaviour, IInteraction
 
     public void Harvesting()
     {
+        Debug.Log("수확");
+        gameObject.SetActive(false);
         isPlanted = false;
-    }
-
-    void EndInteraction()
-    {
-        EventManager.Publish(EventType.EndIteraction);
     }
 
     public void SaveFlowerData()

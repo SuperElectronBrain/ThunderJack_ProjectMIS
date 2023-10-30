@@ -117,6 +117,7 @@ namespace RavenCraftCore
 
         void GetMousePosToDeg()
         {
+            print(millStoneCenterPos.position);
             var mPos = CursorManager.GetCursorPosition() - millStoneCenterPos.position;
 
             theta = Mathf.Atan2(mPos.y, mPos.x);

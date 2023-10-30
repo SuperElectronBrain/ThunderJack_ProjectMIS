@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Flower : SaveObject, IInteraction
 {
     public bool IsUsed { get; set; }
     bool isGrow;
-    int growDay = 0;
+    [SerializeField]
+    int growDay = 1;
 
     [SerializeField]
     GameObject sprout;
@@ -15,7 +17,7 @@ public class Flower : SaveObject, IInteraction
 
     void Awake()
     {
-        key = transform.parent.name + "_GrowDay";
+        key = transform.parent.name + "_GrowDay" + GameManager.Instance.GameTime.GetDay();
         gameObject.SetActive(false);
     }
 
@@ -30,8 +32,8 @@ public class Flower : SaveObject, IInteraction
         if(growDay == 0)
         {
             isGrow = true;
-
-            transform.parent.GetComponent<FlowerPot>().Init();
+            
+            transform.parent.GetComponentInChildren<FlowerPot>().Init();
             gameObject.SetActive(true);
             sprout.SetActive(false);
             flower.SetActive(true);
@@ -40,7 +42,7 @@ public class Flower : SaveObject, IInteraction
         {
             isGrow = true;
 
-            transform.parent.GetComponent<FlowerPot>().Init();
+            transform.parent.GetComponentInChildren<FlowerPot>().Init();
             gameObject. SetActive(true);
             sprout.SetActive(true);
             flower.SetActive(false);
@@ -69,14 +71,13 @@ public class Flower : SaveObject, IInteraction
 
     public void Interaction(GameObject user)
     {
-        Invoke("EndInteraction", 0.1f);
         Debug.Log(gameObject.name + " 상호작용");
         if (!isGrow)
             return;
 
         if(user.GetComponent<PlayerCharacter>())
         {
-            transform.parent.GetComponent<FlowerPot>().Harvesting();
+            transform.parent.GetComponentInChildren<FlowerPot>().Harvesting();
             isGrow = false;
             gameObject.SetActive(false);
             sprout.SetActive(true);
@@ -84,9 +85,9 @@ public class Flower : SaveObject, IInteraction
         }
     }
 
-    void EndInteraction()
+    void OnDestroy()
     {
-        EventManager.Publish(EventType.EndIteraction);
+        EventManager.Unsubscribe(EventType.Day, Grow);
     }
 
     public override void SaveObjectData()
