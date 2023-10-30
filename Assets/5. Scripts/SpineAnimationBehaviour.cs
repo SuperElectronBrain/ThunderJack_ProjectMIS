@@ -18,10 +18,19 @@ public class SpineAnimationBehaviour : StateMachineBehaviour
 	{
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-		if (clip == null) { clip = animator.GetCurrentAnimatorClipInfo(0)[0].clip; }
+		if (clip == null)
+		{
+			if (animator.GetCurrentAnimatorClipInfo(0) != null)
+			{
+				if (animator.GetCurrentAnimatorClipInfo(0).Length > 0)
+				{
+					clip = animator.GetCurrentAnimatorClipInfo(0)[0].clip;
+				}
+			}
+		}
 		if (clip != null)
-        {
-            trackEntry = animator.GetComponentInChildren<Spine.Unity.SkeletonAnimation>().state.SetAnimation(layerIndex, clip.name, stateInfo.loop);
+		{
+			trackEntry = animator.GetComponentInChildren<Spine.Unity.SkeletonAnimation>().state.SetAnimation(layerIndex, clip.name, stateInfo.loop);
 			trackEntry.TimeScale = stateInfo.speed;
 		}
 	}
