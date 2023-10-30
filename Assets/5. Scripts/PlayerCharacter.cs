@@ -248,6 +248,10 @@ public class PlayerCharacter : CharacterBase
 	{
 		currentState = newState;
 
+		if (currentState == PlayerCharacterState.Communication)
+		{
+			m_Rigidbody.velocity = Vector3.zero;
+		}
 		if (currentState == PlayerCharacterState.Fishing)
 		{
 			ChangeAnimationState(PlayerCharacterAnimation.FishingStart);
