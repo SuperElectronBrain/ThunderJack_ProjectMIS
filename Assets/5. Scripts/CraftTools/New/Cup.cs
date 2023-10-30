@@ -60,17 +60,17 @@ namespace RavenCraftCore
                 return;
             
             skAni.skeleton.SetSkin("Hand");
-            skAni.skeleton.SetSlotsToSetupPose();
-            skAni.timeScale = 1;
+            skAni.skeleton.SetSlotsToSetupPose();            
             skAni.AnimationName = "HandOn";
+            skAni.timeScale = 1;
         }
 
         private void OnMouseExit()
         {
             if (isUsed || amountValue == 0)
-                return;
-            skAni.timeScale = 1;
+                return;            
             skAni.AnimationName = "HandOff";
+            skAni.timeScale = 1;
         }
 
         private void OnMouseDown()
@@ -107,7 +107,6 @@ namespace RavenCraftCore
                 isGrab = false;
                 track.TrackTime = 0;
                 track.TimeScale = 0;
-
                 skAni.skeleton.SetSkin("NoHand");
                 skAni.skeleton.SetSlotsToSetupPose();
                 return;

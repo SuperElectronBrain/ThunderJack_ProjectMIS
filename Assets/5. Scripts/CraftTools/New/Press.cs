@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 namespace RavenCraftCore
 {
     public class Press : MonoBehaviour
     {
         bool isGrab;
+        bool isUsed;
 
         [SerializeField]
         private int putInItemID;
@@ -45,29 +47,49 @@ namespace RavenCraftCore
         Vector3 originHandlePos;
         [SerializeField]
         Cinemachine.DollyCartMove track;
+        SkeletonAnimation skAni;
         
         // Start is called before the first frame update
         void Start()
         {
             SetItemData(d_ItemData);
             originHandlePos = buttonPosition.position;
+            skAni = GetComponentInChildren<SkeletonAnimation>();
         }
 
         public void EnterHandle()
         {
-
+            skAni.skeleton.SetSkin("Hand");
+            skAni.skeleton.SetSlotsToSetupPose();            
+            skAni.AnimationName = "HandOn";
+            skAni.timeScale = 1;
+            skAni.state.Complete += Grab;
         }
 
         public void ExitHandle()
         {
-
+            if (isGrab)
+                return;
+            skAni.AnimationName = "HandOff";
         }
 
         public void GrabHandle()
         {
+            if (!isUsed)
+                return;
             isGrab = true;
             CursorManager.SetCursorPosition(handleObject.position);
             prevPos = CursorManager.GetCursorPosition();
+        }
+
+        void Grab(Spine.TrackEntry te)
+        {
+            isUsed = true;
+        }
+
+        void Put(Spine.TrackEntry te)
+        {
+            isUsed = false;
         }
 
         void ResetPress()
@@ -114,6 +136,11 @@ namespace RavenCraftCore
                 track.m_Position = 0;
                 //handleObject.position = originHandlePos;
                 buttonPosition.position = originHandlePos;
+
+                skAni.skeleton.SetSkin("NoHand");
+                skAni.skeleton.SetSlotsToSetupPose();
+                skAni.timeScale = 0;
+                skAni.AnimationName = "HandOff";
             }
 
             if (track.m_Position >= 0.99f)
