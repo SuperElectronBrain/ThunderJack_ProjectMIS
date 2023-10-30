@@ -403,23 +403,37 @@ public class PlayerCharacter : CharacterBase
 	{
 		return m_InteractionItem;
 	}
+	//가장 가깝고 카메라가 바라보는 각도와 가장 많이 일지하는 위치에 있는 상호작용 대상의 참조를 찾는 함수
 	public InteractableObject GetInteractableObject()
 	{
 		InteractableObject t_Interaction = new InteractableObject(null, null);
 		if (InteractableObjects != null)
 		{
+			//상호작용 대상이 1개 이상 존재한다면
 			if (InteractableObjects.Count > 0)
 			{
 				float t_DotProduct = -1.0f;
 				for (int i = 0; i < InteractableObjects.Count; i = i + 1)
 				{
+					//상호작용 대상이 게임오브젝트로써 존재한다면
 					if(InteractableObjects[i].interactionGO != null)
 					{
-						float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
-						if (t_DotProduct < t_DotProduct1)
+						//상호작용 대상이 비활성화된 상태가 아니라면
+						if (InteractableObjects[i].interactionGO.activeSelf == true)
 						{
-							t_DotProduct = t_DotProduct1;
-							t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+							//상호작용 대상의 콜라이더가 켜져있는 상태라면
+							if (InteractableObjects[i].interactionGO.GetComponent<Collider>().enabled == true)
+							{
+								//현재 카메라가 바라보는 벡터와 플레이어를 중심으로 계산한 상호작용 대상까지의 벡터로 내적을 실행
+								float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
+								//이전에 계산된 내적 값보다 지금 계산된 내적 값이 더 크다면
+								if (t_DotProduct < t_DotProduct1)
+								{
+									//내적 값을 갱신하고 상호작용 대상을 재지정함
+									t_DotProduct = t_DotProduct1;
+									t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+								}
+							}
 						}
 					}
 				}
