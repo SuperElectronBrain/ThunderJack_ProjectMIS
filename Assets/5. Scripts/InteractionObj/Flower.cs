@@ -35,7 +35,7 @@ public class Flower : SaveObject, IInteraction
             
             transform.parent.GetComponentInChildren<FlowerPot>().Init();
             gameObject.SetActive(true);
-            sprout.SetActive(false);
+            sprout.GetComponent<MeshRenderer>().enabled = false;
             flower.SetActive(true);
         }
         else if(growDay > 0)
@@ -44,7 +44,7 @@ public class Flower : SaveObject, IInteraction
 
             transform.parent.GetComponentInChildren<FlowerPot>().Init();
             gameObject. SetActive(true);
-            sprout.SetActive(true);
+            sprout.GetComponent<MeshRenderer>().enabled = true;
             flower.SetActive(false);
         }
         else
