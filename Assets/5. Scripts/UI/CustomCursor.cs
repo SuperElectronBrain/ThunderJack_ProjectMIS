@@ -14,6 +14,10 @@ public class CustomCursor : MonoBehaviour
     {
        // base.Start();
 		rectTransform = GetComponent<RectTransform>();
+
+		Canvas canvas = UniFunc.GetParentComponent<Canvas>(rectTransform);
+		rectTransform.transform.SetParent(canvas.transform);
+		rectTransform.SetAsLastSibling();
 	}
 
     // Update is called once per frame
@@ -22,7 +26,6 @@ public class CustomCursor : MonoBehaviour
 		if (rectTransform != null) 
 		{
 			rectTransform.position = Input.mousePosition;
-			rectTransform.SetAsLastSibling();
 			if (Cursor.visible == true) { Cursor.visible = false; }
 
 			if (Input.GetMouseButtonUp(0) == true)
