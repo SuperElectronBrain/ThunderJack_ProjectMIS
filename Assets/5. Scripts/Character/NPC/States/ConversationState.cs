@@ -9,6 +9,7 @@ public class ConversationState : State<NPC>
 
     public override void Enter(NPC entity)
     {
+        EventManager.Publish(EventType.StartInteraction);
         CameraEvent.Instance.ChangeCamera(CamType.Conversation);
         isTalking = true;
         isTalking = true;
@@ -40,6 +41,7 @@ public class ConversationState : State<NPC>
 
     public override void Exit(NPC entity)
     {
+        EventManager.Publish(EventType.EndIteraction);
         EventManager.Unsubscribe(EventType.EndConversation, EndConversation);
         StopAllCoroutines();
         entity.isTalk = false;
