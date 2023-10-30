@@ -30,7 +30,6 @@ public class NPCStoreUIScript : UIScript
 	// Update is called once per frame
 	//void Update()
 	//{
-	//
 	//}
 
 	protected override void OnDisable()
@@ -261,9 +260,9 @@ public class NPCStoreUIScript : UIScript
 		RectTransform rectTransform = GetComponent<RectTransform>();
 		if (rectTransform != null)
 		{
-			Vector3 vector = rectTransform.position;
+			Vector3 vector = rectTransform.anchoredPosition;
 			vector.x = param == true ? 0 : -400.0f;
-			rectTransform.position = vector;
+			rectTransform.anchoredPosition = vector;
 		}
 	}
 
