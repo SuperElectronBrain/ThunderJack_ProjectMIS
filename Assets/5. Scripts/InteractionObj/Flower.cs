@@ -13,7 +13,7 @@ public class Flower : SaveObject, IInteraction
     [SerializeField]
     GameObject sprout;
     [SerializeField]
-    GameObject flower;
+    GameObject flower;    
 
     void Awake()
     {

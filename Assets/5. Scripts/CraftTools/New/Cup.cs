@@ -16,7 +16,6 @@ namespace RavenCraftCore
         [SerializeField]
         private bool isGrab;
         private bool canUse;
-        private Camera mainCam;
         [SerializeField]
         private float zOffset;
 
@@ -46,7 +45,6 @@ namespace RavenCraftCore
 
         private void Start()
         {
-            mainCam = Camera.main;
             originPos = transform.position;
             zOffset = originPos.z;
         }
@@ -105,7 +103,7 @@ namespace RavenCraftCore
 
         public void SetInputItemID(int itemID)
         {
-            press.SetPutInItemID(itemID);
+            press.SetItemData(itemID);
         }
         
         // Update is called once per frame

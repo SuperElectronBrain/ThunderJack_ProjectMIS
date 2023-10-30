@@ -69,6 +69,9 @@ public class BBB : MonoBehaviour
 
     public void InMillstone()
     {
+        if (col.isTrigger)
+            return;
+
         isInMillstone = true;
         Destroy(this);
     }

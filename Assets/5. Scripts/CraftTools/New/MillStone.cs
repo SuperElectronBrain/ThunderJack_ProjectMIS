@@ -70,8 +70,12 @@ namespace RavenCraftCore
             mainCam = Camera.main;
             millStoneTrack = GetComponentInChildren<Cinemachine.DollyCartMove>();
             skAni = GetComponentInChildren<SkeletonAnimation>();
-            cup.SetInputItemID(insertedItemID);
             track = skAni.state.SetAnimation(0, "animation", false);
+        }
+
+        void SetInputItem()
+        {
+            cup.SetInputItemID(insertedItemID);
         }
 
         IEnumerator CStartAnimation(bool isBack = false)
@@ -161,15 +165,16 @@ namespace RavenCraftCore
 
             if (itemCount == 0)
                 return;
-
-            if(Input.GetMouseButtonUp(0))
-            {
-                isGrab = false;
-                track.TrackTime = 0;
-            }
+            
 
             if (isGrab)
             {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    isGrab = false;
+                    track.TrackTime = 0;
+                }
+
                 GetMousePosToDeg();
                 
                 if(deg > prevTheta)
@@ -284,6 +289,17 @@ namespace RavenCraftCore
         {
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(millStoneCenterPos.position, 0.3f);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if(collision.TryGetComponent(out BBB interactionMaterial))
+            {
+                insertedItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
+                interactionMaterial.InMillstone();
+                SetInputItem();
+            }
+
         }
     }
 }
