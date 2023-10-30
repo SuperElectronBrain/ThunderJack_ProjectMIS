@@ -250,6 +250,8 @@ public class PlayerCharacter : CharacterBase
 
 		if (currentState == PlayerCharacterState.Communication)
 		{
+			m_HorizontalMove = 0.0f;
+			m_VerticalMove = 0.0f;
 			m_Rigidbody.velocity = Vector3.zero;
 		}
 		if (currentState == PlayerCharacterState.Fishing)
