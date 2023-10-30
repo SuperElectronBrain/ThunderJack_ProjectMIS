@@ -131,7 +131,77 @@ public class PlayerCharacter : CharacterBase
 					Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
 					t_Vector.x = t_Vector.x + 0;
 					t_Vector.y = t_Vector.y + 75;
-					m_PlayerCharacterUIScript.m_InteractionIcon.rectTransform.position = t_Vector;
+					m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.position = t_Vector;
+
+					if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText != null)
+					{
+						m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "상호작용";
+
+						NPC t_NPC = t_InteractableObject.interaction as NPC;
+						NoticeBoard t_NoticeBoard = t_InteractableObject.interaction as NoticeBoard;
+						if (t_NPC != null || t_NoticeBoard != null)
+						{
+							if(t_NPC != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "대화하기"; }
+							else if (t_NoticeBoard != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기"; }
+							if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+							{
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk != null)
+								{
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk;
+								}
+							}
+						}
+						Flower t_Flower = t_InteractableObject.interaction as Flower;
+						FlowerPot t_FlowerPot = t_InteractableObject.interaction as FlowerPot;
+						if (t_Flower != null || t_FlowerPot != null)
+						{
+							m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "수확하기";
+							if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+							{
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants != null)
+								{
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants;
+								}
+							}
+						}
+						Door t_Door = t_InteractableObject.interaction as Door;
+						InteractablePortal t_Portal = t_InteractableObject.interaction as InteractablePortal;
+						if (t_Door != null || t_Portal != null)
+						{
+							m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "이동하기";
+							if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+							{
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Open != null)
+								{
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Open;
+								}
+							}
+						}
+						Mailbox t_Mailbox = t_InteractableObject.interaction as Mailbox;
+						if (t_Mailbox != null)
+						{
+							m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기";
+							if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+							{
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail != null)
+								{
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail;
+								}
+							}
+						}
+						FishingPointComponent t_Fish = t_InteractableObject.interaction as FishingPointComponent;
+						if (t_Fish != null)
+						{
+							m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "낚시하기";
+							if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+							{
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish != null)
+								{
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish;
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -619,9 +689,9 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
 			{
-				if(m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.activeSelf != param)
+				if(m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.activeSelf != param)
 				{
-					m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.SetActive(param);
+					m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.SetActive(param);
 				}
 			}
 		}
