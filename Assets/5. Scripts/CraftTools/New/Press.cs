@@ -11,19 +11,13 @@ namespace RavenCraftCore
         bool isUsed;
 
         [SerializeField]
-        private int putInItemID;
-        [SerializeField]
         private float putInValue;
-        [SerializeField]
-        private MaterialItemData inputMaterialItem;
 
         [Header("CraftingTools")]
         [SerializeField]
         private Book book;
 
         [Header("Debug")]
-        [SerializeField]
-        private int d_ItemData;
 
         [SerializeField] 
         private int d_AccessoryData;
@@ -52,7 +46,6 @@ namespace RavenCraftCore
         // Start is called before the first frame update
         void Start()
         {
-            SetItemData(d_ItemData);
             originHandlePos = buttonPosition.position;
             skAni = GetComponentInChildren<SkeletonAnimation>();
         }
@@ -97,12 +90,6 @@ namespace RavenCraftCore
             
         }
 
-        public void SetPutInItemID(int itemID)
-        {
-            putInItemID = itemID;
-            putInItemData = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
-        }
-
         public void PutInSoultion(float inputValue)
         {
             putInValue += inputValue;
@@ -112,9 +99,14 @@ namespace RavenCraftCore
             //value[putInItemData.elementType3 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent3, inputValue);
         }
 
+        public void SetAccessoryData(int accessoryID)
+        {
+            d_AccessoryData = accessoryID;
+        }
+
         public void SetItemData(int itemID)
         {
-            inputMaterialItem = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
+            putInItemData = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
         }
 
         Vector3 prevPos;

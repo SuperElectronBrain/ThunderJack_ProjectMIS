@@ -50,8 +50,8 @@ public class InteractionItem : MonoBehaviour
 				break;
             case ItemType.Accessory:
             case ItemType.Jewelry:               
-                Debug.Log("악악");
                 StartCoroutine(IsDataSetting());
+                returnItem.GetComponent<InteractionAccessory>().Init(itemID);
                 break;
             default: 
                 return returnItem;

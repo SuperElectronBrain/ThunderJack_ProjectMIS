@@ -11,6 +11,8 @@ public class FlowerPot : MonoBehaviour, IInteraction
     BoxCollider boxCollider;
     [SerializeField]
     Flower flower;
+    [SerializeField]
+    GameObject harvestingEffect;
 
     private void Start()
     {
@@ -45,7 +47,7 @@ public class FlowerPot : MonoBehaviour, IInteraction
 
     public void Harvesting()
     {
-        Debug.Log("¼öÈ®");
+        Destroy(Instantiate(harvestingEffect, transform.position, Quaternion.identity), 1f);
         gameObject.SetActive(false);
         isPlanted = false;
     }

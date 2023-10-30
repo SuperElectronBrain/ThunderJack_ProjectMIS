@@ -21,6 +21,11 @@ public class InteractionAccessory : MonoBehaviour
         this.itemID = itemID;
         this.accessoryPlate = accessoryPlate;
     }
+
+    public void Init(int itemID)
+    {
+        this.itemID = itemID;
+    }
     
     // Update is called once per frame
     void Update()
@@ -31,8 +36,9 @@ public class InteractionAccessory : MonoBehaviour
                 -Camera.main.transform.position.z));
 
             var ray = cam.ScreenPointToRay(Input.mousePosition);
+            int layerMask = 1 << LayerMask.NameToLayer("Guest") | 1 << LayerMask.NameToLayer("Press");
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Guest")))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
                 target = hit.transform.gameObject;
             }
@@ -45,10 +51,19 @@ public class InteractionAccessory : MonoBehaviour
         {
             if (target != null)
             {
-                target.GetComponent<Guest>().CheckItem(itemID, 100);
+                switch(target.tag)
+                {
+                    case "Guest":
+                        target.GetComponent<Guest>().CheckItem(itemID, 100);
+                        break;
+                    case "Press":
+                        target.GetComponent<PressAccessoryPlate>().SetAccessory(itemID);
+                        break;
+                }                
             }
             else
             {
+                if(accessoryPlate != null)
                 accessoryPlate.RewindPlate();
             }
             Destroy(gameObject);
