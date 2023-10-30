@@ -34,7 +34,7 @@ public enum PlayerCharacterState
 { Moveable, Communication, Fishing, }
 
 public enum PlayerCharacterAnimation
-{ FishingStart, FishingHit, FishingEnd, FishingSuccessed, FishingFailed, Panic, }
+{ FishingStart, FishingHit, FishingBigHit, FishingPull, FishingSuccess, FishingFail, FishingEnd, Panic, }
 
 public class PlayerCharacter : CharacterBase
 {
@@ -266,19 +266,30 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (newState == PlayerCharacterAnimation.FishingStart)
 			{
-				//m_Animator.SetTrigger("StartFishing");
+				m_Animator.SetTrigger("FishingStart");
 			}
 			else if (newState == PlayerCharacterAnimation.FishingHit)
 			{
-
+				m_Animator.SetTrigger("FishingHit");
 			}
-			else if (newState == PlayerCharacterAnimation.FishingSuccessed)
+			else if (newState == PlayerCharacterAnimation.FishingBigHit)
 			{
-
+				m_Animator.SetTrigger("FishingBigHit");
+			}
+			else if (newState == PlayerCharacterAnimation.FishingPull)
+			{
+				m_Animator.SetTrigger("FishingPull");
+			}
+			else if (newState == PlayerCharacterAnimation.FishingSuccess)
+			{
+				m_Animator.SetTrigger("FishingSuccess"); 
+			}
+			else if (newState == PlayerCharacterAnimation.FishingFail)
+			{
+				m_Animator.SetTrigger("FishingFail");
 			}
 			else if (newState == PlayerCharacterAnimation.FishingEnd)
 			{
-
 			}
 		}
 	}
