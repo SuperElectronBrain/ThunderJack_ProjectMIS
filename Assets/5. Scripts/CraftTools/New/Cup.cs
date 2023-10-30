@@ -11,7 +11,9 @@ namespace RavenCraftCore
 {
     public class Cup : MonoBehaviour
     {
+        [SerializeField]
         private bool isUsed;
+        [SerializeField]
         private bool isGrab;
         private bool canUse;
         private Camera mainCam;
@@ -56,26 +58,29 @@ namespace RavenCraftCore
 
         private void OnMouseEnter()
         {
-            if (isUsed || amountValue == 0)
+            if (isGrab || amountValue == 0)
                 return;
             
+            track = skAni.state.SetAnimation(1, "HandOn", false);
             skAni.skeleton.SetSkin("Hand");
             skAni.skeleton.SetSlotsToSetupPose();            
             skAni.AnimationName = "HandOn";
             skAni.timeScale = 1;
+            skAni.state.Complete += Grab;
         }
 
         private void OnMouseExit()
         {
-            if (isUsed || amountValue == 0)
+            if (isGrab || amountValue == 0)
                 return;            
             skAni.AnimationName = "HandOff";
             skAni.timeScale = 1;
+            skAni.state.Complete += Put;
         }
 
         private void OnMouseDown()
         {
-            if (isUsed || amountValue == 0)
+            if (isGrab || amountValue == 0)
                 return;
             CursorManager.SetCursorPosition(transform.position);
             CursorManager.onActiveComplate.AddListener(() => isGrab = true);
@@ -84,7 +89,19 @@ namespace RavenCraftCore
             skAni.AnimationName = "Tilting";
             track = skAni.state.SetAnimation(2, "Tilting", false);
             skAni.state.TimeScale = 1;
+            isGrab = true;
+        }
+
+        void Grab(Spine.TrackEntry te)
+        {
+            skAni.state.Complete -= Grab;
             isUsed = true;
+        }
+
+        void Put(Spine.TrackEntry te)
+        {
+            skAni.state.Complete -= Put;
+            isUsed = false;
         }
 
         public void SetInputItemID(int itemID)
@@ -97,7 +114,7 @@ namespace RavenCraftCore
         {
             if (!canUse || amountValue == 100)
                 return;
-            if (!isUsed)
+            if (!isGrab)
                 return;
 
             if (Input.GetMouseButtonUp(0))
@@ -107,6 +124,7 @@ namespace RavenCraftCore
                 isGrab = false;
                 track.TrackTime = 0;
                 track.TimeScale = 0;
+                skAni.AnimationName = "HandOn";
                 skAni.skeleton.SetSkin("NoHand");
                 skAni.skeleton.SetSlotsToSetupPose();
                 return;

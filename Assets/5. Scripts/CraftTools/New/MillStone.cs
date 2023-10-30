@@ -139,8 +139,12 @@ namespace RavenCraftCore
                     //prevTheta = deg;
                     deg = prevTheta;
                 }
-                /*else if(Vector2.Distance(CursorManager.GetCursorPosition(), handle.transform.position) > 3f)
-                    CursorManager.SetCursorPosition(handle.transform.position);*/
+                else if (Vector2.Distance(CursorManager.GetCursorPosition(), handle.transform.position) > 3f)
+                {
+                    CursorManager.SetCursorPosition(handle.transform.position);
+                    deg = prevTheta;
+                }
+                    
                 yield return new WaitForSeconds(0.2f);
             }
         }
