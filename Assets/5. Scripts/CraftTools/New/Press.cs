@@ -42,6 +42,11 @@ namespace RavenCraftCore
         [SerializeField]
         Cinemachine.DollyCartMove track;
         SkeletonAnimation skAni;
+
+        [SerializeField]
+        ParticleSystem createEffect;
+        [SerializeField]
+        ParticleSystem steam;
         
         // Start is called before the first frame update
         void Start()
@@ -187,9 +192,12 @@ namespace RavenCraftCore
 
         void CheckGemRecipe()
         {
+            steam.Play();
+            createEffect.Play();
             var gem = GameManager.Instance.ItemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
 
             accessoryPlate.CompleteCraft(GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, d_AccessoryData));
+            
             print(GameManager.Instance.ItemManager.GetItemName(gem.itemID));
         }
     }
