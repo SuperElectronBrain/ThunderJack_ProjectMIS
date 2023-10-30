@@ -114,9 +114,9 @@ namespace RavenCraftCore
                 
                 public void PlayParticle(int lv)
                 {
-                    if(lv > 0)
-                        particles[lv].Stop();
-                    particles[lv].Play();
+                    if (lv > 0)
+                        particles[lv].gameObject.SetActive(false);
+                    particles[lv].gameObject.SetActive(true);
                 }
             }
         }
