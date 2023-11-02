@@ -9,6 +9,7 @@ namespace RavenCraftCore
     {
         bool isGrab;
         bool isUsed;
+        bool isCreate;
 
         [SerializeField]
         private float putInValue;
@@ -140,9 +141,10 @@ namespace RavenCraftCore
                 skAni.AnimationName = "HandOff";
             }
 
-            if (track.m_Position >= 0.99f)
+            if (track.m_Position >= 0.99f && !isCreate)
             {
-                PressHandle();
+                isCreate = true;
+                PressHandle();                
             }
             
             var handleDir = buttonPosition.forward;

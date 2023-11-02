@@ -11,7 +11,6 @@ namespace RavenCraftCore
     {
         [SerializeField]
         private bool isGrab;
-        private Camera mainCam;
 
         [Header("MillStion Setting")]
         [SerializeField]
@@ -41,6 +40,11 @@ namespace RavenCraftCore
 
         [SerializeField]
         List<float> insertedItemProgress;
+        [SerializeField]
+        Transform[] colliders;
+
+        [SerializeField]
+        Vector3 colliderPos;
 
         [SerializeField]
         float grindingValue;
@@ -65,7 +69,6 @@ namespace RavenCraftCore
 
         private void Start()
         {
-            mainCam = Camera.main;
             millStoneTrack = GetComponentInChildren<Cinemachine.DollyCartMove>();
             skAni = GetComponentInChildren<SkeletonAnimation>();
         }
@@ -159,6 +162,7 @@ namespace RavenCraftCore
                 {
                     isGrab = false;
                     skAni.AnimationName = "HandOff";
+                    deg = prevTheta;
                 }
 
                 GetMousePosToDeg();
@@ -203,6 +207,7 @@ namespace RavenCraftCore
                     insertedItemProgress[i] += gv;
                 }
                 insertedItemProgress[i] = Mathf.Max(0, insertedItemProgress[i]);
+                colliders[i].position = colliderPos - new Vector3(0, Mathf.Lerp(0.5f, 0, insertedItemProgress[i] * 0.01f), 0);
                 grindingValue += Mathf.Lerp(33.33333f, 0, insertedItemProgress[i] * 0.01f);
             }
 
@@ -281,11 +286,15 @@ namespace RavenCraftCore
         {
             if(collision.TryGetComponent(out BBB interactionMaterial))
             {
+                if (!interactionMaterial.IsRelese())
+                    return;
+                if (interactionMaterial.IsInMillStone())
+                    return;
                 insertedItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
                 interactionMaterial.InMillstone();
                 SetInputItem();
+                insertedItemProgress.Add(100);
             }
-
         }
     }
 }

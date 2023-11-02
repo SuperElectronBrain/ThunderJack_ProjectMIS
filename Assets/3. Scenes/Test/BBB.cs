@@ -9,6 +9,8 @@ public class BBB : MonoBehaviour
     CircleCollider2D col;
     FadeIO fade;
 
+    bool isRelese;
+
     bool isInMillstone;
 
     private void OnMouseDown()
@@ -28,6 +30,7 @@ public class BBB : MonoBehaviour
 
     public void Select()
     {
+        isRelese = false;
         GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
         col.isTrigger = true;
         rig.gravityScale = 0;
@@ -49,12 +52,23 @@ public class BBB : MonoBehaviour
 
     public void ReleseObj()
     {
+        isRelese = true;
         rig.gravityScale = 3;
         col.isTrigger = false;
         var forceX = Random.Range(-2f, 2f);
         var forceY = Random.Range(-2f, 0f);
         rig.AddForce(new Vector2(forceX, forceY),ForceMode2D.Impulse);
         GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;     
+    }
+
+    public bool IsRelese()
+    {
+        return isRelese;
+    }
+
+    public bool IsInMillStone()
+    {
+        return isInMillstone;
     }
 
     public void DestroyObject()

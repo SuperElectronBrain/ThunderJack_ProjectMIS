@@ -67,9 +67,11 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     Transform characters;
+    [SerializeField]
+    DebugCommand debugPanel;
 
     public SceneType prevScene;
-    public SceneType curScene;
+    public SceneType curScene;    
 
     private void Start()
     {
@@ -82,8 +84,9 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.Z))
             EventManager.Publish(EventType.Day);
-        else if (Input.GetKeyDown(KeyCode.X))
-            EventManager.Publish(EventType.EndIteraction);
+        else if (Input.GetKeyDown(KeyCode.F3))
+            debugPanel.ActiveUI();
+            
     }
 
     public void EnterShop()
