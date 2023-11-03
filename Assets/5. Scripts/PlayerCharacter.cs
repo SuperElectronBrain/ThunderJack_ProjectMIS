@@ -47,7 +47,6 @@ public class PlayerCharacter : CharacterBase
 	private float m_MonologueDisplayTime = 0.0f;
 	private float m_GuideDisplayTime = 0.0f;
 	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
-	private bool bUseDustEffect = false;
 
 	//Component
 	private CapsuleCollider m_Collider;
@@ -73,7 +72,7 @@ public class PlayerCharacter : CharacterBase
 
 	//Interaction Target(NPC or Etc...)
 	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
-	//private ITradeable m_TradeTarget;
+	private Transform m_InteractionTarget;
 
 	//Interaction Item
 	private InteractionItem m_InteractionItem;
@@ -172,10 +171,11 @@ public class PlayerCharacter : CharacterBase
 			if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
 			if (Input.GetKeyDown(KeyCode.E) == true) 
 			{
-				IInteraction T_Interaction = GetInteractableObject().interaction;
-				if (T_Interaction != null)
+				InteractableObject t_InteractionObj = GetInteractableObject();
+				if (t_InteractionObj.interaction != null)
 				{
-					T_Interaction.Interaction(gameObject);
+					t_InteractionObj.interaction.Interaction(gameObject);
+					m_InteractionTarget = t_InteractionObj.interactionGO.transform;
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.Q) == true)
@@ -219,16 +219,16 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == true)
 			{
-				bUseDustEffect = true;
+				//bUseDustEffect = true;
 			}
 			else if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == false)
 			{
-				bUseDustEffect = false; 
+				//bUseDustEffect = false; 
 			}
 		}
 		else if (result == false)
 		{
-			bUseDustEffect = false;
+			//bUseDustEffect = false;
 		}
 	}
 
@@ -266,7 +266,7 @@ public class PlayerCharacter : CharacterBase
 			}
 			else if (newState == PlayerCharacterAnimation.FishingBigHit)
 			{
-				m_Animator.SetTrigger("FishingBigHit");
+				m_Animator.SetTrigger("FishingHit");
 			}
 			else if (newState == PlayerCharacterAnimation.FishingPull)
 			{
@@ -408,10 +408,19 @@ public class PlayerCharacter : CharacterBase
 		portal.LoadingScene();
 	}
 
-	public InteractionItem GetInteractionItem()
+	public InteractionItem GetInteractionItem() { return m_InteractionItem; }
+
+	public Vector3 GetInteractionDirection()
 	{
-		return m_InteractionItem;
+		Vector3 direction = Vector3.zero;
+		if(m_InteractionTarget != null)
+		{
+			direction = Camera.main.transform.InverseTransformDirection(m_InteractionTarget.position - transform.position);
+			direction.y = 0;
+		}
+		return direction; 
 	}
+
 	//가장 가깝고 카메라가 바라보는 각도와 가장 많이 일지하는 위치에 있는 상호작용 대상의 참조를 찾는 함수
 	public InteractableObject GetInteractableObject()
 	{
@@ -493,6 +502,7 @@ public class PlayerCharacter : CharacterBase
 	public virtual void CommunicationEnd()
 	{
 		ChangeState(PlayerCharacterState.Moveable);
+		m_InteractionTarget = null;
 		CloseNPCShop();
 		PopUpInteractionIcon(true);
 	}
@@ -941,7 +951,7 @@ public class PlayerCharacter : CharacterBase
 
 		if (collision.gameObject.name.Contains("F_Bridge") == true)
 		{
-			bUseDustEffect = true;
+			//bUseDustEffect = true;
 		}
 	}
 
@@ -950,7 +960,7 @@ public class PlayerCharacter : CharacterBase
 		base.OnCollisionExit(collision);
 		if (collision.gameObject.name.Contains("F_Bridge") == true)
 		{
-			bUseDustEffect = false;
+			//bUseDustEffect = false;
 		}
 	}
 
