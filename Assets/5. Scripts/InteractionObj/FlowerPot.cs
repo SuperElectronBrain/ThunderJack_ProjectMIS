@@ -11,6 +11,8 @@ public class FlowerPot : MonoBehaviour, IInteraction
     BoxCollider boxCollider;
     [SerializeField]
     Flower flower;
+    [SerializeField]
+    GameObject harvestingEffect;
 
     private void Start()
     {
@@ -27,7 +29,6 @@ public class FlowerPot : MonoBehaviour, IInteraction
 
     public void Interaction(GameObject user)
     {
-        Invoke("EndInteraction", 0.1f);
         Debug.Log(gameObject.name + " 상호작용");
         if (isPlanted)
             return;
@@ -46,12 +47,9 @@ public class FlowerPot : MonoBehaviour, IInteraction
 
     public void Harvesting()
     {
+        Destroy(Instantiate(harvestingEffect, transform.position, Quaternion.identity), 1f);
+        gameObject.SetActive(false);
         isPlanted = false;
-    }
-
-    void EndInteraction()
-    {
-        EventManager.Publish(EventType.EndIteraction);
     }
 
     public void SaveFlowerData()

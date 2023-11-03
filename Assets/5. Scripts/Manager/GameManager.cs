@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,9 +68,11 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     Transform characters;
+    [SerializeField]
+    DebugCommand debugPanel;
 
     public SceneType prevScene;
-    public SceneType curScene;
+    public SceneType curScene;    
 
     private void Start()
     {
@@ -82,8 +85,9 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.Z))
             EventManager.Publish(EventType.Day);
-        else if (Input.GetKeyDown(KeyCode.X))
-            EventManager.Publish(EventType.EndIteraction);
+        else if (Input.GetKeyDown(KeyCode.F3))
+            debugPanel.ActiveUI();
+            
     }
 
     public void EnterShop()
@@ -148,5 +152,10 @@ public class Tools
     public static float FloatParse(object data)
     {
         return float.Parse(data.ToString());
+    }
+    
+    public static Enum EnumParse<T>(object data) where T : Enum
+    {
+        return (T)Enum.Parse(typeof(T), data.ToString());
     }
 }

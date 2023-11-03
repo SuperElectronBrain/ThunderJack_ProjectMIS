@@ -50,8 +50,8 @@ public class InteractionItem : MonoBehaviour
 				break;
             case ItemType.Accessory:
             case ItemType.Jewelry:               
-                Debug.Log("악악");
                 StartCoroutine(IsDataSetting());
+                returnItem.GetComponent<InteractionAccessory>().Init(itemID);
                 break;
             default: 
                 return returnItem;
@@ -62,13 +62,13 @@ public class InteractionItem : MonoBehaviour
     IEnumerator IsDataSetting()
     {
         returnItem = Instantiate(interactionAccessory);
+        var itemData = GameManager.Instance.ItemManager.GetBasicItemData(itemID);
         skAni = returnItem.GetComponent<SkeletonAnimation>();
         skAni.skeletonDataAsset =
-            AddressableManager.LoadObject<SkeletonDataAsset>(GameManager.Instance.ItemManager.GetBasicItemData(itemID)
-                .particlesName);
+            AddressableManager.LoadObject<SkeletonDataAsset>(itemData.particlesName);
         yield return new WaitForSeconds(0.02f);
         skAni.Initialize(true);
-        skAni.skeleton.SetSkin(AccessoryColor.Y.ToString());
+        skAni.skeleton.SetSkin(itemData.accessoryColor.ToString());
         skAni.skeleton.SetToSetupPose();
     }
 }

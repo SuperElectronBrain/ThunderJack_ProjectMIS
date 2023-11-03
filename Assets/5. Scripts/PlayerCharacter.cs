@@ -1,17 +1,9 @@
-using Cinemachine.Utility;
-using JetBrains.Annotations;
-using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.XR;
-using static Unity.VisualScripting.Member;
 
 public interface IGrabable
 {
@@ -34,7 +26,7 @@ public enum PlayerCharacterState
 { Moveable, Communication, Fishing, }
 
 public enum PlayerCharacterAnimation
-{ FishingStart, FishingHit, FishingEnd, FishingSuccessed, FishingFailed, Panic, }
+{ FishingStart, FishingIdle, FishingHit, FishingBigHit, FishingPull, FishingSuccess, FishingFail, FishingEnd, Panic, }
 
 public class PlayerCharacter : CharacterBase
 {
@@ -47,7 +39,6 @@ public class PlayerCharacter : CharacterBase
 	private float m_MonologueDisplayTime = 0.0f;
 	private float m_GuideDisplayTime = 0.0f;
 	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
-	private bool bUseDustEffect = false;
 
 	//Component
 	private CapsuleCollider m_Collider;
@@ -71,9 +62,12 @@ public class PlayerCharacter : CharacterBase
 	//Animation
 	[SerializeField] private Animator m_ShadowAnimator;
 
+	//SFX
+	[SerializeField] private AudioSource m_FootStepSound;
+
 	//Interaction Target(NPC or Etc...)
 	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
-	//private ITradeable m_TradeTarget;
+	private Transform m_InteractionTarget;
 
 	//Interaction Item
 	private InteractionItem m_InteractionItem;
@@ -121,28 +115,16 @@ public class PlayerCharacter : CharacterBase
 
 		GrabItemDisplayProcessor();
 		ItemInfoDisplayProcessor();
-		if (m_PlayerCharacterUIScript != null)
-		{
-			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
-			{
-				InteractableObject t_InteractableObject = GetInteractableObject();
-				if(t_InteractableObject.interaction != null)
-				{
-					Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
-					t_Vector.x = t_Vector.x + 0;
-					t_Vector.y = t_Vector.y + 75;
-					m_PlayerCharacterUIScript.m_InteractionIcon.rectTransform.position = t_Vector;
-				}
-			}
-		}
+		PlayerCharacterUIProcessor();
+		
 
 		MonologueDisplayProcessor(DeltaTime);
 		GuideDisplayProcessor(DeltaTime);
 		FadeProcessor(DeltaTime);
 
 		ShowFootStepEffect();
+		FootStepSoundProcessor();
 		AnimationProcessor();
-
 		/*
 		if(m_Interaction != null)
 		{
@@ -184,10 +166,11 @@ public class PlayerCharacter : CharacterBase
 			if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
 			if (Input.GetKeyDown(KeyCode.E) == true) 
 			{
-				IInteraction T_Interaction = GetInteractableObject().interaction;
-				if (T_Interaction != null)
+				InteractableObject t_InteractionObj = GetInteractableObject();
+				if (t_InteractionObj.interaction != null)
 				{
-					T_Interaction.Interaction(gameObject);
+					t_InteractionObj.interaction.Interaction(gameObject);
+					m_InteractionTarget = t_InteractionObj.interactionGO.transform;
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.Q) == true)
@@ -231,16 +214,16 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == true)
 			{
-				bUseDustEffect = true;
+				//bUseDustEffect = true;
 			}
 			else if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == false)
 			{
-				bUseDustEffect = false; 
+				//bUseDustEffect = false; 
 			}
 		}
 		else if (result == false)
 		{
-			bUseDustEffect = false;
+			//bUseDustEffect = false;
 		}
 	}
 
@@ -248,6 +231,12 @@ public class PlayerCharacter : CharacterBase
 	{
 		currentState = newState;
 
+		if (currentState == PlayerCharacterState.Communication)
+		{
+			m_HorizontalMove = 0.0f;
+			m_VerticalMove = 0.0f;
+			m_Rigidbody.velocity = Vector3.zero;
+		}
 		if (currentState == PlayerCharacterState.Fishing)
 		{
 			ChangeAnimationState(PlayerCharacterAnimation.FishingStart);
@@ -260,23 +249,37 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (newState == PlayerCharacterAnimation.FishingStart)
 			{
-				//m_Animator.SetTrigger("StartFishing");
+				m_Animator.SetTrigger("FishingStart"); 
+			}
+			else if (newState == PlayerCharacterAnimation.FishingIdle)
+			{
+				m_Animator.SetTrigger("FishingIdle");
 			}
 			else if (newState == PlayerCharacterAnimation.FishingHit)
 			{
-
+				m_Animator.SetTrigger("FishingHit");
 			}
-			else if (newState == PlayerCharacterAnimation.FishingSuccessed)
+			else if (newState == PlayerCharacterAnimation.FishingBigHit)
 			{
-
+				m_Animator.SetTrigger("FishingHit");
+			}
+			else if (newState == PlayerCharacterAnimation.FishingPull)
+			{
+				m_Animator.SetTrigger("FishingPull");
+			}
+			else if (newState == PlayerCharacterAnimation.FishingSuccess)
+			{
+				m_Animator.SetTrigger("FishingSuccess"); 
+			}
+			else if (newState == PlayerCharacterAnimation.FishingFail)
+			{
+				m_Animator.SetTrigger("FishingFail");
 			}
 			else if (newState == PlayerCharacterAnimation.FishingEnd)
 			{
-
 			}
 		}
 	}
-
 
 	public void TakeComponents(PlayerCharacter p_PlayerCharacter)
 	{
@@ -399,27 +402,50 @@ public class PlayerCharacter : CharacterBase
 		portal.LoadingScene();
 	}
 
-	public InteractionItem GetInteractionItem()
+	public InteractionItem GetInteractionItem() { return m_InteractionItem; }
+
+	public Vector3 GetInteractionDirection()
 	{
-		return m_InteractionItem;
+		Vector3 direction = Vector3.zero;
+		if(m_InteractionTarget != null)
+		{
+			direction = Camera.main.transform.InverseTransformDirection(m_InteractionTarget.position - transform.position);
+			direction.y = 0;
+		}
+		return direction; 
 	}
+
+	//가장 가깝고 카메라가 바라보는 각도와 가장 많이 일지하는 위치에 있는 상호작용 대상의 참조를 찾는 함수
 	public InteractableObject GetInteractableObject()
 	{
 		InteractableObject t_Interaction = new InteractableObject(null, null);
 		if (InteractableObjects != null)
 		{
+			//상호작용 대상이 1개 이상 존재한다면
 			if (InteractableObjects.Count > 0)
 			{
 				float t_DotProduct = -1.0f;
 				for (int i = 0; i < InteractableObjects.Count; i = i + 1)
 				{
+					//상호작용 대상이 게임오브젝트로써 존재한다면
 					if(InteractableObjects[i].interactionGO != null)
 					{
-						float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
-						if (t_DotProduct < t_DotProduct1)
+						//상호작용 대상이 비활성화된 상태가 아니라면
+						if (InteractableObjects[i].interactionGO.activeSelf == true)
 						{
-							t_DotProduct = t_DotProduct1;
-							t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+							//상호작용 대상의 콜라이더가 켜져있는 상태라면
+							if (InteractableObjects[i].interactionGO.GetComponent<Collider>().enabled == true)
+							{
+								//현재 카메라가 바라보는 벡터와 플레이어를 중심으로 계산한 상호작용 대상까지의 벡터로 내적을 실행
+								float t_DotProduct1 = Vector3.Dot(Camera.main.transform.forward, (InteractableObjects[i].interactionGO.transform.position - transform.position).normalized);
+								//이전에 계산된 내적 값보다 지금 계산된 내적 값이 더 크다면
+								if (t_DotProduct < t_DotProduct1)
+								{
+									//내적 값을 갱신하고 상호작용 대상을 재지정함
+									t_DotProduct = t_DotProduct1;
+									t_Interaction = new InteractableObject(InteractableObjects[i].interaction, InteractableObjects[i].interactionGO);
+								}
+							}
 						}
 					}
 				}
@@ -470,7 +496,8 @@ public class PlayerCharacter : CharacterBase
 	public virtual void CommunicationEnd()
 	{
 		ChangeState(PlayerCharacterState.Moveable);
-		CloseNPCShop();
+		m_InteractionTarget = null;
+		//CloseNPCShop();
 		PopUpInteractionIcon(true);
 	}
 
@@ -584,9 +611,9 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
 			{
-				if(m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.activeSelf != param)
+				if(m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.activeSelf != param)
 				{
-					m_PlayerCharacterUIScript.m_InteractionIcon.gameObject.SetActive(param);
+					m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.SetActive(param);
 				}
 			}
 		}
@@ -759,6 +786,30 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
+	private void FootStepSoundProcessor()
+	{
+		if (m_Velocity != 0)
+		{
+			if(m_FootStepSound != null)
+			{
+				if (m_FootStepSound.isPlaying == false)
+				{
+					m_FootStepSound.Play();
+				}
+			}
+		}
+		else if(m_Velocity == 0)
+		{
+			if (m_FootStepSound != null)
+			{
+				if (m_FootStepSound.isPlaying == true)
+				{
+					m_FootStepSound.Stop();
+				}
+			}
+		}
+	}
+
 	public void PopUpMonologue(string p_Script, float p_Time)
 	{
 		if(m_PlayerCharacterUIScript != null)
@@ -817,6 +868,100 @@ public class PlayerCharacter : CharacterBase
 	public void FadeIn(float p_Time) { m_FadeInTimeBase = p_Time; m_FadeInTime = p_Time; }
 	public void FadeOut(float p_Time) { m_FadeOutTimeBase = p_Time; m_FadeOutTime = p_Time; }
 
+	public void PlayerCharacterUIProcessor() 
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+			{
+				if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect != null)
+				{
+					InteractableObject t_InteractableObject = GetInteractableObject();
+					if (t_InteractableObject.interaction != null)
+					{
+						Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
+						t_Vector.x = t_Vector.x + 0;
+						t_Vector.y = t_Vector.y + 75;
+						m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.position = t_Vector;
+
+						if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText != null)
+						{
+							m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "상호작용";
+
+							NPC t_NPC = t_InteractableObject.interaction as NPC;
+							NoticeBoard t_NoticeBoard = t_InteractableObject.interaction as NoticeBoard;
+							if (t_NPC != null || t_NoticeBoard != null)
+							{
+								if (t_NPC != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "대화하기"; }
+								else if (t_NoticeBoard != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기"; }
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk;
+									}
+								}
+							}
+							Flower t_Flower = t_InteractableObject.interaction as Flower;
+							FlowerPot t_FlowerPot = t_InteractableObject.interaction as FlowerPot;
+							if (t_Flower != null || t_FlowerPot != null)
+							{
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "수확하기";
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants;
+									}
+								}
+							}
+							Door t_Door = t_InteractableObject.interaction as Door;
+							InteractablePortal t_Portal = t_InteractableObject.interaction as InteractablePortal;
+							if (t_Door != null || t_Portal != null)
+							{
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "이동하기";
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Open != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Open;
+									}
+								}
+							}
+							Mailbox t_Mailbox = t_InteractableObject.interaction as Mailbox;
+							if (t_Mailbox != null)
+							{
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기";
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail;
+									}
+								}
+							}
+							FishingPointComponent t_Fish = t_InteractableObject.interaction as FishingPointComponent;
+							if (t_Fish != null)
+							{
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "낚시하기";
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish;
+									}
+								}
+							}
+						}
+					}
+					else if (t_InteractableObject.interaction == null)
+					{
+						m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.SetActive(false);
+					}
+				}
+			}
+		}
+	}
 
 	protected override void OnCollisionEnter(Collision collision)
 	{
@@ -824,7 +969,7 @@ public class PlayerCharacter : CharacterBase
 
 		if (collision.gameObject.name.Contains("F_Bridge") == true)
 		{
-			bUseDustEffect = true;
+			//bUseDustEffect = true;
 		}
 	}
 
@@ -833,7 +978,7 @@ public class PlayerCharacter : CharacterBase
 		base.OnCollisionExit(collision);
 		if (collision.gameObject.name.Contains("F_Bridge") == true)
 		{
-			bUseDustEffect = false;
+			//bUseDustEffect = false;
 		}
 	}
 

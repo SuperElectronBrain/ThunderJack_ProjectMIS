@@ -83,7 +83,7 @@ public class ItemManager : MonoBehaviour
         foreach (var ir in itemRecipe)
         {
             int itemType = Tools.IntParse(ir["Item_Type"]);
-            Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
+            Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());            
 
             switch (itemType)
             {
@@ -97,7 +97,8 @@ public class ItemManager : MonoBehaviour
                         itemType = (ItemType)Tools.IntParse(ir["Item_Type"]),
                         itemResourceImage = resourceImage,
                         particlesName = ir["Particles_Name"].ToString(),
-                        itemText = ir["Item_Text"].ToString()
+                        itemText = ir["Item_Text"].ToString(),
+                        accessoryColor = (AccessoryColor)System.Enum.Parse(typeof(AccessoryColor), ir["Item_Color"].ToString())
                     }
                     );
                     break;
@@ -112,6 +113,7 @@ public class ItemManager : MonoBehaviour
                         itemResourceImage = resourceImage,
                         particlesName = ir["Particles_Name"].ToString(),
                         itemText = ir["Item_Text"].ToString(),
+                        accessoryColor = (AccessoryColor)System.Enum.Parse(typeof(AccessoryColor), ir["Item_Color"].ToString())
                     }
                     );
                     break;
@@ -125,7 +127,8 @@ public class ItemManager : MonoBehaviour
                         itemType = (ItemType)Tools.IntParse(ir["Item_Type"]),
                         itemResourceImage = resourceImage,
                         particlesName = ir["Particles_Name"].ToString(),
-                        itemText = ir["Item_Text"].ToString()
+                        itemText = ir["Item_Text"].ToString(),
+                        accessoryColor = (AccessoryColor)System.Enum.Parse(typeof(AccessoryColor), ir["Item_Color"].ToString())
                     }
                     );
                     break;
@@ -405,6 +408,7 @@ public class BasicItemData
     public Sprite itemResourceImage;
     public string particlesName;
     public ItemType itemType;
+    public AccessoryColor accessoryColor;
     public string itemText;
 }
 [System.Serializable]

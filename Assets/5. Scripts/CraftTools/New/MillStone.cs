@@ -11,7 +11,6 @@ namespace RavenCraftCore
     {
         [SerializeField]
         private bool isGrab;
-        private Camera mainCam;
 
         [Header("MillStion Setting")]
         [SerializeField]
@@ -41,6 +40,11 @@ namespace RavenCraftCore
 
         [SerializeField]
         List<float> insertedItemProgress;
+        [SerializeField]
+        Transform[] colliders;
+
+        [SerializeField]
+        Vector3 colliderPos;
 
         [SerializeField]
         float grindingValue;
@@ -54,8 +58,6 @@ namespace RavenCraftCore
         [Header("SpineAni")]
         [SerializeField]
         SkeletonAnimation skAni;
-        [SerializeField]
-        private TrackEntry track;
 
         [SerializeField] private Animator topAni;
         [SerializeField] private Animator bottomAni;
@@ -67,52 +69,41 @@ namespace RavenCraftCore
 
         private void Start()
         {
-            mainCam = Camera.main;
             millStoneTrack = GetComponentInChildren<Cinemachine.DollyCartMove>();
             skAni = GetComponentInChildren<SkeletonAnimation>();
-            cup.SetInputItemID(insertedItemID);
-            track = skAni.state.SetAnimation(0, "animation", false);
         }
 
-        IEnumerator CStartAnimation(bool isBack = false)
+        void SetInputItem()
         {
-            var animationProgress = 0f;
-
-            while (animationProgress <= 1f)
-            {
-                animationProgress += Time.deltaTime;
-                track.TrackTime = animationProgress;
-                yield return null;
-            }
-            track.TrackTime = 1;
+            cup.SetInputItemID(insertedItemID);
         }
 
         public void EnterHandle()
         {
             if (isGrab)
                 return;
-            StopAllCoroutines();
-            StartCoroutine(CStartAnimation());
+
+            skAni.AnimationName = "HandOn";
         }
 
         public void ExitHandle()
         {
             if (isGrab)
                 return;
-            StopAllCoroutines();
-            track.TrackTime = 0;
+
+            skAni.AnimationName = "HandOff";
         }
 
         public void GrabHandle(bool isGrab)
         {
             this.isGrab = isGrab;
-            track.TrackTime = 1;
             /*GetMousePosToDeg();
             millStoneTrack.m_Position = deg / 360f;
             */
-            prevTheta = deg;
+            deg = prevTheta;
             
             StartCoroutine(InitMousePosition());
+
         }
 
         void GetMousePosToDeg()
@@ -121,11 +112,6 @@ namespace RavenCraftCore
 
             theta = Mathf.Atan2(mPos.y, mPos.x);
             deg = (theta * Mathf.Rad2Deg) + 180;
-
-            /*if (deg < 0)
-                deg *= -1;*/
-
-            //theta = deg * Mathf.Deg2Rad;
         }
 
         IEnumerator InitMousePosition()
@@ -138,8 +124,12 @@ namespace RavenCraftCore
                     //prevTheta = deg;
                     deg = prevTheta;
                 }
-                /*else if(Vector2.Distance(CursorManager.GetCursorPosition(), handle.transform.position) > 3f)
-                    CursorManager.SetCursorPosition(handle.transform.position);*/
+                else if (Vector2.Distance(CursorManager.GetCursorPosition(), handle.transform.position) > 3f)
+                {
+                    CursorManager.SetCursorPosition(handle.transform.position);
+                    deg = prevTheta;
+                }
+                    
                 yield return new WaitForSeconds(0.2f);
             }
         }
@@ -148,23 +138,27 @@ namespace RavenCraftCore
         void Update()
         {
             FlowLiquid();
-            
-            if(resultValue > 0 && grindingValue > 0)
+
+            if (resultValue > 0 && grindingValue > 0)
             {
                 FlowMaterialSolution();
             }
+            else if (resultValue == 0)
+                cup.SetUse(true);
 
             if (itemCount == 0)
                 return;
-
-            if(Input.GetMouseButtonUp(0))
-            {
-                isGrab = false;
-                track.TrackTime = 0;
-            }
+            
 
             if (isGrab)
             {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    isGrab = false;
+                    skAni.AnimationName = "HandOff";
+                    deg = prevTheta;
+                }
+
                 GetMousePosToDeg();
                 
                 if(deg > prevTheta)
@@ -207,6 +201,7 @@ namespace RavenCraftCore
                     insertedItemProgress[i] += gv;
                 }
                 insertedItemProgress[i] = Mathf.Max(0, insertedItemProgress[i]);
+                colliders[i].position = colliderPos - new Vector3(0, Mathf.Lerp(0.5f, 0, insertedItemProgress[i] * 0.01f), 0);
                 grindingValue += Mathf.Lerp(33.33333f, 0, insertedItemProgress[i] * 0.01f);
             }
 
@@ -279,6 +274,21 @@ namespace RavenCraftCore
         {
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(millStoneCenterPos.position, 0.3f);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if(collision.TryGetComponent(out BBB interactionMaterial))
+            {
+                if (!interactionMaterial.IsRelese())
+                    return;
+                if (interactionMaterial.IsInMillStone())
+                    return;
+                insertedItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
+                interactionMaterial.InMillstone();
+                SetInputItem();
+                insertedItemProgress.Add(100);
+            }
         }
     }
 }

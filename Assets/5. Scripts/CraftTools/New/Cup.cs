@@ -11,10 +11,12 @@ namespace RavenCraftCore
 {
     public class Cup : MonoBehaviour
     {
+        [SerializeField]
         private bool isUsed;
+        [SerializeField]
         private bool isGrab;
+        [SerializeField]
         private bool canUse;
-        private Camera mainCam;
         [SerializeField]
         private float zOffset;
 
@@ -24,7 +26,7 @@ namespace RavenCraftCore
         private Vector3 originPos;
 
         [SerializeField, Range(0f, 1f)] 
-        private float speed;
+        private float tilt;
         [SerializeField, Range(0f, 1f)] 
         private float inputAngle;
         [SerializeField]
@@ -42,9 +44,11 @@ namespace RavenCraftCore
         [SerializeField]
         Press press;
 
+        [SerializeField] private CreateWaterBall cwb;
+        [SerializeField] private Transform pos;
+
         private void Start()
         {
-            mainCam = Camera.main;
             originPos = transform.position;
             zOffset = originPos.z;
         }
@@ -56,48 +60,62 @@ namespace RavenCraftCore
 
         private void OnMouseEnter()
         {
-            if (isUsed || amountValue == 0)
+            if (isGrab || amountValue == 0)
                 return;
-            
+            skAni.state.ClearTrack(1);
             skAni.skeleton.SetSkin("Hand");
             skAni.skeleton.SetSlotsToSetupPose();
+            skAni.state.SetAnimation(0, "HandOn", false);
             skAni.timeScale = 1;
-            skAni.AnimationName = "HandOn";
+            skAni.state.Complete += Grab;
         }
 
         private void OnMouseExit()
         {
-            if (isUsed || amountValue == 0)
+            if (isGrab || amountValue == 0)
                 return;
+
+            isUsed = false;
+            skAni.state.SetAnimation(0, "HandOff", false);
             skAni.timeScale = 1;
-            skAni.AnimationName = "HandOff";
+            skAni.state.Complete += Put;
         }
 
         private void OnMouseDown()
         {
-            if (isUsed || amountValue == 0)
+            if (!isUsed || amountValue == 0)
                 return;
             CursorManager.SetCursorPosition(transform.position);
             CursorManager.onActiveComplate.AddListener(() => isGrab = true);
-            CursorManager.onActive?.Invoke(true);
+            CursorManager.onActive?.Invoke(true);            
+            track = skAni.state.SetAnimation(1, "Tilting", false);
             skAni.timeScale = 0;
-            skAni.AnimationName = "Tilting";
-            track = skAni.state.SetAnimation(2, "Tilting", false);
-            skAni.state.TimeScale = 1;
+            isGrab = true;
+            isUsed = false;
+        }
+
+        void Grab(Spine.TrackEntry te)
+        {
+            skAni.state.Complete -= Grab;
             isUsed = true;
+        }
+
+        void Put(Spine.TrackEntry te)
+        {
+            skAni.state.Complete -= Put;            
         }
 
         public void SetInputItemID(int itemID)
         {
-            press.SetPutInItemID(itemID);
+            press.SetItemData(itemID);
         }
         
         // Update is called once per frame
         void Update()
         {
-            if (!canUse || amountValue == 100)
+            if (!canUse)
                 return;
-            if (!isUsed)
+            if (!isGrab)
                 return;
 
             if (Input.GetMouseButtonUp(0))
@@ -106,20 +124,20 @@ namespace RavenCraftCore
                 isUsed = false;
                 isGrab = false;
                 track.TrackTime = 0;
-                track.TimeScale = 0;
-
+                track.TimeScale = 0;                
                 skAni.skeleton.SetSkin("NoHand");
-                skAni.skeleton.SetSlotsToSetupPose();
+                skAni.skeleton.SetSlotsToSetupPose();                
                 return;
             }
             
             var dis = Vector2.Distance(transform.position, inlet.position) * accuracy;
-            speed = Mathf.Lerp(1, 0, dis);
+            tilt = Mathf.Lerp(1, 0, dis);
             
-            track.TrackTime = speed;
+            track.TrackTime = tilt;
 
-            if(speed >= inputAngle)
+            if(tilt >= inputAngle)
             {
+                cwb.Create(pos.position);
                 InputSoultion();
             }
 

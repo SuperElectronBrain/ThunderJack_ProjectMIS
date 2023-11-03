@@ -1,27 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 namespace RavenCraftCore
 {
     public class Press : MonoBehaviour
     {
         bool isGrab;
+        bool isUsed;
+        bool isCreate;
 
         [SerializeField]
-        private int putInItemID;
-        [SerializeField]
         private float putInValue;
-        [SerializeField]
-        private MaterialItemData inputMaterialItem;
 
         [Header("CraftingTools")]
         [SerializeField]
         private Book book;
 
         [Header("Debug")]
-        [SerializeField]
-        private int d_ItemData;
 
         [SerializeField] 
         private int d_AccessoryData;
@@ -45,40 +42,58 @@ namespace RavenCraftCore
         Vector3 originHandlePos;
         [SerializeField]
         Cinemachine.DollyCartMove track;
+        SkeletonAnimation skAni;
+
+        [SerializeField]
+        ParticleSystem createEffect;
+        [SerializeField]
+        ParticleSystem steam;
         
         // Start is called before the first frame update
         void Start()
         {
-            SetItemData(d_ItemData);
             originHandlePos = buttonPosition.position;
+            skAni = GetComponentInChildren<SkeletonAnimation>();
         }
 
         public void EnterHandle()
         {
-
+            skAni.skeleton.SetSkin("Hand");
+            skAni.skeleton.SetSlotsToSetupPose();            
+            skAni.AnimationName = "HandOn";
+            skAni.timeScale = 1;
+            skAni.state.Complete += Grab;
         }
 
         public void ExitHandle()
         {
-
+            if (isGrab)
+                return;
+            skAni.AnimationName = "HandOff";
         }
 
         public void GrabHandle()
         {
+            if (!isUsed)
+                return;
             isGrab = true;
             CursorManager.SetCursorPosition(handleObject.position);
             prevPos = CursorManager.GetCursorPosition();
         }
 
+        void Grab(Spine.TrackEntry te)
+        {
+            isUsed = true;
+        }
+
+        void Put(Spine.TrackEntry te)
+        {
+            isUsed = false;
+        }
+
         void ResetPress()
         {
             
-        }
-
-        public void SetPutInItemID(int itemID)
-        {
-            putInItemID = itemID;
-            putInItemData = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
         }
 
         public void PutInSoultion(float inputValue)
@@ -87,12 +102,16 @@ namespace RavenCraftCore
 
             value[putInItemData.elementType1 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent1, putInValue * 0.01f);
             value[putInItemData.elementType2 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent2, putInValue * 0.01f);
-            //value[putInItemData.elementType3 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent3, inputValue);
+        }
+
+        public void SetAccessoryData(int accessoryID)
+        {
+            d_AccessoryData = accessoryID;
         }
 
         public void SetItemData(int itemID)
         {
-            inputMaterialItem = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
+            putInItemData = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
         }
 
         Vector3 prevPos;
@@ -114,11 +133,17 @@ namespace RavenCraftCore
                 track.m_Position = 0;
                 //handleObject.position = originHandlePos;
                 buttonPosition.position = originHandlePos;
+
+                skAni.skeleton.SetSkin("NoHand");
+                skAni.skeleton.SetSlotsToSetupPose();
+                skAni.timeScale = 0;
+                skAni.AnimationName = "HandOff";
             }
 
-            if (track.m_Position >= 0.99f)
+            if (track.m_Position >= 0.99f && !isCreate)
             {
-                PressHandle();
+                isCreate = true;
+                PressHandle();                
             }
             
             var handleDir = buttonPosition.forward;
@@ -168,9 +193,12 @@ namespace RavenCraftCore
 
         void CheckGemRecipe()
         {
+            steam.Play();
+            createEffect.Play();
             var gem = GameManager.Instance.ItemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
 
             accessoryPlate.CompleteCraft(GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, d_AccessoryData));
+            
             print(GameManager.Instance.ItemManager.GetItemName(gem.itemID));
         }
     }

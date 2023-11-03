@@ -13,22 +13,22 @@ public class EventManager
     static readonly Dictionary<EventType, UnityEvent> events = new Dictionary<EventType, UnityEvent>();
     static readonly Dictionary<DialogEventType, UnityEvent> dialogEvents = new Dictionary<DialogEventType, UnityEvent>();
 
-    public static void Subscribe(EventType eventType, UnityAction listner)
+    public static void Subscribe(EventType eventType, UnityAction listener)
     {
         if (events.TryGetValue(eventType, out UnityEvent e))
-            e.AddListener(listner);
+            e.AddListener(listener);
         else
         {
             e = new();
-            e.AddListener(listner);
+            e.AddListener(listener);
             events.Add(eventType, e);
         }
     }
 
-    public static void Unsubscribe(EventType eventType, UnityAction listner)
+    public static void Unsubscribe(EventType eventType, UnityAction listener)
     {
         if (events.TryGetValue(eventType, out UnityEvent e))
-            e.RemoveListener(listner);
+            e.RemoveListener(listener);
     }
 
     public static void Publish(EventType eventType)
@@ -37,22 +37,22 @@ public class EventManager
             e?.Invoke();
     }
 
-    public static void Subscribe(DialogEventType eventType, UnityAction listner)
+    public static void Subscribe(DialogEventType eventType, UnityAction listener)
     {
         if (dialogEvents.TryGetValue(eventType, out UnityEvent e))
-            e.AddListener(listner);
+            e.AddListener(listener);
         else
         {
             e = new();
-            e.AddListener(listner);
+            e.AddListener(listener);
             dialogEvents.Add(eventType, e);
         }
     }
 
-    public static void Unsubscribe(DialogEventType eventType, UnityAction listner)
+    public static void Unsubscribe(DialogEventType eventType, UnityAction listener)
     {
         if (dialogEvents.TryGetValue(eventType, out UnityEvent e))
-            e.RemoveListener(listner);
+            e.RemoveListener(listener);
     }
 
     public static void Publish(DialogEventType eventType)

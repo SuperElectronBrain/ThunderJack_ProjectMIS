@@ -91,7 +91,7 @@ Addressables.LoadAssetAsync<T>(loadObjectName)
         return returnObject;
     }
 
-    public void CreateImage(Sprite sprite)
+    public void Image(Sprite sprite)
     {
         assetReference.InstantiateAsync(canvas.transform).Completed += (result) =>
         {
