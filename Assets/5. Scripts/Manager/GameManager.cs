@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -151,5 +152,10 @@ public class Tools
     public static float FloatParse(object data)
     {
         return float.Parse(data.ToString());
+    }
+    
+    public static Enum EnumParse<T>(object data) where T : Enum
+    {
+        return (T)Enum.Parse(typeof(T), data.ToString());
     }
 }

@@ -36,6 +36,7 @@ public class CursorManager : MonoBehaviour
     {
         var mousePosition = Input.mousePosition;
         CursorOffset = cursorOffset;
+        mouseSensitivity = speed;
 
         Debug.Log(cam.name + " " + cam.transform.position);
         //RectTransformUtility.ScreenPointToLocalPointInRectangle(cursorImage.rectTransform, mousePosition, canvas.worldCamera, out pos);
@@ -78,7 +79,6 @@ public class CursorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mouseSensitivity = speed;
         if (Input.GetMouseButtonDown(0))
         {
             cursorImage.sprite = clickCursor;
