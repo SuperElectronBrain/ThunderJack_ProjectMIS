@@ -497,7 +497,7 @@ public class PlayerCharacter : CharacterBase
 	{
 		ChangeState(PlayerCharacterState.Moveable);
 		m_InteractionTarget = null;
-		CloseNPCShop();
+		//CloseNPCShop();
 		PopUpInteractionIcon(true);
 	}
 
