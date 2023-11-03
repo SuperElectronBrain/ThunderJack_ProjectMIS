@@ -1,17 +1,9 @@
-using Cinemachine.Utility;
-using JetBrains.Annotations;
-using Spine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.XR;
-using static Unity.VisualScripting.Member;
 
 public interface IGrabable
 {
@@ -69,6 +61,9 @@ public class PlayerCharacter : CharacterBase
 
 	//Animation
 	[SerializeField] private Animator m_ShadowAnimator;
+
+	//SFX
+	[SerializeField] private AudioSource m_FootStepSound;
 
 	//Interaction Target(NPC or Etc...)
 	private List<InteractableObject> InteractableObjects = new List<InteractableObject>();
@@ -128,8 +123,8 @@ public class PlayerCharacter : CharacterBase
 		FadeProcessor(DeltaTime);
 
 		ShowFootStepEffect();
+		FootStepSoundProcessor();
 		AnimationProcessor();
-
 		/*
 		if(m_Interaction != null)
 		{
@@ -285,7 +280,6 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 	}
-
 
 	public void TakeComponents(PlayerCharacter p_PlayerCharacter)
 	{
@@ -789,6 +783,30 @@ public class PlayerCharacter : CharacterBase
 			if (m_HorizontalMove > 0) { t_ModelingScale.x = -1.0f; }
 			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 1.0f; }
 			(m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale = t_ModelingScale;
+		}
+	}
+
+	private void FootStepSoundProcessor()
+	{
+		if (m_Velocity != 0)
+		{
+			if(m_FootStepSound != null)
+			{
+				if (m_FootStepSound.isPlaying == false)
+				{
+					m_FootStepSound.Play();
+				}
+			}
+		}
+		else if(m_Velocity == 0)
+		{
+			if (m_FootStepSound != null)
+			{
+				if (m_FootStepSound.isPlaying == true)
+				{
+					m_FootStepSound.Stop();
+				}
+			}
 		}
 	}
 
