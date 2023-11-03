@@ -17,12 +17,14 @@ public class NpcDialog : MonoBehaviour
     {
         transform.localRotation = Camera.main.transform.rotation;
 
-        var seq = DOTween.Sequence();
+        Debug.Log("aaaa");
+        
+        /*var seq = DOTween.Sequence();
 
         seq.Append(transform.DOScale(1.1f, 0.2f));
         seq.Append(transform.DOScale(1f, 0.1f));
 
-        seq.Play();
+        seq.Play();*/
     }
 
     public void InitDialogBox(string name)

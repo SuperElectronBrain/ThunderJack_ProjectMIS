@@ -49,7 +49,8 @@ public class Dialogue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //playerDialogBox = FindObjectOfType<PlayerDialogBox>();        
+        //playerDialogBox = FindObjectOfType<PlayerDialogBox>();      
+        //EventManager.Subscribe(EventType.NextDialog, ShowOption);
     }
 
     public void InitDialogue(string newDialogue, int formal)
@@ -95,42 +96,103 @@ public class Dialogue : MonoBehaviour
 
     IEnumerator StartConversation()
     {
-        NextDialog();
+        isSelect = true;
+        var dData = dialogueList[dialogueIdx];
 
-        while (!dialogueIdx.Equals(-1))
+        CurDialog(dData);
+
+        if (!isSelect)
         {
-            if(IsOption())
-            {
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    NextDialog();
-                    GameManager.Instance.CharacterDB.GetNPC(dialogueList[dialogueIdx].characterID).TalkEnd();
-                    //playerDialogBox.gameObject.SetActive(true);
-                    playerDialogBox.ActiveButton(true);
-                    yield return new WaitUntil(() => isSelect == true);
-                }
-            }
-            else
-            {
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    EventManager.Publish(EventType.NextDialog);
-                    playerDialogBox.gameObject.SetActive(false);
-                    NextDialog();
-                }
-            }
-            
-            yield return null;
+            yield return new WaitUntil(() => isSelect);
+            dData = dialogueList[dialogueIdx];
+            CurDialog(dData);
         }
-        while(true)
+            
+        
+        while (dialogueIdx != -1)
         {
+            yield return null;
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (!isSelect)
+                    yield return new WaitUntil(() => isSelect);
+                
+                EventManager.Publish(dData.eventID1);
+                EventManager.Publish(EventType.NextDialog);
+                playerDialogBox.gameObject.SetActive(false);
+
+                if (!IsOption())
+                {
+                    dialogueIdx = dData.textNext1;
+
+                    if (dialogueIdx == -1)
+                    {
+                        playerDialogBox.gameObject.SetActive(false);
+                        EndDialogue();
+                        break;
+                    }
+                    
+                    dData = dialogueList[dialogueIdx];
+                }
+                CurDialog(dData);
+            }
+        }
+
+        /*while (true)
+        {
+            yield return null;
+            
             if (Input.GetKeyDown(KeyCode.E))
             {
                 playerDialogBox.gameObject.SetActive(false);
                 EndDialogue();
                 yield break;
             }
+        }*/
+    }
+
+    IEnumerator CShowOption(bool isFirts = false)
+    {
+        while (true)
+        {
             yield return null;
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                EventManager.Publish(EventType.NextDialog);
+                playerDialogBox.gameObject.SetActive(false);
+                isSelect = false;
+                var dData = dialogueList[dialogueIdx];
+                playerDialogBox.SetPlayerDialogOption(dData.textSelect1, dData.textSelect2);
+                GameManager.Instance.CharacterDB.GetNPC(dialogueList[dialogueIdx].characterID).TalkEnd();
+                //playerDialogBox.gameObject.SetActive(true);
+                playerDialogBox.ActiveButton(true);
+                yield break;
+            }
+        }
+    }
+
+    void CurDialog(DialogueData dData)
+    {
+        if (dData.characterID == 0)
+        {
+            playerDialogBox.SetPlayerDialog(dData.textScript1);
+            playerDialogBox.gameObject.SetActive(true);
+        }
+        else
+        {
+            var npc = GameManager.Instance.CharacterDB.GetNPC(dData.characterID);
+            npc.Talk(dData.textScript1);
+        }
+
+        if (IsOption())
+        {
+            isSelect = false;
+            StartCoroutine(CShowOption());
+        }
+        else
+        {
+
         }
     }
 
@@ -139,64 +201,75 @@ public class Dialogue : MonoBehaviour
         var dData = dialogueList[dialogueIdx];
         if (dData.characterID == 0)
         {
-            playerDialogBox.gameObject.SetActive(true);
             playerDialogBox.SetPlayerDialog(dData.textScript1);
+            playerDialogBox.gameObject.SetActive(true);
         }
         else
         {
             var npc = GameManager.Instance.CharacterDB.GetNPC(dData.characterID);
             npc.Talk(dData.textScript1);
         }
-            /*dialogBox.SetName(GameManager.Instance.CharacterDB.GetCharacterName(dData.Character_ID));
-        dialogBox.SetDialog(dData.Text_Script);*/
+        
         Debug.Log(dData.textScript1);
         
 
         if (IsOption())
         {
-            Debug.Log("������");
+            /*Debug.Log("������");
             isSelect = false;            
-            playerDialogBox.SetPlayerDialogOption(dData.textSelect1, dData.textSelect2);
+            playerDialogBox.SetPlayerDialogOption(dData.textSelect1, dData.textSelect2);*/
         }
         else
         {
+            ActiveDialogEvent();
             dialogueIdx = dData.textNext1;
             playerDialogBox.ActiveButton(false);
         }
-            
+    }
+
+    void ActiveDialogEvent()
+    {
+        EventManager.Publish(dialogueList[dialogueIdx].eventID1);
     }
 
     public void SelectOption1()
     {
-        isSelect = true;
         var dData = dialogueList[dialogueIdx];
 
-        dialogueIdx = dData.textNext1;
         EventManager.Publish(dData.eventID1);
+        
+        dialogueIdx = dData.textNext1;
+        dData = dialogueList[dialogueIdx];
+        
         playerDialogBox.gameObject.SetActive(false);
         playerDialogBox.ActiveButton(false);
-        
-        NextDialog();
+     
+        isSelect = true;
+        //CurDialog(dData);
+        //NextDialog();
     }
 
     public void SelectOption2()
     {
-        isSelect = true;
         var dData = dialogueList[dialogueIdx];
 
-        dialogueIdx = dData.textNext2;
         EventManager.Publish(dData.eventID2);
+        
+        dialogueIdx = dData.textNext2;
+        dData = dialogueList[dialogueIdx];
+        
         playerDialogBox.gameObject.SetActive(false);
         playerDialogBox.ActiveButton(false);
         
-        NextDialog();
+        isSelect = true;
+        //CurDialog(dData);
+        //NextDialog();
     }
 
     bool IsOption()
     {
         if (dialogueIdx == -1)
             return false;
-        Debug.Log(dialogueIdx);
         return dialogueList[dialogueIdx].textType == 2;
     }
 
