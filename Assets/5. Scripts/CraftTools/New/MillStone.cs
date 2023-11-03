@@ -100,7 +100,7 @@ namespace RavenCraftCore
             /*GetMousePosToDeg();
             millStoneTrack.m_Position = deg / 360f;
             */
-            prevTheta = deg;
+            deg = prevTheta;
             
             StartCoroutine(InitMousePosition());
 
@@ -108,16 +108,10 @@ namespace RavenCraftCore
 
         void GetMousePosToDeg()
         {
-            print(millStoneCenterPos.position);
             var mPos = CursorManager.GetCursorPosition() - millStoneCenterPos.position;
 
             theta = Mathf.Atan2(mPos.y, mPos.x);
             deg = (theta * Mathf.Rad2Deg) + 180;
-
-            /*if (deg < 0)
-                deg *= -1;*/
-
-            //theta = deg * Mathf.Deg2Rad;
         }
 
         IEnumerator InitMousePosition()

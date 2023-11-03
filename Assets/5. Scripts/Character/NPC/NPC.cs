@@ -145,18 +145,18 @@ public class NPC : Character, IInteraction
     public void TalkEnd()
     {
         //GameManager.Instance.GameTime.TimeStop(false);
-        dialogBox.gameObject.SetActive(false);
+        dialogBox.transform.parent.gameObject.SetActive(false);
     }
 
     public void Talk(string talkScript)
     {
-        dialogBox.gameObject.SetActive(true);
         dialogBox.SetScript(talkScript);
+        dialogBox.transform.parent.gameObject.SetActive(true);
     }
 
     void EndConversation()
     {
-        dialogBox.gameObject.SetActive(false);
+        dialogBox.transform.parent.gameObject.SetActive(false);
     }
 
     public void SetSchedule(TimeTableData newSchedule)
@@ -210,7 +210,8 @@ public class NPC : Character, IInteraction
 
     public void ChangeState(NPCBehaviour newBehaviour)
     {
-        prevBehaviour = curBehaviour;        
+        if(newBehaviour != NPCBehaviour.Greeting)
+            prevBehaviour = curBehaviour;
         fsm.ChangeState(states[(int)newBehaviour]);
         curBehaviour = newBehaviour;
     }

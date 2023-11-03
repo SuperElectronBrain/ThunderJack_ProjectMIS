@@ -26,7 +26,7 @@ namespace RavenCraftCore
         private Vector3 originPos;
 
         [SerializeField, Range(0f, 1f)] 
-        private float speed;
+        private float tilt;
         [SerializeField, Range(0f, 1f)] 
         private float inputAngle;
         [SerializeField]
@@ -43,6 +43,9 @@ namespace RavenCraftCore
         [Header("CraftingTools")]
         [SerializeField]
         Press press;
+
+        [SerializeField] private CreateWaterBall cwb;
+        [SerializeField] private Transform pos;
 
         private void Start()
         {
@@ -128,12 +131,13 @@ namespace RavenCraftCore
             }
             
             var dis = Vector2.Distance(transform.position, inlet.position) * accuracy;
-            speed = Mathf.Lerp(1, 0, dis);
+            tilt = Mathf.Lerp(1, 0, dis);
             
-            track.TrackTime = speed;
+            track.TrackTime = tilt;
 
-            if(speed >= inputAngle)
+            if(tilt >= inputAngle)
             {
+                cwb.Create(pos.position);
                 InputSoultion();
             }
 
