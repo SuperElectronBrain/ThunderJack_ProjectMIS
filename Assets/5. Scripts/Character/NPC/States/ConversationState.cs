@@ -15,7 +15,7 @@ public class ConversationState : State<NPC>
         isTalking = true;
         entity.isTalk = true;
         entity.agent.isStopped = true;
-        entity.lookDir.SetDir(transform.position, entity.curInteractionObj.transform.position);
+        entity.lookDir.SetDir(entity.myTransform, entity.curInteractionObj.transform.position);
 
         var scaleX = entity.lookDir.isRight ? -1 : 1;
         var newScale = entity.myTransform.localScale;
@@ -61,7 +61,7 @@ public class ConversationState : State<NPC>
 
     IEnumerator CTwinkling(NPC entity, float delay)
     {
-        Debug.Log("º¯°æ Àü " + entity.SkAni.AnimationName);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ " + entity.SkAni.AnimationName);
         yield return new WaitForSeconds(delay);
 
         if (isTwinkling)
@@ -69,7 +69,7 @@ public class ConversationState : State<NPC>
         else
             entity.SkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("2", "1"), true, 0);
 
-        Debug.Log("º¯°æ ÈÄ " + entity.SkAni.AnimationName);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ " + entity.SkAni.AnimationName);
 
         isTwinkling = !isTwinkling;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,13 @@ public class PlayerDialogBox : MonoBehaviour
     TextMeshPro dialogName;
     [SerializeField]
     Text text;
+
+    private void Awake()
+    {
+        var dialogue = GameManager.Instance.Dialogue;
+        dialogue.InitSetting(this);
+        Debug.Log("Player Dialog Awake");
+    }
 
     private void OnEnable()
     {
