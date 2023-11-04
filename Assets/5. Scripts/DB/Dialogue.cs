@@ -33,13 +33,8 @@ public class Dialogue : MonoBehaviour
     public List<DialogueData> dialogueList = new();
 
     [SerializeField]
-    DialogueBox dialogBox;
-
-    [SerializeField]
     int dialogueIdx = 0;
-
-    [SerializeField]
-    TextMeshPro playerText;
+    
     [SerializeField]
     PlayerDialogBox playerDialogBox;
 
@@ -51,6 +46,11 @@ public class Dialogue : MonoBehaviour
     {
         //playerDialogBox = FindObjectOfType<PlayerDialogBox>();      
         //EventManager.Subscribe(EventType.NextDialog, ShowOption);
+    }
+
+    public void InitSetting(PlayerDialogBox playerDialog)
+    {
+        playerDialogBox = playerDialog;
     }
 
     public void InitDialogue(string newDialogue, int formal)

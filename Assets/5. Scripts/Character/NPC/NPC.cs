@@ -43,6 +43,7 @@ public class NPC : Character, IInteraction
     public GameObject targetInteractionObj;
 
     public GameObject player;
+    public Transform myTransform;
 
     [SerializeField]
     float sightRange;
@@ -240,7 +241,7 @@ public class NPC : Character, IInteraction
 
     public void LookAtTarget()
     {
-        lookDir.SetDir(transform.position, curInteractionObj.transform.position);
+        lookDir.SetDir(myTransform, curInteractionObj.transform.position);
     }
 
     public void Flip()
@@ -276,17 +277,17 @@ public class LookDir
         else
             isSideWalk = false;
     }
-    public void SetDir(Vector3 myPos, Vector3 targetPos)
+    public void SetDir(Transform myPos, Vector3 targetPos)
     {
-        if (myPos.x <= targetPos.x)
-            isRight = true;
-        else
-            isRight = false;
-
-        if (myPos.z >= targetPos.z)
-            isFront = true;
-        else
-            isFront = false;
+        var pos = myPos.position;
+        pos.y = 0f;
+        targetPos.y = 0f;
+        var dir = (targetPos - pos).normalized;
+        var cross = Vector3.Cross(myPos.transform.forward, dir);
+        var dot = Vector3.Dot(myPos.transform.forward, dir);
+        
+        isRight = cross.y >= 0;
+        isFront = dot <= 0;
 
         isSideWalk = false;
     }

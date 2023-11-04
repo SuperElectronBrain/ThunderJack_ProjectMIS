@@ -15,7 +15,7 @@ public class Garden : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             Debug.Log("Save " + transform.GetChild(i).name);
-            transform.GetChild(i).GetComponent<FlowerPot>().SaveFlowerData();
+            transform.GetChild(i).GetComponentInChildren<FlowerPot>().SaveFlowerData();
         }
     }
 
@@ -24,7 +24,7 @@ public class Garden : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             Debug.Log("Load " + transform.GetChild(i).name);
-            transform.GetChild(i).GetComponent<FlowerPot>().LoadFlowerData();
+            transform.GetChild(i).GetComponentInChildren<FlowerPot>().LoadFlowerData();
         }
     }
 }

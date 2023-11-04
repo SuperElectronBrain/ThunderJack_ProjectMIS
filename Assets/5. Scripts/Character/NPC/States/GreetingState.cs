@@ -9,7 +9,7 @@ public class GreetingState : State<NPC>
         elapsedTime = 0;
         entity.isMeet = true;
 
-        entity.lookDir.SetDir(transform.position, entity.player.transform.position);
+        entity.lookDir.SetDir(entity.myTransform, entity.player.transform.position);
 
         var scaleX = entity.lookDir.isRight ? -1 : 1;
         var newScale = entity.myTransform.localScale;
