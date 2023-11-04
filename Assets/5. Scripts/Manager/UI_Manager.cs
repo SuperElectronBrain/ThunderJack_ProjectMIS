@@ -17,7 +17,7 @@ public class UI_Manager : MonoBehaviour
 				PlayerCharacterUIScript playerCharacterUI = FindObjectOfType<PlayerCharacterUIScript>();
 				if (playerCharacterUI != null)
 				{
-					GameObject go = UniFunc.GetChildOfName(playerCharacterUI.transform, "OptionIconPanel");
+					GameObject go = UniFunc.GetChildOfName(playerCharacterUI.transform, "OptionPanel");
 					OptionUiComponent optionUi = go.GetComponent<OptionUiComponent>();
 					if (optionUi != null) { optionUi.ActiveUI(); }
 				}
