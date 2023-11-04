@@ -14,6 +14,8 @@ Material:
   m_ValidKeywords:
   - N_F_EAL_ON
   - N_F_ESSAO_ON
+  - N_F_GLO_ON
+  - N_F_NM_ON
   - N_F_O_ON
   - N_F_RDC_ON
   - N_F_RELGI_ON
@@ -97,11 +99,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 022d2aab82e8dff4faf7583bfba9c86a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 753e95fe548b0cc4dbb91d009f8b023d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskGloss:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6f5edd69ed5d3144aa459b91dc515cb7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskReflection:
@@ -121,7 +123,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 06285e5858ed10c4a87381426d41d949, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -202,14 +204,14 @@ Material:
     - _GIFlatShade: 0
     - _GIShadeThreshold: 0
     - _GlossColorPower: 10
-    - _GlossIntensity: 0.203
+    - _GlossIntensity: 1
     - _GlossMapScale: 0
-    - _GlossSoftness: 1
+    - _GlossSoftness: 0.197
     - _GlossTextureFollowLight: 0
     - _GlossTextureFollowObjectRotation: 0
     - _GlossTextureRotate: 0
     - _GlossTextureSoftness: 0
-    - _Glossiness: 0.773
+    - _Glossiness: 0.353
     - _GlossyReflections: 0
     - _Glow_Edge_Width: 1
     - _HighlightColorPower: 1
@@ -223,7 +225,7 @@ Material:
     - _MCIALO: 0
     - _MCapIntensity: 1
     - _MVCOL: 0
-    - _MaiColPo: 0.8
+    - _MaiColPo: 1
     - _MaxFadDistance: 2
     - _Metallic: 0
     - _MinFadDistance: 0
@@ -237,7 +239,7 @@ Material:
     - _N_F_EAL: 1
     - _N_F_ESSAO: 1
     - _N_F_FR: 0
-    - _N_F_GLO: 0
+    - _N_F_GLO: 1
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
@@ -245,7 +247,7 @@ Material:
     - _N_F_MSSOLTFO: 0
     - _N_F_NFD: 0
     - _N_F_NLASOBF: 0
-    - _N_F_NM: 0
+    - _N_F_NM: 1
     - _N_F_O: 1
     - _N_F_OFLMB: 0
     - _N_F_PT: 0
@@ -260,7 +262,7 @@ Material:
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
     - _NoisyOutlineIntensity: 0.766
-    - _NormalMapIntensity: 1
+    - _NormalMapIntensity: 0
     - _OcclusionStrength: 1
     - _Opacity: 1
     - _Oper: 0
@@ -272,7 +274,7 @@ Material:
     - _OutlineWidth: 0.03
     - _OutlineWidthAffectedByViewDistance: 0
     - _OutlineZPostionInCamera: 0
-    - _OverallShadowColorPower: 1
+    - _OverallShadowColorPower: 0.26
     - _PSGLOTEX: 0
     - _PTexturePower: 1
     - _Parallax: 0.005
@@ -280,7 +282,7 @@ Material:
     - _QueueOffset: 0
     - _RELG: 1
     - _ReceiveShadows: 1
-    - _ReduSha: 0.66
+    - _ReduSha: 0
     - _RefMetallic: 0
     - _RefVal: 0
     - _ReflectionIntensity: 0
@@ -298,11 +300,11 @@ Material:
     - _SelfLitIntensity: 0
     - _SelfLitPower: 5.12
     - _SelfShadowAffectedByLightShadowStrength: 0
-    - _SelfShadowHardness: 0.763
+    - _SelfShadowHardness: 0.602
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 0.644
+    - _SelfShadowRealtimeShadowIntensity: 0.742
     - _SelfShadowShadowTAtViewDirection: 0
-    - _SelfShadowThreshold: 0.945
+    - _SelfShadowThreshold: 0.974
     - _ShadowColorTexturePower: 0
     - _ShadowHardness: 0
     - _ShadowTColorPower: 1
@@ -344,18 +346,18 @@ Material:
     - _Color: {r: 0.9432995, g: 0.95283014, b: 0.8494571, a: 1}
     - _CustomLightDirection: {r: 0, g: 0, b: 10, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GlossColor: {r: 0.2830189, g: 0.17220467, b: 0.105464585, a: 1}
     - _Glow_Color: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 0.77793974, g: 0.8018868, b: 0.73758453, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 20.89}
-    - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OverallShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _PTCol: {r: 0, g: 0, b: 0, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _SSAOColor: {r: 0, g: 0, b: 0, a: 0}
     - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SelfShadowRealTimeShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SelfShadowRealTimeShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowTColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _XYZPosition: {r: 0, g: 0, b: 0, a: 0}
