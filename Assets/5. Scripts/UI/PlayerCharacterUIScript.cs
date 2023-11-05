@@ -83,10 +83,6 @@ public class PlayerCharacterUIScript : MonoBehaviour
 {
 	public ClockUIScript m_ClockUIScript;
 	public CurrencyUIScript m_CurrencyUIScript;
-	//public TextMeshProUGUI m_MoneyText;
-	//public TextMeshProUGUI m_HonerText;
-	//private TextMeshProUGUI m_AddMoneyText;
-	//private TextMeshProUGUI m_AddHonerText;
 	public InventoryUIScript m_InventoryUIScript;
 	public NPCStoreUIScript m_NPCStoreUIScript;
 	public RecipeBookUIScript m_RecipeBookUIScript;
@@ -96,7 +92,6 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public MonologueUI m_MonologueUI = new MonologueUI();
 	public ItemInfoDisplay m_ItemInfoDisplay = new ItemInfoDisplay();
 	public InteractionIcon m_InteractionIcon = new InteractionIcon();
-	//public UnityEngine.UI.Image m_InteractionIcon;
 	public UnityEngine.UI.Image m_FadeUI;
 
 	// Start is called before the first frame update
@@ -105,20 +100,10 @@ public class PlayerCharacterUIScript : MonoBehaviour
 		ReFindUI();
 	}
 
-	// Update is called once per frame
-	//void Update()
-	//{
-	//    
-	//}
-
 	public void ReFindUI()
 	{
 		if (m_ClockUIScript == null) { m_ClockUIScript = UniFunc.GetChildComponent<ClockUIScript>(transform); }
 		if (m_CurrencyUIScript == null) { m_CurrencyUIScript = UniFunc.GetChildComponent<CurrencyUIScript>(transform); }
-		//if (m_MoneyText == null) { m_MoneyText = UniFunc.GetChildOfName(transform, "MoneyText (TMP)").GetComponent<TextMeshProUGUI>(); }
-		//if (m_HonerText == null) { m_HonerText = UniFunc.GetChildOfName(transform, "HonerText (TMP)").GetComponent<TextMeshProUGUI>(); }
-		//if (m_AddMoneyText == null) { m_AddMoneyText = UniFunc.GetChildOfName(transform, "AddMoneyText (TMP)").GetComponent<TextMeshProUGUI>(); }
-		//if (m_AddHonerText == null) { m_AddHonerText = UniFunc.GetChildOfName(transform, "AddHonerText (TMP)").GetComponent<TextMeshProUGUI>(); }
 		if (m_InventoryUIScript == null) { m_InventoryUIScript = UniFunc.GetChildComponent<InventoryUIScript>(transform); }
 		if (m_NPCStoreUIScript == null) { m_NPCStoreUIScript = UniFunc.GetChildComponent<NPCStoreUIScript>(transform); }
 		if (m_RecipeBookUIScript == null) { m_RecipeBookUIScript = UniFunc.GetChildComponent<RecipeBookUIScript>(transform); }
@@ -188,34 +173,4 @@ public class PlayerCharacterUIScript : MonoBehaviour
 		}
 		if (m_FadeUI == null) { m_FadeUI = UniFunc.GetChildOfName(transform, "FadeUI").GetComponent<UnityEngine.UI.Image>(); }
 	}
-
-	//public void AddMoneyText(string param)
-	//{
-	//	if(m_AddMoneyText != null)
-	//	{
-	//		m_AddMoneyText.gameObject.SetActive(true);
-	//		m_AddMoneyText.text = param;
-	//		Invoke("MoneyTextDeactivate", 3);
-	//	}
-	//}
-	//
-	//private void MoneyTextDeactivate()
-	//{
-	//	if (m_AddMoneyText != null) { m_AddMoneyText.gameObject.SetActive(false); }
-	//}
-	//
-	//public void AddHonerText(string param)
-	//{
-	//	if (m_AddHonerText != null)
-	//	{
-	//		m_AddHonerText.gameObject.SetActive(true);
-	//		m_AddHonerText.text = param;
-	//		Invoke("HonerTextDeactivate", 3);
-	//	}
-	//}
-	//
-	//private void HonerTextDeactivate()
-	//{
-	//	if (m_AddHonerText != null) { m_AddHonerText.gameObject.SetActive(false); }
-	//}
 }
