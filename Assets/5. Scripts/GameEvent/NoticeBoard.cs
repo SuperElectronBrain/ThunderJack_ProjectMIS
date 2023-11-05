@@ -19,8 +19,9 @@ public class NoticeBoard : MonoBehaviour, IInteraction
 
     [SerializeField]
     UnityEngine.Events.UnityEvent onInteractionEvent;
+	[SerializeField] private AudioSource m_InteractionSound;
 
-    public bool IsUsed { get; set; }
+	public bool IsUsed { get; set; }
 
     public void Start()
     {
@@ -45,7 +46,8 @@ public class NoticeBoard : MonoBehaviour, IInteraction
             //CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
             CameraEvent.Instance.ChangeCam(vCam);
             onInteractionEvent?.Invoke();
-        }        
+			if (m_InteractionSound != null) { if (m_InteractionSound.isPlaying == false) m_InteractionSound.Play(); }
+		}        
     }
 
     public void ViewNoticeBoard()
