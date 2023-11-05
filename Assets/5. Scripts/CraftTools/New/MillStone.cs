@@ -80,7 +80,7 @@ namespace RavenCraftCore
 
         public void EnterHandle()
         {
-            if (isGrab)
+            if (isGrab || CursorManager.isUsed)
                 return;
 
             skAni.AnimationName = "HandOn";
