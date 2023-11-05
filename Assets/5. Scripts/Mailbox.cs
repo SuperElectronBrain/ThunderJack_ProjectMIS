@@ -44,8 +44,8 @@ public class Mailbox : MonoBehaviour, IInteraction
 	private List<AdvencedQuestData> QuestTable = null;
 	private AdvencedQuestData m_QuestData;
 	private bool bCommunication; public bool IsUsed { get { return bCommunication; } set { bCommunication = value; } }
-
 	[SerializeField] private GameObject m_SD;
+	[SerializeField] private AudioSource m_InteractionSound;
 	private PlayerCharacter m_PlayerCharacter;
 
 	// Start is called before the first frame update
@@ -153,7 +153,8 @@ public class Mailbox : MonoBehaviour, IInteraction
 
 	public void Interaction(GameObject p_GameObject)
 	{
-		if(m_QuestData.questID != 0)
+		if (m_InteractionSound != null) { if (m_InteractionSound.isPlaying == false) m_InteractionSound.Play(); }
+		if (m_QuestData.questID != 0)
 		{
 			if(p_GameObject != null)
 			{
@@ -168,7 +169,20 @@ public class Mailbox : MonoBehaviour, IInteraction
 						}
 
 						t_PalyerCharacter.m_QuestComponet.AddQuest
-						(new Quest(m_QuestData.questID, m_QuestData.questName, m_QuestData.questScript, m_QuestData.questGrade, m_QuestData.requestItemID, m_QuestData.guestID, m_QuestData.guestName, m_QuestData.timeLimit, false));
+						(
+							new Quest
+							(
+								m_QuestData.questID,
+								m_QuestData.questName,
+								m_QuestData.questScript,
+								m_QuestData.questGrade,
+								m_QuestData.requestItemID,
+								m_QuestData.guestID,
+								m_QuestData.guestName,
+								m_QuestData.timeLimit,
+								false
+							)
+						);
 						if (t_PalyerCharacter.m_QuestComponet.m_QuestListUIScript != null)
 						{
 							t_PalyerCharacter.m_QuestComponet.m_QuestListUIScript.RefreshUI();

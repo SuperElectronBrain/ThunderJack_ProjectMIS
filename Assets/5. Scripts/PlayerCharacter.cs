@@ -39,6 +39,7 @@ public class PlayerCharacter : CharacterBase
 	private float m_MonologueDisplayTime = 0.0f;
 	private float m_GuideDisplayTime = 0.0f;
 	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
+	private bool isGround = false;
 
 	//Component
 	private CapsuleCollider m_Collider;
@@ -117,7 +118,6 @@ public class PlayerCharacter : CharacterBase
 		ItemInfoDisplayProcessor();
 		PlayerCharacterUIProcessor();
 		
-
 		MonologueDisplayProcessor(DeltaTime);
 		GuideDisplayProcessor(DeltaTime);
 		FadeProcessor(DeltaTime);
@@ -171,6 +171,8 @@ public class PlayerCharacter : CharacterBase
 				{
 					t_InteractionObj.interaction.Interaction(gameObject);
 					m_InteractionTarget = t_InteractionObj.interactionGO.transform;
+					Vector3 t_Vector = GetInteractionDirection();
+					//t_Vector.x 
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.Q) == true)
@@ -790,11 +792,14 @@ public class PlayerCharacter : CharacterBase
 	{
 		if (m_Velocity != 0)
 		{
-			if(m_FootStepSound != null)
+			if (isGround == true)
 			{
-				if (m_FootStepSound.isPlaying == false)
+				if (m_FootStepSound != null)
 				{
-					m_FootStepSound.Play();
+					if (m_FootStepSound.isPlaying == false)
+					{
+						m_FootStepSound.Play();
+					}
 				}
 			}
 		}
@@ -967,19 +972,19 @@ public class PlayerCharacter : CharacterBase
 	{
 		base.OnCollisionEnter(collision);
 
-		if (collision.gameObject.name.Contains("F_Bridge") == true)
-		{
-			//bUseDustEffect = true;
-		}
+		//if (collision.gameObject.name.Contains("F_Bridge") == true)
+		//{
+			isGround = true;
+		//}
 	}
 
 	protected override void OnCollisionExit(Collision collision)
 	{
 		base.OnCollisionExit(collision);
-		if (collision.gameObject.name.Contains("F_Bridge") == true)
-		{
-			//bUseDustEffect = false;
-		}
+		//if (collision.gameObject.name.Contains("F_Bridge") == true)
+		//{
+			isGround = false;
+		//}
 	}
 
 	/// <summary>
