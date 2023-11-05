@@ -43,7 +43,6 @@ public class NPC : Character, IInteraction
     public GameObject targetInteractionObj;
 
     public GameObject player;
-    public Transform myTransform;
 
     [SerializeField]
     float sightRange;
@@ -237,6 +236,14 @@ public class NPC : Character, IInteraction
     {
         EventManager.Publish(EventType.StartInteraction);
         StartConversation();
+    }
+
+    public void FindPlayer()
+    {
+        if (player == null || player.activeSelf == false)
+        {
+            player = GameObject.FindObjectOfType<PlayerCharacter>().gameObject;
+        }
     }
 
     public void LookAtTarget()

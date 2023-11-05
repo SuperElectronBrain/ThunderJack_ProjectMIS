@@ -80,4 +80,9 @@ public class PlayerDialogButton : MonoBehaviour
     {
         optionText.text = newOptionText;
     }
+
+    public bool IsNull()
+    {
+        return optionText.text.Equals("-1");
+    }
 }

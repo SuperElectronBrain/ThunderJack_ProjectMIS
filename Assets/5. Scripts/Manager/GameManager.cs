@@ -126,6 +126,11 @@ public class GameManager : Singleton<GameManager>
     public void ExitShop()
     {
         isWork = false;
+
+        for (int i = 1; i < characterDB.GetCharacterCount(); i++)
+        {
+            characterDB.GetNPC(i).player = Player.gameObject;
+        }
     }
 }
 
@@ -159,3 +164,12 @@ public class Tools
         return (T)Enum.Parse(typeof(T), data.ToString());
     }
 }
+
+/*Todo
+ 
+ 그랩 아이템 추가
+ 쓰레기통
+ 재료 액체 컬러
+ 마우스 커서 중복문제
+ 압축기 핸들 문제
+ */

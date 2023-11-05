@@ -58,6 +58,9 @@ namespace RavenCraftCore
 
         public void EnterHandle()
         {
+            if (putInValue <= 0)
+                return;
+            
             skAni.skeleton.SetSkin("Hand");
             skAni.skeleton.SetSlotsToSetupPose();            
             skAni.AnimationName = "HandOn";

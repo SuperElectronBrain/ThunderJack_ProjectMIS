@@ -7,7 +7,7 @@ using UnityEditor;
 
 public enum ItemType
 {
-    Noen = 0, Materials = 1, Gem, Accessory, Jewelry
+    None = 0, Materials = 1, Gem, Accessory, Jewelry
 }
 
 public enum SalesItemType
