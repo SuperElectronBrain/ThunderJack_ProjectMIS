@@ -61,6 +61,7 @@ namespace RavenCraftCore
 
         [SerializeField] private Animator topAni;
         [SerializeField] private Animator bottomAni;
+        [SerializeField] private Material materialColor;
 
         [SerializeField] private float topFloatValue;
         [SerializeField] private float bottomFloatValue;
@@ -75,6 +76,12 @@ namespace RavenCraftCore
 
         void SetInputItem()
         {
+            Color newColor;
+            Debug.Log(GameManager.Instance.ItemManager.GetBasicItemData(insertedItemID).accessoryColor);
+            ColorUtility.TryParseHtmlString("#"+
+                GameManager.Instance.ItemManager.GetBasicItemData(insertedItemID).accessoryColor,
+                out newColor);
+            materialColor.color = newColor;
             cup.SetInputItemID(insertedItemID);
         }
 

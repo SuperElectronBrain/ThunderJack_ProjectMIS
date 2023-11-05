@@ -137,7 +137,8 @@ namespace RavenCraftCore
 
             if(tilt >= inputAngle)
             {
-                cwb.Create(pos.position);
+                if(cwb.enabled)
+                    cwb.Create(pos.position);
                 InputSoultion();
             }
 
