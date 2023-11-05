@@ -11,8 +11,8 @@ public class CreateWaterBall : MonoBehaviour
         
     }
 
-    public void Create(Vector3 createPos)
+    public GameObject Create(Vector3 createPos)
     {
-        Instantiate(waterBall, createPos, Quaternion.identity);
+        return Instantiate(waterBall, createPos, Quaternion.identity);
     }
 }
