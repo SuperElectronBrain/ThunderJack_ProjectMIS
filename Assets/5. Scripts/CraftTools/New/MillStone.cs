@@ -72,6 +72,21 @@ namespace RavenCraftCore
         {
             millStoneTrack = GetComponentInChildren<Cinemachine.DollyCartMove>();
             skAni = GetComponentInChildren<SkeletonAnimation>();
+            EventManager.Subscribe(EventType.CreateComplate, ResetMillStone);
+        }
+
+        void ResetMillStone()
+        {
+            InitCollPos();
+            insertedItemProgress.Clear();
+        }
+
+        void InitCollPos()
+        {
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].position = colliderPos;
+            }
         }
 
         void SetInputItem()

@@ -18,6 +18,12 @@ namespace RavenCraftCore
         void Start()
         {
             elementCircles.Init();
+            EventManager.Subscribe(EventType.CreateComplate, ResetBook);
+        }
+
+        void ResetBook()
+        {
+            elementCircles.Init();
         }
 
         public void UpdateElementCircle(ElementType elementType, float updateValue)

@@ -54,6 +54,12 @@ namespace RavenCraftCore
         {
             originPos = transform.position;
             zOffset = originPos.z;
+            EventManager.Subscribe(EventType.CreateComplate, ResetCup);
+        }
+
+        void ResetCup()
+        {
+            amountValue = 0;
         }
 
         public void SetUse(bool canUse)
@@ -96,7 +102,7 @@ namespace RavenCraftCore
             isGrab = true;
             isUsed = false;
 
-            tempWaterBall = Instantiate(waterBall, transform);
+            tempWaterBall = Instantiate(waterBall);
         }
 
         void Grab(Spine.TrackEntry te)

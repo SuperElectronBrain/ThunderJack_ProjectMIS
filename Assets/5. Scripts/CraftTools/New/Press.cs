@@ -18,11 +18,6 @@ namespace RavenCraftCore
         [SerializeField]
         private Book book;
 
-        [Header("Debug")]
-
-        [SerializeField] 
-        private int d_AccessoryData;
-
         [SerializeField, Range(0, 100)]
         private float[] value;
 
@@ -54,6 +49,7 @@ namespace RavenCraftCore
         {
             originHandlePos = buttonPosition.position;
             skAni = GetComponentInChildren<SkeletonAnimation>();
+            EventManager.Subscribe(EventType.CreateComplate, ResetPress);
         }
 
         public void EnterHandle()
@@ -96,7 +92,13 @@ namespace RavenCraftCore
 
         void ResetPress()
         {
-            
+            track.m_Position = 0;
+            putInValue = 0;
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                value[i] = 0f;
+            }
         }
 
         public void PutInSoultion(float inputValue)
@@ -109,7 +111,7 @@ namespace RavenCraftCore
 
         public void SetAccessoryData(int accessoryID)
         {
-            d_AccessoryData = accessoryID;
+            //d_AccessoryData = accessoryID;
         }
 
         public void SetItemData(int itemID)
@@ -200,7 +202,8 @@ namespace RavenCraftCore
             createEffect.Play();
             var gem = GameManager.Instance.ItemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
 
-            accessoryPlate.CompleteCraft(GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, d_AccessoryData));
+            accessoryPlate.CompleteCraft(
+                GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory()));
             
             print(GameManager.Instance.ItemManager.GetItemName(gem.itemID));
         }

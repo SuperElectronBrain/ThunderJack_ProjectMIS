@@ -44,8 +44,13 @@ public class PressAccessoryPlate : MonoBehaviour
 
     public void SetAccessory(int accessoryID)
     {
-        transform.root.GetComponent<RavenCraftCore.Press>().SetAccessoryData(accessoryID);
+        //transform.root.GetComponent<RavenCraftCore.Press>().SetAccessoryData(accessoryID);
         spriteRenderer.sprite = GameManager.Instance.ItemManager.GetItemSprite(accessoryID);
+    }
+
+    public int GetAccessory()
+    {
+        return itemID;
     }
 
     public void CompleteCraft(int completeItemID)
