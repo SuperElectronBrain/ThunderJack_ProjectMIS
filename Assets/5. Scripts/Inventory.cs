@@ -441,7 +441,7 @@ public class Inventory : MonoBehaviour
 			{
 				if(t_PlayerCharacter.m_PlayerCharacterUIScript != null)
 				{
-					t_PlayerCharacter.m_PlayerCharacterUIScript.AddMoneyText(p_AItem.itemAmount + "");
+					t_PlayerCharacter.m_PlayerCharacterUIScript.m_CurrencyUIScript.AddMoneyText(p_AItem.itemAmount);
 				}
 			}
 		}
@@ -452,7 +452,7 @@ public class Inventory : MonoBehaviour
 			{
 				if (t_PlayerCharacter.m_PlayerCharacterUIScript != null)
 				{
-					t_PlayerCharacter.m_PlayerCharacterUIScript.AddHonerText(p_AItem.itemAmount + "");
+					t_PlayerCharacter.m_PlayerCharacterUIScript.m_CurrencyUIScript.AddHonerText(p_AItem.itemAmount);
 				}
 			}
 		}
@@ -484,6 +484,29 @@ public class Inventory : MonoBehaviour
 				}
 
 				break;
+			}
+		}
+
+		if (p_AItem.itemCode == 1000)
+		{
+			PlayerCharacter t_PlayerCharacter = m_Owner as PlayerCharacter;
+			if (t_PlayerCharacter != null)
+			{
+				if (t_PlayerCharacter.m_PlayerCharacterUIScript != null)
+				{
+					t_PlayerCharacter.m_PlayerCharacterUIScript.m_CurrencyUIScript.AddMoneyText(-p_AItem.itemAmount);
+				}
+			}
+		}
+		else if (p_AItem.itemCode == 1001)
+		{
+			PlayerCharacter t_PlayerCharacter = m_Owner as PlayerCharacter;
+			if (t_PlayerCharacter != null)
+			{
+				if (t_PlayerCharacter.m_PlayerCharacterUIScript != null)
+				{
+					t_PlayerCharacter.m_PlayerCharacterUIScript.m_CurrencyUIScript.AddHonerText(-p_AItem.itemAmount);
+				}
 			}
 		}
 

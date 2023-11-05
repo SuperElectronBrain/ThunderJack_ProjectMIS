@@ -22,7 +22,6 @@ public class GameExitButtonScript : ButtonScript
 		base.OnButtonClick();
 
 #if UNITY_EDITOR
-		Debug.Log("Exit");
 		UnityEditor.EditorApplication.isPlaying = false;
 #else
 		Application.Quit();
