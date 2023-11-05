@@ -73,7 +73,8 @@ public class PlayerDialogBox : MonoBehaviour
     public void ActiveButton(bool active)
     {
         button1.gameObject.SetActive(active);
-        button2.gameObject.SetActive(active);
+        if(!button2.IsNull())
+            button2.gameObject.SetActive(active);
         dialogScript.gameObject.SetActive(!active);
     }
 

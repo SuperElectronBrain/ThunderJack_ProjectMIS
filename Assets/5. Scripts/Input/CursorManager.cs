@@ -23,6 +23,7 @@ public class CursorManager : MonoBehaviour
     
     public static UnityEvent<bool> onActive = new();
     public static UnityEvent onActiveComplate = new();
+    public static bool isUsed;
 
     private void Start()
     {
@@ -44,6 +45,7 @@ public class CursorManager : MonoBehaviour
         /*mPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 0));
         cursorImage.rectTransform.anchoredPosition = mPos;*/
 
+        isUsed = true;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         onActiveComplate?.Invoke();
@@ -52,6 +54,7 @@ public class CursorManager : MonoBehaviour
 
     private void OnDisable()
     {
+        isUsed = false;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }

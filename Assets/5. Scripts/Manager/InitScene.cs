@@ -8,7 +8,7 @@ public class InitScene : MonoBehaviour
     SceneType sceneType;
     public UnityEvent onInitEventToOutSide;
     public UnityEvent onInitEventToInSide;
-    public UnityEvent onInitEventToBussiness;
+    public UnityEvent onInitEventToBusiness;
 
     private void Start()
     {
@@ -22,7 +22,7 @@ public class InitScene : MonoBehaviour
                 onInitEventToInSide?.Invoke();
                 break;
             case SceneType.Bussiness:
-                onInitEventToBussiness?.Invoke();
+                onInitEventToBusiness?.Invoke();
                 break;
         }
     }
