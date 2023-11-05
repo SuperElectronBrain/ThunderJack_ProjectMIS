@@ -537,11 +537,11 @@ public class PlayerCharacter : CharacterBase
 				}
 				if (m_Inventory.m_MoneyText == null)
 				{
-					m_Inventory.m_MoneyText = m_PlayerCharacterUIScript.m_MoneyText;
+					m_Inventory.m_MoneyText = m_PlayerCharacterUIScript.m_CurrencyUIScript.m_MoneyText;
 				}
 				if (m_Inventory.m_HonerText == null)
 				{
-					m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_HonerText;
+					m_Inventory.m_HonerText = m_PlayerCharacterUIScript.m_CurrencyUIScript.m_HonerText;
 				}
 				m_Inventory.RefreshInventory();
 
