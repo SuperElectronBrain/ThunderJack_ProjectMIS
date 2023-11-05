@@ -3456,6 +3456,8 @@ MonoBehaviour:
   press: {fileID: 995446914}
   cwb: {fileID: 310567364}
   pos: {fileID: 559301520}
+  waterBall: {fileID: 2087907745}
+  tempWaterBall: {fileID: 0}
 --- !u!54 &310567361
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3520,6 +3522,7 @@ Transform:
   - {fileID: 1104669695}
   - {fileID: 1257803068}
   - {fileID: 559301520}
+  - {fileID: 2087907745}
   m_Father: {fileID: 0}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 31.927, y: 0, z: 0}
@@ -23988,6 +23991,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2077320100}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2087907744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2087907745}
+  m_Layer: 0
+  m_Name: WaterBall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2087907745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087907744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 310567363}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2089439186
 GameObject:
   m_ObjectHideFlags: 0

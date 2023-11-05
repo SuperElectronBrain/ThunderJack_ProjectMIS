@@ -47,6 +47,9 @@ namespace RavenCraftCore
         [SerializeField] private CreateWaterBall cwb;
         [SerializeField] private Transform pos;
 
+        [SerializeField] private Transform waterBall;
+        [SerializeField] private Transform tempWaterBall;
+
         private void Start()
         {
             originPos = transform.position;
@@ -92,6 +95,8 @@ namespace RavenCraftCore
             skAni.timeScale = 0;
             isGrab = true;
             isUsed = false;
+
+            tempWaterBall = Instantiate(waterBall, transform);
         }
 
         void Grab(Spine.TrackEntry te)
@@ -126,7 +131,8 @@ namespace RavenCraftCore
                 track.TrackTime = 0;
                 track.TimeScale = 0;                
                 skAni.skeleton.SetSkin("NoHand");
-                skAni.skeleton.SetSlotsToSetupPose();                
+                skAni.skeleton.SetSlotsToSetupPose();
+                Destroy(tempWaterBall.gameObject);
                 return;
             }
             
@@ -138,7 +144,7 @@ namespace RavenCraftCore
             if(tilt >= inputAngle)
             {
                 if(cwb.enabled)
-                    cwb.Create(pos.position);
+                    cwb.Create(pos.position).transform.SetParent(tempWaterBall);
                 InputSoultion();
             }
 

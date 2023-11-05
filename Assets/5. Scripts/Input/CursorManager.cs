@@ -38,8 +38,6 @@ public class CursorManager : MonoBehaviour
         var mousePosition = Input.mousePosition;
         CursorOffset = cursorOffset;
         mouseSensitivity = speed;
-
-        Debug.Log(cam.name + " " + cam.transform.position);
         //RectTransformUtility.ScreenPointToLocalPointInRectangle(cursorImage.rectTransform, mousePosition, canvas.worldCamera, out pos);
 
         /*mPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 0));
