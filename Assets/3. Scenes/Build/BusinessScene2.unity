@@ -768,6 +768,9 @@ MonoBehaviour:
     itemProgress: 0
     itemAmount: 0
     selectCount: 0
+  m_SpeechBubble: {fileID: 0}
+  m_SpeechBubbleText: {fileID: 0}
+  m_SpeechBubbleTextLegacy: {fileID: 0}
   m_FootStepEffectInside: {fileID: 0}
   m_FootStepEffectOutdoor: {fileID: 0}
   m_ShadowAnimator: {fileID: 0}
@@ -828,7 +831,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78428130}
   m_LocalRotation: {x: 0.00000003981894, y: 0.00000004195182, z: -0.11342118, w: 0.99354696}
-  m_LocalPosition: {x: 0.14, y: -0.541, z: 0}
+  m_LocalPosition: {x: 0.36, y: -0.37, z: -0.14}
   m_LocalScale: {x: 1.2599069, y: 0.099043444, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3538,6 +3541,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76ccc01cdb05a243b9a24ef3feef094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxScale: 0.1
+  minScale: 0.05
   waterBall: {fileID: 8188237192559352233, guid: a7608563d10cae44680f91932f1d632c, type: 3}
 --- !u!1 &313879535
 GameObject:
@@ -4385,7 +4390,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: be86335d78af90e4b986ea89899f0f9e, type: 2}
+  - {fileID: 2100000, guid: f517b819bb8aff341b2f894d30b514ea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9872,7 +9877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 774039017}
   m_LocalRotation: {x: 0.27502492, y: -0, z: -0, w: 0.96143717}
-  m_LocalPosition: {x: 1.4, y: -2.479, z: -17.42}
+  m_LocalPosition: {x: 1.4, y: -1.94, z: -17.6}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.099999994}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9933,7 +9938,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788128046}
   m_LocalRotation: {x: 0.27502492, y: -0, z: -0, w: 0.96143717}
-  m_LocalPosition: {x: 1.4, y: -2.479, z: -17.42}
+  m_LocalPosition: {x: 1.4, y: -1.94, z: -17.6}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.099999994}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10365,7 +10370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 877201766}
   m_LocalRotation: {x: 0.27502492, y: -0, z: -0, w: 0.96143717}
-  m_LocalPosition: {x: 1.4, y: -2.479, z: -17.42}
+  m_LocalPosition: {x: 1.4, y: -1.94, z: -17.6}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.099999994}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10582,7 +10587,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 915295022}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.5, y: -0.01, z: 0}
+  m_LocalPosition: {x: -0.28, y: -0.01, z: -0.14}
   m_LocalScale: {x: 1.2599069, y: 0.099043444, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12490,7 +12495,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   putInValue: 0
   book: {fileID: 1473742086}
-  d_AccessoryData: 22
   value:
   - 0
   - 0
@@ -15757,7 +15761,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259035619}
   m_LocalRotation: {x: 0, y: 0, z: 0.11341997, w: 0.99354714}
-  m_LocalPosition: {x: 0.13, y: 0.56, z: 0}
+  m_LocalPosition: {x: 0.35, y: 0.3, z: -0.14}
   m_LocalScale: {x: 1.2599069, y: 0.099043444, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19363,7 +19367,7 @@ MonoBehaviour:
   - {fileID: 788128048}
   - {fileID: 774039019}
   - {fileID: 877201768}
-  colliderPos: {x: 1.4, y: -2.64, z: -17.42}
+  colliderPos: {x: 1.4, y: -2.44, z: -17.42}
   grindingValue: 0
   resultValue: 100
   grindingSpeed: 0.1
@@ -23392,7 +23396,7 @@ MonoBehaviour:
   initialFlipY: 0
   updateWhenInvisible: 3
   separatorSlotNames: []
-  zSpacing: 0
+  zSpacing: -0.01
   useClipping: 1
   immutableTriangles: 0
   pmaVertexColors: 1
