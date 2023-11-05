@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public interface IGrabable
 {
@@ -55,7 +57,9 @@ public class PlayerCharacter : CharacterBase
 	[HideInInspector] public AdvencedItem m_GrabItemCode = new AdvencedItem();
 	public ItemInfoDisplay m_ItemInfoDisplay;
 	[HideInInspector] public AdvencedItem m_HoverItemCode = new AdvencedItem();
-
+	[SerializeField] private GameObject m_SpeechBubble;
+	[SerializeField] private TextMeshPro m_SpeechBubbleText;
+	[SerializeField] private UnityEngine.UI.Text m_SpeechBubbleTextLegacy;
 	//VFX
 	[SerializeField] private ParticleSystem m_FootStepEffectInside;
 	[SerializeField] private ParticleSystem m_FootStepEffectOutdoor;
@@ -815,6 +819,47 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
+	public void PopUpSpeechBubble(string p_Script, bool bParam)
+	{
+		if(m_SpeechBubble != null)
+		{
+			if (m_SpeechBubble.activeSelf != bParam) { m_SpeechBubble.SetActive(bParam); }
+			if (m_SpeechBubbleText != null)
+			{
+				if(m_SpeechBubbleTextLegacy != null)
+				{
+					m_SpeechBubbleTextLegacy.text = p_Script;
+
+					m_SpeechBubbleTextLegacy.DOKill();
+					m_SpeechBubbleTextLegacy.text = null;
+					m_SpeechBubbleTextLegacy.DOText(p_Script, 1f).OnUpdate(() =>
+					{
+						m_SpeechBubbleText.text = m_SpeechBubbleTextLegacy.text;
+					});
+				}
+			}
+		}
+	}
+	public void PopUpMonologue(string p_Script, bool bParam)
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_MonologueUI != null)
+			{
+				if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO != null)
+				{
+					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.activeSelf != bParam)
+					{
+						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueGO.SetActive(bParam);
+					}
+					if (m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText != null)
+					{
+						m_PlayerCharacterUIScript.m_MonologueUI.m_MonologueText.text = p_Script;
+					}
+				}
+			}
+		}
+	}
 	public void PopUpMonologue(string p_Script, float p_Time)
 	{
 		if(m_PlayerCharacterUIScript != null)
