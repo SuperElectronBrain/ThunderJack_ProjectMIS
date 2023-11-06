@@ -589,6 +589,7 @@ public class PlayerCharacter : CharacterBase
 					if (m_PlayerCharacterUIScript.m_MailBoxUIScript != null)
 					{
 						m_QuestComponet.m_MailBoxUIScript = m_PlayerCharacterUIScript.m_MailBoxUIScript;
+						m_QuestComponet.m_MailBoxUIScript.m_QuestComponet = m_QuestComponet;
 					}
 				}
 			}
