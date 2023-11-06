@@ -15,6 +15,6 @@ public class Door : MonoBehaviour, IInteraction
     {
         Debug.Log("sdfasdf");
         interactionEvent?.Invoke();
-        if(m_InteractionSound != null) { if (m_InteractionSound.isPlaying != false)  m_InteractionSound.Play(); } 
+        if(m_InteractionSound != null) { if (m_InteractionSound.isPlaying == false)  m_InteractionSound.Play(); } 
     }
 }
