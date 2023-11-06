@@ -54,7 +54,7 @@ namespace RavenCraftCore
         {
             originPos = transform.position;
             zOffset = originPos.z;
-            EventManager.Subscribe(EventType.CreateComplate, ResetCup);
+            EventManager.Subscribe(EventType.CreateComplete, ResetCup);
         }
 
         void ResetCup()
