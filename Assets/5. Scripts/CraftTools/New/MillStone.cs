@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Spine;
 using Spine.Unity;
+using Unity.VisualScripting;
 using UnityEngine;
+using ColorUtility = UnityEngine.ColorUtility;
 
 namespace RavenCraftCore
 {
@@ -43,6 +45,8 @@ namespace RavenCraftCore
         [SerializeField]
         Transform[] colliders;
 
+        [SerializeField] private List<FadeIO> inputItems = new();
+
         [SerializeField]
         Vector3 colliderPos;
 
@@ -72,13 +76,17 @@ namespace RavenCraftCore
         {
             millStoneTrack = GetComponentInChildren<Cinemachine.DollyCartMove>();
             skAni = GetComponentInChildren<SkeletonAnimation>();
-            EventManager.Subscribe(EventType.CreateComplate, ResetMillStone);
+            EventManager.Subscribe(EventType.CreateComplete, ResetMillStone);
         }
 
         void ResetMillStone()
         {
             InitCollPos();
             insertedItemProgress.Clear();
+            for (int i = 0; i < inputItems.Count; i++)
+            {
+                inputItems[i].PlayFadeIO();
+            }
         }
 
         void InitCollPos()
@@ -298,7 +306,7 @@ namespace RavenCraftCore
             Gizmos.DrawSphere(millStoneCenterPos.position, 0.3f);
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerStay2D(Collider2D collision)
         {
             if(collision.TryGetComponent(out BBB interactionMaterial))
             {
@@ -306,7 +314,15 @@ namespace RavenCraftCore
                     return;
                 if (interactionMaterial.IsInMillStone())
                     return;
-                insertedItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
+
+                var inputItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
+
+                if (inputItemID != insertedItemID)
+                {
+                    insertedItemID = inputItemID;
+                    ResetMillStone();
+                }
+                
                 interactionMaterial.InMillstone();
                 SetInputItem();
                 insertedItemProgress.Add(100);

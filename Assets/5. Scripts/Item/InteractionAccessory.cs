@@ -65,7 +65,7 @@ public class InteractionAccessory : MonoBehaviour
             else
             {
                 if(accessoryPlate != null)
-                accessoryPlate.RewindPlate();
+                    accessoryPlate.RewindPlate();
             }
             Destroy(gameObject);
         }

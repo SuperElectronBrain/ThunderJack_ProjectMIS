@@ -33,6 +33,7 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     {
         noticeName.text = noticeData.noticeName;
         noticeDescription.text = noticeData.noticeDescription;
+        noticeImage.sprite = noticeData.noticeImage;
     }
 
     public void Interaction(GameObject user)
@@ -60,5 +61,5 @@ public class NoticeData
 {
     public string noticeName;
     public string noticeDescription;
-    public string noticeImage;
+    public Sprite noticeImage;
 }
