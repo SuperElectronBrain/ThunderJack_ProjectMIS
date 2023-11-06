@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public enum EventType
 {
-    None, Minute, hour, Day, WorkTime, Dialog, NextDialog, GuestEntry, GuestExit, StartConversation, EndConversation, Work, SalesSuccess, SalesFailure, Enter, Exit, StartInteraction, EndIteraction, CloseShop, Save, Load, CreateComplate,  End
+    None, Minute, hour, Day, WorkTime, Dialog, NextDialog, GuestEntry, GuestExit, StartConversation, EndConversation, Work, SalesSuccess, SalesFailure, Enter, Exit, StartInteraction, EndIteraction, CloseShop, Save, Load, CreateComplete,  End
 }
 
 public class EventManager
