@@ -11,7 +11,7 @@ public class PressAccessoryPlate : MonoBehaviour
     private bool isActive;
 
     [SerializeField] private InteractionItem interactionItem;
-    private int itemID;
+    [SerializeField] private int itemID;
     
     // Start is called before the first frame update
     void Start()
@@ -28,6 +28,7 @@ public class PressAccessoryPlate : MonoBehaviour
         var item = interactionItem.ItemInteraction(itemID);
         item.GetComponent<InteractionAccessory>().Init(itemID,this);
         spriteRenderer.enabled = false;
+        FindObjectOfType<PlayerCharacter>().m_GrabItemCode = new AdvencedItem(itemID, 0, 1);
     }
 
     public void RewindPlate()
@@ -44,6 +45,7 @@ public class PressAccessoryPlate : MonoBehaviour
 
     public void SetAccessory(int accessoryID)
     {
+        itemID = accessoryID;
         //transform.root.GetComponent<RavenCraftCore.Press>().SetAccessoryData(accessoryID);
         spriteRenderer.sprite = GameManager.Instance.ItemManager.GetItemSprite(accessoryID);
     }
@@ -55,6 +57,7 @@ public class PressAccessoryPlate : MonoBehaviour
 
     public void CompleteCraft(int completeItemID)
     {
+        EventManager.Publish(EventType.CreateComplete);
         itemID = completeItemID;
         var completeItem = GameManager.Instance.ItemManager.GetBasicItemData(completeItemID);
         

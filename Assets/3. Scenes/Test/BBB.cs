@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Random = UnityEngine.Random;
 
 public class BBB : MonoBehaviour
 {
@@ -26,6 +28,11 @@ public class BBB : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
         fade = GetComponent<FadeIO>();
+    }
+
+    private void OnDisable()
+    {
+        Destroy(gameObject);
     }
 
     public void Select()

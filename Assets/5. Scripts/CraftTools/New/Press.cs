@@ -49,7 +49,7 @@ namespace RavenCraftCore
         {
             originHandlePos = buttonPosition.position;
             skAni = GetComponentInChildren<SkeletonAnimation>();
-            EventManager.Subscribe(EventType.CreateComplate, ResetPress);
+            EventManager.Subscribe(EventType.CreateComplete, ResetPress);
         }
 
         public void EnterHandle()
