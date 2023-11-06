@@ -4,7 +4,25 @@ using UnityEngine;
 
 public class NoticeBoardUI : UiComponent
 {
-    public override void InactiveUI()
+	public void Update()
+	{
+        if (Input.GetKeyDown(KeyCode.E) == true)
+        {
+            Stack<UiComponent> uiStack = GameManager.Instance.UIManager.uiStack;
+
+			if (uiStack != null)
+            {
+                UiComponent uiComponent = uiStack.Pop();
+
+				if (uiComponent != this)
+                {  uiStack.Push(uiComponent); }
+                else if (uiComponent == this)
+                { uiComponent.InactiveUI(); }
+			}
+        }
+	}
+
+	public override void InactiveUI()
     {
         base.InactiveUI();
         

@@ -149,7 +149,7 @@ public class PlayerCharacter : CharacterBase
 	{
 		base.FixedUpdate();
 		float DeltaTime = Time.fixedDeltaTime;
-		//GroundCheck();
+		GroundCheck();
 
 		Vector3 t_HorizontalMoveDirection = Camera.main.transform.right;
 		Vector3 t_VerticalMoveDirection = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized;
@@ -213,23 +213,20 @@ public class PlayerCharacter : CharacterBase
 	protected virtual void GroundCheck()
 	{
 		Vector3 startPosition = transform.position;
-		startPosition.y = startPosition.y - 1;
 		Vector3 direction = new Vector3(0, -1, 0);
-		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.1f);
+		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 1.25f);
 		if (result == true)
 		{
-			if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == true)
-			{
-				//bUseDustEffect = true;
-			}
-			else if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == false)
-			{
-				//bUseDustEffect = false; 
-			}
+			Debug.Log("챤챤");
+			isGround = true;
+			//if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == true)
+			//{
+			//	isGround = true;
+			//}
 		}
 		else if (result == false)
 		{
-			//bUseDustEffect = false;
+			isGround = false;
 		}
 	}
 
@@ -807,6 +804,16 @@ public class PlayerCharacter : CharacterBase
 					}
 				}
 			}
+			else if (isGround == false)
+			{
+				if (m_FootStepSound != null)
+				{
+					if (m_FootStepSound.isPlaying == true)
+					{
+						m_FootStepSound.Stop();
+					}
+				}
+			}
 		}
 		else if(m_Velocity == 0)
 		{
@@ -1020,7 +1027,7 @@ public class PlayerCharacter : CharacterBase
 
 		//if (collision.gameObject.name.Contains("F_Bridge") == true)
 		//{
-			isGround = true;
+		//	isGround = true;
 		//}
 	}
 
@@ -1029,7 +1036,7 @@ public class PlayerCharacter : CharacterBase
 		base.OnCollisionExit(collision);
 		//if (collision.gameObject.name.Contains("F_Bridge") == true)
 		//{
-			isGround = false;
+		//	isGround = false;
 		//}
 	}
 
