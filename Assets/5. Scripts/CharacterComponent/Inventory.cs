@@ -132,7 +132,7 @@ public class Inventory : MonoBehaviour
 			{
 				t_Inventory = t_PC.GetComponent<Inventory>();
 			}
-			return null;
+			return t_Inventory;
 		}
 		set {; }
 	}
@@ -457,6 +457,8 @@ public class Inventory : MonoBehaviour
 			}
 		}
 
+		IllustratedGuideComponent.main.RegistItem(p_AItem.itemCode);
+
 		RefreshInventory();
 	}
 	public void AddAItem(int p_ItemCode = 0, float p_ItemProgress = 0.0f, int p_ItemAmount = 0, int p_SelectCount = 0)
@@ -559,7 +561,7 @@ public class Inventory : MonoBehaviour
 		RefreshInventory();
 	}
 
-	public void TakeInventoryItems(Inventory p_Inventory)
+	public void TakeData(Inventory p_Inventory)
 	{
 		if(p_Inventory != null)
 		{

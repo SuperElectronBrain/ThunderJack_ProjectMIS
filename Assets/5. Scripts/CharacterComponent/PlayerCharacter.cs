@@ -297,7 +297,7 @@ public class PlayerCharacter : CharacterBase
 			{
 				//if (m_Inventory.GetAItems().Count <= 0) { m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory); }
 				m_Inventory.CleanInventory();
-				m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory);
+				m_Inventory.TakeData(p_PlayerCharacter.m_Inventory);
 			}
 
 			if(m_RecipeBook == null)
@@ -319,7 +319,7 @@ public class PlayerCharacter : CharacterBase
 			if (m_QuestComponet != null)
 			{
 				//if (m_QuestComponet.GetQuests().Count <= 0) { m_QuestComponet.TakeQuests(p_PlayerCharacter.m_QuestComponet); }
-				m_QuestComponet.TakeQuests(p_PlayerCharacter.m_QuestComponet);
+				m_QuestComponet.TakeData(p_PlayerCharacter.m_QuestComponet);
 			}
 
 			if (m_TutorialComponent == null)
@@ -401,7 +401,7 @@ public class PlayerCharacter : CharacterBase
 		GameObject go = new GameObject();
 		go.name = "Portal";
 		Portal portal = go.AddComponent<Portal>();
-		portal.destinationSceneName = "BusinessScene";
+		portal.destinationSceneName = "Build_Inside";
 		portal.LoadingScene();
 	}
 

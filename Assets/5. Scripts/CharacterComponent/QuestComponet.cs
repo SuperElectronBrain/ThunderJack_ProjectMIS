@@ -107,7 +107,7 @@ public class QuestComponet : MonoBehaviour
 		m_Quests.TrimExcess();
 	}
 
-	public void TakeQuests(QuestComponet p_QuestComponet)
+	public void TakeData(QuestComponet p_QuestComponet)
 	{
 		if (p_QuestComponet != null)
 		{

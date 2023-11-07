@@ -266,7 +266,7 @@ public class NPCStoreUIScript : UIScript
 		}
 	}
 
-	protected override void RefresfAction()
+	public override void RefresfAction()
 	{
 		base.RefresfAction();
 

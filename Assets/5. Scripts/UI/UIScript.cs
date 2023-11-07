@@ -24,7 +24,7 @@ public class UIScript : MonoBehaviour
 
 	}
 
-	protected virtual void RefresfAction()
+	public virtual void RefresfAction()
     {
 
     }
