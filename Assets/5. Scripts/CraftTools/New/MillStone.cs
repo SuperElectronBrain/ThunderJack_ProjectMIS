@@ -81,6 +81,7 @@ namespace RavenCraftCore
 
         void ResetMillStone()
         {
+            insertedItemID = 0;
             InitCollPos();
             insertedItemProgress.Clear();
             for (int i = 0; i < inputItems.Count; i++)
@@ -317,7 +318,7 @@ namespace RavenCraftCore
 
                 var inputItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
 
-                if (inputItemID != insertedItemID)
+                if (inputItemID != insertedItemID && insertedItemID != 0)
                 {
                     insertedItemID = inputItemID;
                     ResetMillStone();
