@@ -30,11 +30,6 @@ public class BBB : MonoBehaviour
         fade = GetComponent<FadeIO>();
     }
 
-    private void OnDisable()
-    {
-        Destroy(gameObject);
-    }
-
     public void Select()
     {
         isRelese = false;

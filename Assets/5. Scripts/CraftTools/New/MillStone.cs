@@ -82,12 +82,14 @@ namespace RavenCraftCore
         void ResetMillStone()
         {
             insertedItemID = 0;
+            resultValue = 0;
             InitCollPos();
             insertedItemProgress.Clear();
             for (int i = 0; i < inputItems.Count; i++)
             {
                 inputItems[i].PlayFadeIO();
             }
+            inputItems.Clear();
         }
 
         void InitCollPos()
@@ -187,7 +189,8 @@ namespace RavenCraftCore
                 {
                     isGrab = false;
                     skAni.AnimationName = "HandOff";
-                    deg = prevTheta;
+                    prevTheta = deg;
+                    return;
                 }
 
                 GetMousePosToDeg();
@@ -318,15 +321,21 @@ namespace RavenCraftCore
 
                 var inputItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
 
-                if (inputItemID != insertedItemID && insertedItemID != 0)
+                if(insertedItemID != 0)
                 {
-                    insertedItemID = inputItemID;
-                    ResetMillStone();
+                    if (inputItemID != insertedItemID)
+                    {
+                        ResetMillStone();
+                    }
                 }
+
+                insertedItemID = inputItemID;
                 
+
                 interactionMaterial.InMillstone();
                 SetInputItem();
                 insertedItemProgress.Add(100);
+                inputItems.Add(interactionMaterial.GetComponent<FadeIO>());
             }
         }
     }

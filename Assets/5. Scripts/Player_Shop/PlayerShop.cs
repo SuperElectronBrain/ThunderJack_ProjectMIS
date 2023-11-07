@@ -83,16 +83,16 @@ public class PlayerShop : MonoBehaviour
         if (guest.IsEntry())
             return;
 
-/*        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
-        {
-            Debug.Log(guest.questName + " 삭제");
-            player.m_QuestComponet.GetTodayGuests().Remove(guest);
-        }
+        /*        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
+                {
+                    Debug.Log(guest.questName + " 삭제");
+                    player.m_QuestComponet.GetTodayGuests().Remove(guest);
+                }
 
-        foreach (var guest in player.m_QuestComponet.GetTodayGuests())
-        {
-            Debug.Log(guest.questName);
-        }*/
+                foreach (var guest in player.m_QuestComponet.GetTodayGuests())
+                {
+                    Debug.Log(guest.questName);
+                }*/
 
         if (entryWeight >= Random.Range(0, 100))
         {
