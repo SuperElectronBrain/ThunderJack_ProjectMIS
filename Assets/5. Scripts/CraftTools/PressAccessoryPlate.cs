@@ -28,7 +28,7 @@ public class PressAccessoryPlate : MonoBehaviour
         var item = interactionItem.ItemInteraction(itemID);
         item.GetComponent<InteractionAccessory>().Init(itemID,this);
         spriteRenderer.enabled = false;
-        FindObjectOfType<PlayerCharacter>().m_GrabItemCode = new AdvencedItem(itemID, 0, 1);
+        FindObjectOfType<PlayerCharacter>().SetPlayerGrabItem(new AdvencedItem(itemID, 0, 1));
     }
 
     public void RewindPlate()
