@@ -81,7 +81,7 @@ public class CraftTableCameraController : MonoBehaviour
 			{
 				if(t_PlayerCharacter.m_GrabItemCode != null)
 				{
-					if(t_PlayerCharacter.m_GrabItemCode.itemCode >= 28 && t_PlayerCharacter.m_GrabItemCode.itemCode <= 57)
+					if(t_PlayerCharacter.m_GrabItemCode != null)
 					{
 						if (m_NextRotation != m_OriginRotation)
 						{
@@ -91,39 +91,39 @@ public class CraftTableCameraController : MonoBehaviour
 				}
 			}
 		}
-		//else if (1 >= Input.mousePosition.y)
-		//{
-		//	bool bMove = false;
-		//	Guest t_Guest = FindObjectOfType<Guest>();
-		//	if (t_Guest != null)
-		//	{
-		//		MeshRenderer t_MeshRenderer = t_Guest.gameObject.GetComponent<MeshRenderer>();
-		//		if(t_MeshRenderer != null)
-		//		{
-		//			if(t_MeshRenderer.enabled == true)
-		//			{
-		//				bMove = true;
-		//			}
-		//		}
-		//	}
-		//
-		//	PlayerCharacter t_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
-		//	if (t_PlayerCharacter != null)
-		//	{
-		//		if (t_PlayerCharacter.m_GrabItemCode != null)
-		//		{
-		//			bMove = true;
-		//		}
-		//	}
-		//
-		//	if(bMove == true)
-		//	{
-		//		if (m_NextRotation != Quaternion.Euler(m_DownRotation))
-		//		{
-		//			m_NextRotation = Quaternion.Euler(m_DownRotation);
-		//		}
-		//	}
-		//}
+		else if (1 >= Input.mousePosition.y)
+		{
+			//bool bMove = false;
+			//Guest t_Guest = FindObjectOfType<Guest>();
+			//if (t_Guest != null)
+			//{
+			//	MeshRenderer t_MeshRenderer = t_Guest.gameObject.GetComponent<MeshRenderer>();
+			//	if(t_MeshRenderer != null)
+			//	{
+			//		if(t_MeshRenderer.enabled == true)
+			//		{
+			//			bMove = true;
+			//		}
+			//	}
+			//}
+
+			PlayerCharacter t_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
+			if (t_PlayerCharacter != null)
+			{
+				if (t_PlayerCharacter.m_GrabItemCode.itemCode >= 28 && t_PlayerCharacter.m_GrabItemCode.itemCode <= 57)
+				{
+					if (m_NextRotation != Quaternion.Euler(m_DownRotation))
+					{
+						m_NextRotation = Quaternion.Euler(m_DownRotation);
+					}
+				}
+			}
+
+			//if(bMove == true)
+			//{
+			//	
+			//}
+		}
 
 		//if(bMoveable == true)
 		//{
