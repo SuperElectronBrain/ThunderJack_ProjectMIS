@@ -10,7 +10,8 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     TextMeshProUGUI noticeName;
     [SerializeField]
     TextMeshProUGUI noticeDescription;
-    SpriteRenderer noticeImage;
+    [SerializeField]
+    Image noticeImage;
     [SerializeField]
     UiComponent noticeUI;
 

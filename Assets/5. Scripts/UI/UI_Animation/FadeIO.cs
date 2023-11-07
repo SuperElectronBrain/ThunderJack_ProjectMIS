@@ -31,6 +31,8 @@ public class FadeIO : MonoBehaviour
     bool isEnable;
     [SerializeField]
     bool isIncludeChild;
+    [SerializeField]
+    bool isDestory;
 
     [SerializeField]
     List<Image> childImage = new();
@@ -109,6 +111,8 @@ public class FadeIO : MonoBehaviour
         sequence.OnComplete(() =>
         {
             onFadeEvent?.Invoke();
+            if (isDestory)
+                Destroy(gameObject);
         });
     }
 
@@ -166,6 +170,8 @@ public class FadeIO : MonoBehaviour
         sequence.OnComplete(() =>
         {
             onFadeEvent?.Invoke();
+            if (isDestory)
+                Destroy(gameObject);
         });
     }
 
