@@ -71,6 +71,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rate: 0.3
   m_SD: {fileID: 8590256253828650092}
+  m_Animator: {fileID: 8073346672642854117}
   m_InteractionSound: {fileID: 4961420093881948713}
 --- !u!1 &7785300333696035460
 GameObject:
@@ -213,6 +214,7 @@ GameObject:
   - component: {fileID: 5943299703759649647}
   - component: {fileID: 1292803045604418747}
   - component: {fileID: 3692973545312604606}
+  - component: {fileID: 8073346672642854117}
   m_Layer: 0
   m_Name: Spine GameObject (T_pewpew)
   m_TagString: Untagged
@@ -337,6 +339,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69f9899368a06bd478bbbe47f701bc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8073346672642854117
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8590256253828650092}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 01b5bb33c96823e43a99c6e7dc3a8717, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &44527687489624199
 PrefabInstance:
   m_ObjectHideFlags: 0
