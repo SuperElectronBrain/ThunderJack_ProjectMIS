@@ -202,9 +202,11 @@ namespace RavenCraftCore
             steam.Play();
             createEffect.Play();
             var gem = GameManager.Instance.ItemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
-
-            accessoryPlate.CompleteCraft(
-                GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory()));
+            
+            var completeItem =
+                GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory());
+            
+            accessoryPlate.CompleteCraft(completeItem);
             
             print(GameManager.Instance.ItemManager.GetItemName(gem.itemID));
         }

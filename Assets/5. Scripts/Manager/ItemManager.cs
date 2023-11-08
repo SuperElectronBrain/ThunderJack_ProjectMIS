@@ -296,7 +296,9 @@ public class ItemManager : MonoBehaviour
 
             returnRecipe = gemRecipes[i];
         }
-
+        
+        returnRecipe = gemRecipes[0];
+        
         return returnRecipe;
     }
 
@@ -325,7 +327,7 @@ public class ItemManager : MonoBehaviour
 
     public BasicItemData GetBasicItemData(int itemID)
     {
-        if (itemID < 0 || itemID >= basicItemData.Count)
+        if (itemID < 0 || itemID > basicItemData.Count)
             return null;
 
         return basicItemData[itemID - 1];
