@@ -335,19 +335,23 @@ public class Inventory : MonoBehaviour
 				}
 			}
 		}
-		if (p_AItem.itemCode >= 1 && p_AItem.itemCode <= 15)
+		
+		if (m_Owner as PlayerCharacter)
 		{
-			if (m_Owner as PlayerCharacter)
+			IllustratedGuideComponent illustratedGuide = m_Owner.GetComponent<IllustratedGuideComponent>();
+			if (illustratedGuide != null)
 			{
-				IllustratedGuideComponent illustratedGuide = IllustratedGuideComponent.main;
-				if (illustratedGuide != null)
+				BasicItemData basicItemData = UniFunc.FindItemData(p_AItem.itemCode);
+				if (basicItemData != null)
 				{
-					IllustratedGuideComponent.main.RegistItem(p_AItem.itemCode);
+					if (basicItemData.itemType == ItemType.Materials)
+					{
+						IllustratedGuideComponent.main.RegistItem(p_AItem.itemCode);
+					}
 				}
 			}
 		}
 			
-
 		RefreshInventory();
 	}
 	public void AddAItem(int p_ItemCode = 0, float p_ItemProgress = 0.0f, int p_ItemAmount = 0, int p_SelectCount = 0)

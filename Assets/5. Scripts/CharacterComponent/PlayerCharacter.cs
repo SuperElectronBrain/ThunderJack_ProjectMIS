@@ -612,7 +612,7 @@ public class PlayerCharacter : CharacterBase
 		}
 		else if(m_InteractionItem != null)
 		{
-			BasicItemData basicItemData = UniFunc.FindItemData(p_AItem.itemCode);
+			BasicItemData basicItemData = UniFunc.FindItemData(m_GrabItemCode.itemCode);
 			if (basicItemData != null)
 			{
 				if (basicItemData.itemType != ItemType.Jewelry)
