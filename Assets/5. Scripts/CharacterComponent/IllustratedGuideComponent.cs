@@ -5,7 +5,19 @@ using UnityEngine;
 
 public class IllustratedGuideComponent : MonoBehaviour
 {
-	public int this[int index] { get { return items[index]; } set {; } }
+	public int this[int index]
+	{ 
+		get 
+		{
+			int value = 0;
+			if(items.Count > index)
+			{
+				value = items[index];
+			}
+			return value;
+		} 
+		set {; } 
+	}
 	[SerializeField] private List<int> items = new List<int>();
 	[HideInInspector] public IllustratedGuideUIScript m_IllustratedGuideUIScript;
 
@@ -58,15 +70,12 @@ public class IllustratedGuideComponent : MonoBehaviour
 		if(items == null) { items = new List<int>(); }
 		if (items != null)
 		{
-			if (items.Count > 0)
+			if (itemCode != items.Find((int x) => { return x == itemCode; }))
 			{
-				if (itemCode != items.Find((int x) => { return x == itemCode; }))
-				{
-					items.Add(itemCode);
-					items.Sort((int a, int b) => { return (a < b) ? -1 : 1; });
-					if(m_IllustratedGuideUIScript != null) { m_IllustratedGuideUIScript.RefresfAction(); }
-					return true;
-				}
+				items.Add(itemCode);
+				items.Sort((int a, int b) => { return (a < b) ? -1 : 1; });
+				if(m_IllustratedGuideUIScript != null) { m_IllustratedGuideUIScript.RefresfAction(); }
+				return true;
 			}
 		}
 		return false;

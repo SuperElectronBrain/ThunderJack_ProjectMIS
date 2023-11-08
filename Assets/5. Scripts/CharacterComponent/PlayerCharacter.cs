@@ -49,6 +49,7 @@ public class PlayerCharacter : CharacterBase
 	[HideInInspector] public RecipeBook m_RecipeBook;
 	[HideInInspector] public QuestComponet m_QuestComponet;
 	[HideInInspector] public TutorialComponent m_TutorialComponent;
+	[HideInInspector] public IllustratedGuideComponent m_IllustratedGuideComponent;
 
 	//UI
 	[SerializeField] private GameObject m_PlayerCharacterUIPrefab;
@@ -100,8 +101,15 @@ public class PlayerCharacter : CharacterBase
 		if (m_RecipeBook == null) { m_RecipeBook = GetComponent<RecipeBook>(); }
 		if (m_QuestComponet == null) { m_QuestComponet = GetComponent<QuestComponet>(); }
 		if (m_TutorialComponent == null) { m_TutorialComponent = GetComponent<TutorialComponent>(); }
+		if (m_IllustratedGuideComponent == null)
+		{
+			m_IllustratedGuideComponent = GetComponent<IllustratedGuideComponent>();
+			if (m_IllustratedGuideComponent == null) { m_IllustratedGuideComponent = gameObject.AddComponent<IllustratedGuideComponent>(); } 
+		}
+
 		if (m_FootStepEffectInside != null) { m_FootStepEffectInside.Stop(); }
 		if (m_FootStepEffectOutdoor != null) { m_FootStepEffectOutdoor.Stop(); }
+
 		if (m_InteractionItem == null) { m_InteractionItem = GetComponent<InteractionItem>(); }
 
 		EventManager.Subscribe(EventType.WorkTime, ForceStartBusiness);
@@ -129,20 +137,6 @@ public class PlayerCharacter : CharacterBase
 		ShowFootStepEffect();
 		FootStepSoundProcessor();
 		AnimationProcessor();
-		/*
-		if(m_Interaction != null)
-		{
-			if (m_Interaction.IsUsed == true)
-			{
-				bMovable = false;
-			}
-			else if (m_Interaction.IsUsed == false)
-			{
-				bMovable = true;
-				m_Interaction = null;
-			}
-		}
-		*/
 	}
 
 	protected override void FixedUpdate()
@@ -217,12 +211,7 @@ public class PlayerCharacter : CharacterBase
 		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 1.25f);
 		if (result == true)
 		{
-			Debug.Log("챤챤");
 			isGround = true;
-			//if (raycastHit.transform.gameObject.name.Contains("F_Bridge") == true)
-			//{
-			//	isGround = true;
-			//}
 		}
 		else if (result == false)
 		{
@@ -295,7 +284,6 @@ public class PlayerCharacter : CharacterBase
 			}
 			if (m_Inventory != null)
 			{
-				//if (m_Inventory.GetAItems().Count <= 0) { m_Inventory.TakeInventoryItems(p_PlayerCharacter.m_Inventory); }
 				m_Inventory.CleanInventory();
 				m_Inventory.TakeData(p_PlayerCharacter.m_Inventory);
 			}
@@ -307,8 +295,17 @@ public class PlayerCharacter : CharacterBase
 			}
 			if (m_RecipeBook != null)
 			{
-				//if (m_RecipeBook.GetItemRecipes().Count <= 0) { m_RecipeBook.TakeItemRecipes(p_PlayerCharacter.m_RecipeBook); }
 				m_RecipeBook.TakeItemRecipes(p_PlayerCharacter.m_RecipeBook);
+			}
+
+			if(m_IllustratedGuideComponent == null)
+			{
+				m_IllustratedGuideComponent = gameObject.GetComponent<IllustratedGuideComponent>();
+				if(m_IllustratedGuideComponent == null) { m_IllustratedGuideComponent = gameObject.AddComponent<IllustratedGuideComponent>(); }
+			}
+			if(m_IllustratedGuideComponent != null)
+			{
+				m_IllustratedGuideComponent.TakeData(p_PlayerCharacter.m_IllustratedGuideComponent);
 			}
 
 			if(m_QuestComponet == null)
@@ -318,7 +315,6 @@ public class PlayerCharacter : CharacterBase
 			}
 			if (m_QuestComponet != null)
 			{
-				//if (m_QuestComponet.GetQuests().Count <= 0) { m_QuestComponet.TakeQuests(p_PlayerCharacter.m_QuestComponet); }
 				m_QuestComponet.TakeData(p_PlayerCharacter.m_QuestComponet);
 			}
 
@@ -329,7 +325,6 @@ public class PlayerCharacter : CharacterBase
 			}
 			if (m_TutorialComponent != null)
 			{
-				//if (m_TutorialComponent.GetStates().Count <= 0) { m_TutorialComponent.TakeStates(p_PlayerCharacter.m_TutorialComponent); }
 				m_TutorialComponent.TakeStates(p_PlayerCharacter.m_TutorialComponent);
 			}
 		}
@@ -564,6 +559,17 @@ public class PlayerCharacter : CharacterBase
 						m_RecipeBook.m_RecipeBookUIScript = m_PlayerCharacterUIScript.m_RecipeBookUIScript;
 						m_RecipeBook.m_RecipeBookUIScript.m_RecipeBook = m_RecipeBook;
 						if(m_Inventory != null) { m_RecipeBook.m_RecipeBookUIScript.m_Inventory = m_Inventory; }
+					}
+				}
+			}
+			if(m_IllustratedGuideComponent != null)
+			{
+				if (m_IllustratedGuideComponent.m_IllustratedGuideUIScript == null)
+				{
+					if(m_PlayerCharacterUIScript.m_IllustratedGuideUIScript != null)
+					{
+						m_IllustratedGuideComponent.m_IllustratedGuideUIScript = m_PlayerCharacterUIScript.m_IllustratedGuideUIScript;
+						m_IllustratedGuideComponent.m_IllustratedGuideUIScript.m_IllustratedGuideComponent = m_IllustratedGuideComponent;
 					}
 				}
 			}

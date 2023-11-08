@@ -78,7 +78,6 @@ public class InteractionIcon
 	public Sprite m_Fish;
 }
 
-
 public class PlayerCharacterUIScript : MonoBehaviour
 {
 	public ClockUIScript m_ClockUIScript;
@@ -86,6 +85,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public InventoryUIScript m_InventoryUIScript;
 	public NPCStoreUIScript m_NPCStoreUIScript;
 	public RecipeBookUIScript m_RecipeBookUIScript;
+	public IllustratedGuideUIScript m_IllustratedGuideUIScript;
 	public QuestListUIScript m_QuestListUIScript;
 	public MailBoxUIScript m_MailBoxUIScript;
 	public UnityEngine.UI.Image m_MouseGrabIcon;
@@ -107,6 +107,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 		if (m_InventoryUIScript == null) { m_InventoryUIScript = UniFunc.GetChildComponent<InventoryUIScript>(transform); }
 		if (m_NPCStoreUIScript == null) { m_NPCStoreUIScript = UniFunc.GetChildComponent<NPCStoreUIScript>(transform); }
 		if (m_RecipeBookUIScript == null) { m_RecipeBookUIScript = UniFunc.GetChildComponent<RecipeBookUIScript>(transform); }
+		if (m_IllustratedGuideUIScript == null) { m_IllustratedGuideUIScript = UniFunc.GetChildComponent<IllustratedGuideUIScript>(transform); }
 		if (m_QuestListUIScript == null) { m_QuestListUIScript = UniFunc.GetChildComponent<QuestListUIScript>(transform); }
 		if (m_MailBoxUIScript == null) { m_MailBoxUIScript = UniFunc.GetChildComponent<MailBoxUIScript>(transform); ; }
 		if (m_MouseGrabIcon == null) { m_MouseGrabIcon = UniFunc.GetChildOfName(transform, "MouseGrabItem").GetComponent<UnityEngine.UI.Image>(); }

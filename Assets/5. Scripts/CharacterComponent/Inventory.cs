@@ -38,14 +38,6 @@ public struct AdvencedItem
 	[SerializeField] public int itemAmount;
 	[SerializeField] public int selectCount;
 
-	//public AdvencedItem()
-	//{
-	//	itemCode = 0;
-	//	itemProgress = 1.0f;
-	//	itemAmount = 0;
-	//	selectCount = 0;
-	//}
-
 	public AdvencedItem(AdvencedItem p_AdvencedItem)
 	{
 		itemCode = p_AdvencedItem.itemCode;
@@ -87,18 +79,18 @@ public struct AdvencedItem
 	}
 }
 
-[Serializable]
-public struct Item
-{
-	[SerializeField] public ItemCode itemCode;
-	[SerializeField] public int itemAmount;
-
-	public Item(ItemCode p_itemCode = ItemCode.None, int p_itemAmount = 0)
-	{
-		itemCode = p_itemCode;
-		itemAmount = p_itemAmount;
-	}
-}
+//[Serializable]
+//public struct Item
+//{
+//	[SerializeField] public ItemCode itemCode;
+//	[SerializeField] public int itemAmount;
+//
+//	public Item(ItemCode p_itemCode = ItemCode.None, int p_itemAmount = 0)
+//	{
+//		itemCode = p_itemCode;
+//		itemAmount = p_itemAmount;
+//	}
+//}
 
 public struct SelectedItem
 {
@@ -138,33 +130,10 @@ public class Inventory : MonoBehaviour
 	}
 
 	[HideInInspector] public UnityEvent<PlayerCharacter, AdvencedItem> m_OnItemClick = new UnityEvent<PlayerCharacter, AdvencedItem>();
-	//public static UnityEvent<PlayerCharacter, AdvencedItem> onItemClick
-	//{
-	//	get 
-	//	{
-	//		UnityEvent<PlayerCharacter, AdvencedItem> t_OnItemClick = null;
-	//		PlayerCharacter t_PC = FindObjectOfType<PlayerCharacter>();
-	//		if(t_PC != null)
-	//		{
-	//			Inventory t_Inventory = t_PC.GetComponent<Inventory>();
-	//			if(t_Inventory != null)
-	//			{
-	//				t_OnItemClick = t_Inventory.m_OnItemClick;
-	//			}
-	//		}
-	//		return t_OnItemClick;
-	//	} 
-	//	set{; }
-	//}
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		//if(initializeData != null)
-		//{
-		//	m_Items = new List<Item>(initializeData.Items);
-		//}
-
 		m_Owner = gameObject.GetComponent<CharacterBase>();
 		if(m_Owner != null)
 		{
@@ -324,96 +293,6 @@ public class Inventory : MonoBehaviour
 		RefreshInventory();
 	}
 
-	// Update is called once per frame
-	//void Update()
-	//{
-	//	float DeltaTime = Time.deltaTime;
-	//
-	//	if (Input.GetKeyDown(KeyCode.I))
-	//	{
-	//		if(m_InventoryUIScript != null)
-	//		{
-	//			m_InventoryUIScript.gameObject.SetActive(!m_InventoryUIScript.gameObject.activeSelf);
-	//		}
-	//		
-	//		//if(inventoryPanel != null)
-	//		//{
-	//		//	DisplayItems(!inventoryPanel.activeSelf);
-	//		//}
-	//	}
-	//}
-
-	//public void AddItem(Item p_Item)
-	//{
-	//	int count = 0;
-	//	for (int i = 0; i < m_Items.Count; i = i + 1)
-	//	{
-	//		if (m_Items[i].itemCode == p_Item.itemCode)
-	//		{
-	//			Item temp = m_Items[i];
-	//			temp.itemAmount = temp.itemAmount + p_Item.itemAmount;
-	//			m_Items[i] = temp;
-	//
-	//			count = count + 1;
-	//			break;
-	//		}
-	//	}
-	//
-	//	if(count < 1)
-	//	{
-	//		m_Items.Add(p_Item);
-	//		m_Items.Sort((a, b) => { return (a.itemCode < b.itemCode) ? -1 : 1; });
-	//	}
-	//
-	//	RefreshInventory();
-	//}
-	//public void AddItem(ItemCode p_ItemCode, int p_ItemAmount) { AddItem(new Item(p_ItemCode, p_ItemAmount)); }
-	//
-	//public Item PopItem(ItemCode p_ItemCode, int p_ItemAmount) 
-	//{
-	//	for (int i = 0; i < m_Items.Count; i = i + 1)
-	//	{
-	//		if (m_Items[i].itemCode == p_ItemCode)
-	//		{
-	//			Item temp = m_Items[i];
-	//
-	//			if(temp.itemAmount <= p_ItemAmount)
-	//			{
-	//				m_Items.RemoveAt(i);
-	//				m_Items.TrimExcess();
-	//				return new Item(p_ItemCode, temp.itemAmount);
-	//			}
-	//			else if(temp.itemAmount > p_ItemAmount)
-	//			{
-	//				temp.itemAmount = temp.itemAmount - p_ItemAmount;
-	//				m_Items[i] = temp;
-	//				return new Item(p_ItemCode, p_ItemAmount);
-	//			}
-	//		}
-	//	}
-	//	
-	//	return new Item(p_ItemCode, 0);
-	//}
-	//public Item PopItem(Item p_Item) { return PopItem(p_Item.itemCode, p_Item.itemAmount); }
-	//
-	//public List<Item> GetItems() { return new List<Item>(m_Items); }
-	//
-	//public bool FindItem(ItemCode p_ItemCode, int p_ItemAmount)
-	//{
-	//	for (int i = 0; i < m_Items.Count; i = i + 1)
-	//	{
-	//		if (m_Items[i].itemCode == p_ItemCode)
-	//		{
-	//			if(m_Items[i].itemAmount >= p_ItemAmount)
-	//			{
-	//				return true;
-	//			}
-	//		}
-	//	}
-	//	return false;
-	//}
-	//public bool FindItem(Item p_Item) { return FindItem(p_Item.itemCode, p_Item.itemAmount); }
-
 	public void AddAItem(AdvencedItem p_AItem)
 	{
 		int count = 0;
@@ -457,7 +336,14 @@ public class Inventory : MonoBehaviour
 			}
 		}
 
-		IllustratedGuideComponent.main.RegistItem(p_AItem.itemCode);
+		if(m_Owner as PlayerCharacter)
+		{
+			IllustratedGuideComponent illustratedGuide = IllustratedGuideComponent.main;
+			if (illustratedGuide != null)
+			{
+				IllustratedGuideComponent.main.RegistItem(p_AItem.itemCode);
+			}
+		}
 
 		RefreshInventory();
 	}
@@ -549,11 +435,6 @@ public class Inventory : MonoBehaviour
 
 	public void SelectionReset()
 	{
-		//for (int i = 0; i < m_SelectedItems.Count; i = i + 1)
-		//{
-		//	m_SelectedItems[i] = new SelectedItem(m_SelectedItems[i].itemCode, 0);
-		//}
-
 		for (int i = 0; i < m_AItems.Count; i = i + 1)
 		{
 			m_AItems[i] = new AdvencedItem(m_AItems[i].itemCode, m_AItems[i].itemProgress, m_AItems[i].itemAmount, 0);
@@ -579,11 +460,6 @@ public class Inventory : MonoBehaviour
 		m_AItems.Clear();
 		m_AItems.TrimExcess();
 	}
-
-	//public List<SelectedItem> GetSelectedItems()
-	//{
-	//	return new List<SelectedItem>(m_SelectedItems);
-	//}
 
 	public void UpdateMoney()
 	{
@@ -641,66 +517,6 @@ public class Inventory : MonoBehaviour
 			m_InventoryUIScript.ResetButtonAction();
 		}
 
-		/*
-		//if(itemPanel != null)
-		//{
-		//	int count = 0;
-		//	if (m_Items.Count <= itemPanel.transform.childCount)
-		//	{
-		//		count = m_Items.Count;
-		//	}
-		//	else if (m_Items.Count > itemPanel.transform.childCount)
-		//	{
-		//		count = itemPanel.transform.childCount;
-		//	}
-		//
-		//	for (int i = 0; i < itemPanel.transform.childCount; i = i + 1)
-		//	{
-		//		Button button = itemPanel.transform.GetChild(i).GetComponent<Button>();
-		//		Image image = itemPanel.transform.GetChild(i).GetComponent<Image>();
-		//		Image selectionCounter = null;
-		//		TextMeshProUGUI text = null;
-		//		if (button != null)
-		//		{
-		//			for (int j = 0; j < button.transform.childCount; j = j + 1)
-		//			{
-		//				text = button.transform.GetChild(j).GetComponent<TextMeshProUGUI>();
-		//				if (text != null) { break; }
-		//			}
-		//			for (int j = 0; j < button.transform.childCount; j = j + 1)
-		//			{
-		//				selectionCounter = button.transform.GetChild(j).GetComponent<Image>();
-		//				if (selectionCounter != null) { selectionCounter.gameObject.SetActive(false); break; }
-		//			}
-		//		}
-		//
-		//		if (image != null)
-		//		{
-		//			if (i < count)
-		//			{
-		//				image.enabled = true;
-		//			}
-		//			else if (i >= count)
-		//			{
-		//				image.enabled = false;
-		//			}
-		//		}
-		//		if (text != null)
-		//		{
-		//			if (i < count)
-		//			{
-		//				text.enabled = true;
-		//				text.text = m_Items[i].itemCode + " " + m_Items[i].itemAmount;
-		//			}
-		//			else if (i >= count)
-		//			{
-		//				text.enabled = false;
-		//			}
-		//		}
-		//	}
-		//}
-		*/
-
 		UpdateMoney();
 		UpdateHoner();
 	}
@@ -718,28 +534,4 @@ public class Inventory : MonoBehaviour
 	{
 		m_OnItemClick.Invoke(p_PC, p_Item);
 	}
-
-	//public void DisplayItems(bool param)
-	//{
-	//	if (inventoryPanel != null)
-	//	{
-	//		if(param == true)
-	//		{
-	//			if (inventoryPanel.activeSelf == false)
-	//			{
-	//				inventoryPanel.SetActive(true);
-	//			}
-	//
-	//			RefreshInventory();
-	//		}
-	//		else if(param == false)
-	//		{
-	//			if (inventoryPanel.activeSelf == true)
-	//			{
-	//				inventoryPanel.SetActive(false);
-	//			}
-	//			SelectionReset();
-	//		}
-	//	}
-	//}
 }
