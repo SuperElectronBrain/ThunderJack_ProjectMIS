@@ -610,11 +610,12 @@ public class PlayerCharacter : CharacterBase
 				m_GrabItemSprite.gameObject.SetActive(m_InteractionItem == null ? (m_GrabItemCode.itemCode > 0 ? true : false) : false);
 			}
 		}
-		else if(m_InteractionItem != null)
-		{
-			m_InteractionItem.ItemInteraction(m_GrabItemCode.itemCode);
-		}
+		//else if(m_InteractionItem != null)
+		//{
+		//	m_InteractionItem.ItemInteraction(m_GrabItemCode.itemCode);
+		//}
 	}
+
 	public void PopUpInteractionIcon(bool param)
 	{
 		if (m_PlayerCharacterUIScript != null)

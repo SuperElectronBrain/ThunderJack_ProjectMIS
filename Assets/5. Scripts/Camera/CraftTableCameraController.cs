@@ -30,14 +30,11 @@ public class CraftTableCameraController : MonoBehaviour
 			PlayerCharacter t_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
 			if (t_PlayerCharacter != null)
 			{
-				if(t_PlayerCharacter.m_GrabItemCode != null)
+				if(t_PlayerCharacter.m_GrabItemCode.itemCode >= 28 && t_PlayerCharacter.m_GrabItemCode.itemCode <= 57)
 				{
-					if(t_PlayerCharacter.m_GrabItemCode.itemCode >= 28 && t_PlayerCharacter.m_GrabItemCode.itemCode <= 57)
+					if (m_NextRotation != m_OriginRotation)
 					{
-						if (m_NextRotation != m_OriginRotation)
-						{
-							m_NextRotation = m_OriginRotation;
-						}
+						m_NextRotation = m_OriginRotation;
 					}
 				}
 			}
