@@ -123,32 +123,32 @@ public class UniFunc : MonoBehaviour
 
 	public static List<T> GetChildsComponent<T>(GameObject go) where T : Object { return GetChildsComponent<T>(go.transform); }
 
-	public static List<Item> AddItem(List<Item> p_Items, Item p_Item)
-	{
-		int count = 0;
-		for (int i = 0; i < p_Items.Count; i = i + 1)
-		{
-			if (p_Items[i].itemCode == p_Item.itemCode)
-			{
-				Item temp = p_Items[i];
-				temp.itemAmount = temp.itemAmount + p_Item.itemAmount;
-				p_Items[i] = temp;
-
-				count = count + 1;
-				break;
-			}
-		}
-
-		if (count < 1)
-		{
-			p_Items.Add(p_Item);
-			p_Items.Sort((a, b) => { return (a.itemCode < b.itemCode) ? -1 : 1; });
-		}
-
-		return p_Items;
-	}
-
-	public static List<Item> AddItem(List<Item> p_Items, ItemCode p_ItemCode, int p_ItemAmount) { return AddItem(p_Items, new Item(p_ItemCode, p_ItemAmount)); }
+	//public static List<Item> AddItem(List<Item> p_Items, Item p_Item)
+	//{
+	//	int count = 0;
+	//	for (int i = 0; i < p_Items.Count; i = i + 1)
+	//	{
+	//		if (p_Items[i].itemCode == p_Item.itemCode)
+	//		{
+	//			Item temp = p_Items[i];
+	//			temp.itemAmount = temp.itemAmount + p_Item.itemAmount;
+	//			p_Items[i] = temp;
+	//
+	//			count = count + 1;
+	//			break;
+	//		}
+	//	}
+	//
+	//	if (count < 1)
+	//	{
+	//		p_Items.Add(p_Item);
+	//		p_Items.Sort((a, b) => { return (a.itemCode < b.itemCode) ? -1 : 1; });
+	//	}
+	//
+	//	return p_Items;
+	//}
+	//
+	//public static List<Item> AddItem(List<Item> p_Items, ItemCode p_ItemCode, int p_ItemAmount) { return AddItem(p_Items, new Item(p_ItemCode, p_ItemAmount)); }
 
 	public static List<GemRecipe> FindRecipesOfElement(List<GemRecipe> p_GemRecipes, int p_OrderNumber, int p_Element)
 	{
