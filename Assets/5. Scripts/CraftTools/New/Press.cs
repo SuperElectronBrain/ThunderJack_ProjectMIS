@@ -94,7 +94,8 @@ namespace RavenCraftCore
         {
             track.m_Position = 0;
             putInValue = 0;
-
+            isCreate = false;
+            
             for (int i = 0; i < value.Length; i++)
             {
                 value[i] = 0f;
