@@ -7,11 +7,6 @@ public class CreateWaterBall : MonoBehaviour
     [SerializeField] private float maxScale;
     [SerializeField] private float minScale;
     [SerializeField] private GameObject waterBall;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     public GameObject Create(Vector3 createPos)
     {
