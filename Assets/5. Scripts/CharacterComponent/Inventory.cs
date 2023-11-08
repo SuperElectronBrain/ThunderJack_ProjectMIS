@@ -335,15 +335,18 @@ public class Inventory : MonoBehaviour
 				}
 			}
 		}
-
-		if(m_Owner as PlayerCharacter)
+		if (p_AItem.itemCode >= 1 && p_AItem.itemCode <= 15)
 		{
-			IllustratedGuideComponent illustratedGuide = IllustratedGuideComponent.main;
-			if (illustratedGuide != null)
+			if (m_Owner as PlayerCharacter)
 			{
-				IllustratedGuideComponent.main.RegistItem(p_AItem.itemCode);
+				IllustratedGuideComponent illustratedGuide = IllustratedGuideComponent.main;
+				if (illustratedGuide != null)
+				{
+					IllustratedGuideComponent.main.RegistItem(p_AItem.itemCode);
+				}
 			}
 		}
+			
 
 		RefreshInventory();
 	}
