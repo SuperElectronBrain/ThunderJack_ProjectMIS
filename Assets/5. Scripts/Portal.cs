@@ -93,7 +93,7 @@ public class Portal : MonoBehaviour
 			if (m_PlayerCharacter != null) { Destroy(m_PlayerCharacter.gameObject); }
 			m_PlayerCharacter = null;
 			UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
-			Destroy(gameObject);
+			//Destroy(gameObject);
 		}
 	}
 

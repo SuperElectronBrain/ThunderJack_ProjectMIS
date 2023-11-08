@@ -17,18 +17,25 @@ public class PressAccessoryPlate : MonoBehaviour
     void Start()
     {
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        EventManager.Subscribe(EventType.SalesSuccess, ResetPlate);
+        EventManager.Subscribe(EventType.SalesFailure, ResetPlate);
     }
 
     private void OnMouseDown()
     {
-        if (!isActive)
+        if (itemID == 0)
             return;
         
-        isSelect = true;
+        if (GameManager.Instance.ItemManager.GetItemType(itemID) != ItemType.Jewelry)
+        {
+            FindObjectOfType<PlayerCharacter>().SetPlayerGrabItem(new AdvencedItem(itemID, 1, 1));
+            isSelect = true;
+            spriteRenderer.enabled = false;
+            return;
+        }
+        
         var item = interactionItem.ItemInteraction(itemID);
         item.GetComponent<InteractionAccessory>().Init(itemID,this);
-        spriteRenderer.enabled = false;
-        FindObjectOfType<PlayerCharacter>().SetPlayerGrabItem(new AdvencedItem(itemID, 0, 1));
     }
 
     public void RewindPlate()
@@ -45,6 +52,12 @@ public class PressAccessoryPlate : MonoBehaviour
 
     public void SetAccessory(int accessoryID)
     {
+        if (itemID != 0)
+        {
+            RewindPlate();
+            return;
+        }
+            
         itemID = accessoryID;
         //transform.root.GetComponent<RavenCraftCore.Press>().SetAccessoryData(accessoryID);
         spriteRenderer.sprite = GameManager.Instance.ItemManager.GetItemSprite(accessoryID);
@@ -81,5 +94,11 @@ public class PressAccessoryPlate : MonoBehaviour
 
         if (!isSelect)
             return;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe(EventType.SalesSuccess, ResetPlate);
+        EventManager.Unsubscribe(EventType.SalesFailure, ResetPlate);
     }
 }

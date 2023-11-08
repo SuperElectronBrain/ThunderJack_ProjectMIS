@@ -14,7 +14,7 @@ public class PlayerShop_Sales : MonoBehaviour
     void Start()
     {        
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-        var requestData = GameManager.Instance.DataBase.Parser("Request_Master");
+        var requestData = GameManager.Instance.DataBase.Parser("Request_Master2");
 
         foreach(var rData in requestData)
         {

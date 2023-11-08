@@ -82,7 +82,7 @@ namespace RavenCraftCore
         void ResetMillStone()
         {
             insertedItemID = 0;
-            resultValue = 0;
+            resultValue = 100;
             InitCollPos();
             insertedItemProgress.Clear();
             for (int i = 0; i < inputItems.Count; i++)

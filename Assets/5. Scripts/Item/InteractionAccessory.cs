@@ -64,8 +64,11 @@ public class InteractionAccessory : MonoBehaviour
             }
             else
             {
-                if(accessoryPlate != null)
+                if (accessoryPlate != null)
+                {
                     accessoryPlate.RewindPlate();
+                    Camera.main.GetComponent<CraftTableCameraController>().GoToCraft();
+                }
             }
             Destroy(gameObject);
         }
