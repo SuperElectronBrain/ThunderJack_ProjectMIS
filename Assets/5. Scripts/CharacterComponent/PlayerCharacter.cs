@@ -41,7 +41,6 @@ public class PlayerCharacter : CharacterBase
 	private float m_MonologueDisplayTime = 0.0f;
 	private float m_GuideDisplayTime = 0.0f;
 	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
-	private bool isGround = false;
 
 	//Component
 	private CapsuleCollider m_Collider;
@@ -61,6 +60,7 @@ public class PlayerCharacter : CharacterBase
 	[SerializeField] private GameObject m_SpeechBubble;
 	[SerializeField] private TextMeshPro m_SpeechBubbleText;
 	[SerializeField] private UnityEngine.UI.Text m_SpeechBubbleTextLegacy;
+
 	//VFX
 	[SerializeField] private ParticleSystem m_FootStepEffectInside;
 	[SerializeField] private ParticleSystem m_FootStepEffectOutdoor;
@@ -126,6 +126,12 @@ public class PlayerCharacter : CharacterBase
 		float DeltaTime = Time.deltaTime;
 		KeyInput();
 
+		if (isWall == true)
+		{
+			m_HorizontalMove = 0;
+			m_VerticalMove = 0;
+		}
+
 		GrabItemDisplayProcessor();
 		ItemInfoDisplayProcessor();
 		PlayerCharacterUIProcessor();
@@ -134,7 +140,7 @@ public class PlayerCharacter : CharacterBase
 		GuideDisplayProcessor(DeltaTime);
 		FadeProcessor(DeltaTime);
 
-		ShowFootStepEffect();
+		FootStepEffectProcessor();
 		FootStepSoundProcessor();
 		AnimationProcessor();
 	}
@@ -144,16 +150,14 @@ public class PlayerCharacter : CharacterBase
 		base.FixedUpdate();
 		float DeltaTime = Time.fixedDeltaTime;
 		GroundCheck();
+		ForwardCheck();
 
-		//Vector3 t_HorizontalMoveDirection = Camera.main.transform.right;
-		//Vector3 t_VerticalMoveDirection = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized;
 		Vector3 t_HorizontalMoveDirection = Vector3.ProjectOnPlane(Camera.main.transform.right, m_GroundNormalVector);
 		Vector3 t_VerticalMoveDirection = Vector3.ProjectOnPlane(new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized, m_GroundNormalVector);
 		SetMoveDirection(t_HorizontalMoveDirection, t_VerticalMoveDirection);
 	}
 	protected override void KeyInput()
 	{
-		//if (Camera.main.orthographic == false) { }
 		if(currentState == PlayerCharacterState.Moveable)
 		{
 			if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "loading")
@@ -162,6 +166,8 @@ public class PlayerCharacter : CharacterBase
 				m_VerticalMove = Input.GetAxis("Vertical");
 				if (Input.GetAxisRaw("Horizontal") == 0.0f) { m_HorizontalMove = 0.0f; }
 				if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
+
+				m_CharacterInputVector = ((m_HorizontalMoveDirection * m_HorizontalMove) + (m_VerticalMoveDirection * m_VerticalMove)).normalized;
 
 				if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
 				if (Input.GetKeyDown(KeyCode.E) == true)
@@ -204,23 +210,6 @@ public class PlayerCharacter : CharacterBase
 					if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
 				}
 			}
-		}
-	}
-
-	protected virtual void GroundCheck()
-	{
-		Vector3 startPosition = transform.position;
-		Vector3 direction = new Vector3(0, -1, 0);
-		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 1.25f);
-		if (result == true)
-		{
-			m_GroundNormalVector = raycastHit.normal;
-			isGround = true;
-		}
-		else if (result == false)
-		{
-			m_GroundNormalVector = Vector3.up;
-			isGround = false;
 		}
 	}
 
@@ -335,65 +324,6 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
-	public void OpenNPCShop()
-	{
-		InteractableObject t_InteractableObject = GetInteractableObject();
-		if (t_InteractableObject.interactionGO != null)
-		{
-			NPCShop t_NPCShop = t_InteractableObject.interactionGO.GetComponent<NPCShop>();
-			if (t_NPCShop != null)
-			{
-				if (m_PlayerCharacterUIScript != null)
-				{
-					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-					{
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(true);
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = t_NPCShop.m_Inventory;
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
-					}
-				}
-			}
-			else if (t_NPCShop == null)
-			{
-				CloseNPCShop();
-			}
-		}
-	}
-	public void OpenBeilShop()
-	{
-		if (m_PlayerCharacterUIScript != null)
-		{
-			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-			{
-				m_PlayerCharacterUIScript.m_NPCStoreUIScript.SetShopType(true);
-			}
-		}
-		OpenNPCShop();
-	}
-	public void OpenGagaShop()
-	{
-		if (m_PlayerCharacterUIScript != null)
-		{
-			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-			{
-				m_PlayerCharacterUIScript.m_NPCStoreUIScript.SetShopType(false);
-			}
-		}
-		OpenNPCShop();
-	}
-	public void CloseNPCShop()
-	{
-		if (m_PlayerCharacterUIScript != null)
-		{
-			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-			{
-				m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
-				m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
-				m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
-			}
-		}
-	}
-
 	public void ForceStartBusiness()
 	{
 		ChangeAnimationState(PlayerCharacterAnimation.Panic);
@@ -405,7 +335,110 @@ public class PlayerCharacter : CharacterBase
 		portal.LoadingScene();
 	}
 
-	public InteractionItem GetInteractionItem() { return m_InteractionItem; }
+	public void SetPlayerGrabItem(AdvencedItem p_AItem)
+	{
+		m_GrabItemCode = p_AItem;
+		if(m_InteractionItem == null)
+		{
+			if (m_GrabItemSprite != null)
+			{
+				m_GrabItemSprite.sprite = m_InteractionItem == null ? UniFunc.FindSprite(m_GrabItemCode.itemCode) : null;
+				m_GrabItemSprite.gameObject.SetActive(m_InteractionItem == null ? (m_GrabItemCode.itemCode > 0 ? true : false) : false);
+			}
+		}
+		else if(m_InteractionItem != null)
+		{
+			BasicItemData basicItemData = UniFunc.FindItemData(m_GrabItemCode.itemCode);
+			if (basicItemData != null)
+			{
+				if (basicItemData.itemType != ItemType.Jewelry)
+				{
+					m_InteractionItem.ItemInteraction(m_GrabItemCode.itemCode);
+				}
+			}
+		}
+	}
+
+	private void AnimationProcessor()
+	{
+		if (m_Animator != null)
+		{
+			m_Animator.SetFloat("MoveSpeed", (m_Velocity / m_Speed) * m_MoveAnimationSpeed);
+			m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
+			m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
+		}
+		if (m_ShadowAnimator != null)
+		{
+			m_ShadowAnimator.SetFloat("MoveSpeed", (m_Velocity / m_Speed) * m_MoveAnimationSpeed);
+			m_ShadowAnimator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
+			m_ShadowAnimator.SetFloat("VerticalSpeed", m_VerticalMove);
+		}
+	}
+	private void FootStepEffectProcessor()
+	{
+		if (m_FootStepEffectInside != null || m_FootStepEffectOutdoor != null)
+		{
+			if (m_CollisionCount > 0)
+			{
+				if (m_HorizontalMove != 0)
+				{
+					if (m_FootStepEffectInside != null)
+					{
+						if (m_FootStepEffectInside.isPlaying != true)
+						{
+							m_FootStepEffectInside.Play();
+						}
+					}
+				}
+				else if (m_HorizontalMove == 0)
+				{
+					if (m_FootStepEffectInside != null) { m_FootStepEffectInside.Stop(); }
+					if (m_FootStepEffectOutdoor != null) { m_FootStepEffectOutdoor.Stop(); }
+				}
+			}
+
+			Vector3 t_ModelingScale = (m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale;
+			if (m_HorizontalMove > 0) { t_ModelingScale.x = -1.0f; }
+			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 1.0f; }
+			(m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale = t_ModelingScale;
+		}
+	}
+	private void FootStepSoundProcessor()
+	{
+		if (m_Velocity != 0)
+		{
+			if (isGround == true)
+			{
+				if (m_FootStepSound != null)
+				{
+					if (m_FootStepSound.isPlaying == false)
+					{
+						m_FootStepSound.Play();
+					}
+				}
+			}
+			else if (isGround == false)
+			{
+				if (m_FootStepSound != null)
+				{
+					if (m_FootStepSound.isPlaying == true)
+					{
+						m_FootStepSound.Stop();
+					}
+				}
+			}
+		}
+		else if(m_Velocity == 0)
+		{
+			if (m_FootStepSound != null)
+			{
+				if (m_FootStepSound.isPlaying == true)
+				{
+					m_FootStepSound.Stop();
+				}
+			}
+		}
+	}
 
 	#region Interaction
 	public Vector3 GetInteractionDirection()
@@ -506,6 +539,68 @@ public class PlayerCharacter : CharacterBase
 	}
 	#endregion
 
+	#region NPCShop
+	public void OpenNPCShop()
+	{
+		InteractableObject t_InteractableObject = GetInteractableObject();
+		if (t_InteractableObject.interactionGO != null)
+		{
+			NPCShop t_NPCShop = t_InteractableObject.interactionGO.GetComponent<NPCShop>();
+			if (t_NPCShop != null)
+			{
+				if (m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+					{
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(true);
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = t_NPCShop.m_Inventory;
+						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+					}
+				}
+			}
+			else if (t_NPCShop == null)
+			{
+				CloseNPCShop();
+			}
+		}
+	}
+	public void OpenBeilShop()
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+			{
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.SetShopType(true);
+			}
+		}
+		OpenNPCShop();
+	}
+	public void OpenGagaShop()
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+			{
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.SetShopType(false);
+			}
+		}
+		OpenNPCShop();
+	}
+	public void CloseNPCShop()
+	{
+		if (m_PlayerCharacterUIScript != null)
+		{
+			if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
+			{
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
+				m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
+			}
+		}
+	}
+	#endregion
+
+	#region PlayerUI
 	public void FindPlayerCharacterUIScript()
 	{
 		if (m_PlayerCharacterUIScript == null) { m_PlayerCharacterUIScript = FindObjectOfType<PlayerCharacterUIScript>(); }
@@ -608,31 +703,103 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 	}
-
-	public void SetPlayerGrabItem(AdvencedItem p_AItem)
+	public void PlayerCharacterUIProcessor() 
 	{
-		m_GrabItemCode = p_AItem;
-		if(m_InteractionItem == null)
+		if (m_PlayerCharacterUIScript != null)
 		{
-			if (m_GrabItemSprite != null)
+			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
 			{
-				m_GrabItemSprite.sprite = m_InteractionItem == null ? UniFunc.FindSprite(m_GrabItemCode.itemCode) : null;
-				m_GrabItemSprite.gameObject.SetActive(m_InteractionItem == null ? (m_GrabItemCode.itemCode > 0 ? true : false) : false);
-			}
-		}
-		else if(m_InteractionItem != null)
-		{
-			BasicItemData basicItemData = UniFunc.FindItemData(m_GrabItemCode.itemCode);
-			if (basicItemData != null)
-			{
-				if (basicItemData.itemType != ItemType.Jewelry)
+				if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect != null)
 				{
-					m_InteractionItem.ItemInteraction(m_GrabItemCode.itemCode);
+					InteractableObject t_InteractableObject = GetInteractableObject();
+					if (t_InteractableObject.interaction != null)
+					{
+						Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
+						t_Vector.x = t_Vector.x + 0;
+						t_Vector.y = t_Vector.y + 75;
+						m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.position = t_Vector;
+
+						if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText != null)
+						{
+							m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "상호작용";
+
+							NPC t_NPC = t_InteractableObject.interaction as NPC;
+							NoticeBoard t_NoticeBoard = t_InteractableObject.interaction as NoticeBoard;
+							if (t_NPC != null || t_NoticeBoard != null)
+							{
+								if (t_NPC != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "대화하기"; }
+								else if (t_NoticeBoard != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기"; }
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk;
+									}
+								}
+							}
+							Flower t_Flower = t_InteractableObject.interaction as Flower;
+							FlowerPot t_FlowerPot = t_InteractableObject.interaction as FlowerPot;
+							if (t_Flower != null || t_FlowerPot != null)
+							{
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "수확하기";
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants;
+									}
+								}
+							}
+							Door t_Door = t_InteractableObject.interaction as Door;
+							InteractablePortal t_Portal = t_InteractableObject.interaction as InteractablePortal;
+							if (t_Door != null || t_Portal != null)
+							{
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "이동하기";
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Open != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Open;
+									}
+								}
+							}
+							Mailbox t_Mailbox = t_InteractableObject.interaction as Mailbox;
+							if (t_Mailbox != null)
+							{
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기";
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail;
+									}
+								}
+							}
+							FishingPointComponent t_Fish = t_InteractableObject.interaction as FishingPointComponent;
+							if (t_Fish != null)
+							{
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "낚시하기";
+								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
+								{
+									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish != null)
+									{
+										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish;
+									}
+								}
+							}
+						}
+					}
+					else if (t_InteractableObject.interaction == null)
+					{
+						m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.SetActive(false);
+					}
 				}
 			}
 		}
 	}
+	#endregion
 
+	#region UIControll
 	public void PopUpInteractionIcon(bool param)
 	{
 		if (m_PlayerCharacterUIScript != null)
@@ -646,201 +813,6 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 	}
-	private void GrabItemDisplayProcessor()
-	{
-		if ((m_GrabItemSprite != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
-		{
-			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
-		}
-	}
-	private void ItemInfoDisplayProcessor()
-	{
-		if (m_ItemInfoDisplay != null)
-		{
-			if (m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
-			{
-				if (m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf == true)
-				{
-					if (m_ItemInfoDisplay.m_ItemInfoDisplayRect != null)
-					{
-						m_ItemInfoDisplay.m_ItemInfoDisplayRect.position = Input.mousePosition;
-					}
-				}
-
-				if (m_PlayerCharacterUIScript != null)
-				{
-					if (m_PlayerCharacterUIScript.m_InventoryUIScript != null)
-					{
-						if (m_PlayerCharacterUIScript.m_InventoryUIScript.gameObject.activeSelf == false)
-						{
-							m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(false);
-						}
-					}
-				}
-
-				if (Input.GetMouseButton(0) == true)
-				{
-					m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(false);
-				}
-			}
-		}
-	}
-	private void AnimationProcessor()
-	{
-		if (m_Animator != null)
-		{
-			m_Animator.SetFloat("MoveSpeed", (m_Velocity / m_Speed) * m_MoveAnimationSpeed);
-			m_Animator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
-			m_Animator.SetFloat("VerticalSpeed", m_VerticalMove);
-		}
-		if (m_ShadowAnimator != null)
-		{
-			m_ShadowAnimator.SetFloat("MoveSpeed", (m_Velocity / m_Speed) * m_MoveAnimationSpeed);
-			m_ShadowAnimator.SetFloat("HorizontalSpeed", m_UseScaleFlip ? (m_HorizontalMove < 0 ? -m_HorizontalMove : m_HorizontalMove) : m_HorizontalMove);
-			m_ShadowAnimator.SetFloat("VerticalSpeed", m_VerticalMove);
-		}
-	}
-
-	private void MonologueDisplayProcessor(float DeltaTime)
-	{
-		if (m_MonologueDisplayTime > 0.0f)
-		{
-			m_MonologueDisplayTime = m_MonologueDisplayTime - DeltaTime;
-			if (m_MonologueDisplayTime < 0.0f)
-			{
-				PopUpMonologue("", 0.0f);
-
-				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.PopUpMonologue) { m_TutorialComponent.ProgressTutorial(); } }
-				m_MonologueDisplayTime = 0.0f;
-			}
-		}
-	}
-	private void GuideDisplayProcessor(float DeltaTime)
-	{
-		if (m_GuideDisplayTime > 0.0f)
-		{
-			m_GuideDisplayTime = m_GuideDisplayTime - DeltaTime;
-			if (m_GuideDisplayTime < 0.0f)
-			{
-				PopUpGuide("", 0.0f);
-
-				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.PopUpGuide) { m_TutorialComponent.ProgressTutorial(); } }
-				m_GuideDisplayTime = 0.0f;
-			}
-		}
-	}
-	private void FadeProcessor(float DeltaTime)
-	{
-		if (m_FadeInTime > 0.0f)
-		{
-			m_FadeInTime = m_FadeInTime - DeltaTime;
-
-			if (m_PlayerCharacterUIScript != null)
-			{
-				if (m_PlayerCharacterUIScript.m_FadeUI != null)
-				{
-					Color t_Color = m_PlayerCharacterUIScript.m_FadeUI.color;
-					t_Color.a = m_FadeInTime / m_FadeInTimeBase;
-					m_PlayerCharacterUIScript.m_FadeUI.color = t_Color;
-				}
-			}
-
-			if (m_FadeInTime < 0.0f)
-			{
-				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.FadeIn) { m_TutorialComponent.ProgressTutorial(); } }
-				m_FadeInTime = 0.0f;
-				m_FadeInTimeBase = 0.0f;
-			}
-		}
-		if (m_FadeOutTime > 0.0f)
-		{
-			m_FadeOutTime = m_FadeOutTime - DeltaTime;
-
-			if (m_PlayerCharacterUIScript != null)
-			{
-				if (m_PlayerCharacterUIScript.m_FadeUI != null)
-				{
-					Color t_Color = m_PlayerCharacterUIScript.m_FadeUI.color;
-					t_Color.a = 1 - (m_FadeOutTime / m_FadeOutTimeBase);
-					m_PlayerCharacterUIScript.m_FadeUI.color = t_Color;
-				}
-			}
-
-			if (m_FadeOutTime < 0.0f)
-			{
-				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.FadeOut) { m_TutorialComponent.ProgressTutorial(); } }
-				m_FadeOutTime = 0.0f;
-				m_FadeOutTimeBase = 0.0f;
-			}
-		}
-	}
-	private void ShowFootStepEffect()
-	{
-		if (m_FootStepEffectInside != null || m_FootStepEffectOutdoor != null)
-		{
-			if (m_CollisionCount > 0)
-			{
-				if (m_HorizontalMove != 0)
-				{
-					if (m_FootStepEffectInside != null)
-					{
-						if (m_FootStepEffectInside.isPlaying != true)
-						{
-							m_FootStepEffectInside.Play();
-						}
-					}
-				}
-				else if (m_HorizontalMove == 0)
-				{
-					if (m_FootStepEffectInside != null) { m_FootStepEffectInside.Stop(); }
-					if (m_FootStepEffectOutdoor != null) { m_FootStepEffectOutdoor.Stop(); }
-				}
-			}
-
-			Vector3 t_ModelingScale = (m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale;
-			if (m_HorizontalMove > 0) { t_ModelingScale.x = -1.0f; }
-			else if (m_HorizontalMove < 0) { t_ModelingScale.x = 1.0f; }
-			(m_FootStepEffectInside != null ? m_FootStepEffectInside : m_FootStepEffectOutdoor).transform.parent.localScale = t_ModelingScale;
-		}
-	}
-
-	private void FootStepSoundProcessor()
-	{
-		if (m_Velocity != 0)
-		{
-			if (isGround == true)
-			{
-				if (m_FootStepSound != null)
-				{
-					if (m_FootStepSound.isPlaying == false)
-					{
-						m_FootStepSound.Play();
-					}
-				}
-			}
-			else if (isGround == false)
-			{
-				if (m_FootStepSound != null)
-				{
-					if (m_FootStepSound.isPlaying == true)
-					{
-						m_FootStepSound.Stop();
-					}
-				}
-			}
-		}
-		else if(m_Velocity == 0)
-		{
-			if (m_FootStepSound != null)
-			{
-				if (m_FootStepSound.isPlaying == true)
-				{
-					m_FootStepSound.Stop();
-				}
-			}
-		}
-	}
-
 	public void PopUpSpeechBubble(string p_Script, bool bParam)
 	{
 		if(m_SpeechBubble != null)
@@ -939,117 +911,124 @@ public class PlayerCharacter : CharacterBase
 	}
 	public void FadeIn(float p_Time) { m_FadeInTimeBase = p_Time; m_FadeInTime = p_Time; }
 	public void FadeOut(float p_Time) { m_FadeOutTimeBase = p_Time; m_FadeOutTime = p_Time; }
-
-	public void PlayerCharacterUIProcessor() 
+	#endregion
+	
+	#region  UIProcessor
+	private void GrabItemDisplayProcessor()
 	{
-		if (m_PlayerCharacterUIScript != null)
+		if ((m_GrabItemSprite != null ? m_GrabItemSprite.gameObject.activeSelf : false) == true)
 		{
-			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
+			m_GrabItemSprite.rectTransform.position = Input.mousePosition;
+		}
+	}
+	private void ItemInfoDisplayProcessor()
+	{
+		if (m_ItemInfoDisplay != null)
+		{
+			if (m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
 			{
-				if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect != null)
+				if (m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf == true)
 				{
-					InteractableObject t_InteractableObject = GetInteractableObject();
-					if (t_InteractableObject.interaction != null)
+					if (m_ItemInfoDisplay.m_ItemInfoDisplayRect != null)
 					{
-						Vector3 t_Vector = Camera.main.WorldToScreenPoint(t_InteractableObject.interactionGO.transform.position);
-						t_Vector.x = t_Vector.x + 0;
-						t_Vector.y = t_Vector.y + 75;
-						m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.position = t_Vector;
+						m_ItemInfoDisplay.m_ItemInfoDisplayRect.position = Input.mousePosition;
+					}
+				}
 
-						if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText != null)
+				if (m_PlayerCharacterUIScript != null)
+				{
+					if (m_PlayerCharacterUIScript.m_InventoryUIScript != null)
+					{
+						if (m_PlayerCharacterUIScript.m_InventoryUIScript.gameObject.activeSelf == false)
 						{
-							m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "상호작용";
-
-							NPC t_NPC = t_InteractableObject.interaction as NPC;
-							NoticeBoard t_NoticeBoard = t_InteractableObject.interaction as NoticeBoard;
-							if (t_NPC != null || t_NoticeBoard != null)
-							{
-								if (t_NPC != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "대화하기"; }
-								else if (t_NoticeBoard != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기"; }
-								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
-								{
-									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk != null)
-									{
-										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk;
-									}
-								}
-							}
-							Flower t_Flower = t_InteractableObject.interaction as Flower;
-							FlowerPot t_FlowerPot = t_InteractableObject.interaction as FlowerPot;
-							if (t_Flower != null || t_FlowerPot != null)
-							{
-								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "수확하기";
-								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
-								{
-									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants != null)
-									{
-										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants;
-									}
-								}
-							}
-							Door t_Door = t_InteractableObject.interaction as Door;
-							InteractablePortal t_Portal = t_InteractableObject.interaction as InteractablePortal;
-							if (t_Door != null || t_Portal != null)
-							{
-								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "이동하기";
-								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
-								{
-									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Open != null)
-									{
-										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Open;
-									}
-								}
-							}
-							Mailbox t_Mailbox = t_InteractableObject.interaction as Mailbox;
-							if (t_Mailbox != null)
-							{
-								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기";
-								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
-								{
-									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail != null)
-									{
-										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail;
-									}
-								}
-							}
-							FishingPointComponent t_Fish = t_InteractableObject.interaction as FishingPointComponent;
-							if (t_Fish != null)
-							{
-								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "낚시하기";
-								if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
-								{
-									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish != null)
-									{
-										m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish;
-									}
-								}
-							}
+							m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(false);
 						}
 					}
-					else if (t_InteractableObject.interaction == null)
-					{
-						m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.SetActive(false);
-					}
+				}
+
+				if (Input.GetMouseButton(0) == true)
+				{
+					m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(false);
 				}
 			}
 		}
 	}
-
-#region Collision
-
-	protected override void OnCollisionEnter(Collision collision)
+	private void MonologueDisplayProcessor(float DeltaTime)
 	{
-		base.OnCollisionEnter(collision);
+		if (m_MonologueDisplayTime > 0.0f)
+		{
+			m_MonologueDisplayTime = m_MonologueDisplayTime - DeltaTime;
+			if (m_MonologueDisplayTime < 0.0f)
+			{
+				PopUpMonologue("", 0.0f);
+
+				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.PopUpMonologue) { m_TutorialComponent.ProgressTutorial(); } }
+				m_MonologueDisplayTime = 0.0f;
+			}
+		}
 	}
-
-	protected override void OnCollisionExit(Collision collision)
+	private void GuideDisplayProcessor(float DeltaTime)
 	{
-		base.OnCollisionExit(collision);
+		if (m_GuideDisplayTime > 0.0f)
+		{
+			m_GuideDisplayTime = m_GuideDisplayTime - DeltaTime;
+			if (m_GuideDisplayTime < 0.0f)
+			{
+				PopUpGuide("", 0.0f);
+
+				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.PopUpGuide) { m_TutorialComponent.ProgressTutorial(); } }
+				m_GuideDisplayTime = 0.0f;
+			}
+		}
+	}
+	private void FadeProcessor(float DeltaTime)
+	{
+		if (m_FadeInTime > 0.0f)
+		{
+			m_FadeInTime = m_FadeInTime - DeltaTime;
+
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_FadeUI != null)
+				{
+					Color t_Color = m_PlayerCharacterUIScript.m_FadeUI.color;
+					t_Color.a = m_FadeInTime / m_FadeInTimeBase;
+					m_PlayerCharacterUIScript.m_FadeUI.color = t_Color;
+				}
+			}
+
+			if (m_FadeInTime < 0.0f)
+			{
+				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.FadeIn) { m_TutorialComponent.ProgressTutorial(); } }
+				m_FadeInTime = 0.0f;
+				m_FadeInTimeBase = 0.0f;
+			}
+		}
+		if (m_FadeOutTime > 0.0f)
+		{
+			m_FadeOutTime = m_FadeOutTime - DeltaTime;
+
+			if (m_PlayerCharacterUIScript != null)
+			{
+				if (m_PlayerCharacterUIScript.m_FadeUI != null)
+				{
+					Color t_Color = m_PlayerCharacterUIScript.m_FadeUI.color;
+					t_Color.a = 1 - (m_FadeOutTime / m_FadeOutTimeBase);
+					m_PlayerCharacterUIScript.m_FadeUI.color = t_Color;
+				}
+			}
+
+			if (m_FadeOutTime < 0.0f)
+			{
+				if (m_TutorialComponent != null) { if (m_TutorialComponent.GetCurrentStateType() == StateType.FadeOut) { m_TutorialComponent.ProgressTutorial(); } }
+				m_FadeOutTime = 0.0f;
+				m_FadeOutTimeBase = 0.0f;
+			}
+		}
 	}
 	#endregion
 
-
-#region RayCast
+	#region RayCast
 	/// <summary>
 	/// MouseButtonDown = true, MouseButtonUp = false
 	/// </summary>
@@ -1570,4 +1549,17 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 #endregion
+
+	#region Collision
+
+	protected override void OnCollisionEnter(Collision collision)
+	{
+		base.OnCollisionEnter(collision);
+	}
+
+	protected override void OnCollisionExit(Collision collision)
+	{
+		base.OnCollisionExit(collision);
+	}
+	#endregion
 }
