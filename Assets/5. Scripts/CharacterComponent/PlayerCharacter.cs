@@ -156,50 +156,53 @@ public class PlayerCharacter : CharacterBase
 		//if (Camera.main.orthographic == false) { }
 		if(currentState == PlayerCharacterState.Moveable)
 		{
-			m_HorizontalMove = Input.GetAxis("Horizontal");
-			m_VerticalMove = Input.GetAxis("Vertical");
-			if (Input.GetAxisRaw("Horizontal") == 0.0f) { m_HorizontalMove = 0.0f; }
-			if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
-
-			if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
-			if (Input.GetKeyDown(KeyCode.E) == true) 
+			if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "loading")
 			{
-				InteractableObject t_InteractionObj = GetInteractableObject();
-				if (t_InteractionObj.interaction != null)
+				m_HorizontalMove = Input.GetAxis("Horizontal");
+				m_VerticalMove = Input.GetAxis("Vertical");
+				if (Input.GetAxisRaw("Horizontal") == 0.0f) { m_HorizontalMove = 0.0f; }
+				if (Input.GetAxisRaw("Vertical") == 0.0f) { m_VerticalMove = 0.0f; }
+
+				if (Input.GetKeyDown(KeyCode.Space) == true) { Jump(); }
+				if (Input.GetKeyDown(KeyCode.E) == true)
 				{
-					t_InteractionObj.interaction.Interaction(gameObject);
-					m_InteractionTarget = t_InteractionObj.interactionGO.transform;
-					Vector3 t_Vector = GetInteractionDirection();
-					//t_Vector.x 
+					InteractableObject t_InteractionObj = GetInteractableObject();
+					if (t_InteractionObj.interaction != null)
+					{
+						t_InteractionObj.interaction.Interaction(gameObject);
+						m_InteractionTarget = t_InteractionObj.interactionGO.transform;
+						Vector3 t_Vector = GetInteractionDirection();
+						//t_Vector.x 
+					}
 				}
-			}
-			if (Input.GetKeyDown(KeyCode.Q) == true)
-			{ 
-				if (m_Inventory.m_InventoryUIScript != null)
-				{ 
-					m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
-					m_Inventory.RefreshInventory();
-				}
-			}
-			if (Input.GetKeyDown(KeyCode.F1) == true)
-			{
-				GameObject t_GameObject = UniFunc.GetChildOfName(GameObject.Find("GuideUIs"), "ManualUI");
-				if(t_GameObject != null)
+				if (Input.GetKeyDown(KeyCode.Q) == true)
 				{
-					t_GameObject.SetActive(!t_GameObject.activeSelf);
+					if (m_Inventory.m_InventoryUIScript != null)
+					{
+						m_Inventory.m_InventoryUIScript.gameObject.SetActive(!m_Inventory.m_InventoryUIScript.gameObject.activeSelf);
+						m_Inventory.RefreshInventory();
+					}
 				}
-			}
+				if (Input.GetKeyDown(KeyCode.F1) == true)
+				{
+					GameObject t_GameObject = UniFunc.GetChildOfName(GameObject.Find("GuideUIs"), "ManualUI");
+					if (t_GameObject != null)
+					{
+						t_GameObject.SetActive(!t_GameObject.activeSelf);
+					}
+				}
 
-			if (Input.GetMouseButtonDown(0) == true)
-			{
-				DoRaycast(true);
-			}
-			if (Input.GetMouseButtonUp(0) == true)
-			{
-				DoRaycast(false);
+				if (Input.GetMouseButtonDown(0) == true)
+				{
+					DoRaycast(true);
+				}
+				if (Input.GetMouseButtonUp(0) == true)
+				{
+					DoRaycast(false);
 
-				m_GrabItemCode = new AdvencedItem();
-				if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
+					m_GrabItemCode = new AdvencedItem();
+					if (m_GrabItemSprite != null) { m_GrabItemSprite.gameObject.SetActive(false); }
+				}
 			}
 		}
 	}
@@ -402,6 +405,7 @@ public class PlayerCharacter : CharacterBase
 
 	public InteractionItem GetInteractionItem() { return m_InteractionItem; }
 
+	#region Interaction
 	public Vector3 GetInteractionDirection()
 	{
 		Vector3 direction = Vector3.zero;
@@ -498,18 +502,22 @@ public class PlayerCharacter : CharacterBase
 		//CloseNPCShop();
 		PopUpInteractionIcon(true);
 	}
+	#endregion
 
 	public void FindPlayerCharacterUIScript()
 	{
 		if (m_PlayerCharacterUIScript == null) { m_PlayerCharacterUIScript = FindObjectOfType<PlayerCharacterUIScript>(); }
 		if (m_PlayerCharacterUIScript == null)
 		{
-			Canvas canvas = FindObjectOfType<Canvas>();
-			if (canvas != null)
+			if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "loading")
 			{
-				if (m_PlayerCharacterUIPrefab != null)
+				Canvas canvas = FindObjectOfType<Canvas>();
+				if (canvas != null)
 				{
-					m_PlayerCharacterUIScript = Instantiate(m_PlayerCharacterUIPrefab, canvas.transform).GetComponent<PlayerCharacterUIScript>();
+					if (m_PlayerCharacterUIPrefab != null)
+					{
+						m_PlayerCharacterUIScript = Instantiate(m_PlayerCharacterUIPrefab, canvas.transform).GetComponent<PlayerCharacterUIScript>();
+					}
 				}
 			}
 		}
