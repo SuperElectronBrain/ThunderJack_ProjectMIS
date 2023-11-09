@@ -24,90 +24,108 @@ public class IllustratedGuideUIScript : UIScript
 		base.Start();
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
-		
-	}
-
 	public override void RefresfAction()
 	{
 		base.RefresfAction();
 
-		if(m_IllustratedGuideComponent != null)
+		if (m_IllustratedGuideComponent != null)
 		{
-			if(buttonsParent != null)
+			//GenerateButton
+			SetButtonAmount(m_IllustratedGuideComponent.GetItemCount());
+		}
+			
+		if(buttonsParent != null)
+		{
+			//initialize Button Action
+			for (int i = 0; i < buttonsParent.childCount; i = i + 1)
 			{
-				//GenerateButton
-				int count = buttonsParent.childCount - m_IllustratedGuideComponent.GetItemCount();
+				Button button = buttonsParent.GetChild(i).GetComponent<Button>();
+				SetButtonImageAndEvent(button, i);
+			}
+		}
+	}
+
+	private void SetButtonAmount(int pButtonAmount)
+	{
+		if (m_IllustratedGuideComponent != null)
+		{
+			if (buttonsParent != null)
+			{
+				int count = buttonsParent.childCount - pButtonAmount;
 				if (count < 0)
 				{
 					for (int i = 0; i < (-count); i = i + 1)
 					{
 						if (buttonPrefab != null) { Instantiate(buttonPrefab, buttonsParent); }
-					} 
+					}
 				}
 				else if (count > 0)
 				{
-					for (int i = 0; i < count; i = i + 1) 
+					for (int i = 0; i < count; i = i + 1)
 					{
 						GameObject t_GO = buttonsParent.GetChild(buttonsParent.childCount - i - 1).gameObject;
-						Destroy(t_GO); 
-					}
-				}
-
-				//initialize Button Action
-				for (int i = 0; i < buttonsParent.childCount; i = i + 1)
-				{
-					Transform buttonTransform = buttonsParent.GetChild(i);
-
-					GameObject t_GO = UniFunc.GetChildOfName(buttonTransform, "ItemImage");
-					if (t_GO != null)
-					{
-						Image t_Image = t_GO.GetComponent<Image>();
-						if (t_Image != null)
-						{
-							t_Image.gameObject.SetActive(true);
-							t_Image.sprite = UniFunc.FindSprite(m_IllustratedGuideComponent[i]);
-						}
-					}
-					t_GO = UniFunc.GetChildOfName(buttonTransform, "ItemAmountText (TMP)");
-					if (t_GO != null) { t_GO.transform.parent.gameObject.SetActive(false); }
-
-					Button button = buttonTransform.GetComponent<Button>();
-					if(button != null)
-					{
-						int number = i;
-
-						button.onClick.RemoveAllListeners();
-						button.onClick.AddListener(() => 
-						{
-							int itemCode = m_IllustratedGuideComponent[number];
-							if (itemSprite != null)
-							{
-								itemSprite.sprite = UniFunc.FindSprite(itemCode);
-							}
-
-							BasicItemData basicItemData = UniFunc.FindItemData(itemCode);
-							if(basicItemData != null)
-							{
-								if (itemName != null)
-								{
-									itemName.text = basicItemData.itemNameKo;
-								}
-								if (itemScript != null)
-								{
-									itemScript.text = basicItemData.itemText;
-								}
-							}
-							SetElementsColorAndRatio(itemCode);
-						});
+						Destroy(t_GO);
 					}
 				}
 			}
 		}
 	}
+	private void SetButtonImageAndEvent(Button pButton, int pButtonIndex)
+	{
+		if (pButton != null)
+		{
+			int itemCode = 0;
+			if (m_IllustratedGuideComponent != null)
+			{ itemCode = m_IllustratedGuideComponent[pButtonIndex]; }
 
+			SetButtonSprite(pButton, itemCode);
+
+			pButton.onClick.RemoveAllListeners();
+			pButton.onClick.AddListener(() =>
+			{
+				SetGuideSpriteAndScript(itemCode);
+			});
+		}
+	}
+	private void SetButtonSprite(Button button, int pItemCode)
+	{
+		if(button != null)
+		{
+			GameObject t_GO = UniFunc.GetChildOfName(button.transform, "ItemImage");
+			if (t_GO != null)
+			{
+				Image t_Image = t_GO.GetComponent<Image>();
+				if (t_Image != null)
+				{
+					t_Image.gameObject.SetActive(true);
+					t_Image.sprite = UniFunc.FindSprite(pItemCode);
+				}
+			}
+			t_GO = UniFunc.GetChildOfName(button.transform, "ItemAmountText (TMP)");
+			if (t_GO != null) { t_GO.transform.parent.gameObject.SetActive(false); }
+		}
+	}
+	private void SetGuideSpriteAndScript(int pItemCode)
+	{
+		if (itemSprite != null)
+		{
+			itemSprite.sprite = UniFunc.FindSprite(pItemCode);
+		}
+
+		BasicItemData basicItemData = UniFunc.FindItemData(pItemCode);
+		if (basicItemData != null)
+		{
+			if (itemName != null)
+			{
+				itemName.text = basicItemData.itemNameKo;
+			}
+			if (itemScript != null)
+			{
+				itemScript.text = basicItemData.itemText;
+			}
+		}
+		SetElementsColorAndRatio(pItemCode);
+	}
 	private void SetElementsColorAndRatio(int pItemCode)
 	{
 		if(pItemCode > 0)
