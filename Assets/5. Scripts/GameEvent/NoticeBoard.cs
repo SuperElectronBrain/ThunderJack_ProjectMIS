@@ -46,6 +46,7 @@ public class NoticeBoard : MonoBehaviour, IInteraction
         else
         {
             //CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
+            EventManager.Publish(EventType.StartInteraction);
             CameraEvent.Instance.ChangeCam(vCam);
             onInteractionEvent?.Invoke();
 			if (m_InteractionSound != null) { if (m_InteractionSound.isPlaying == false) m_InteractionSound.Play(); }
