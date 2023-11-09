@@ -647,16 +647,16 @@ public class PlayerCharacter : CharacterBase
 	{
 		if (m_ItemInfoDisplay != null)
 		{
-			if ((m_ItemInfoDisplay.m_ItemInfoDisplayGO != null ? m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf : false) == true)
-			{
-				if (m_ItemInfoDisplay.m_ItemInfoDisplayRect != null)
-				{
-					m_ItemInfoDisplay.m_ItemInfoDisplayRect.position = Input.mousePosition;
-				}
-			}
-
 			if (m_ItemInfoDisplay.m_ItemInfoDisplayGO != null)
 			{
+				if (m_ItemInfoDisplay.m_ItemInfoDisplayGO.activeSelf == true)
+				{
+					if (m_ItemInfoDisplay.m_ItemInfoDisplayRect != null)
+					{
+						m_ItemInfoDisplay.m_ItemInfoDisplayRect.position = Input.mousePosition;
+					}
+				}
+
 				if (m_PlayerCharacterUIScript != null)
 				{
 					if (m_PlayerCharacterUIScript.m_InventoryUIScript != null)
@@ -666,6 +666,11 @@ public class PlayerCharacter : CharacterBase
 							m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(false);
 						}
 					}
+				}
+
+				if (Input.GetMouseButton(0) == true)
+				{
+					m_ItemInfoDisplay.m_ItemInfoDisplayGO.SetActive(false);
 				}
 			}
 		}
@@ -774,21 +779,6 @@ public class PlayerCharacter : CharacterBase
 							m_FootStepEffectInside.Play();
 						}
 					}
-					//if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Build_Inside" || bUseDustEffect == true)
-					//{
-					//	if (m_FootStepEffectOutdoor != null) { m_FootStepEffectOutdoor.Stop(); }
-					//}
-					//else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Build_Inside" && bUseDustEffect == false)
-					//{
-					//	if (m_FootStepEffectOutdoor != null)
-					//	{
-					//		if (m_FootStepEffectOutdoor.isPlaying != true)
-					//		{
-					//			m_FootStepEffectOutdoor.Play();
-					//		}
-					//	}
-					//	if (m_FootStepEffectInside != null) { m_FootStepEffectInside.Stop(); }
-					//}
 				}
 				else if (m_HorizontalMove == 0)
 				{
@@ -1035,25 +1025,21 @@ public class PlayerCharacter : CharacterBase
 		}
 	}
 
+#region Collision
+
 	protected override void OnCollisionEnter(Collision collision)
 	{
 		base.OnCollisionEnter(collision);
-
-		//if (collision.gameObject.name.Contains("F_Bridge") == true)
-		//{
-		//	isGround = true;
-		//}
 	}
 
 	protected override void OnCollisionExit(Collision collision)
 	{
 		base.OnCollisionExit(collision);
-		//if (collision.gameObject.name.Contains("F_Bridge") == true)
-		//{
-		//	isGround = false;
-		//}
 	}
+	#endregion
 
+
+#region RayCast
 	/// <summary>
 	/// MouseButtonDown = true, MouseButtonUp = false
 	/// </summary>
@@ -1122,31 +1108,6 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
-			/*
-			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
-			if (t_AccessoryPlate != null)
-			{
-				if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
-				{
-					if (t_AccessoryPlate.m_Input.itemAmount > 0)
-					{
-						if (m_GrabItemCode.IsAddable(new AdvencedItem()) == true)
-						{
-							m_Inventory.AddAItem(t_AccessoryPlate.m_Input.itemCode, t_AccessoryPlate.m_Input.itemProgress, t_AccessoryPlate.m_Input.itemAmount);
-							m_GrabItemCode = t_AccessoryPlate.m_Input;
-							if (m_GrabItemSprite != null)
-							{
-								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
-								m_GrabItemSprite.gameObject.SetActive(true);
-							}
-							t_AccessoryPlate.m_Input = new AdvencedItem();
-							t_AccessoryPlate.RefreshPlate();
-						}
-					}
-				}
-			}
-			*/
-
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
 			{
@@ -1169,35 +1130,6 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 
-			/*
-			PressOutput t_PressOutput = hit.transform.GetComponent<PressOutput>();
-			if (t_PressOutput != null)
-			{
-				Press t_Press = UniFunc.GetParentComponent<Press>(t_PressOutput.gameObject);
-				if (t_Press != null)
-				{
-					if (t_Press.m_CraftedItem != null)
-					{
-						if (t_Press.m_CraftedItem.itemAmount > 0)
-						{
-							if (m_GrabItemCode == null)
-							{
-								m_Inventory.AddAItem(t_Press.m_CraftedItem);
-								m_GrabItemCode = t_Press.m_CraftedItem;
-								if (m_GrabItemSprite != null)
-								{
-									m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
-									m_GrabItemSprite.gameObject.SetActive(true);
-								}
-								t_Press.m_CraftedItem = null;
-								t_Press.RefreshOutput();
-							}
-						}
-					}
-				}
-			}
-			*/
-
 			IGrabable t_GrabableObject = hit.transform.GetComponent<IGrabable>();
 			if (t_GrabableObject != null)
 			{
@@ -1206,51 +1138,6 @@ public class PlayerCharacter : CharacterBase
 					t_GrabableObject.SetGrabState(true);
 				}
 			}
-
-			/*
-			NPCShop t_NPCShop = hit.transform.GetComponent<NPCShop>();
-			if (t_NPCShop != null)
-			{
-				if (m_PlayerCharacterUIScript != null)
-				{
-					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-					{
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(true);
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = t_NPCShop.m_Inventory;
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
-					}
-				}
-			}
-			else if (t_NPCShop == null)
-			{
-				if (m_PlayerCharacterUIScript != null)
-				{
-					if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-					{
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
-						m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
-					}
-				}
-			}
-			*/
-
-			//BBB t_BBB = hit.transform.GetComponent<BBB>();
-			//if (t_BBB != null)
-			//{
-			//	AAA t_AAA = UniFunc.GetParentComponent<AAA>(t_BBB.transform);
-			//	if (t_AAA != null)
-			//	{
-			//		SetPlayerGrabItem(new AdvencedItem(t_AAA.m_ItemCode, 1, 1));
-			//	}
-			//}
-
-			//AAA t_AAA = hit.transform.GetComponent<AAA>();
-			//if (t_AAA != null)
-			//{
-			//	Debug.Log("î");
-			//	SetPlayerGrabItem(new AdvencedItem(t_AAA.m_ItemCode, 1, 1));
-			//}
 		}
 		else if (bMouseOnUI == true)
 		{
@@ -1261,15 +1148,6 @@ public class PlayerCharacter : CharacterBase
 	{
 		if (bMouseOnUI == false)
 		{
-			//if (m_PlayerCharacterUIScript != null)
-			//{
-			//	if (m_PlayerCharacterUIScript.m_NPCStoreUIScript != null)
-			//	{
-			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.gameObject.SetActive(false);
-			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.m_NPCInventory = null;
-			//		m_PlayerCharacterUIScript.m_NPCStoreUIScript.RefreshUI();
-			//	}
-			//}
 		}
 		else if (bMouseOnUI == true)
 		{
@@ -1279,61 +1157,6 @@ public class PlayerCharacter : CharacterBase
 	{
 		if (bMouseOnUI == false)
 		{
-			/*
-			MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
-			if (t_MillStone != null)
-			{
-				if (t_MillStone.SetItem(m_GrabItemCode) == true)
-				{
-					m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				}
-
-				//if (t_MillStone.M_Input == 0)
-				//{
-				//	AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				//	if(t_AItem.IsAddable(new AdvencedItem()) == false)
-				//	{
-				//
-				//		t_MillStone.M_Input = t_AItem.itemCode;
-				//		t_MillStone.m_Progress = t_AItem.itemProgress;
-				//	}
-				//}
-			}
-			*/
-
-			/*
-			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
-			if (t_AccessoryPlate != null)
-			{
-				if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == true)
-				{
-					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-					if (t_AItem.IsAddable(new AdvencedItem()) == false)
-					{
-						t_AccessoryPlate.m_Input = t_AItem;
-						t_AccessoryPlate.RefreshPlate();
-					}
-				}
-				else if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
-				{
-					if (m_GrabItemCode.IsAddable(new AdvencedItem()) == false)
-					{
-						if (t_AccessoryPlate.CraftItem(m_GrabItemCode) == true)
-						{
-							m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-							t_AccessoryPlate.RefreshPlate();
-
-							if (m_GrabItemSprite != null)
-							{
-								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
-								m_GrabItemSprite.gameObject.SetActive(true);
-							}
-						}
-					}
-				}
-			}
-			*/
-
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
 			{
@@ -1386,54 +1209,61 @@ public class PlayerCharacter : CharacterBase
 		//마우스가 UI 위에 존재한다면
 		else if (bMouseOnUI == true)
 		{
-			//Canvas t_Canvas = FindObjectOfType<Canvas>();
-			////현재 씬에 캔버스가 존재한다면
-			//if(t_Canvas != null)
-			//{
-			//	GraphicRaycaster t_GraphicRaycaster = t_Canvas.GetComponent<GraphicRaycaster>();
-			//	//캔버스에 GraphicRaycaster가 달려있다면
-			//	if (t_GraphicRaycaster != null)
-			//	{
-			//		PointerEventData t_PointerEventData = new PointerEventData(null);
-			//		t_PointerEventData.position = Input.mousePosition;
-			//		List<RaycastResult> results = new List<RaycastResult>();
-			//		t_GraphicRaycaster.Raycast(t_PointerEventData, results);
-			//
-			//		//GraphicRaycaster를 이용해 마우스가 가리키는 방향으로 레이를 발사하여, 레이에 걸린 UI들이 존재한다면
-			//		for (int i = 0; i < results.Count; i = i + 1)
-			//		{
-			//			InventoryUIScript t_InventoryUIScript = UniFunc.GetParentComponent<InventoryUIScript>(results[i].gameObject);
-			//			//레이캐스트에 걸린 UI들중 인벤토리가 있다면
-			//			if (t_InventoryUIScript != null)
-			//			{
-			//				//현재 씬의 플레이어 캐릭터가 InteractionItem 컴포넌트를 가지고 있다면
-			//				if (m_InteractionItem != null)
-			//				{
-			//					List<AAA> t_AAA = FindObjectsOfType<AAA>().ToList();
-			//					if (t_AAA != null)
-			//					{
-			//						//현재 씬에 물리 아이템이 하나라도 존재한다면
-			//						for (int j = 0; j < t_AAA.Count; j = j + 1)
-			//						{
-			//							//현재 씬에 존재하는 물리 아이템중, 현재 캐릭터가 마우스로 드래그하여 들고 있는 아이템과 아이템 코드가 일치하는 것이 있다면
-			//							if (t_AAA[j].m_ItemCode == m_GrabItemCode.itemCode)
-			//							{
-			//								//해당 물리 아이템을 삭제함
-			//								Destroy(t_AAA[j].gameObject);
-			//								t_AAA.TrimExcess();
-			//								break;
-			//							}
-			//						}
-			//					}
-			//				}
-			//				
-			//				//인벤토리에 현재 캐릭터가 드래그하여 들고있는 아이템을 다시 넣어줌(현재 캐릭터가 들고있는 아이템을 Null로 만드는 것은 다음 프레임의 Update에서 실행됨)
-			//				m_Inventory.AddAItem(m_GrabItemCode);
-			//				break;
-			//			}
-			//		}
-			//	}
-			//}
+			BasicItemData basicItemData = UniFunc.FindItemData(m_GrabItemCode.itemCode);
+			if (basicItemData != null)
+			{
+				if (basicItemData.itemType != ItemType.Jewelry)
+				{
+					Canvas t_Canvas = FindObjectOfType<Canvas>();
+					//현재 씬에 캔버스가 존재한다면
+					if (t_Canvas != null)
+					{
+						GraphicRaycaster t_GraphicRaycaster = t_Canvas.GetComponent<GraphicRaycaster>();
+						//캔버스에 GraphicRaycaster가 달려있다면
+						if (t_GraphicRaycaster != null)
+						{
+							PointerEventData t_PointerEventData = new PointerEventData(null);
+							t_PointerEventData.position = Input.mousePosition;
+							List<RaycastResult> results = new List<RaycastResult>();
+							t_GraphicRaycaster.Raycast(t_PointerEventData, results);
+
+							//GraphicRaycaster를 이용해 마우스가 가리키는 방향으로 레이를 발사하여, 레이에 걸린 UI들이 존재한다면
+							for (int i = 0; i < results.Count; i = i + 1)
+							{
+								InventoryUIScript t_InventoryUIScript = UniFunc.GetParentComponent<InventoryUIScript>(results[i].gameObject);
+								//레이캐스트에 걸린 UI들중 인벤토리가 있다면
+								if (t_InventoryUIScript != null)
+								{
+									//현재 씬의 플레이어 캐릭터가 InteractionItem 컴포넌트를 가지고 있다면
+									if (m_InteractionItem != null)
+									{
+										List<AAA> t_AAA = FindObjectsOfType<AAA>().ToList();
+										if (t_AAA != null)
+										{
+											//현재 씬에 물리 아이템이 하나라도 존재한다면
+											for (int j = 0; j < t_AAA.Count; j = j + 1)
+											{
+												//현재 씬에 존재하는 물리 아이템중, 현재 캐릭터가 마우스로 드래그하여 들고 있는 아이템과 아이템 코드가 일치하는 것이 있다면
+												if (t_AAA[j].m_ItemCode == m_GrabItemCode.itemCode)
+												{
+													//해당 물리 아이템을 삭제함
+													Destroy(t_AAA[j].gameObject);
+													t_AAA.TrimExcess();
+													break;
+												}
+											}
+										}
+									}
+
+									//인벤토리에 현재 캐릭터가 드래그하여 들고있는 아이템을 다시 넣어줌(현재 캐릭터가 들고있는 아이템을 Null로 만드는 것은 다음 프레임의 Update에서 실행됨)
+									m_Inventory.AddAItem(m_GrabItemCode);
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	protected virtual void OnReleaseMiss(bool bMouseOnUI)
@@ -1627,61 +1457,6 @@ public class PlayerCharacter : CharacterBase
 	{
 		if (bMouseOnUI == false)
 		{
-			/*
-			MillStone t_MillStone = hit.transform.GetComponent<MillStone>();
-			if (t_MillStone != null)
-			{
-				if (t_MillStone.SetItem(m_GrabItemCode) == true)
-				{
-					m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-				}
-
-				if (t_MillStone.M_Input == 0)
-				{
-					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-					if(t_AItem.IsAddable(new AdvencedItem()) == false)
-					{
-				
-						t_MillStone.M_Input = t_AItem.itemCode;
-						t_MillStone.m_Progress = t_AItem.itemProgress;
-					}
-				}
-			}
-			*/
-
-			/*
-			AccessoryPlate t_AccessoryPlate = hit.transform.GetComponent<AccessoryPlate>();
-			if (t_AccessoryPlate != null)
-			{
-				if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == true)
-				{
-					AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-					if (t_AItem.IsAddable(new AdvencedItem()) == false)
-					{
-						t_AccessoryPlate.m_Input = t_AItem;
-						t_AccessoryPlate.RefreshPlate();
-					}
-				}
-				else if (t_AccessoryPlate.m_Input.IsAddable(new AdvencedItem()) == false)
-				{
-					if (m_GrabItemCode.IsAddable(new AdvencedItem()) == false)
-					{
-						if (t_AccessoryPlate.CraftItem(m_GrabItemCode) == true)
-						{
-							m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
-							t_AccessoryPlate.RefreshPlate();
-
-							if (m_GrabItemSprite != null)
-							{
-								m_GrabItemSprite.sprite = UniFunc.FindSprite(m_GrabItemCode.itemCode);
-								m_GrabItemSprite.gameObject.SetActive(true);
-							}
-						}
-					}
-				}
-			}
-			*/
-
 			PressAccessoryPlate t_PressAccessoryPlate = hit.transform.GetComponent<PressAccessoryPlate>();
 			if (t_PressAccessoryPlate != null)
 			{
@@ -1709,7 +1484,6 @@ public class PlayerCharacter : CharacterBase
 				{
 					if (m_GrabItemCode.itemCode >= 28 && m_GrabItemCode.itemCode <= 57)
 					{
-						//AdvencedItem t_AItem = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount);
 						if (m_Inventory.FindAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount) == true)
 						{
 							t_PlayerShop.itemCode = m_Inventory.PopAItem(m_GrabItemCode.itemCode, m_GrabItemCode.itemProgress, m_GrabItemCode.itemAmount).itemCode;
@@ -1733,38 +1507,47 @@ public class PlayerCharacter : CharacterBase
 		}
 		else if (bMouseOnUI == true)
 		{
-			Canvas t_Canvas = FindObjectOfType<Canvas>();
-			if (t_Canvas != null)
+			BasicItemData basicItemData = UniFunc.FindItemData(m_GrabItemCode.itemCode);
+			if (basicItemData != null)
 			{
-				GraphicRaycaster t_GraphicRaycaster = t_Canvas.GetComponent<GraphicRaycaster>();
-				if (t_GraphicRaycaster != null)
+				if (basicItemData.itemType != ItemType.Jewelry)
 				{
-					PointerEventData t_PointerEventData = new PointerEventData(null);
-					t_PointerEventData.position = Input.mousePosition;
-					List<RaycastResult> results = new List<RaycastResult>();
-					t_GraphicRaycaster.Raycast(t_PointerEventData, results);
-
-					for (int i = 0; i < results.Count; i = i + 1)
+					Canvas t_Canvas = FindObjectOfType<Canvas>();
+					if (t_Canvas != null)
 					{
-						InventoryUIScript t_InventoryUIScript = UniFunc.GetParentComponent<InventoryUIScript>(results[i].gameObject);
-						if (t_InventoryUIScript != null)
+						GraphicRaycaster t_GraphicRaycaster = t_Canvas.GetComponent<GraphicRaycaster>();
+						if (t_GraphicRaycaster != null)
 						{
-							m_Inventory.AddAItem(m_GrabItemCode);
+							PointerEventData t_PointerEventData = new PointerEventData(null);
+							t_PointerEventData.position = Input.mousePosition;
+							List<RaycastResult> results = new List<RaycastResult>();
+							t_GraphicRaycaster.Raycast(t_PointerEventData, results);
 
-							List<AAA> t_AAA = FindObjectsOfType<AAA>().ToList();
-							for (int j = 0; j < results.Count; j = j + 1)
+							for (int i = 0; i < results.Count; i = i + 1)
 							{
-								if (t_AAA[i].m_ItemCode == m_GrabItemCode.itemCode)
+								InventoryUIScript t_InventoryUIScript = UniFunc.GetParentComponent<InventoryUIScript>(results[i].gameObject);
+								if (t_InventoryUIScript != null)
 								{
-									Destroy(t_AAA[i].gameObject);
+									m_Inventory.AddAItem(m_GrabItemCode);
+
+									List<AAA> t_AAA = FindObjectsOfType<AAA>().ToList();
+									for (int j = 0; j < results.Count; j = j + 1)
+									{
+										if (t_AAA[i].m_ItemCode == m_GrabItemCode.itemCode)
+										{
+											Destroy(t_AAA[i].gameObject);
+											break;
+										}
+									}
 									break;
 								}
 							}
-							break;
 						}
 					}
 				}
 			}
+
+			
 		}
 	}
 	protected virtual void OnReleaseMiss2D(bool bMouseOnUI)
@@ -1776,4 +1559,5 @@ public class PlayerCharacter : CharacterBase
 		{
 		}
 	}
+#endregion
 }
