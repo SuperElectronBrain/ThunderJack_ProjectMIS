@@ -145,10 +145,10 @@ public class PlayerCharacter : CharacterBase
 		float DeltaTime = Time.fixedDeltaTime;
 		GroundCheck();
 
-		Vector3 t_HorizontalMoveDirection = Camera.main.transform.right;
-		Vector3 t_VerticalMoveDirection = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized;
-		//Vector3 t_HorizontalMoveDirection = Vector3.ProjectOnPlane(Camera.main.transform.right, m_GroundNormalVector);
-		//Vector3 t_VerticalMoveDirection = Vector3.ProjectOnPlane(new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized, m_GroundNormalVector);
+		//Vector3 t_HorizontalMoveDirection = Camera.main.transform.right;
+		//Vector3 t_VerticalMoveDirection = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized;
+		Vector3 t_HorizontalMoveDirection = Vector3.ProjectOnPlane(Camera.main.transform.right, m_GroundNormalVector);
+		Vector3 t_VerticalMoveDirection = Vector3.ProjectOnPlane(new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized, m_GroundNormalVector);
 		SetMoveDirection(t_HorizontalMoveDirection, t_VerticalMoveDirection);
 	}
 	protected override void KeyInput()
@@ -214,10 +214,12 @@ public class PlayerCharacter : CharacterBase
 		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 1.25f);
 		if (result == true)
 		{
+			m_GroundNormalVector = raycastHit.normal;
 			isGround = true;
 		}
 		else if (result == false)
 		{
+			m_GroundNormalVector = Vector3.up;
 			isGround = false;
 		}
 	}
