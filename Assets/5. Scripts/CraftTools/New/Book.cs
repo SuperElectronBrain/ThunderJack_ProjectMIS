@@ -115,6 +115,7 @@ namespace RavenCraftCore
                     for (int i = 0; i < childCount; i++)
                     {
                         particles[i] = particleParent.transform.GetChild(i).GetComponent<ParticleSystem>();
+                        particles[i].Stop();
                     }
                 }
                 
