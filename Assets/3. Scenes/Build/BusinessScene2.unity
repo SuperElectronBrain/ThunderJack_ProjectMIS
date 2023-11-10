@@ -6960,26 +6960,6 @@ Transform:
   m_Father: {fileID: 1887990019}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 27.908, y: -180, z: 0.262}
---- !u!1 &555884546 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2868861604027595575, guid: a3201ceee85e75149b946a916e4ea42c, type: 3}
-  m_PrefabInstance: {fileID: 1032316374}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &555884548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555884546}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 417b565212ca68c4e873a3ab23676b8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemID: 0
-  interactionMaterial: {fileID: 0}
-  interactionAccessory: {fileID: 0}
 --- !u!1 &559301519
 GameObject:
   m_ObjectHideFlags: 0
@@ -14545,10 +14525,7 @@ PrefabInstance:
     - {fileID: 7567301396189415366, guid: a3201ceee85e75149b946a916e4ea42c, type: 3}
     - {fileID: 459110929970345625, guid: a3201ceee85e75149b946a916e4ea42c, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2868861604027595575, guid: a3201ceee85e75149b946a916e4ea42c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 555884548}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3201ceee85e75149b946a916e4ea42c, type: 3}
 --- !u!1 &1032316375 stripped
 GameObject:
@@ -17627,6 +17604,7 @@ GameObject:
   - component: {fileID: 1348458981}
   - component: {fileID: 1348458980}
   - component: {fileID: 1348458983}
+  - component: {fileID: 1348458984}
   m_Layer: 0
   m_Name: SalesStand
   m_TagString: Untagged
@@ -17721,6 +17699,21 @@ MonoBehaviour:
   button: {fileID: 0}
   panel: {fileID: 0}
   description: 
+--- !u!114 &1348458984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348458973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8488b4c0c773d024291e7f64a34f9ccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMonologueList: []
+  type: 0
+  craftingExp: 0
 --- !u!1 &1353520758
 GameObject:
   m_ObjectHideFlags: 0
