@@ -7,6 +7,11 @@ using Spine.Unity;
 
 namespace RavenCraftCore
 {
+    public enum JewelryRank
+    {
+        Low = 1, Middle, High, Perfect
+    }
+    
     public class Press : MonoBehaviour
     {
         bool isGrab;
@@ -209,7 +214,11 @@ namespace RavenCraftCore
 
             if (GameManager.Instance.ItemManager.GetItemName(gem.itemID).Equals("돌맹이"))
             {
-                
+                PlayerMonologue.craftDialog(MonologueType_Crafting.Failure, 1);
+            }
+            else
+            {
+                PlayerMonologue.craftDialog(MonologueType_Crafting.Success, 1);
             }
             
             var sortValue = value;
@@ -219,13 +228,23 @@ namespace RavenCraftCore
             var perfection =
                 GameManager.Instance.ItemManager.GetItemPerfection(gem.itemID, sortValue[value.Length - 1], sortValue[value.Length - 2],
                     sortValue[value.Length - 3]);
+
+            JewelryRank jewelryRank;
+
+            if (perfection <= 33)
+                jewelryRank = JewelryRank.Low;
+            else if (perfection <= 55)
+                jewelryRank = JewelryRank.Middle;
+            else if(perfection <= 90)
+                jewelryRank = JewelryRank.High;
+            else
+                jewelryRank = JewelryRank.Perfect;
+            
             
             var completeItem =
                 GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory());
-            
-            accessoryPlate.CompleteCraft(completeItem, perfection);
-            
-            print(GameManager.Instance.ItemManager.GetItemName(gem.itemID));
+
+            accessoryPlate.CompleteCraft(completeItem, perfection, jewelryRank);
         }
     }
 }

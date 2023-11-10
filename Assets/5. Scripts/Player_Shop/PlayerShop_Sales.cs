@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -55,10 +56,13 @@ public class PlayerShop_Sales : MonoBehaviour
         {
             eventValue += GameManager.Instance.GameEventManager.GetGameEventValue();
         }
-
-        int addFameValue = salesData.fame + (int)(salesData.fame * eventValue);
-
-        inventory.AddAItem(((int)ItemCode.Money), 1, salesData.money);
+        
+        var fame = (int)FameCalc(salesData);
+        var price = (int)PriceCalc(salesData);
+        
+        int addFameValue = (int)(fame * eventValue);
+        
+        inventory.AddAItem(((int)ItemCode.Money), 1, price);
         inventory.AddAItem(((int)ItemCode.Honor), 1, addFameValue);
 
         salesResult.ResultUpdate(salesData.money, addFameValue);
@@ -72,13 +76,88 @@ public class PlayerShop_Sales : MonoBehaviour
         {
             eventValue += GameManager.Instance.GameEventManager.GetGameEventValue();
         }
+        
+        var fame = (int)FameCalc(salesData);
+        var price = (int)PriceCalc(salesData);
+        
+        int addFameValue = (int)(fame * eventValue);
 
-        int addFameValue = -((salesData.fame + (int)(salesData.fame * eventValue)) / 2);
-
-        inventory.AddAItem(((int)ItemCode.Money), 1, salesData.money / 2);
+        inventory.AddAItem(((int)ItemCode.Money), 1, price / 2);
         inventory.AddAItem(((int)ItemCode.Honor), 1, addFameValue);
 
         salesResult.ResultUpdate(salesData.money / 2, addFameValue);
+    }
+
+    float PriceCalc(SalesData salesData)
+    {
+        float low = 0, high = 0;
+        int min = 0, max = 0;
+        
+        switch (salesData.JewelryRank)
+        {
+            case JewelryRank.Low:
+                low = 1;
+                high = 20;
+                min = 0;
+                max = 33;
+                break;
+            case JewelryRank.Middle:
+                low = 30;
+                high = 50;
+                min = 34;
+                max = 55;
+                break;
+            case JewelryRank.High:
+                low = 60;
+                high = 100;
+                min = 56;
+                max = 90;
+                break;
+            case JewelryRank.Perfect:
+                low = 110;
+                high = 150;
+                min = 91;
+                max = 100;
+                break;
+        }
+
+        return Mathf.Floor(salesData.money * (low + (salesData.perfection - min) / (max - min) * (high - low)) / 100);
+    }
+
+    float FameCalc(SalesData salesData)
+    {
+        float low = 0, high = 0;
+        int min = 0, max = 0;
+        
+        switch (salesData.JewelryRank)
+        {
+            case JewelryRank.Low:
+                low = 1;
+                high = 20;
+                min = 0;
+                max = 33;
+                break;
+            case JewelryRank.Middle:
+                low = 30;
+                high = 50;
+                min = 34;
+                max = 55;
+                break;
+            case JewelryRank.High:
+                low = 60;
+                high = 100;
+                min = 56;
+                max = 90;
+                break;
+            case JewelryRank.Perfect:
+                low = 110;
+                high = 150;
+                min = 91;
+                max = 100;
+                break;
+        }
+
+        return Mathf.Floor(salesData.fame * (low + (salesData.perfection - min) / (max - min) * (high - low)) / 100);
     }
 
     private void OnDestroy()
@@ -111,6 +190,7 @@ public class RequestData : RequestStuff
 public class SalesData
 {
     public float perfection;
+    public JewelryRank JewelryRank;
     public int money;
     public int fame;
 }

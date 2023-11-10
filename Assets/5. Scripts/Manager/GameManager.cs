@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 
 public enum SceneType
@@ -81,13 +82,14 @@ public class GameManager : Singleton<GameManager>
         EventManager.Subscribe(EventType.Exit, ExitShop);
     }
 
+
+    [SerializeField] private float perfection;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
             EventManager.Publish(EventType.Day);
         else if (Input.GetKeyDown(KeyCode.F3))
             debugPanel.ActiveUI();
-            
     }
 
     public void EnterShop()
@@ -170,7 +172,7 @@ public class Tools
  
  하루 종료
  쓰레기통 0.5
- 독백 0.5 
+ 독백 70%
  
  오후 오전 주민 대사 변경 0.5
  

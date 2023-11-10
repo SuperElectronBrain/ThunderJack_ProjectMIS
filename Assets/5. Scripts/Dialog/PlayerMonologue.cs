@@ -18,7 +18,7 @@ public class PlayerMonologue : MonoBehaviour
     [SerializeField]
     List<PlayerMonologueData> playerMonologueList = new List<PlayerMonologueData>();
 
-    [SerializeField] private static UnityAction<MonologueType_Crafting, int> craftDialog;
+    public static UnityAction<MonologueType_Crafting, int> craftDialog;
 
     [SerializeField] private PlayerCharacter pc;
     

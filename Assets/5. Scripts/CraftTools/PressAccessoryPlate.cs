@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 
 public class PressAccessoryPlate : MonoBehaviour
@@ -13,6 +14,7 @@ public class PressAccessoryPlate : MonoBehaviour
     [SerializeField] private InteractionItem interactionItem;
     [SerializeField] private int itemID;
     [SerializeField] private float perfection;
+    [SerializeField] private JewelryRank jewelryRank;
     
     // Start is called before the first frame update
     void Start()
@@ -37,7 +39,7 @@ public class PressAccessoryPlate : MonoBehaviour
         
         var item = interactionItem.ItemInteraction(itemID);
         FindObjectOfType<PlayerCharacter>().SetPlayerGrabItem(new AdvencedItem(itemID, 1, 1));
-        item.GetComponent<InteractionAccessory>().Init(itemID, perfection, this);
+        item.GetComponent<InteractionAccessory>().Init(itemID, perfection, jewelryRank, this);
         spriteRenderer.enabled = false;
     }
 
@@ -72,11 +74,12 @@ public class PressAccessoryPlate : MonoBehaviour
         return itemID;
     }
 
-    public void CompleteCraft(int completeItemID, float perfection)
+    public void CompleteCraft(int completeItemID, float perfection, JewelryRank jr)
     {
         EventManager.Publish(EventType.CreateComplete);
         itemID = completeItemID;
         this.perfection = perfection;
+        jewelryRank = jr;
         var completeItem = GameManager.Instance.ItemManager.GetBasicItemData(completeItemID);
         
         if (completeItem == null)

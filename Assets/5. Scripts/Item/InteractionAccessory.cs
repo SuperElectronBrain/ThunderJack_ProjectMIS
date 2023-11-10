@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 
 public class InteractionAccessory : MonoBehaviour
@@ -10,20 +11,20 @@ public class InteractionAccessory : MonoBehaviour
     [SerializeField] private GameObject target;
     [SerializeField] private float zOffset;
     private RaycastHit hit;
-    [SerializeField]
-    private int itemID;
-
+    [SerializeField] private int itemID;
     [SerializeField] private float perfection;
+    [SerializeField] private JewelryRank jewelryRank;
 
     private void Start()
     {
         cam = Camera.main;
     }
 
-    public void Init(int itemID, float perfection, PressAccessoryPlate accessoryPlate)
+    public void Init(int itemID, float perfection, JewelryRank jr, PressAccessoryPlate accessoryPlate)
     {
         this.itemID = itemID;
         this.perfection = perfection;
+        jewelryRank = jr;
         this.accessoryPlate = accessoryPlate;
     }
 
@@ -59,7 +60,7 @@ public class InteractionAccessory : MonoBehaviour
                 switch(target.tag)
                 {
                     case "Guest":
-                        target.GetComponent<Guest>().CheckItem(itemID, perfection);
+                        target.GetComponent<Guest>().CheckItem(itemID, perfection, jewelryRank);
                         break;
                     case "Press":
                         target.GetComponent<PressAccessoryPlate>().SetAccessory(itemID);
