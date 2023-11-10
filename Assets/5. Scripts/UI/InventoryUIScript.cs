@@ -152,7 +152,7 @@ public class InventoryUIScript : UIScript
 											{
 												if (basicItemData.itemType == ItemType.Materials)
 												{
-													List<BBB> t_BBB = FindObjectsOfType<BBB>().ToList<BBB>();
+													List<BBB> t_BBB = FindObjectsOfType<BBB>().ToList();
 													for (int i = 0; i < t_BBB.Count; i = i + 1)
 													{
 														t_BBB[i].DestroyObject();
