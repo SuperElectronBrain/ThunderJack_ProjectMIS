@@ -15,7 +15,6 @@ public class PlayerShop_Sales : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {        
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
         var requestData = GameManager.Instance.DataBase.Parser("Request_Master");
 
         foreach(var rData in requestData)
@@ -59,8 +58,8 @@ public class PlayerShop_Sales : MonoBehaviour
 
         int addFameValue = salesData.fame + (int)(salesData.fame * eventValue);
 
-        inventory.AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money);
-        inventory.AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
+        inventory.AddAItem(((int)ItemCode.Money), 1, salesData.money);
+        inventory.AddAItem(((int)ItemCode.Honor), 1, addFameValue);
 
         salesResult.ResultUpdate(salesData.money, addFameValue);
     }
@@ -76,8 +75,8 @@ public class PlayerShop_Sales : MonoBehaviour
 
         int addFameValue = -((salesData.fame + (int)(salesData.fame * eventValue)) / 2);
 
-        inventory.AddAItem(((int)ItemCode.Money), salesData.perfection, salesData.money / 2);
-        inventory.AddAItem(((int)ItemCode.Honor), salesData.perfection, addFameValue);
+        inventory.AddAItem(((int)ItemCode.Money), 1, salesData.money / 2);
+        inventory.AddAItem(((int)ItemCode.Honor), 1, addFameValue);
 
         salesResult.ResultUpdate(salesData.money / 2, addFameValue);
     }

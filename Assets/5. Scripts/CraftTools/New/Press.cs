@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Spine.Unity;
 
@@ -202,11 +204,19 @@ namespace RavenCraftCore
             steam.Play();
             createEffect.Play();
             var gem = GameManager.Instance.ItemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
+
+            var sortValue = value;
+            
+            Array.Sort(sortValue);
+
+            var perfection =
+                GameManager.Instance.ItemManager.GetItemPerfection(gem.itemID, sortValue[value.Length - 1], sortValue[value.Length - 2],
+                    sortValue[value.Length - 3]);
             
             var completeItem =
                 GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory());
             
-            accessoryPlate.CompleteCraft(completeItem);
+            accessoryPlate.CompleteCraft(completeItem, perfection);
             
             print(GameManager.Instance.ItemManager.GetItemName(gem.itemID));
         }

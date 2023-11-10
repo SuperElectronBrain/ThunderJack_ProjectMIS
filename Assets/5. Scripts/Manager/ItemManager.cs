@@ -300,6 +300,55 @@ public class ItemManager : MonoBehaviour
         return returnRecipe;
     }
 
+    public float GetItemPerfection(int itemID, float elementValue1, float elementValue2, float elementValue3)
+    {
+        GemRecipe gemRecipe = null;
+        
+        foreach (var gem in gemRecipes)
+        {
+            if (itemID == gem.itemID)
+            {
+                gemRecipe = gem;
+                break;
+            }
+        }
+
+        if (gemRecipe == null)
+            return 0;
+
+        var mp1 = gemRecipe.materialPercent1 * 100;
+        var mp2 = gemRecipe.materialPercent2 * 100;
+        var mp3 = gemRecipe.materialPercent3 * 100;
+        
+        
+        var errorValue1 = 100 - ((mp1 - elementValue1) / mp1) * 100;
+        var errorValue2 = 100 - ((mp2 - elementValue2) / mp2) * 100;
+        var errorValue3 = 100 - ((mp3 - elementValue3) / mp3) * 100;
+
+        if (errorValue1 <= 100)
+            errorValue1 -= 100;
+        else
+            errorValue1 = 100 - errorValue1;
+        
+        if (errorValue2 <= 100)
+            errorValue2 -= 100;
+        else
+            errorValue2 = 100 - errorValue2;
+        
+        if (errorValue3 <= 100)
+            errorValue3 -= 100;
+        else
+            errorValue3 = 100 - errorValue3;
+
+        errorValue1 = (errorValue1 / 3); 
+        errorValue2 = (errorValue2 / 3); 
+        errorValue3 = (errorValue3 / 3);
+
+        var resultPerfection = 100f + (errorValue1 + errorValue2 + errorValue3);
+
+        return resultPerfection;
+    }
+
     public RequestStuff GetRequestStuffByItemID(int itemID)
     {
         itemID--;

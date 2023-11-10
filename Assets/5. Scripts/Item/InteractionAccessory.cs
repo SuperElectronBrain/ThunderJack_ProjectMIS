@@ -13,14 +13,17 @@ public class InteractionAccessory : MonoBehaviour
     [SerializeField]
     private int itemID;
 
+    [SerializeField] private float perfection;
+
     private void Start()
     {
         cam = Camera.main;
     }
 
-    public void Init(int itemID, PressAccessoryPlate accessoryPlate)
+    public void Init(int itemID, float perfection, PressAccessoryPlate accessoryPlate)
     {
         this.itemID = itemID;
+        this.perfection = perfection;
         this.accessoryPlate = accessoryPlate;
     }
 
@@ -56,7 +59,7 @@ public class InteractionAccessory : MonoBehaviour
                 switch(target.tag)
                 {
                     case "Guest":
-                        target.GetComponent<Guest>().CheckItem(itemID, 100);
+                        target.GetComponent<Guest>().CheckItem(itemID, perfection);
                         break;
                     case "Press":
                         target.GetComponent<PressAccessoryPlate>().SetAccessory(itemID);

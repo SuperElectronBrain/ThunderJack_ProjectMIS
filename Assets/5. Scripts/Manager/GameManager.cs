@@ -115,10 +115,11 @@ public class GameManager : Singleton<GameManager>
                 isWork = false;
                 break;
             case SceneType.InSide:
+                gameTime.TimeStop(true);
                 isWork = true;
                 break;
             case SceneType.Bussiness:
-
+                gameTime.TimeStop(false);
                 break;
         }
     }
@@ -165,13 +166,11 @@ public class Tools
     }
 }
 
-/*Todo 
-
+/*Todo
+ 
+ 하루 종료
  쓰레기통 0.5
- 독백 0.5
- 손님 다이얼로그 변경
- 보석 완성도 시스템 추가
- 인사이드 씬 게임 시간 멈추기
+ 독백 0.5 
  
  오후 오전 주민 대사 변경 0.5
  
@@ -185,4 +184,7 @@ public class Tools
  
  완료
  그랩 아이템 추가 
+ 인사이드 씬 게임 시간 멈추기
+ 손님 다이얼로그 변경
+ 보석 완성도 시스템 추가 
  */
