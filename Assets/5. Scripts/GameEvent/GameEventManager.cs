@@ -11,6 +11,7 @@ public enum GameEventType
 public class GameEventManager : MonoBehaviour
 {
     GameEvent dayGameEvent;
+    [SerializeField]
     GameEventType dayGameEventType;
 
     [SerializeField]
@@ -102,6 +103,8 @@ public class GameEventManager : MonoBehaviour
 
     public GameEventType GetGameEventType()
     {
+        if (dayGameEvent == null)
+            return GameEventType.None;
         return dayGameEvent.GetEventType;
     }
 

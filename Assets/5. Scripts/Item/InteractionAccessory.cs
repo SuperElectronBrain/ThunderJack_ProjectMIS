@@ -10,6 +10,7 @@ public class InteractionAccessory : MonoBehaviour
     [SerializeField] private GameObject target;
     [SerializeField] private float zOffset;
     private RaycastHit hit;
+    [SerializeField]
     private int itemID;
 
     private void Start()

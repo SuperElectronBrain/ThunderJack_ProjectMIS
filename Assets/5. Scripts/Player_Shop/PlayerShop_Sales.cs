@@ -16,7 +16,7 @@ public class PlayerShop_Sales : MonoBehaviour
     void Start()
     {        
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-        var requestData = GameManager.Instance.DataBase.Parser("Request_Master2");
+        var requestData = GameManager.Instance.DataBase.Parser("Request_Master");
 
         foreach(var rData in requestData)
         {
@@ -26,9 +26,11 @@ public class PlayerShop_Sales : MonoBehaviour
                     requestId = Tools.IntParse(rData["Request_ID"]),
                     guestId = Tools.IntParse(rData["Request_Guest"]),
                     requestType = Tools.IntParse(rData["Text_Type"]),
-                    requestScript = rData["Text_Script1"].ToString(),
-                    textNext1 = Tools.IntParse(rData["Text_Next1"]),
-                    textNext2 = Tools.IntParse(rData["Text_Next2"]),
+                    requestScript = rData["Text_Script"].ToString(),
+                    textAnswer1 = rData["Text_Answer_1"].ToString(),
+                    textAnswer2 = rData["Text_Answer_2"].ToString(),
+                    textNext1 = Tools.IntParse(rData["Text_Next_1"]),
+                    textNext2 = Tools.IntParse(rData["Text_Next_2"]),
                     success = Tools.IntParse(rData["Success"]),
                     fail = Tools.IntParse(rData["Fail"]),
                     requestStuff1 = Tools.IntParse(rData["Request_Stuff_1"]),
@@ -43,7 +45,7 @@ public class PlayerShop_Sales : MonoBehaviour
 
     public RequestData GetRequestData(int guestId)
     {
-        return requestList[guestId];
+        return requestList[guestId - 1];
     }
 
     public void SalesSuccess(SalesData salesData, SalesResult salesResult)
@@ -97,9 +99,10 @@ public class RequestData : RequestStuff
 {
     public int requestId;
     public int guestId;
-    public float requestRate;
     public int requestType;
     public string requestScript;
+    public string textAnswer1;
+    public string textAnswer2;
     public int textNext1;
     public int textNext2;
     public int success;

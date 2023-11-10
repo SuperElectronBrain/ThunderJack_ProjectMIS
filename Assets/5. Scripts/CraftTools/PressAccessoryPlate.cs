@@ -35,6 +35,7 @@ public class PressAccessoryPlate : MonoBehaviour
         }
         
         var item = interactionItem.ItemInteraction(itemID);
+        FindObjectOfType<PlayerCharacter>().SetPlayerGrabItem(new AdvencedItem(itemID, 1, 1));
         item.GetComponent<InteractionAccessory>().Init(itemID,this);
     }
 
