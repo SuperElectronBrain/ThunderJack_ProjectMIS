@@ -25,124 +25,41 @@ public class CraftTableCameraController : MonoBehaviour
     {
 		float DeltaTime = Time.deltaTime;
 
-		//Debug.Log(Screen.width - 1 + ", " + Input.mousePosition.x);
-		//if (Screen.width - 1 <= Input.mousePosition.x)
-		//{
-		//	if (m_NextPosition != m_LeftPosition)
-		//	{
-		//		m_NextPosition = m_LeftPosition;
-		//	}
-		//}
-		//else if (1 >= Input.mousePosition.x)
-		//{
-		//	if (m_NextPosition != m_OriginPosition)
-		//	{
-		//		m_NextPosition = m_OriginPosition;
-		//	}
-		//}
-
-		bool bMoveable = true;
-
-		MillStone t_MillStone = FindObjectOfType<MillStone>();
-		if (t_MillStone != null)
-		{
-			if(t_MillStone.bProgress == true)
-			{
-				bMoveable = false;
-			}
-		}
-
-		MeasurCup t_MeasurCup = FindObjectOfType<MeasurCup>();
-		if (t_MeasurCup != null)
-		{
-			if (t_MeasurCup.m_GrabState == true)
-			{
-				bMoveable = false;
-			}
-		}
-
-		if (m_NextRotation != m_OriginRotation)
-		{
-			Canvas canvas = FindObjectOfType<Canvas>();
-			if (canvas != null)
-			{
-				GameObject GO = UniFunc.GetChildOfName(canvas.gameObject, "ui_sell_talk");
-				if (GO != null)
-				{
-					GO.SetActive(false);
-				}
-			}
-		}
-
 		if (Screen.height - 1 <= Input.mousePosition.y)
 		{
 			PlayerCharacter t_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
 			if (t_PlayerCharacter != null)
 			{
-				if(t_PlayerCharacter.m_GrabItemCode != null)
+				BasicItemData basicItemData = UniFunc.FindItemData(t_PlayerCharacter.m_GrabItemCode.itemCode);
+				if (basicItemData != null)
 				{
-					if (m_NextRotation != m_OriginRotation)
+					if (basicItemData.itemType == ItemType.Jewelry)
 					{
-						//Canvas canvas = FindObjectOfType<Canvas>();
-						//if (canvas != null)
-						//{
-						//	GameObject GO = UniFunc.GetChildOfName(canvas.gameObject, "ui_sell_talk");
-						//	if(GO != null)
-						//	{
-						//		GO.SetActive(true);
-						//	}
-						//}
-
-						m_NextRotation = m_OriginRotation;
+						if (m_NextRotation != m_OriginRotation)
+						{
+							m_NextRotation = m_OriginRotation;
+						}
 					}
 				}
 			}
 		}
-		else if (1 >= Input.mousePosition.y)
-		{
-			bool bMove = false;
-			Guest t_Guest = FindObjectOfType<Guest>();
-			if (t_Guest != null)
-			{
-				MeshRenderer t_MeshRenderer = t_Guest.gameObject.GetComponent<MeshRenderer>();
-				if(t_MeshRenderer != null)
-				{
-					if(t_MeshRenderer.enabled == true)
-					{
-						bMove = true;
-						//DialogueBox t_DialogueBox = FindObjectOfType<DialogueBox>();
-						//if(t_DialogueBox != null)
-						//{
-						//	if(t_DialogueBox.gameObject.activeSelf == false)
-						//	{
-						//	}
-						//}
-					}
-				}
-			}
+		//else if (1 >= Input.mousePosition.y)
+		//{
+		//	PlayerCharacter t_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
+		//	if (t_PlayerCharacter != null)
+		//	{
+		//		if (t_PlayerCharacter.m_GrabItemCode.itemCode >= 28 && t_PlayerCharacter.m_GrabItemCode.itemCode <= 57)
+		//		{
+		//			if (m_NextRotation != Quaternion.Euler(m_DownRotation))
+		//			{
+		//				m_NextRotation = Quaternion.Euler(m_DownRotation);
+		//			}
+		//		}
+		//	}
+		//}
 
-			PlayerCharacter t_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
-			if (t_PlayerCharacter != null)
-			{
-				if (t_PlayerCharacter.m_GrabItemCode != null)
-				{
-					bMove = true;
-				}
-			}
+		CameraMovement(DeltaTime);
 
-			if(bMove == true)
-			{
-				if (m_NextRotation != Quaternion.Euler(m_DownRotation))
-				{
-					m_NextRotation = Quaternion.Euler(m_DownRotation);
-				}
-			}
-		}
-
-		if(bMoveable == true)
-		{
-			CameraMovement(DeltaTime);
-		}
 	}
 
 	void CameraMovement(float DeltaTime)
@@ -153,9 +70,6 @@ public class CraftTableCameraController : MonoBehaviour
 
 	public void GoToCraft()
 	{
-		//if (m_NextRotation != m_OriginRotation)
-		//{
-			m_NextRotation = Quaternion.Euler(m_DownRotation);
-		//}
+		m_NextRotation = Quaternion.Euler(m_DownRotation);
 	}
 }

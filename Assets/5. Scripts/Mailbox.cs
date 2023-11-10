@@ -44,21 +44,16 @@ public class Mailbox : MonoBehaviour, IInteraction
 	private List<AdvencedQuestData> QuestTable = null;
 	private AdvencedQuestData m_QuestData;
 	private bool bCommunication; public bool IsUsed { get { return bCommunication; } set { bCommunication = value; } }
-
 	[SerializeField] private GameObject m_SD;
-	private PlayerCharacter m_PlayerCharacter;
+	[SerializeField] private Animator m_Animator;
+	[SerializeField] private AudioSource m_InteractionSound;
 
 	// Start is called before the first frame update
 	void Start()
     {
+		//하루가 지날때마다 퀘스트를 생성함
 		EventManager.Subscribe(EventType.Day, GenerateQuest);
 	}
-
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    
-    //}
 
 	void GenerateQuest()
 	{
@@ -142,46 +137,90 @@ public class Mailbox : MonoBehaviour, IInteraction
 			}
 		}
 
+		//퀘스트를 생성하는데 성공했다면
 		if (m_QuestData.questID != 0)
 		{
-			if (m_SD != null)
-			{
-				m_SD.SetActive(true);
-			}
+			//퓨퓨를 활성화함
+			if (m_SD != null) { m_SD.SetActive(true); }
 		}
 	}
 
 	public void Interaction(GameObject p_GameObject)
 	{
-		if(m_QuestData.questID != 0)
+		
+		//생성되어있는 퀘스트가 존재한다면
+		if (m_QuestData.questID != 0)
 		{
 			if(p_GameObject != null)
 			{
 				PlayerCharacter t_PalyerCharacter = p_GameObject.GetComponent<PlayerCharacter>();
 				if(t_PalyerCharacter != null)
 				{
+					//플레이어 캐릭터에 QuestComponet가 붙어있다면
 					if (t_PalyerCharacter.m_QuestComponet != null)
 					{
+						//플레이어 캐릭터에 MailBoxUI가 붙어있다면
 						if (t_PalyerCharacter.m_QuestComponet.m_MailBoxUIScript != null)
 						{
-							t_PalyerCharacter.m_QuestComponet.m_MailBoxUIScript.DisplayMail(true, "");
+							t_PalyerCharacter.m_QuestComponet.m_MailBoxUIScript.DisplayMail(true, m_QuestData.questScript);
+							t_PalyerCharacter.m_QuestComponet.m_MailBoxUIScript.m_OnButtonClick.AddListener(OnButtonClick);
 						}
 
-						t_PalyerCharacter.m_QuestComponet.AddQuest
-						(new Quest(m_QuestData.questID, m_QuestData.questName, m_QuestData.questScript, m_QuestData.questGrade, m_QuestData.requestItemID, m_QuestData.guestID, m_QuestData.guestName, m_QuestData.timeLimit, false));
-						if (t_PalyerCharacter.m_QuestComponet.m_QuestListUIScript != null)
-						{
-							t_PalyerCharacter.m_QuestComponet.m_QuestListUIScript.RefreshUI();
-						}
-
-						m_QuestData = new AdvencedQuestData();
-						if (m_SD != null)
-						{
-							m_SD.SetActive(false);
-						}
+						//애니메이션 재생
+						if (m_Animator != null) { m_Animator.SetTrigger("Interaction"); }
+						if (m_InteractionSound != null) { if (m_InteractionSound.isPlaying == false) m_InteractionSound.Play(); }
 					}
 				}
 			}
 		}
+	}
+
+	void OnButtonClick(bool param)
+	{
+		if (param == true)
+		{
+			PlayerCharacter t_PalyerCharacter = PlayerCharacter.main;
+			if (t_PalyerCharacter != null)
+			{
+				if (t_PalyerCharacter.m_QuestComponet != null)
+				{
+					t_PalyerCharacter.m_QuestComponet.AddQuest
+					(
+						new Quest
+						(
+							m_QuestData.questID,
+							m_QuestData.questName,
+							m_QuestData.questScript,
+							m_QuestData.questGrade,
+							m_QuestData.requestItemID,
+							m_QuestData.guestID,
+							m_QuestData.guestName,
+							m_QuestData.timeLimit,
+							false
+						)
+					);
+					if (t_PalyerCharacter.m_QuestComponet.m_QuestListUIScript != null)
+					{
+						t_PalyerCharacter.m_QuestComponet.m_QuestListUIScript.RefreshUI();
+					}
+
+					if (t_PalyerCharacter.m_QuestComponet.m_MailBoxUIScript != null)
+					{
+						t_PalyerCharacter.m_QuestComponet.m_MailBoxUIScript.m_OnButtonClick.RemoveListener(OnButtonClick);
+					}
+				}
+			}
+		}
+
+		//퀘스트 데이터를 null로 초기화함
+		m_QuestData = new AdvencedQuestData();
+
+		if (m_Animator != null) { m_Animator.SetTrigger("Fly"); }
+		Invoke("Deactivate", 3.0f);
+	}
+
+	void Deactivate()
+	{
+		gameObject.SetActive(false);
 	}
 }

@@ -35,10 +35,8 @@ public class CustomGridLayoutComponent : LayoutGroup, IPointerEnterHandler, IPoi
 			columns = Mathf.CeilToInt(sqrt);
 			rows = Mathf.CeilToInt(sqrt);
 		}
-		if (constraint == Constraint.Columns)
-		{ rows = Mathf.CeilToInt(rectChildren.Count / (float)columns); }
-		if (constraint == Constraint.Rows)
-		{ columns = Mathf.CeilToInt(rectChildren.Count / (float)rows); }
+		if (constraint == Constraint.Columns) { rows = Mathf.CeilToInt(rectChildren.Count / (float)columns); }
+		if (constraint == Constraint.Rows) { columns = Mathf.CeilToInt(rectChildren.Count / (float)rows); }
 
 		float child_xSize = childSize.x * (TargetRect.rect.width / columns);
 		float child_ySize = childSize.y * (TargetRect.rect.height / rows);
@@ -66,8 +64,43 @@ public class CustomGridLayoutComponent : LayoutGroup, IPointerEnterHandler, IPoi
 				}
 			}
 
-			SetChildAlongAxis(rectChildren[i], 0, (currentColumn * child_xSize) + child_xPos, child_xSize);
-			SetChildAlongAxis(rectChildren[i], 1, (currentRow * child_ySize) + child_yPos, child_ySize);
+			float childAlignment_xPos = 0;
+			float childAlignment_yPos = 0;
+
+			if (childAlignment != TextAnchor.MiddleCenter)
+			{
+				if (childAlignment == TextAnchor.UpperLeft)
+				{
+					childAlignment_xPos = -child_xPos;
+					childAlignment_yPos = -child_yPos;
+				}
+				else if (childAlignment == TextAnchor.UpperCenter)
+				{ childAlignment_yPos = -child_yPos; }
+				else if (childAlignment == TextAnchor.UpperRight)
+				{
+					childAlignment_xPos = -child_xPos + (rectTransform.rect.width - (child_xSize * columns));
+					childAlignment_yPos = -child_yPos;
+				}
+				else if (childAlignment == TextAnchor.MiddleLeft)
+				{ childAlignment_xPos = -child_xPos; }
+				else if (childAlignment == TextAnchor.MiddleRight)
+				{ childAlignment_xPos = -child_xPos + (rectTransform.rect.width - (child_xSize * columns)); }
+				else if (childAlignment == TextAnchor.LowerLeft)
+				{
+					childAlignment_xPos = -child_xPos;
+					childAlignment_yPos = -child_yPos + (rectTransform.rect.height - (child_ySize * rows));
+				}
+				else if (childAlignment == TextAnchor.LowerCenter)
+				{ childAlignment_yPos = -child_yPos + (rectTransform.rect.height - (child_ySize * rows)); }
+				else if (childAlignment == TextAnchor.LowerRight)
+				{
+					childAlignment_xPos = -child_xPos + (rectTransform.rect.width - (child_xSize * columns));
+					childAlignment_yPos = -child_yPos + (rectTransform.rect.height - (child_ySize * rows));
+				}
+			}
+
+			SetChildAlongAxis(rectChildren[i], 0, (currentColumn * child_xSize) + child_xPos + childAlignment_xPos, child_xSize);
+			SetChildAlongAxis(rectChildren[i], 1, (currentRow * child_ySize) + child_yPos + childAlignment_yPos, child_ySize);
 		}
 
 		if (m_BaseRect != null)

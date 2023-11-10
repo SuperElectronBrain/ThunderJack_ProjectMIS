@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 2031619401424178916}
   - component: {fileID: 3073921901690726148}
   - component: {fileID: 3363728585679465363}
+  - component: {fileID: 8348840243700428015}
   m_Layer: 5
   m_Name: AddHonerText (TMP)
   m_TagString: Untagged
@@ -228,6 +229,27 @@ MonoBehaviour:
   m_TargetTMP: {fileID: 0}
   m_FadeInSpeed: 0
   m_FadeOutSpeed: 3
+--- !u!95 &8348840243700428015
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846460296660341215}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e9e3dabb6f2cd924db04d78b322f0b8e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1252884710224776371
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,6 +397,7 @@ GameObject:
   - component: {fileID: 2263970044603492912}
   - component: {fileID: 3647621920534424081}
   - component: {fileID: 4205042877751184768}
+  - component: {fileID: 6400683304563175307}
   m_Layer: 5
   m_Name: AddMoneyText (TMP)
   m_TagString: Untagged
@@ -515,6 +538,27 @@ MonoBehaviour:
   m_TargetTMP: {fileID: 0}
   m_FadeInSpeed: 0
   m_FadeOutSpeed: 3
+--- !u!95 &6400683304563175307
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531817021888592955}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9d85637fe00d425449a5193f84c20dfe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2173314486761311771
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,6 +951,7 @@ GameObject:
   - component: {fileID: 6490940033782634102}
   - component: {fileID: 5916077313263189865}
   - component: {fileID: 6473937417584755230}
+  - component: {fileID: 3165942326778378977}
   m_Layer: 5
   m_Name: CurrencyDisplay
   m_TagString: Untagged
@@ -974,6 +1019,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3165942326778378977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6055044258077757365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35f7c426654ce94ca00d7397dcda461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MoneyText: {fileID: 4553276611132005757}
+  m_HonerText: {fileID: 8147488710859845800}
+  m_AddMoneyText: {fileID: 3647621920534424081}
+  m_AddHonerText: {fileID: 3073921901690726148}
+  m_HonerAnimator: {fileID: 8348840243700428015}
+  m_MoneyAnimator: {fileID: 6400683304563175307}
+  m_UpTriggerName: Up
+  m_DownTriggerName: Down
 --- !u!1 &6751721515187650741
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,26 +5,13 @@ using UnityEngine.Events;
 
 public class InteractablePortal : Portal, IInteraction
 {
+	[SerializeField] private AudioSource m_InteractionSound;
+
 	public bool IsUsed { get; set; }
 
 	public void Interaction(GameObject user)
 	{
+		if (m_InteractionSound != null) { if (m_InteractionSound.isPlaying == false) m_InteractionSound.Play(); }
 		LoadingScene();
-		//if (UnityEngine.SceneManagement.SceneManager.GetSceneByName(destinationSceneName) != null)
-		//{
-		//	//m_PlayerCharacter = FindObjectOfType<PlayerCharacter>();
-		//	if (user != null)
-		//	{
-		//		DontDestroyOnLoad(user.gameObject);
-		//		DontDestroyOnLoad(gameObject);
-		//		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
-		//	}
-		//
-		//	UnityEngine.SceneManagement.SceneManager.LoadScene(destinationSceneName);
-		//}
-		//if (user != null)
-		//{
-		//	user.gameObject.transform.position = destination;
-		//}
 	}
 }

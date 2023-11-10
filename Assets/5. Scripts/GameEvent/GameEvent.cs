@@ -23,6 +23,7 @@ public abstract class GameEvent
         {
             noticeName = GetEventData.eventName,
             noticeDescription = GetEventData.eventScript,
+            noticeImage = GetEventData.eventIllust
         };
 
         gameEventManager.Notice(noticeData);

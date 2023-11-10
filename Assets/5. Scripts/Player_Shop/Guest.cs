@@ -137,6 +137,11 @@ public class Guest : MonoBehaviour
         return request.requestScript;
     }
 
+    public RequestData GetRequestData()
+    {
+        return request;
+    }
+
     public void EntryShop()
     {
         Debug.Log(gameObject.name + " º’¥‘¿‘¿Â");

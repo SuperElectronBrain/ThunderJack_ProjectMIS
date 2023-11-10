@@ -10,11 +10,13 @@ public class PlayerShop_Sales : MonoBehaviour
     [SerializeField]
     Inventory inventory;
 
+    //Request_ID,Request_Guest,Text_Type,Text_Script,Text_Next,Success,Fail,Request_Item
+
     // Start is called before the first frame update
     void Start()
     {        
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
-        var requestData = GameManager.Instance.DataBase.Parser("Request_Master");
+        var requestData = GameManager.Instance.DataBase.Parser("Request_Master2");
 
         foreach(var rData in requestData)
         {
@@ -22,9 +24,13 @@ public class PlayerShop_Sales : MonoBehaviour
                 new RequestData
                 {
                     requestId = Tools.IntParse(rData["Request_ID"]),
-                    guestId = Tools.IntParse(rData["Guest_ID"]),
-                    requestRate = Tools.FloatParse(rData["Request_Rate"]),
-                    requestScript = rData["Request_Script"].ToString(),
+                    guestId = Tools.IntParse(rData["Request_Guest"]),
+                    requestType = Tools.IntParse(rData["Text_Type"]),
+                    requestScript = rData["Text_Script1"].ToString(),
+                    textNext1 = Tools.IntParse(rData["Text_Next1"]),
+                    textNext2 = Tools.IntParse(rData["Text_Next2"]),
+                    success = Tools.IntParse(rData["Success"]),
+                    fail = Tools.IntParse(rData["Fail"]),
                     requestStuff1 = Tools.IntParse(rData["Request_Stuff_1"]),
                     requestStuff2 = Tools.IntParse(rData["Request_Stuff_2"])
                 }
@@ -92,7 +98,12 @@ public class RequestData : RequestStuff
     public int requestId;
     public int guestId;
     public float requestRate;
+    public int requestType;
     public string requestScript;
+    public int textNext1;
+    public int textNext2;
+    public int success;
+    public int fail;
 }
 
 public class SalesData

@@ -30,7 +30,7 @@ public class GameEventManager : MonoBehaviour
     {
         gameEventData = new();
 
-        var eventData = GameManager.Instance.DataBase.Parser("Random_Event_DataTable");
+        var eventData = GameManager.Instance.DataBase.Parser("Random_Event_Master");
 
         foreach (var e in eventData)
         {
@@ -42,7 +42,7 @@ public class GameEventManager : MonoBehaviour
                 eventType = Tools.IntParse(e["Event_Type"]),
                 eventEffectType = Tools.IntParse(e["Event_Effect_Type"]),
                 eventValue = Tools.FloatParse(e["Event_Value"]),
-                //eventIllust = addressable
+                eventIllust = AddressableManager.LoadObject<Sprite>(e["Event_Resource"].ToString())
             }
             );
         }

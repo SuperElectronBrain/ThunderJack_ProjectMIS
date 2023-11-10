@@ -13,9 +13,11 @@ public class Flower : SaveObject, IInteraction
     [SerializeField]
     GameObject sprout;
     [SerializeField]
-    GameObject flower;    
+    GameObject flower;
 
-    void Awake()
+	[SerializeField] private AudioSource m_InteractionSound;
+
+	void Awake()
     {
         key = transform.parent.name + "_GrowDay" + GameManager.Instance.GameTime.GetDay();
         gameObject.SetActive(false);
@@ -82,7 +84,9 @@ public class Flower : SaveObject, IInteraction
             gameObject.SetActive(false);
             sprout.SetActive(true);
             flower.SetActive(false);
-        }
+
+			if (m_InteractionSound != null) { m_InteractionSound.Play(); }
+		}
     }
 
     void OnDestroy()

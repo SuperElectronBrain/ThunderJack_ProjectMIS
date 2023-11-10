@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Spine;
 using Spine.Unity;
+using Unity.VisualScripting;
 using UnityEngine;
+using ColorUtility = UnityEngine.ColorUtility;
 
 namespace RavenCraftCore
 {
@@ -43,6 +45,8 @@ namespace RavenCraftCore
         [SerializeField]
         Transform[] colliders;
 
+        [SerializeField] private List<FadeIO> inputItems = new();
+
         [SerializeField]
         Vector3 colliderPos;
 
@@ -61,6 +65,7 @@ namespace RavenCraftCore
 
         [SerializeField] private Animator topAni;
         [SerializeField] private Animator bottomAni;
+        [SerializeField] private Material materialColor;
 
         [SerializeField] private float topFloatValue;
         [SerializeField] private float bottomFloatValue;
@@ -71,10 +76,38 @@ namespace RavenCraftCore
         {
             millStoneTrack = GetComponentInChildren<Cinemachine.DollyCartMove>();
             skAni = GetComponentInChildren<SkeletonAnimation>();
+            EventManager.Subscribe(EventType.CreateComplete, ResetMillStone);
+        }
+
+        void ResetMillStone()
+        {
+            insertedItemID = 0;
+            resultValue = 100;
+            InitCollPos();
+            insertedItemProgress.Clear();
+            for (int i = 0; i < inputItems.Count; i++)
+            {
+                inputItems[i].PlayFadeIO();
+            }
+            inputItems.Clear();
+        }
+
+        void InitCollPos()
+        {
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].position = colliderPos;
+            }
         }
 
         void SetInputItem()
         {
+            Color newColor;
+            Debug.Log(GameManager.Instance.ItemManager.GetBasicItemData(insertedItemID).accessoryColor);
+            ColorUtility.TryParseHtmlString("#"+
+                GameManager.Instance.ItemManager.GetBasicItemData(insertedItemID).accessoryColor,
+                out newColor);
+            materialColor.color = newColor;
             cup.SetInputItemID(insertedItemID);
         }
 
@@ -156,7 +189,8 @@ namespace RavenCraftCore
                 {
                     isGrab = false;
                     skAni.AnimationName = "HandOff";
-                    deg = prevTheta;
+                    prevTheta = deg;
+                    return;
                 }
 
                 GetMousePosToDeg();
@@ -276,7 +310,7 @@ namespace RavenCraftCore
             Gizmos.DrawSphere(millStoneCenterPos.position, 0.3f);
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerStay2D(Collider2D collision)
         {
             if(collision.TryGetComponent(out BBB interactionMaterial))
             {
@@ -284,10 +318,24 @@ namespace RavenCraftCore
                     return;
                 if (interactionMaterial.IsInMillStone())
                     return;
-                insertedItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
+
+                var inputItemID = interactionMaterial.GetComponentInParent<AAA>().m_ItemCode;
+
+                if(insertedItemID != 0)
+                {
+                    if (inputItemID != insertedItemID)
+                    {
+                        ResetMillStone();
+                    }
+                }
+
+                insertedItemID = inputItemID;
+                
+
                 interactionMaterial.InMillstone();
                 SetInputItem();
                 insertedItemProgress.Add(100);
+                inputItems.Add(interactionMaterial.GetComponent<FadeIO>());
             }
         }
     }

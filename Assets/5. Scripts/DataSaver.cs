@@ -52,7 +52,7 @@ public class DataSaver : MonoBehaviour
 				Inventory t_Inventory = t_PlayerCharacter.GetComponent<Inventory>();
 				if (t_Inventory != null)
 				{
-					t_Inventory.TakeInventoryItems(m_PlayerInventory);
+					t_Inventory.TakeData(m_PlayerInventory);
 					Destroy(m_PlayerInventory);
 				}
 			}

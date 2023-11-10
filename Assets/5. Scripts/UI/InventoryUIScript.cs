@@ -112,15 +112,15 @@ public class InventoryUIScript : UIScript
 							}
 						}
 					}
-					t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "Text (TMP)");
-					if(t_GO != null)
-					{
-						TextMeshProUGUI t_Text = t_GO.GetComponent<TextMeshProUGUI>();
-						if (t_Text != null)
-						{
-							t_Text.text = t_AItems[t_Number].itemCode + " " + (((int)(t_AItems[t_Number].itemProgress * 100.0f)) / 100.0f);
-						}
-					}
+					//t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "Text (TMP)");
+					//if(t_GO != null)
+					//{
+					//	TextMeshProUGUI t_Text = t_GO.GetComponent<TextMeshProUGUI>();
+					//	if (t_Text != null)
+					//	{
+					//		t_Text.text = t_AItems[t_Number].itemCode + " " + (((int)(t_AItems[t_Number].itemProgress * 100.0f)) / 100.0f);
+					//	}
+					//}
 					t_GO = UniFunc.GetChildOfName(m_Buttons[i].transform, "ItemAmountText (TMP)");
 					if (t_GO != null)
 					{
@@ -290,7 +290,7 @@ public class InventoryUIScript : UIScript
 		}
 	}
 
-	protected override void RefresfAction()
+	public override void RefresfAction()
 	{
 		base.RefresfAction();
 

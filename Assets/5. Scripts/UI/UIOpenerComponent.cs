@@ -5,24 +5,38 @@ using UnityEngine;
 
 public class UIOpenerComponent : MonoBehaviour
 {
-    [SerializeField] private GameObject m_TargetUI;
-    [SerializeField] private KeyCode m_Key = KeyCode.Escape;
+	[Serializable]
+	private struct UIOpenOption
+	{
+		public GameObject targetUI;
+		public KeyCode key;
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-		if (Input.GetKeyDown(m_Key) == true)
-        {
-			if(CloseableUICounter.GetCloseableUICounter().GetRecentlyOpenedUI() == null)
+	[SerializeField] private List<UIOpenOption> m_TargetUIs = new List<UIOpenOption>();
+
+	// Update is called once per frame
+	void Update()
+	{
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "loading")
+		{
+			for (int i = 0; i < m_TargetUIs.Count; i = i + 1)
 			{
-				if (m_TargetUI != null)
+				if (Input.GetKeyDown(m_TargetUIs[i].key) == true)
 				{
-					if (m_TargetUI.activeSelf == false)
+					if (m_TargetUIs[i].key == KeyCode.Escape)
 					{
-						m_TargetUI.SetActive(true);
+						if (CloseableUICounter.GetCloseableUICounter().GetRecentlyOpenedUI() != null) { break; }
+					}
+
+					if (m_TargetUIs[i].targetUI != null)
+					{
+						if (m_TargetUIs[i].targetUI.activeSelf == false)
+						{
+							m_TargetUIs[i].targetUI.SetActive(true);
+						}
 					}
 				}
 			}
 		}
-    }
+	}
 }

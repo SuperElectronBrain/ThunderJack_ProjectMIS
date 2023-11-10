@@ -14,7 +14,9 @@ public class FlowerPot : MonoBehaviour, IInteraction
     [SerializeField]
     GameObject harvestingEffect;
 
-    private void Start()
+	[SerializeField] private AudioSource m_InteractionSound;
+
+	private void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         boxCollider = GetComponent<BoxCollider>();
@@ -42,7 +44,9 @@ public class FlowerPot : MonoBehaviour, IInteraction
             boxCollider.enabled = false;   
 
             isPlanted = true;
-        }        
+
+			if (m_InteractionSound != null) { m_InteractionSound.Play(); }
+		}        
     }
 
     public void Harvesting()

@@ -10,7 +10,8 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     TextMeshProUGUI noticeName;
     [SerializeField]
     TextMeshProUGUI noticeDescription;
-    SpriteRenderer noticeImage;
+    [SerializeField]
+    Image noticeImage;
     [SerializeField]
     UiComponent noticeUI;
 
@@ -19,8 +20,9 @@ public class NoticeBoard : MonoBehaviour, IInteraction
 
     [SerializeField]
     UnityEngine.Events.UnityEvent onInteractionEvent;
+	[SerializeField] private AudioSource m_InteractionSound;
 
-    public bool IsUsed { get; set; }
+	public bool IsUsed { get; set; }
 
     public void Start()
     {
@@ -32,6 +34,7 @@ public class NoticeBoard : MonoBehaviour, IInteraction
     {
         noticeName.text = noticeData.noticeName;
         noticeDescription.text = noticeData.noticeDescription;
+        noticeImage.sprite = noticeData.noticeImage;
     }
 
     public void Interaction(GameObject user)
@@ -43,9 +46,11 @@ public class NoticeBoard : MonoBehaviour, IInteraction
         else
         {
             //CameraEvent.Instance.onCamBlendComplate.AddListener(ViewNoticeBoard);
+            EventManager.Publish(EventType.StartInteraction);
             CameraEvent.Instance.ChangeCam(vCam);
             onInteractionEvent?.Invoke();
-        }        
+			if (m_InteractionSound != null) { if (m_InteractionSound.isPlaying == false) m_InteractionSound.Play(); }
+		}        
     }
 
     public void ViewNoticeBoard()
@@ -58,5 +63,5 @@ public class NoticeData
 {
     public string noticeName;
     public string noticeDescription;
-    public string noticeImage;
+    public Sprite noticeImage;
 }

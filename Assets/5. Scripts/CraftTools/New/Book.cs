@@ -18,6 +18,12 @@ namespace RavenCraftCore
         void Start()
         {
             elementCircles.Init();
+            EventManager.Subscribe(EventType.CreateComplete, ResetBook);
+        }
+
+        void ResetBook()
+        {
+            elementCircles.Init();
         }
 
         public void UpdateElementCircle(ElementType elementType, float updateValue)
@@ -36,10 +42,10 @@ namespace RavenCraftCore
             public ParticleObject[] elementCircleParticles;
             
             private readonly int power1 = Shader.PropertyToID("_Power1");
-            private readonly int power2 = Shader.PropertyToID("_Power2");
-            private readonly int power3 = Shader.PropertyToID("_Power3");
+            private readonly int power2 = Shader.PropertyToID("_Power3");
+            private readonly int power3 = Shader.PropertyToID("_Power5");
             private readonly int power4 = Shader.PropertyToID("_Power4");
-            private readonly int power5 = Shader.PropertyToID("_Power5");
+            private readonly int power5 = Shader.PropertyToID("_Power2");
 
             public void Init()
             {
