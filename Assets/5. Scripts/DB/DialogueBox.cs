@@ -26,16 +26,22 @@ public class DialogueBox : MonoBehaviour
         dialogBox.text = newDialog;
     }
 
-    public void SetButton(int dialogType)
+    public void SetAcceptButton(string newDialog)
     {
-        switch(dialogType)
-        {
-            case 1:
-                acceptButtonText.text = "¥Ÿ¿Ω.";
-                break;
-            case 2:
-                break;
-        }
+        if (newDialog.Equals("-1"))
+            acceptButtonText.transform.parent.parent.gameObject.SetActive(false);
+        else
+            acceptButtonText.transform.parent.parent.gameObject.SetActive(true);
+        acceptButtonText.text = newDialog;
+    }
+
+    public void SetRefusalButton(string newDialog)
+    {
+        if (newDialog.Equals("-1"))
+            refusalButtonText.transform.parent.parent.gameObject.SetActive(false);
+        else
+            refusalButtonText.transform.parent.parent.gameObject.SetActive(true);
+        refusalButtonText.text = newDialog;
     }
 
     public void ShowDialogBox(bool isActive = true)

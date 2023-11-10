@@ -56,6 +56,11 @@ public class Guest : MonoBehaviour
         StartCoroutine(curWait);
     }
 
+    public void SetRequestData(RequestData newRequest)
+    {
+        request = newRequest;
+    }
+
     IEnumerator Waiting(float watingDuration)
     {
         yield return new WaitForSeconds(watingDuration);
@@ -115,14 +120,14 @@ public class Guest : MonoBehaviour
             isDone = true;
             skAni.AnimationName = "Yes";
 
-            playerShop.Sales.SalesSuccess(salesData, playerShop.SalesResult);
+            playerShop.SalesSuccess(salesData, playerShop.SalesResult);
         }
         else
         {
             isFail = true;
             skAni.AnimationName = "No";
 
-            playerShop.Sales.SalesFailure(salesData, playerShop.SalesResult);
+            playerShop.SalesFailure(salesData, playerShop.SalesResult);
         }
         AnimationCheck();
     }

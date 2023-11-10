@@ -258,7 +258,7 @@ public class ItemManager : MonoBehaviour
 
     public GemRecipe GetGemRecipe(ElementType et1, ElementType et2, ElementType et3)
     {
-        GemRecipe returnRecipe = null;
+        GemRecipe returnRecipe = gemRecipes[0];
         et1++;
         et2++;
         et3++;
@@ -296,8 +296,6 @@ public class ItemManager : MonoBehaviour
 
             returnRecipe = gemRecipes[i];
         }
-        
-        returnRecipe = gemRecipes[0];
         
         return returnRecipe;
     }
