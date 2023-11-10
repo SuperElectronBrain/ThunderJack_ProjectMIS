@@ -20,6 +20,8 @@ namespace RavenCraftCore
         [SerializeField]
         private Book book;
 
+        [SerializeField] private PlayerMonologue playerMonologue;
+
         [SerializeField, Range(0, 100)]
         private float[] value;
 
@@ -205,6 +207,11 @@ namespace RavenCraftCore
             createEffect.Play();
             var gem = GameManager.Instance.ItemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
 
+            if (GameManager.Instance.ItemManager.GetItemName(gem.itemID).Equals("돌맹이"))
+            {
+                
+            }
+            
             var sortValue = value;
             
             Array.Sort(sortValue);
