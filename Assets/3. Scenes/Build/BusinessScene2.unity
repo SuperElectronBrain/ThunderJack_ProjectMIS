@@ -742,6 +742,7 @@ MonoBehaviour:
   jumpForce: 250
   m_HorizontalMoveDirection: {x: 0, y: 0, z: 0}
   m_VerticalMoveDirection: {x: 0, y: 0, z: 0}
+  m_CharacterInputVector: {x: 0, y: 0, z: 0}
   m_SD: {fileID: 0}
   m_CPAComponent: {fileID: 0}
   m_Inventory: {fileID: 0}
@@ -11422,7 +11423,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 146333900912442156, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 216.65
       objectReference: {fileID: 0}
     - target: {fileID: 146333900912442156, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -11499,6 +11500,22 @@ PrefabInstance:
     - target: {fileID: 576775613783262043, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -262.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 679455540617169951, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 679455540617169951, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 679455540617169951, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 679455540617169951, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 767414017654598870, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchorMax.y
@@ -13220,7 +13237,8 @@ PrefabInstance:
       value: -29.166666
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2301221280967379948, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6345590950169558943, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       insertIndex: -1
@@ -13237,7 +13255,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6345590950169558943, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1360803748}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4571776762722403268, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1440696572}
   m_SourcePrefab: {fileID: 100100000, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
 --- !u!114 &976242110 stripped
 MonoBehaviour:
@@ -13424,6 +13445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   putInValue: 0
   book: {fileID: 1473742086}
+  playerMonologue: {fileID: 0}
   value:
   - 0
   - 0
@@ -16436,7 +16458,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.27, z: 0}
 --- !u!212 &1233616584
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17480,7 +17502,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 12.42, y: 10.242862}
+  m_Size: {x: 2.21, y: 7.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -17712,8 +17734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMonologueList: []
-  type: 0
-  craftingExp: 0
+  pc: {fileID: 72959459}
 --- !u!1 &1353520758
 GameObject:
   m_ObjectHideFlags: 0
@@ -18872,6 +18893,48 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439466289}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1440696571 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4571776762722403268, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+  m_PrefabInstance: {fileID: 976242109}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1440696572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440696571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6f98e4202808d478b80a4699eb4274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImage: 1
+  isFadeOut: 1
+  duration: 2
+  idleDuration: 0
+  rewindDuration: 3
+  isEnable: 1
+  isIncludeChild: 1
+  isDestory: 0
+  childImage: []
+  childText: []
+  onFadeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1440696571}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1442331837
 GameObject:
   m_ObjectHideFlags: 0
@@ -21573,6 +21636,7 @@ MonoBehaviour:
   jumpForce: 250
   m_HorizontalMoveDirection: {x: 0, y: 0, z: 0}
   m_VerticalMoveDirection: {x: 0, y: 0, z: 0}
+  m_CharacterInputVector: {x: 0, y: 0, z: 0}
   m_SD: {fileID: 0}
   m_CPAComponent: {fileID: 0}
   m_Inventory: {fileID: 0}

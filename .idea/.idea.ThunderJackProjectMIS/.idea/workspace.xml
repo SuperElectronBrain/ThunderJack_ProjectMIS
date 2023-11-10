@@ -127,10 +127,10 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="40640">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="40640" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -192,13 +192,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/CraftTools/New/Press.cs</url>
-          <line>128</line>
+          <line>133</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\CraftTools\New\Press.cs" initialLine="87" containingFunctionPresentation="메서드 'CheckGemRecipe'">
             <startOffsets>
-              <option value="3010" />
+              <option value="3094" />
             </startOffsets>
             <endOffsets>
-              <option value="3106" />
+              <option value="3190" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="6" />
@@ -309,29 +309,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/Guest.cs</url>
-          <line>114</line>
+          <line>115</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\Guest.cs" initialLine="114" containingFunctionPresentation="메서드 'CheckItem'">
             <startOffsets>
-              <option value="2892" />
+              <option value="2939" />
             </startOffsets>
             <endOffsets>
-              <option value="2975" />
+              <option value="3022" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop_Sales.cs</url>
-          <line>68</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop_Sales.cs" initialLine="69" containingFunctionPresentation="메서드 'SalesFailure'">
-            <startOffsets>
-              <option value="2466" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2487" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/Manager/ItemManager.cs</url>
@@ -345,6 +332,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop_Sales.cs</url>
+          <line>92</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop_Sales.cs" initialLine="88" containingFunctionPresentation="메서드 'PriceCalc'">
+            <startOffsets>
+              <option value="3217" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3241" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="63" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

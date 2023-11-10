@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 using TMPro;
 
@@ -111,7 +112,7 @@ public class PlayerShop : MonoBehaviour
 
     public void HandOverItem()
     {
-        guest.CheckItem(itemCode, 0);
+        //guest.CheckItem(itemCode, 0, JewelryRank.Low);
         itemCode = 0;
     }
 

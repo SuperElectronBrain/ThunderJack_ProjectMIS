@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 using UnityEngine.UI;
 using Spine.Unity;
@@ -107,13 +108,14 @@ public class Guest : MonoBehaviour
         skAni.AnimationState.Complete -= AnimationEnd;
     }
 
-    public void CheckItem(int requestItemID, float perfection)
+    public void CheckItem(int requestItemID, float perfection, JewelryRank jewelryRank)
     {
         var requestItem = GameManager.Instance.ItemManager.GetRequestStuffByItemID(requestItemID);
         Debug.Log(requestItem.requestStuff1 + " " + requestItem.requestStuff2);
 
         SalesData salesData = GameManager.Instance.ItemManager.GetSalesData(requestItemID);
         salesData.perfection = perfection;
+        salesData.JewelryRank = jewelryRank;
 
         if (requestItem.requestStuff1 == request.requestStuff1 && requestItem.requestStuff2 == request.requestStuff2)
         {
