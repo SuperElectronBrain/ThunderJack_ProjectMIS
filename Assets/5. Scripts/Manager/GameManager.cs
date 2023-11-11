@@ -114,7 +114,10 @@ public class GameManager : Singleton<GameManager>
                 CameraEvent.Instance.Init();
                 GameEventManager.Init();
                 EventManager.Publish(EventType.Load);
+                if(gameTime.IsNextDay)
+                    gameTime.NewDay();
                 isWork = false;
+                gameTime.TimeStop(false);
                 break;
             case SceneType.InSide:
                 gameTime.TimeStop(true);

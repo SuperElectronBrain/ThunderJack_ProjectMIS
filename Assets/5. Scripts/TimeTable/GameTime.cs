@@ -26,10 +26,13 @@ public class GameTime : MonoBehaviour
     [SerializeField]
     int closeTime;
 
+    public bool IsNextDay;
+
     // Start is called before the first frame update
     void Start()
     {
         EventManager.Subscribe(EventType.Work, StartWork);
+        EventManager.Publish(EventType.Minute);
     }
 
     // Update is called once per frame
@@ -85,6 +88,13 @@ public class GameTime : MonoBehaviour
         timer = Random.Range(45f, 55f);
     }
 
+    public void EndWork()
+    {
+        hour = 18;
+        minute = 0;
+        timer = 0;
+    }
+
     public void TimeStop(bool isTimeStop)
     {
         this.isTimeStop = isTimeStop;
@@ -95,7 +105,7 @@ public class GameTime : MonoBehaviour
         hour = 6;
         minute = 0;
         timer = 0;
-        
+        IsNextDay = false;
         EventManager.Publish(EventType.Day);
     }
 
