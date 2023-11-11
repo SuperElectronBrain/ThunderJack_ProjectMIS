@@ -108,11 +108,11 @@ public class CharacterBase : MonoBehaviour
 	#region TranslateMove
 	protected virtual void HorizontalMove(float DeltaTime)
 	{
-		transform.Translate(m_HorizontalMoveDirection * m_HorizontalMove * DeltaTime * m_Speed);
+		transform.Translate(m_HorizontalMoveDirection * new Vector2(m_HorizontalMove, m_VerticalMove).normalized.x * DeltaTime * m_Speed);
 	}
 	protected virtual void VerticalMove(float DeltaTime)
 	{
-		transform.Translate(m_VerticalMoveDirection * m_VerticalMove * DeltaTime * m_Speed);
+		transform.Translate(m_VerticalMoveDirection * new Vector2(m_HorizontalMove, m_VerticalMove).normalized.y * DeltaTime * m_Speed);
 	}
 	#endregion
 
