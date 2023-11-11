@@ -82,7 +82,7 @@ public class GameTime : MonoBehaviour
     {
         hour = 9;
         minute = 0;
-        timer = 0;
+        timer = Random.Range(45f, 55f);
     }
 
     public void TimeStop(bool isTimeStop)
