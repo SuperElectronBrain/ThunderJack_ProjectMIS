@@ -114,7 +114,10 @@ public class GameManager : Singleton<GameManager>
                 CameraEvent.Instance.Init();
                 GameEventManager.Init();
                 EventManager.Publish(EventType.Load);
+                if(gameTime.IsNextDay)
+                    gameTime.NewDay();
                 isWork = false;
+                gameTime.TimeStop(false);
                 break;
             case SceneType.InSide:
                 gameTime.TimeStop(true);
@@ -170,13 +173,12 @@ public class Tools
 
 /*Todo
  
- 하루 종료
+ 재료 Fade 버그 수정
  쓰레기통 0.5
- 독백 70%
+ 독백 80%
  
  오후 오전 주민 대사 변경 0.5
  
- 실시간 라이팅 0.5 
  인카운터 0.5
  
  주민 퀘스트 2
@@ -189,4 +191,6 @@ public class Tools
  인사이드 씬 게임 시간 멈추기
  손님 다이얼로그 변경
  보석 완성도 시스템 추가 
+ 실시간 라이팅 0.5 
+ 하루 종료
  */

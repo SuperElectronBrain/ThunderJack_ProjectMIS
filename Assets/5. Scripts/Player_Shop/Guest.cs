@@ -151,7 +151,7 @@ public class Guest : MonoBehaviour
 
     public void EntryShop()
     {
-        Debug.Log(gameObject.name + " ¼Õ´ÔÀÔÀå");
+        Debug.Log(gameObject.name + " ì†ë‹˜ì…ì¥");
         EventManager.Publish(EventType.Dialog);
         isEntry = true;
         mr.enabled = true;
@@ -160,7 +160,7 @@ public class Guest : MonoBehaviour
 
     public void ExitShop()
     {
-        Debug.Log(gameObject.name + " ¼Õ´ÔÅğÀå");
+        Debug.Log(gameObject.name + " ì†ë‹˜í‡´ì¥");
         StopAllCoroutines();
         isEntry = false;
         mr.enabled = false;        
