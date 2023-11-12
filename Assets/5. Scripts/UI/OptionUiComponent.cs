@@ -6,7 +6,12 @@ public class OptionUiComponent : UiComponent
 {
 	private void OnEnable()
 	{
-		ActiveUI();
+		//ActiveUI();
+	}
+
+	private void OnDisable()
+	{
+		//InactiveUI();
 	}
 
 	public override void ActiveUI()
