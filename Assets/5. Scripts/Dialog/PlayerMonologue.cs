@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum MonologueType
 {
@@ -16,11 +17,11 @@ public class PlayerMonologue : MonoBehaviour
 {
     [SerializeField]
     List<PlayerMonologueData> playerMonologueList = new List<PlayerMonologueData>();
-    [SerializeField]
-    MonologueType_Crafting type;
-    [SerializeField]
-    int craftingExp;
 
+    public static UnityAction<MonologueType_Crafting, int> craftDialog;
+
+    [SerializeField] private PlayerCharacter pc;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -39,16 +40,15 @@ public class PlayerMonologue : MonoBehaviour
                     textRate = Tools.FloatParse(monologue["Rate"])
                 });
         }
+
+        craftDialog += TalkMonologue;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void TalkMonologue(MonologueType_Crafting selectMonologueType, int craftingExp)
     {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            //Debug.Log(GetWaitingMonologue());
-            Debug.Log(GetCraftingMonologue(type, craftingExp));
-        }
+        var monologueText = GetCraftingMonologue(selectMonologueType, craftingExp);
+
+        pc.PopUpMonologue(monologueText, true);
     }
 
     public string GetWaitingMonologue()

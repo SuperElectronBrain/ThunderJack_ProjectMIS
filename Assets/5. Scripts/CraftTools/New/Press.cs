@@ -1,10 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Spine.Unity;
 
 namespace RavenCraftCore
 {
+    public enum JewelryRank
+    {
+        Low = 1, Middle, High, Perfect
+    }
+    
     public class Press : MonoBehaviour
     {
         bool isGrab;
@@ -17,6 +24,8 @@ namespace RavenCraftCore
         [Header("CraftingTools")]
         [SerializeField]
         private Book book;
+
+        [SerializeField] private PlayerMonologue playerMonologue;
 
         [SerializeField, Range(0, 100)]
         private float[] value;
@@ -94,7 +103,8 @@ namespace RavenCraftCore
         {
             track.m_Position = 0;
             putInValue = 0;
-
+            isCreate = false;
+            
             for (int i = 0; i < value.Length; i++)
             {
                 value[i] = 0f;
@@ -202,10 +212,39 @@ namespace RavenCraftCore
             createEffect.Play();
             var gem = GameManager.Instance.ItemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
 
-            accessoryPlate.CompleteCraft(
-                GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory()));
+            if (GameManager.Instance.ItemManager.GetItemName(gem.itemID).Equals("돌맹이"))
+            {
+                PlayerMonologue.craftDialog(MonologueType_Crafting.Failure, 1);
+            }
+            else
+            {
+                PlayerMonologue.craftDialog(MonologueType_Crafting.Success, 1);
+            }
             
-            print(GameManager.Instance.ItemManager.GetItemName(gem.itemID));
+            var sortValue = value;
+            
+            Array.Sort(sortValue);
+
+            var perfection =
+                GameManager.Instance.ItemManager.GetItemPerfection(gem.itemID, sortValue[value.Length - 1], sortValue[value.Length - 2],
+                    sortValue[value.Length - 3]);
+
+            JewelryRank jewelryRank;
+
+            if (perfection <= 33)
+                jewelryRank = JewelryRank.Low;
+            else if (perfection <= 55)
+                jewelryRank = JewelryRank.Middle;
+            else if(perfection <= 90)
+                jewelryRank = JewelryRank.High;
+            else
+                jewelryRank = JewelryRank.Perfect;
+            
+            
+            var completeItem =
+                GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory());
+
+            accessoryPlate.CompleteCraft(completeItem, perfection, jewelryRank);
         }
     }
 }

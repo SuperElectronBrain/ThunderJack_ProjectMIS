@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 using TMPro;
 
@@ -65,7 +66,8 @@ public class PlayerShop : MonoBehaviour
     public void EntryGuset()
     {        
         var newGuest = guestData.GetRandomGuest();
-        var newRequest = sales.GetRequestData(newGuest.guestId);
+        //var newRequest = sales.GetRequestData(newGuest.guestId);
+        var newRequest = sales.GetRequestData(1);
 
         guest.InitGuest(newGuest, newRequest);
         guest.EntryShop();
@@ -75,6 +77,8 @@ public class PlayerShop : MonoBehaviour
     {
         dialogBox.SetName(guest.GetGuestName());
         dialogBox.SetDialog(guest.GetRequest());
+        dialogBox.SetAcceptButton(guest.GetRequestData().textAnswer1);
+        dialogBox.SetRefusalButton(guest.GetRequestData().textAnswer2);
         dialogBox.ShowDialogBox();
     }
 
@@ -108,7 +112,7 @@ public class PlayerShop : MonoBehaviour
 
     public void HandOverItem()
     {
-        guest.CheckItem(itemCode, 0);
+        //guest.CheckItem(itemCode, 0, JewelryRank.Low);
         itemCode = 0;
     }
 
@@ -119,16 +123,77 @@ public class PlayerShop : MonoBehaviour
         guest.ExitShop();        
     }
 
+    void NextDialog()
+    {
+        var request = guest.GetRequestData();
+        
+        request = sales.GetRequestData(request.textNext1);
+        guest.SetRequestData(request);
+        dialogBox.SetAcceptButton(request.textAnswer1);
+        dialogBox.SetRefusalButton(request.textAnswer2);
+    }
+
+    public void SalesSuccess(SalesData salesData, SalesResult sr)
+    { 
+        var request = guest.GetRequestData();
+        
+        request = sales.GetRequestData(request.success);
+        guest.SetRequestData(request);
+        dialogBox.SetAcceptButton("-1");
+        dialogBox.SetRefusalButton("-1");
+        dialogBox.SetDialog(request.requestScript);
+        dialogBox.ShowDialogBox();
+        sales.SalesSuccess(salesData, sr);
+    }
+
+    public void SalesFailure(SalesData salesData, SalesResult sr)
+    {
+        var request = guest.GetRequestData();
+        
+        request = sales.GetRequestData(request.fail);
+        guest.SetRequestData(request);
+        
+        dialogBox.SetDialog(request.requestScript);
+        dialogBox.SetAcceptButton("-1");
+        dialogBox.SetRefusalButton("-1");
+        dialogBox.ShowDialogBox();
+        sales.SalesFailure(salesData, sr);
+    }
+
     public void AcceptSales()
     {
-        guest.AcceptSales();
-        dialogBox.ShowDialogBox(false);
+        switch(guest.GetRequestData().requestType)
+        {
+            case 1:
+                NextDialog();
+                var request = guest.GetRequestData();
+                dialogBox.SetDialog(request.requestScript);
+                //dialogBox.SetAcceptButton(request.textAnswer1);
+                break;
+            case 2:
+                Camera.main.GetComponent<CraftTableCameraController>().GoToCraft();
+                dialogBox.ShowDialogBox(false);
+                guest.AcceptSales();
+                break;
+        }
     }
 
     public void RefusalSales()
-    {
-        guest.RefusalSales();
-        dialogBox.ShowDialogBox(false);
+    { 
+        switch(guest.GetRequestData().requestType)
+        {
+            case 2:
+                var request = guest.GetRequestData();
+        
+                request = sales.GetRequestData(request.textNext2);
+                guest.SetRequestData(request);
+        
+                dialogBox.SetDialog(request.requestScript);
+                dialogBox.SetAcceptButton("-1");
+                dialogBox.SetRefusalButton("-1");
+                guest.RefusalSales();
+                break;
+        }
     }
 
     void ShowSalesResult()

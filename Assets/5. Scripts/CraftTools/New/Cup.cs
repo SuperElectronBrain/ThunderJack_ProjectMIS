@@ -147,7 +147,7 @@ namespace RavenCraftCore
             
             track.TrackTime = tilt;
 
-            if(tilt >= inputAngle)
+            if(tilt >= inputAngle && amountValue > 0)
             {
                 if(cwb.enabled)
                     cwb.Create(pos.position).transform.SetParent(tempWaterBall);

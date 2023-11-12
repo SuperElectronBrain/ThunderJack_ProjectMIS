@@ -14,11 +14,14 @@ public class CharacterBase : MonoBehaviour
 	protected float m_VerticalMove = 0.0f;
 	private Vector3 m_PrevPosition;
 	protected float m_Velocity;
+	[HideInInspector] public Vector3 m_CharacterInputVector = Vector3.zero;
 	protected Vector3 m_GroundNormalVector = Vector3.up;
 	protected int m_CollisionCount = 0;
 	protected bool m_UseScaleFlip = true;
 	protected bool bMovable = true;
 	protected Transform m_Destination = null;
+	protected bool isGround = false;
+	protected bool isWall = false;
 
 	protected Camera m_MainCamera;
 	protected Rigidbody m_Rigidbody;
@@ -50,8 +53,6 @@ public class CharacterBase : MonoBehaviour
     protected virtual void Update()
     {
 		float DeltaTime = Time.deltaTime;
-		//if (m_Destination == null) { }
-		//KeyInput();
 
 		if (m_SD != null)
         {
@@ -75,19 +76,6 @@ public class CharacterBase : MonoBehaviour
 	{
 		float DeltaTime = Time.fixedDeltaTime;
 
-		/*
-		if(m_CPAComponent != null) { SetMoveDirection(m_CPAComponent.transform.right, m_CPAComponent.transform.forward); }
-		if(bMovable == true)
-		{
-			if(m_Destination != null)
-			{
-				Vector3 t_Vector = (m_Destination.position - transform.position).normalized;
-				m_HorizontalMove = t_Vector.x;
-				m_VerticalMove = t_Vector.z;
-			}
-		}
-		*/
-
 		HorizontalMove(DeltaTime);
 		VerticalMove(DeltaTime);
 
@@ -107,27 +95,6 @@ public class CharacterBase : MonoBehaviour
 		}
 	}
 
-	protected virtual void HorizontalMove(float DeltaTime)
-	{
-		//transform.Translate(new Vector3(m_HorizontalMove, 0.0f, 0.0f) * DeltaTime * speed);
-		transform.Translate(m_HorizontalMoveDirection * m_HorizontalMove * DeltaTime * m_Speed);
-	}
-
-	protected virtual void VerticalMove(float DeltaTime)
-	{
-		//transform.Translate(new Vector3(0.0f, 0.0f, m_VerticalMove) * DeltaTime * speed);
-		transform.Translate(m_VerticalMoveDirection * m_VerticalMove * DeltaTime * m_Speed);
-	}
-
-	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection, Vector3 p_VerticalMoveDirection)
-	{
-		m_HorizontalMoveDirection = p_HorizontalMoveDirection;
-		m_VerticalMoveDirection = p_VerticalMoveDirection;
-	}
-
-	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection) { SetMoveDirection(p_HorizontalMoveDirection, Vector3.forward); }
-	public void SetMoveDirection() { SetMoveDirection(Vector3.right, Vector3.forward); }
-
 	public void SetDestination(Transform p_Transform)
 	{
 		m_Destination = p_Transform;
@@ -137,17 +104,66 @@ public class CharacterBase : MonoBehaviour
 			m_VerticalMove = 0;
 		}
 	}
+	
+	#region TranslateMove
+	protected virtual void HorizontalMove(float DeltaTime)
+	{
+		transform.Translate(m_HorizontalMoveDirection * new Vector2(m_HorizontalMove, m_VerticalMove).normalized.x * DeltaTime * m_Speed);
+	}
+	protected virtual void VerticalMove(float DeltaTime)
+	{
+		transform.Translate(m_VerticalMoveDirection * new Vector2(m_HorizontalMove, m_VerticalMove).normalized.y * DeltaTime * m_Speed);
+	}
+	#endregion
 
-	//public virtual void CommunicationStart()
-	//{
-	//	bMovable = false;
-	//}
-	//
-	//public virtual void CommunicationEnd()
-	//{
-	//	bMovable = true;
-	//}
+	#region SetMoveDirection
+	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection, Vector3 p_VerticalMoveDirection)
+	{
+		m_HorizontalMoveDirection = p_HorizontalMoveDirection;
+		m_VerticalMoveDirection = p_VerticalMoveDirection;
+	}
+	public void SetMoveDirection(Vector3 p_HorizontalMoveDirection) { SetMoveDirection(p_HorizontalMoveDirection, Vector3.forward); }
+	public void SetMoveDirection() { SetMoveDirection(Vector3.right, Vector3.forward); }
+	#endregion
 
+	#region Ground and Forward Check
+	protected virtual void GroundCheck()
+	{
+		m_GroundNormalVector = Vector3.up;
+		isGround = false;
+
+		Vector3 startPosition = transform.position;
+		Vector3 direction = new Vector3(0, -1, 0);
+		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 1.25f);
+		if (result == true)
+		{
+			if (raycastHit.collider.isTrigger == false)
+			{
+				m_GroundNormalVector = raycastHit.normal;
+				isGround = true;
+			}
+		}
+	}
+	protected virtual void ForwardCheck()
+	{
+		isWall = false;
+
+		Vector3 startPosition = transform.position;
+		startPosition.y = startPosition.y - 0.5f;
+		Vector3 direction = m_CharacterInputVector;
+		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.6f);
+		
+		if (result == true)
+		{
+			if (raycastHit.collider.isTrigger == false)
+			{
+				isWall = true;
+			}
+		}
+	}
+	#endregion
+
+	#region Collision
 	protected virtual void OnCollisionEnter(Collision collision)
 	{
 		if (collision.gameObject != gameObject)
@@ -156,12 +172,6 @@ public class CharacterBase : MonoBehaviour
 
 			if (collision.contacts != null)
 			{
-				//m_GroundNormalVector = collision.contacts[0].normal;
-				//Vector3 t_HorizontalMoveDirection  = Vector3.Cross(collision.contacts[0].normal, m_VerticalMoveDirection).normalized;
-				//Vector3 t_VerticalMoveDirection = Vector3.Cross(collision.contacts[0].normal, t_HorizontalMoveDirection).normalized;
-				//Vector3.ProjectOnPlane(collision.contacts[0].normal, m_VerticalMoveDirection);
-				//
-				//SetMoveDirection(t_HorizontalMoveDirection, t_VerticalMoveDirection);
 			}
 
 			if (m_Animator != null)
@@ -175,15 +185,6 @@ public class CharacterBase : MonoBehaviour
 		if (collision.gameObject != gameObject)
 		{
 			m_CollisionCount = m_CollisionCount - 1;
-
-			//m_GroundNormalVector = Vector3.up;
-			//if (collision.contacts != null)
-			//{
-			//	Vector3 t_HorizontalMoveDirection = Vector3.Cross(Vector3.up, m_VerticalMoveDirection).normalized;
-			//	Vector3 t_VerticalMoveDirection = Vector3.Cross(Vector3.up, t_HorizontalMoveDirection).normalized;
-			//
-			//	SetMoveDirection(t_HorizontalMoveDirection, t_VerticalMoveDirection);
-			//}
 		}
 	}
 
@@ -204,4 +205,5 @@ public class CharacterBase : MonoBehaviour
 			}
 		}
 	}
+	#endregion
 }

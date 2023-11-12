@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 
 public class PressAccessoryPlate : MonoBehaviour
@@ -12,23 +13,34 @@ public class PressAccessoryPlate : MonoBehaviour
 
     [SerializeField] private InteractionItem interactionItem;
     [SerializeField] private int itemID;
+    [SerializeField] private float perfection;
+    [SerializeField] private JewelryRank jewelryRank;
     
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        EventManager.Subscribe(EventType.SalesSuccess, ResetPlate);
+        EventManager.Subscribe(EventType.SalesFailure, ResetPlate);
     }
 
     private void OnMouseDown()
     {
-        if (!isActive)
+        if (itemID == 0)
             return;
         
-        isSelect = true;
+        if (GameManager.Instance.ItemManager.GetItemType(itemID) != ItemType.Jewelry)
+        {
+            FindObjectOfType<PlayerCharacter>().SetPlayerGrabItem(new AdvencedItem(itemID, 1, 1));
+            isSelect = true;
+            spriteRenderer.enabled = false;
+            return;
+        }
+        
         var item = interactionItem.ItemInteraction(itemID);
-        item.GetComponent<InteractionAccessory>().Init(itemID,this);
+        FindObjectOfType<PlayerCharacter>().SetPlayerGrabItem(new AdvencedItem(itemID, 1, 1));
+        item.GetComponent<InteractionAccessory>().Init(itemID, perfection, jewelryRank, this);
         spriteRenderer.enabled = false;
-        FindObjectOfType<PlayerCharacter>().SetPlayerGrabItem(new AdvencedItem(itemID, 0, 1));
     }
 
     public void RewindPlate()
@@ -45,9 +57,16 @@ public class PressAccessoryPlate : MonoBehaviour
 
     public void SetAccessory(int accessoryID)
     {
+        if (itemID != 0)
+        {
+            RewindPlate();
+            return;
+        }
+            
         itemID = accessoryID;
         //transform.root.GetComponent<RavenCraftCore.Press>().SetAccessoryData(accessoryID);
         spriteRenderer.sprite = GameManager.Instance.ItemManager.GetItemSprite(accessoryID);
+        spriteRenderer.enabled = true;
     }
 
     public int GetAccessory()
@@ -55,10 +74,12 @@ public class PressAccessoryPlate : MonoBehaviour
         return itemID;
     }
 
-    public void CompleteCraft(int completeItemID)
+    public void CompleteCraft(int completeItemID, float perfection, JewelryRank jr)
     {
         EventManager.Publish(EventType.CreateComplete);
         itemID = completeItemID;
+        this.perfection = perfection;
+        jewelryRank = jr;
         var completeItem = GameManager.Instance.ItemManager.GetBasicItemData(completeItemID);
         
         if (completeItem == null)
@@ -81,5 +102,11 @@ public class PressAccessoryPlate : MonoBehaviour
 
         if (!isSelect)
             return;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe(EventType.SalesSuccess, ResetPlate);
+        EventManager.Unsubscribe(EventType.SalesFailure, ResetPlate);
     }
 }

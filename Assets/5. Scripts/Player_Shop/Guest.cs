@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 using UnityEngine.UI;
 using Spine.Unity;
@@ -56,6 +57,11 @@ public class Guest : MonoBehaviour
         StartCoroutine(curWait);
     }
 
+    public void SetRequestData(RequestData newRequest)
+    {
+        request = newRequest;
+    }
+
     IEnumerator Waiting(float watingDuration)
     {
         yield return new WaitForSeconds(watingDuration);
@@ -102,27 +108,28 @@ public class Guest : MonoBehaviour
         skAni.AnimationState.Complete -= AnimationEnd;
     }
 
-    public void CheckItem(int requestItemID, float perfection)
+    public void CheckItem(int requestItemID, float perfection, JewelryRank jewelryRank)
     {
         var requestItem = GameManager.Instance.ItemManager.GetRequestStuffByItemID(requestItemID);
         Debug.Log(requestItem.requestStuff1 + " " + requestItem.requestStuff2);
 
         SalesData salesData = GameManager.Instance.ItemManager.GetSalesData(requestItemID);
         salesData.perfection = perfection;
+        salesData.JewelryRank = jewelryRank;
 
         if (requestItem.requestStuff1 == request.requestStuff1 && requestItem.requestStuff2 == request.requestStuff2)
         {
             isDone = true;
             skAni.AnimationName = "Yes";
 
-            playerShop.Sales.SalesSuccess(salesData, playerShop.SalesResult);
+            playerShop.SalesSuccess(salesData, playerShop.SalesResult);
         }
         else
         {
             isFail = true;
             skAni.AnimationName = "No";
 
-            playerShop.Sales.SalesFailure(salesData, playerShop.SalesResult);
+            playerShop.SalesFailure(salesData, playerShop.SalesResult);
         }
         AnimationCheck();
     }
@@ -135,6 +142,11 @@ public class Guest : MonoBehaviour
     public string GetRequest()
     {
         return request.requestScript;
+    }
+
+    public RequestData GetRequestData()
+    {
+        return request;
     }
 
     public void EntryShop()

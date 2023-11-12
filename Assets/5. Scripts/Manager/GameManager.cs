@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RavenCraftCore;
 using UnityEngine;
 
 public enum SceneType
@@ -81,13 +82,14 @@ public class GameManager : Singleton<GameManager>
         EventManager.Subscribe(EventType.Exit, ExitShop);
     }
 
+
+    [SerializeField] private float perfection;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
             EventManager.Publish(EventType.Day);
         else if (Input.GetKeyDown(KeyCode.F3))
             debugPanel.ActiveUI();
-            
     }
 
     public void EnterShop()
@@ -115,10 +117,11 @@ public class GameManager : Singleton<GameManager>
                 isWork = false;
                 break;
             case SceneType.InSide:
+                gameTime.TimeStop(true);
                 isWork = true;
                 break;
             case SceneType.Bussiness:
-
+                gameTime.TimeStop(false);
                 break;
         }
     }
@@ -165,10 +168,11 @@ public class Tools
     }
 }
 
-/*Todo 
- 그랩 아이템 추가 
+/*Todo
+ 
+ 하루 종료
  쓰레기통 0.5
- 독백 0.5
+ 독백 70%
  
  오후 오전 주민 대사 변경 0.5
  
@@ -176,4 +180,13 @@ public class Tools
  인카운터 0.5
  
  주민 퀘스트 2
+ 
+ 압축기 Plate에서 인벤토리로 넣을 시 이벤트
+ 장신구(N) -> 인벤토리 = 압축기 Plate 초기화 인벤토리 카운트
+ 
+ 완료
+ 그랩 아이템 추가 
+ 인사이드 씬 게임 시간 멈추기
+ 손님 다이얼로그 변경
+ 보석 완성도 시스템 추가 
  */
