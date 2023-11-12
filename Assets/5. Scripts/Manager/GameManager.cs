@@ -53,6 +53,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     Dialogue dialogue;
 
+    [SerializeField] private NpcRequestManager npcRequestManager;
+
     public bool isWork;
 
     public DataBase DataBase { get { return dataBase; } }
@@ -66,6 +68,7 @@ public class GameManager : Singleton<GameManager>
     public GameEventManager GameEventManager { get { return gameEventManager; } }
     public QuestManager QuestManager { get { return questManager; } }
     public UI_Manager UIManager { get { return uiManager; } }
+    public NpcRequestManager NpcRequestManager => npcRequestManager;
 
     [SerializeField]
     Transform characters;
@@ -173,6 +176,8 @@ public class Tools
 
 /*Todo
  
+ 지역 이름 뜨게하는거
+ 주민 버그 수정
  재료 Fade 버그 수정
  쓰레기통 0.5
  독백 80%
