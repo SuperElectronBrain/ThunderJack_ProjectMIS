@@ -45,7 +45,7 @@ public class TutorialComponent : MonoBehaviour
 	[SerializeField] private List<TutorialState> m_States = new List<TutorialState>();
 	private int m_CurrentState;
 	private StateType m_CurrenStatetType = StateType.WaitingTutorial;
-
+	
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -55,18 +55,18 @@ public class TutorialComponent : MonoBehaviour
 			ProgressTutorial();
 		}
 	}
-
+	
 	// Update is called once per frame
 	void Update()
 	{
 		
 	}
-
+	
 	public List<TutorialState> GetStates()
 	{
 		return new List<TutorialState>(m_States);
 	}
-
+	
 	public StateType GetCurrentStateType()
 	{
 		//StateType t_StateType = StateType.EndTutorial;
@@ -79,7 +79,7 @@ public class TutorialComponent : MonoBehaviour
 		//}
 		return m_CurrenStatetType;
 	}
-
+	
 	public TutorialState PopStateAt(int p_Index)
 	{
 		TutorialState t_States = m_States[p_Index];
@@ -87,13 +87,13 @@ public class TutorialComponent : MonoBehaviour
 		m_States.TrimExcess();
 		return t_States;
 	}
-
+	
 	public void CleanStates()
 	{
 		m_States.Clear();
 		m_States.TrimExcess();
 	}
-
+	
 	public void TakeStates(TutorialComponent p_TutorialComponent)
 	{
 		if (p_TutorialComponent != null)
@@ -110,7 +110,7 @@ public class TutorialComponent : MonoBehaviour
 			p_TutorialComponent.CleanStates();
 		}
 	}
-
+	
 	public void ProgressTutorial()
 	{
 		if (m_States != null)
@@ -190,7 +190,7 @@ public class TutorialComponent : MonoBehaviour
 						break;
 					}
 				}
-
+	
 				m_CurrentState = m_CurrentState + 1;
 				if (m_CurrentState >= m_States.Count) { m_CurrentState = 0; }
 			}
