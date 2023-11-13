@@ -11,6 +11,8 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private Gradient skyColor;
     [SerializeField] private Gradient equatorColor;
     [SerializeField] private Gradient sunColor;
+    [SerializeField] private Gradient FogColor;
+    
     [Header("SkyBoxPreset")]
     [SerializeField] private Material SkyboxM;
     [SerializeField,Range(0,360)] private float rotation;
@@ -88,6 +90,7 @@ public class DayNightCycle : MonoBehaviour
         RenderSettings.ambientEquatorColor=equatorColor.Evaluate(timeFraction);
         RenderSettings.ambientSkyColor=skyColor.Evaluate(timeFraction);
         sun.color = sunColor.Evaluate(timeFraction);
+        RenderSettings.fogColor=FogColor.Evaluate(timeFraction);
     }
 
     private void UpdateMaterialParameter()
