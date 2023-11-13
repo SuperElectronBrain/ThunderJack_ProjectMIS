@@ -80,6 +80,9 @@ public class InteractionIcon
 
 public class PlayerCharacterUIScript : MonoBehaviour
 {
+	public static PlayerCharacterUIScript main
+	{ get { return FindObjectOfType<PlayerCharacterUIScript>(); } }
+
 	public ClockUIScript m_ClockUIScript;
 	public CurrencyUIScript m_CurrencyUIScript;
 	public InventoryUIScript m_InventoryUIScript;
@@ -93,6 +96,7 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public ItemInfoDisplay m_ItemInfoDisplay = new ItemInfoDisplay();
 	public InteractionIcon m_InteractionIcon = new InteractionIcon();
 	public UnityEngine.UI.Image m_FadeUI;
+	public UnityEngine.UI.Image m_Title;
 
 	// Start is called before the first frame update
 	void Start()
@@ -173,5 +177,16 @@ public class PlayerCharacterUIScript : MonoBehaviour
 			}
 		}
 		if (m_FadeUI == null) { m_FadeUI = UniFunc.GetChildOfName(transform, "FadeUI").GetComponent<UnityEngine.UI.Image>(); }
+	}
+
+	public void PopupTitle(bool param)
+	{
+		if(m_Title != null)
+		{
+			if(m_Title.gameObject.activeSelf != param) 
+			{
+				m_Title.gameObject.SetActive(param);
+			}
+		}
 	}
 }
