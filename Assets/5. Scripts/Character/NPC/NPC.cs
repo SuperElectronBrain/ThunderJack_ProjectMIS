@@ -34,6 +34,7 @@ public class NPC : Character, IInteraction
 
     public bool isMeet;
     public bool isTalk;
+    public bool isAcquaintance;
 
     int formal = 0;
 
