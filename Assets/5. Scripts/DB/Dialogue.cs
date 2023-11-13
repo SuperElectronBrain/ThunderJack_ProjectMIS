@@ -236,6 +236,11 @@ public class Dialogue : MonoBehaviour
     {
         var dData = dialogueList[dialogueIdx];
 
+        if ((DialogEventType)dData.textType == DialogEventType.QuestStart)
+        {
+            GameManager.Instance.NpcRequestManager.AcceptRequest(dData.textFormal);
+        }
+        
         EventManager.Publish(dData.eventID1);
         
         dialogueIdx = dData.textNext1;
@@ -270,7 +275,7 @@ public class Dialogue : MonoBehaviour
     {
         if (dialogueIdx == -1)
             return false;
-        return dialogueList[dialogueIdx].textType == 2;
+        return dialogueList[dialogueIdx].textType == 2 || dialogueList[dialogueIdx].textType == 3;
     }
 
     public void EndDialogue()

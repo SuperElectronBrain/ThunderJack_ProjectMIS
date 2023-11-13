@@ -1,19 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NpcRequest : MonoBehaviour
 {
-    GameManager askTarget;
+    [SerializeField] private Transform uiTransform;
+    [SerializeField] private NpcRequestData npcRequestData;
 
-    public void SetDayRequest()
+    public void SetRequestData(NpcRequestData newNpcRequestData)
     {
-        //다이얼로그 교체
-        //퀘스트 표시 On
+        npcRequestData = newNpcRequestData;
+        ShowNpcRequest();
     }
 
-    public void QuestComplate()
+    protected virtual void ShowNpcRequest()
     {
+        
+    }
+}
 
+public class NpcRequest_1 : NpcRequest
+{
+    protected override void ShowNpcRequest()
+    {
+        var charDB = GameManager.Instance.CharacterDB;
+        var uiTransform = GameManager.Instance.NpcRequestManager.requestUiParent;
+        var npcCount = charDB.GetCharacterCount();
+        
+        for (int i = 1; i < npcCount; i++)
+        {
+            
+        }
     }
 }
