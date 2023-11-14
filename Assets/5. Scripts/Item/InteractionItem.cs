@@ -41,7 +41,7 @@ public class InteractionItem : MonoBehaviour
                 for (int i = 0; i < 3; i++)
                 {
                     returnItem.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite = itemSprite;
-                    returnItem.transform.GetChild(i).gameObject.AddComponent<CircleCollider2D>();
+                    //returnItem.transform.GetChild(i).gameObject.AddComponent<CircleCollider2D>();
                 }
 
                 AAA t_AAA = returnItem.GetComponent<AAA>();
