@@ -60,7 +60,8 @@ public class BBB : MonoBehaviour
         var forceX = Random.Range(-2f, 2f);
         var forceY = Random.Range(-2f, 0f);
         rig.AddForce(new Vector2(forceX, forceY),ForceMode2D.Impulse);
-        GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;     
+        GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+        gameObject.AddComponent<CircleCollider2D>().isTrigger = true;
     }
 
     public bool IsRelese()
