@@ -76,6 +76,13 @@ public class CharacterBase : MonoBehaviour
 	{
 		float DeltaTime = Time.fixedDeltaTime;
 
+		if (m_Destination != null)
+		{
+			Vector3 t_Vector = (m_Destination.position - transform.position).normalized;
+			m_HorizontalMove = t_Vector.x;
+			m_VerticalMove = t_Vector.z;
+		}
+
 		HorizontalMove(DeltaTime);
 		VerticalMove(DeltaTime);
 

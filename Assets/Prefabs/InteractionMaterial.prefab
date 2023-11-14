@@ -102,7 +102,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 3
+  m_AngularDrag: 4
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -346,7 +346,7 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.00000023841858}
+  m_Offset: {x: 0, y: -0}
   serializedVersion: 2
   m_Radius: 2.5600002
 --- !u!114 &8939131568940728643
@@ -421,18 +421,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0cacf95a1f879c4698cef3e28f9a2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vectors:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  rotations:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  objects:
-  - {fileID: 3360437802831275930}
-  - {fileID: 3549191696593677797}
-  - {fileID: 5986388029261431223}
+  vectors: []
+  rotations: []
+  objects: []
   selectObject: {fileID: 0}
   m_ItemCode: 0
   z: -18.4

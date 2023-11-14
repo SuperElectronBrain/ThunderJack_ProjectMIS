@@ -40,6 +40,9 @@ public struct AdvencedQuestData
 
 public class Mailbox : MonoBehaviour, IInteraction
 {
+	public static Mailbox main
+	{ get { return FindObjectOfType<Mailbox>(); } }
+	
 	[SerializeField] [Range(0.0f, 1.0f)] private float rate = 0.3f;
 	private List<AdvencedQuestData> QuestTable = null;
 	private AdvencedQuestData m_QuestData;
@@ -51,6 +54,7 @@ public class Mailbox : MonoBehaviour, IInteraction
 	// Start is called before the first frame update
 	void Start()
     {
+		if (m_SD != null) { m_SD.SetActive(false); }
 		//하루가 지날때마다 퀘스트를 생성함
 		EventManager.Subscribe(EventType.Day, GenerateQuest);
 	}
@@ -147,7 +151,6 @@ public class Mailbox : MonoBehaviour, IInteraction
 
 	public void Interaction(GameObject p_GameObject)
 	{
-		
 		//생성되어있는 퀘스트가 존재한다면
 		if (m_QuestData.questID != 0)
 		{
@@ -172,6 +175,17 @@ public class Mailbox : MonoBehaviour, IInteraction
 					}
 				}
 			}
+		}
+	}
+
+	public void AddQuest(AdvencedQuestData advencedQuestData)
+	{
+		m_QuestData = advencedQuestData;
+		//퀘스트를 생성하는데 성공했다면
+		if (m_QuestData.questID != 0)
+		{
+			//퓨퓨를 활성화함
+			if (m_SD != null) { m_SD.SetActive(true); }
 		}
 	}
 
@@ -221,6 +235,6 @@ public class Mailbox : MonoBehaviour, IInteraction
 
 	void Deactivate()
 	{
-		gameObject.SetActive(false);
+		if (m_SD != null) { m_SD.SetActive(false); }
 	}
 }

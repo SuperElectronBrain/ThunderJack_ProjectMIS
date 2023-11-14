@@ -10,7 +10,12 @@ public class ConversationState : State<NPC>
     public override void Enter(NPC entity)
     {
         EventManager.Publish(EventType.StartInteraction);
+        EventManager.Publish(EventType.StartConversation);
+        EventManager.Subscribe(EventType.EndConversation, EndConversation);
         CameraEvent.Instance.ChangeCamera(CamType.Conversation);
+        if(entity.prevBehaviour != NPCBehaviour.Business)
+            entity.isAcquaintance = true;
+        
         isTalking = true;
         isTalking = true;
         entity.isTalk = true;
@@ -31,7 +36,6 @@ public class ConversationState : State<NPC>
         StartCoroutine(CTwinkling(entity, 1.5f));        
 
         //entity.StartConversation();
-        EventManager.Subscribe(EventType.EndConversation, EndConversation);
     }
 
     public override void Execute(NPC entity)

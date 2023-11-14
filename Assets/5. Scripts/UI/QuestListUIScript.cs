@@ -89,7 +89,8 @@ public class QuestListUIScript : MonoBehaviour
 					string t_String = "";
 					t_String = t_String + (t_Quests[i].questGrade == 1 ? "[일반] " : (t_Quests[i].questGrade == 2 ? "[상급] " : (t_Quests[i].questGrade == 3 ? "[최상급] " : "")));
 					t_String = t_String + t_Quests[i].questName + "\n";
-					t_String = t_String + UniFunc.FindItemData(t_Quests[i].requestItemID).itemNameKo + " " + (t_Quests[i].bComplete == true ? "1" : "0") + "/1" + "\n";
+					BasicItemData basicItemData = UniFunc.FindItemData(t_Quests[i].requestItemID);
+					t_String = t_String + (basicItemData != null ? basicItemData.itemNameKo : "") + " " + (t_Quests[i].bComplete == true ? "1" : "0") + "/1" + "\n";
 					t_String = t_String + "의뢰자 : " + t_Quests[i].guestName + "\n";
 					t_String = t_String + "D" + (t_Quests[i].timeLimit != 0 ? (-t_Quests[i].timeLimit) : "-Day") + "\n";
 

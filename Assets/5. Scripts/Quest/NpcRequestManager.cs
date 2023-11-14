@@ -8,6 +8,7 @@ public class NpcRequestManager : MonoBehaviour
     private const string requestID = "Plea_ID";
     private const string requestName = "Plea_Name";
     private const string requestType = "Plea_Type";
+    private const string requestDescription = "Plea_Description";
     private const string requestDay = "Plea_Day";
     private const string requestNPC = "Plea_NPC";
     private const string targetType = "Target_Type";
@@ -34,7 +35,7 @@ public class NpcRequestManager : MonoBehaviour
 
     public void Init()
     {
-        requestUiParent = GameObject.FindWithTag("MainCanvas").transform;
+        requestUiParent = GameObject.FindWithTag("QuestUI").transform;
     }
 
     void LoadNpcRequest()
@@ -51,6 +52,7 @@ public class NpcRequestManager : MonoBehaviour
                     requestID = Tools.IntParse(npcRequestList[i][requestID]),
                     requestName = npcRequestList[i][requestName].ToString(),
                     requestType = (NpcRequestType)Tools.EnumParse<NpcRequestType>(npcRequestList[i][requestType]),
+                    requestDescription = npcRequestList[i][requestDescription].ToString(),
                     requestDay = Tools.IntParse(npcRequestList[i][requestDay]),
                     requestNPC = Tools.IntParse(npcRequestList[i][requestNPC]),
                     targetType = (NpcRequestTargetType)Tools.EnumParse<NpcRequestTargetType>(npcRequestList[i][targetType]),
@@ -79,7 +81,21 @@ public class NpcRequestManager : MonoBehaviour
     public void AcceptRequest(int requestID)
     {
         inProgressRequests.Add(npcRequestDataList[requestID - 1]);
+        StartCoroutine(AddRequest(requestID));
         EventManager.Publish(DialogEventType.QuestStart);
+    }
+
+    IEnumerator AddRequest(int index)
+    {
+        var newRequest = AddressableManager.LoadObject<GameObject>("Request" + index);
+
+        while (nextRequest == null)
+        {
+            yield return null;
+        }
+
+        var request = Instantiate(newRequest, transform.Find("NpcRequest")).GetComponent<NpcRequest>();
+        request.SetRequestData(npcRequestDataList[index - 1]);
     }
 
     public void CompleteRequest(int requestID)
@@ -111,6 +127,7 @@ public class NpcRequestData
     public int requestID;
     public string requestName;
     public NpcRequestType requestType;
+    public string requestDescription;
     public int requestDay;
     public int requestNPC;
     public NpcRequestTargetType targetType;

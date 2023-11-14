@@ -34,6 +34,7 @@ public class NPC : Character, IInteraction
 
     public bool isMeet;
     public bool isTalk;
+    public bool isAcquaintance;
 
     int formal = 0;
 
@@ -210,7 +211,7 @@ public class NPC : Character, IInteraction
 
     public void ChangeState(NPCBehaviour newBehaviour)
     {
-        if(newBehaviour != NPCBehaviour.Greeting)
+        if(curBehaviour != NPCBehaviour.Greeting || curBehaviour != NPCBehaviour.Conversation)
             prevBehaviour = curBehaviour;
         fsm.ChangeState(states[(int)newBehaviour]);
         curBehaviour = newBehaviour;

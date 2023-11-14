@@ -96,7 +96,6 @@ public class DataBase_Character : MonoBehaviour
         npc = (characterDB[charcterID - 1].character as NPC);
 
         return npc;
-
     }
 
     public int GetCharacterCount()
