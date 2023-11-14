@@ -92,6 +92,7 @@ public class TutorialCondition3 : BaseState<TutorialManager>
 	private bool trigger0 = false;
 	public override void StateBegin(TutorialManager param)
 	{
+		param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("먼지가 가득 쌓였네…", true); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 3);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(true, "청소하기", true); }, 3);
@@ -105,8 +106,10 @@ public class TutorialCondition3 : BaseState<TutorialManager>
 				trigger0 = true;
 				param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 2);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(false, ""); }, 2);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("작업대가 잘 작동되는지 시험해봐야 하는데… 아까 편지도 그렇고, 마을에서 재료를 구한 뒤 테스트 해봐야겠다.", true); }, 3);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 7);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable); }, 7);
 			}
 		}
 	}
@@ -212,6 +215,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
+		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = false; }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 		param.WaitFewSeconds(() => 
 		{
@@ -246,6 +250,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable);
 		}, 40);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 42);
+		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 43);
 
 	}
 	public override void StateUpdate(TutorialManager param)
@@ -263,48 +268,52 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
+		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = false; }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 		param.WaitFewSeconds(() =>
 		{
 			param.cinemachineVirtual.Priority = 1000;
-			param.redin.gameObject.SetActive(true);
+			param.redin1.gameObject.SetActive(true);
 			param.beil.gameObject.SetActive(true);
 			PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication);
 		}, 1);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 3);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("어서오십쇼!", true); }, 4);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 6);
-		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("안녕하세요. 도칸님께서 맡기신 물건을 찾으러왔는데요.", true); }, 6);
-		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 10);
+		param.WaitFewSeconds(() => { param.redin1.PopUpSpeechBubble("안녕하세요. 도칸님께서 맡기신 물건을 찾으러왔는데요.", true); }, 6);
+		param.WaitFewSeconds(() => { param.redin1.PopUpSpeechBubble("", false); }, 10);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("아 당신이군!", true); }, 10);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("물건을 맡기고는 몇달이 지나도 찾아오지 않아서 까먹고 있었는데", true); }, 12);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 17);
-		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("하하… 그러한 사정이 있었죠…", true); }, 17);
-		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 20);
+		param.WaitFewSeconds(() => { param.redin1.PopUpSpeechBubble("하하… 그러한 사정이 있었죠…", true); }, 17);
+		param.WaitFewSeconds(() => { param.redin1.PopUpSpeechBubble("", false); }, 20);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("자! 여기있네", true); }, 20);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 22);
 		param.WaitFewSeconds(() => { Inventory.main.AddAItem(1, 1, 1); }, 22);
-		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("감사합니다.", true); }, 20);
-		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 22);
-		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("그나저나 이전 보석세공사씨와 닮았는데 혹시 가족인가?", true); }, 22);
-		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 27);
-		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("아 저희 할아버지셨습니다.", true); }, 27);
-		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 30);
-		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("그렇군… 좋은 분이셨지…", true); }, 30);
-		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 33);
-		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("마침 잘됐군! 안그래도 장사가 잘 되지 않아서 적자였는데!", true); }, 36);
-		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 41);
-		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("최근에 손님이 거의 오질않아 재고를 채워놓지 않기도 했고,내 오늘만 특별히 보석들을 2개까지만 10G에 받도록 하지", true); }, 41);
-		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 48);
-		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); },48);
+		param.WaitFewSeconds(() => { param.redin1.PopUpSpeechBubble("감사합니다.", true); }, 22);
+		param.WaitFewSeconds(() => { param.redin1.PopUpSpeechBubble("", false); }, 24);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("그나저나 이전 보석세공사씨와 닮았는데 혹시 가족인가?", true); }, 24);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 29);
+		param.WaitFewSeconds(() => { param.redin1.PopUpSpeechBubble("아 저희 할아버지셨습니다.", true); }, 29);
+		param.WaitFewSeconds(() => { param.redin1.PopUpSpeechBubble("", false); }, 32);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("그렇군… 좋은 분이셨지…", true); }, 32);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 35);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("마침 잘됐군! 안그래도 장사가 잘 되지 않아서 적자였는데!", true); }, 38);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 43);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("최근에 손님이 거의 오질않아 재고를 채워놓지 않기도 했고,내 오늘만 특별히 보석들을 2개까지만 10G에 받도록 하지", true); }, 43);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 50);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); },50);
 		param.WaitFewSeconds(() =>
 		{
 			param.cinemachineVirtual.Priority = 0;
 			param.beil.gameObject.SetActive(false);
-			param.redin.gameObject.SetActive(false);
+			param.redin1.gameObject.SetActive(false);
 			PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable);
-		}, 49);
-		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 51);
+		}, 51);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 53);
+		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 54);
+		param.WaitFewSeconds(() => { param.wall7.SetActive(true); }, 54);
+		param.WaitFewSeconds(() => { param.wall8.SetActive(true); }, 54);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{

@@ -56,13 +56,18 @@ public class TutorialManager : MonoBehaviour
 	//FSM
 	private FiniteStateMachine<TutorialManager> finiteStateMachine = new FiniteStateMachine<TutorialManager>();
 
-	//VirtualCamera
+	[Header("VirtualCamera")]
 	public CinemachineVirtualCamera cinemachineVirtual;
 
-	//DummyNPC
+	[Header("DummyNPC")]
 	public TutorialNPC redin;
+	public TutorialNPC redin1;
 	public TutorialNPC dokan;
 	public TutorialNPC beil;
+
+	[Header("Wall")]
+	public GameObject wall7;
+	public GameObject wall8;
 
 	public static bool EventSubscribe(TutorialEventType pEventType, UnityEngine.Events.UnityAction pAction)
     {
