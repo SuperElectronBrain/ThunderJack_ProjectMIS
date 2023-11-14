@@ -42,6 +42,7 @@ public class PlayerCharacter : CharacterBase
 	private float m_GuideDisplayTime = 0.0f;
 	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
 	private bool isInteractionIconUsed = false;
+	private bool bTutorialTrigger0 = false; 
 
 	//Component
 	private CapsuleCollider m_Collider;
@@ -176,9 +177,26 @@ public class PlayerCharacter : CharacterBase
 					InteractableObject t_InteractionObj = GetInteractableObject();
 					if (t_InteractionObj.interaction != null)
 					{
-						t_InteractionObj.interaction.Interaction(gameObject);
-						m_InteractionTarget = t_InteractionObj.interactionGO.transform;
-						Vector3 t_Vector = GetInteractionDirection();
+						bool binteractable = true;
+						if (bTutorialTrigger0 == false)
+						{
+							if (TutorialManager.Instance != null)
+							{
+								if (t_InteractionObj.interactionGO.name == "베일")
+								{ 
+									TutorialManager.EventPublish(TutorialStates.N8);
+									bTutorialTrigger0 = true;
+									binteractable = false;
+								}
+							}
+						}
+
+						if (binteractable == true)
+						{
+							t_InteractionObj.interaction.Interaction(gameObject);
+							m_InteractionTarget = t_InteractionObj.interactionGO.transform;
+							Vector3 t_Vector = GetInteractionDirection();
+						}
 					}
 					else if(t_InteractionObj.interaction == null)
 					{
