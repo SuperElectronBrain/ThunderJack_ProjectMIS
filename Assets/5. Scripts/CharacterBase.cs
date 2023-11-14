@@ -112,6 +112,11 @@ public class CharacterBase : MonoBehaviour
 		}
 	}
 	
+	public void Teleport(Vector3 location)
+	{
+		transform.position = location;
+	}
+
 	#region TranslateMove
 	protected virtual void HorizontalMove(float DeltaTime)
 	{

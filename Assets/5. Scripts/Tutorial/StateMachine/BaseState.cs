@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -187,10 +188,10 @@ public class TutorialCondition6 : BaseState<TutorialManager>
 			if(noticeBoardUI != null)
 			{
 				GameObjectEventComponent gameObjectEventComponent = noticeBoardUI.AddComponent<GameObjectEventComponent>();
-				gameObjectEventComponent.m_OnEnable.AddListener(() => 
+				gameObjectEventComponent.m_OnDisable.AddListener(() => 
 				{
 					TutorialManager.EventPublish(TutorialStates.N7);
-					gameObjectEventComponent.m_OnEnable.RemoveAllListeners();
+					gameObjectEventComponent.m_OnDisable.RemoveAllListeners();
 					UnityEngine.Object.Destroy(gameObjectEventComponent);
 				});
 			}
@@ -212,9 +213,189 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 	public override void StateBegin(TutorialManager param)
 	{
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
-		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 2);
-		//param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("여기도 정말 오랜만이야. 요즘 마을 분위기는 어떤지 게시판을 확인해볼까?", true); }, 0);
-		//param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 5);
+		param.WaitFewSeconds(() => 
+		{
+			param.cinemachineVirtual.Priority = 1000;
+			param.redin.gameObject.SetActive(true);
+			param.dokan.gameObject.SetActive(true);
+			PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication);
+		}, 1);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 3);
+		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("어라 레딘님이시죠? 안녕하세요! 전 도칸이라고 해요. 돌아오셨군요!", true); }, 4);
+		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("", false); }, 9);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("어… 혹시 편지를 남긴사람인가요?", true); }, 9);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 12);
+		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("네! 맞아요. 제 편지를 읽으셨군요! 돌아오셔서 기뻐요!", true); },12);
+		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("", false); }, 17);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("혹시 제게 무슨 용무라도 있으셨던건가요?", true); }, 17);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 21);
+		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("앗 말씀드리자면 조금 긴데… 혹시 다음에 찾아가서 차근차근 대화를 나눠볼 수 있을까요?", true); }, 21);
+		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("", false); }, 26);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("아… 알겠습니다. 마침 저도 오자마자 손볼일이 있어서요, 그럼 주신다는 물건은 어디에…", true); }, 26);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 31);
+		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("앗차! 아마 저기 왼쪽에 보이는 베일아저씨께 맡겨뒀으니 제 이름을 말씀하시면 맡겨두었던 물건을 건네주실거에요!", true); }, 31);
+		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("", false); }, 36);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("그럼 다음에 뵐게요!", true); }, 36);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 39);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 39);
+		param.WaitFewSeconds(() =>
+		{
+			param.cinemachineVirtual.Priority = 0;
+			param.dokan.gameObject.SetActive(false);
+			param.redin.gameObject.SetActive(false);
+			PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable);
+		}, 40);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 42);
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+
+//베일과 상호작용을 시작했을 때
+public class TutorialCondition8 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
+		param.WaitFewSeconds(() =>
+		{
+			param.cinemachineVirtual.Priority = 1000;
+			param.redin.gameObject.SetActive(true);
+			param.beil.gameObject.SetActive(true);
+			PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication);
+		}, 1);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 3);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("어서오십쇼!", true); }, 4);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 6);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("안녕하세요. 도칸님께서 맡기신 물건을 찾으러왔는데요.", true); }, 6);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 10);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("아 당신이군!", true); }, 10);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("물건을 맡기고는 몇달이 지나도 찾아오지 않아서 까먹고 있었는데", true); }, 12);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 17);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("하하… 그러한 사정이 있었죠…", true); }, 17);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 20);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("자! 여기있네", true); }, 20);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 22);
+		param.WaitFewSeconds(() => { Inventory.main.AddAItem(1, 1, 1); }, 22);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("감사합니다.", true); }, 20);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 22);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("그나저나 이전 보석세공사씨와 닮았는데 혹시 가족인가?", true); }, 22);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 27);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("아 저희 할아버지셨습니다.", true); }, 27);
+		param.WaitFewSeconds(() => { param.redin.PopUpSpeechBubble("", false); }, 30);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("그렇군… 좋은 분이셨지…", true); }, 30);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 33);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("마침 잘됐군! 안그래도 장사가 잘 되지 않아서 적자였는데!", true); }, 36);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 41);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("최근에 손님이 거의 오질않아 재고를 채워놓지 않기도 했고,내 오늘만 특별히 보석들을 2개까지만 10G에 받도록 하지", true); }, 41);
+		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("", false); }, 48);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); },48);
+		param.WaitFewSeconds(() =>
+		{
+			param.cinemachineVirtual.Priority = 0;
+			param.beil.gameObject.SetActive(false);
+			param.redin.gameObject.SetActive(false);
+			PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable);
+		}, 49);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 51);
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+
+public class TutorialCondition9 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+public class TutorialCondition10 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+public class TutorialCondition11 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+public class TutorialCondition12 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+public class TutorialCondition13 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+public class TutorialCondition14 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
