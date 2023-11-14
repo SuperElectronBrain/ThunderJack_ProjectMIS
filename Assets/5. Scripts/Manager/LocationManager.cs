@@ -60,15 +60,15 @@ public class LocationManager : MonoBehaviour
     {
         LayerMask layerMask = locationType == LocationType.Interaction ? LayerMask.GetMask("InteractionObj") : LayerMask.GetMask("Entrance");
 
-        Collider[] colliders = Physics.OverlapSphere(locationPos, 2f, layerMask);
+        Collider[] colliders = Physics.OverlapSphere(locationPos, 1.2f, layerMask);
 
         if(colliders.Length > 1)
         {
-            throw new System.Exception("Postion : " + locationPos + " 해당 위치에 검색된 오브젝트가 너무 많습니다.");
+            throw new System.Exception("Postion : " + locationPos + " 해당 위치에 검색된 오브젝트가 너무 많습니다. Type = " + locationType.ToString());
         }
         else if(colliders.Length == 0)
         {
-            throw new System.Exception("Postion : " + locationPos + " 해당 위치에 검색된 오브젝트가 없습니다.");
+            throw new System.Exception("Postion : " + locationPos + " 해당 위치에 검색된 오브젝트가 없습니다. Type = " + locationType.ToString());
         }
 
         return colliders[0].gameObject;
