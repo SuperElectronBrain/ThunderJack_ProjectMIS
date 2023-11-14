@@ -11,6 +11,7 @@ public class ConversationState : State<NPC>
     {
         EventManager.Publish(EventType.StartInteraction);
         EventManager.Publish(EventType.StartConversation);
+        EventManager.Subscribe(EventType.EndConversation, EndConversation);
         CameraEvent.Instance.ChangeCamera(CamType.Conversation);
         if(entity.prevBehaviour != NPCBehaviour.Business)
             entity.isAcquaintance = true;
