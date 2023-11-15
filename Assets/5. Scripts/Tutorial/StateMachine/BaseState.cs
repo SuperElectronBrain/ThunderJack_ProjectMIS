@@ -384,6 +384,24 @@ public class TutorialCondition11 : BaseState<TutorialManager>
 	{
 		PlayerCharacter.main.PopUpSpeechBubble("이제 장신구를 구매해볼까?", true);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 3);
+
+		param.WaitFewSeconds(() => {
+			Canvas canvas = UnityEngine.Object.FindObjectOfType<Canvas>();
+			if (canvas != null)
+			{
+				GameObject NPCStoreUI = UniFunc.GetChildOfName(canvas.gameObject, "NPCStoreUI");
+				if (NPCStoreUI != null)
+				{
+					GameObjectEventComponent gameObjectEventComponent = NPCStoreUI.AddComponent<GameObjectEventComponent>();
+					gameObjectEventComponent.m_OnDisable.AddListener(() =>
+					{
+						TutorialManager.EventPublish(TutorialStates.N12);
+						gameObjectEventComponent.m_OnDisable.RemoveAllListeners();
+						UnityEngine.Object.Destroy(gameObjectEventComponent);
+					});
+				}
+			}
+		}, 2);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -412,6 +430,7 @@ public class TutorialCondition12 : BaseState<TutorialManager>
 
 	}
 }
+
 public class TutorialCondition13 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
