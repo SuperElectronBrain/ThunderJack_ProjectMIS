@@ -59,16 +59,23 @@ public class TutorialManager : MonoBehaviour
 
 	[Header("VirtualCamera")]
 	public CinemachineVirtualCamera cinemachineVirtual;
+	public CinemachineVirtualCamera cinemachineVirtual1;
+	public CinemachineVirtualCamera cinemachineVirtual2;
 
 	[Header("DummyNPC")]
 	public TutorialNPC redin;
 	public TutorialNPC redin1;
 	public TutorialNPC dokan;
 	public TutorialNPC beil;
+	public TutorialNPC cador;
+
+	[Header("Trigger")]
+	public GameObject Trigger12;
 
 	[Header("Wall")]
 	public GameObject wall7;
 	public GameObject wall8;
+	public GameObject wall9;
 
 	public static bool EventSubscribe(TutorialEventType pEventType, UnityEngine.Events.UnityAction pAction)
     {
@@ -134,6 +141,31 @@ public class TutorialManager : MonoBehaviour
 	{
 		Instance.currentState = param;
 		Instance.finiteStateMachine.ChangeState(param);
+	}
+
+	private void Awake()
+	{
+		if (instance == null)
+		{
+			instance = FindObjectOfType<TutorialManager>();
+			if (instance != null)
+			{
+				DontDestroyOnLoad(instance.gameObject);
+				TutorialManager[] TutorialManagers = FindObjectsOfType<TutorialManager>();
+				for (int i = 0; i < TutorialManagers.Length; i = i + 1)
+				{
+					if (TutorialManagers[i] != instance)
+					{ Destroy(TutorialManagers[i]); }
+				}
+			}
+		}
+		if (instance != null)
+		{
+			if (instance != this)
+			{
+				Destroy(gameObject);
+			}
+		}
 	}
 
 	private void Start()
