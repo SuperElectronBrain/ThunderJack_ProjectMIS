@@ -223,6 +223,10 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			param.redin.gameObject.SetActive(true);
 			param.dokan.gameObject.SetActive(true);
 			PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication);
+			PlayerCharacter.main.transform.GetChild(0).gameObject.SetActive(false);
+			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(false);
+			GameObject.Find("도칸").transform.GetChild(0).gameObject.SetActive(false);
+			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", true);
 		}, 1);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 3);
 		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("어라 레딘님이시죠? 안녕하세요! 전 도칸이라고 해요. 돌아오셨군요!", true); }, 4);
@@ -248,6 +252,10 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			param.dokan.gameObject.SetActive(false);
 			param.redin.gameObject.SetActive(false);
 			PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable);
+			PlayerCharacter.main.transform.GetChild(0).gameObject.SetActive(true);
+			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(true);
+			GameObject.Find("도칸").transform.GetChild(0).gameObject.SetActive(true);
+			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", false);
 		}, 40);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 42);
 		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 43);
@@ -263,7 +271,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 	}
 }
 
-//베일과 상호작용을 시작했을 때
+//베일과 대화를 시작했을 때
 public class TutorialCondition8 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
@@ -272,10 +280,14 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 		param.WaitFewSeconds(() =>
 		{
-			param.cinemachineVirtual.Priority = 1000;
+			param.cinemachineVirtual1.Priority = 1000;
 			param.redin1.gameObject.SetActive(true);
 			param.beil.gameObject.SetActive(true);
 			PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication);
+			PlayerCharacter.main.transform.GetChild(0).gameObject.SetActive(false);
+			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(false);
+			GameObject.Find("베일").transform.GetChild(0).gameObject.SetActive(false);
+			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", true);
 		}, 1);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 3);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("어서오십쇼!", true); }, 4);
@@ -305,10 +317,14 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); },50);
 		param.WaitFewSeconds(() =>
 		{
-			param.cinemachineVirtual.Priority = 0;
+			param.cinemachineVirtual1.Priority = 0;
 			param.beil.gameObject.SetActive(false);
 			param.redin1.gameObject.SetActive(false);
 			PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable);
+			PlayerCharacter.main.transform.GetChild(0).gameObject.SetActive(true);
+			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(true);
+			GameObject.Find("베일").transform.GetChild(0).gameObject.SetActive(true);
+			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", false);
 		}, 51);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 53);
 		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 54);
@@ -420,6 +436,7 @@ public class TutorialCondition12 : BaseState<TutorialManager>
 	{
 		PlayerCharacter.main.PopUpSpeechBubble("가게로 돌아가기 전 퓨퓨숲에 있는 동상 앞에서 기도를 한번 해볼까?", true);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 5);
+		param.Trigger12.SetActive(true);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -431,11 +448,33 @@ public class TutorialCondition12 : BaseState<TutorialManager>
 	}
 }
 
+//마을을 빠져나갈 때
 public class TutorialCondition13 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
-
+		param.wall9.SetActive(true);
+		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = false; }, 0);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
+		param.WaitFewSeconds(() =>
+		{
+			param.cinemachineVirtual2.Priority = 1000;
+			param.cador.gameObject.SetActive(true);
+			PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication);
+		}, 1);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 2);
+		param.WaitFewSeconds(() => { param.cador.PopUpSpeechBubble("찾았다…!", true); }, 4);
+		param.WaitFewSeconds(() => { param.cador.PopUpSpeechBubble("", false); }, 7);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 7);
+		param.WaitFewSeconds(() =>
+		{
+			param.cinemachineVirtual2.Priority = 0;
+			param.cador.gameObject.SetActive(false);
+			PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable);
+		}, 8);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 9);
+		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 8);
+		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N14); }, 8);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -446,6 +485,7 @@ public class TutorialCondition13 : BaseState<TutorialManager>
 
 	}
 }
+
 public class TutorialCondition14 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
