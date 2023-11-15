@@ -163,7 +163,7 @@ public class CharacterBase : MonoBehaviour
 		Vector3 startPosition = transform.position;
 		startPosition.y = startPosition.y - 0.5f;
 		Vector3 direction = m_CharacterInputVector;
-		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.6f);
+		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.55f);
 		
 		if (result == true)
 		{
