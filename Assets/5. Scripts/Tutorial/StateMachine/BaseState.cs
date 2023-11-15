@@ -312,8 +312,8 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 		}, 51);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 53);
 		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 54);
-		param.WaitFewSeconds(() => { param.wall7.SetActive(true); }, 54);
-		param.WaitFewSeconds(() => { param.wall8.SetActive(true); }, 54);
+		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N9); }, 54);
+		
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -325,11 +325,13 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 	}
 }
 
+//베일과 대화가 끝났을 때
 public class TutorialCondition9 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
-
+		param.wall7.SetActive(true);
+		param.wall8.SetActive(true);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -340,11 +342,30 @@ public class TutorialCondition9 : BaseState<TutorialManager>
 
 	}
 }
+
+//베일과 상호작용을 시작했을 때
 public class TutorialCondition10 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
+		param.wall7.SetActive(false);
+		param.wall8.SetActive(false);
 
+		Canvas canvas = UnityEngine.Object.FindObjectOfType<Canvas>();
+		if (canvas != null)
+		{
+			GameObject NPCStoreUI = UniFunc.GetChildOfName(canvas.gameObject, "NPCStoreUI");
+			if (NPCStoreUI != null)
+			{
+				GameObjectEventComponent gameObjectEventComponent = NPCStoreUI.AddComponent<GameObjectEventComponent>();
+				gameObjectEventComponent.m_OnDisable.AddListener(() =>
+				{
+					TutorialManager.EventPublish(TutorialStates.N11);
+					gameObjectEventComponent.m_OnDisable.RemoveAllListeners();
+					UnityEngine.Object.Destroy(gameObjectEventComponent);
+				});
+			}
+		}
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -355,11 +376,14 @@ public class TutorialCondition10 : BaseState<TutorialManager>
 
 	}
 }
+
+//베일과 상호작용을 종료했을 때
 public class TutorialCondition11 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
-
+		PlayerCharacter.main.PopUpSpeechBubble("이제 장신구를 구매해볼까?", true);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 3);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -370,11 +394,14 @@ public class TutorialCondition11 : BaseState<TutorialManager>
 
 	}
 }
+
+//가가와 상호작용을 종료했을 때
 public class TutorialCondition12 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
-
+		PlayerCharacter.main.PopUpSpeechBubble("가게로 돌아가기 전 퓨퓨숲에 있는 동상 앞에서 기도를 한번 해볼까?", true);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 5);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
