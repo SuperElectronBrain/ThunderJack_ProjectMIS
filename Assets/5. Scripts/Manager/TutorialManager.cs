@@ -54,6 +54,7 @@ public class TutorialManager : MonoBehaviour
 	}
 
 	//FSM
+	public TutorialStates currentState = TutorialStates.None;
 	private FiniteStateMachine<TutorialManager> finiteStateMachine = new FiniteStateMachine<TutorialManager>();
 
 	[Header("VirtualCamera")]
@@ -131,6 +132,7 @@ public class TutorialManager : MonoBehaviour
 
 	public static void EventPublish(TutorialStates param)
 	{
+		Instance.currentState = param;
 		Instance.finiteStateMachine.ChangeState(param);
 	}
 

@@ -42,7 +42,6 @@ public class PlayerCharacter : CharacterBase
 	private float m_GuideDisplayTime = 0.0f;
 	[SerializeField] private float m_MoveAnimationSpeed = 1.0f;
 	private bool isInteractionIconUsed = false;
-	private bool bTutorialTrigger0 = false; 
 
 	//Component
 	private CapsuleCollider m_Collider;
@@ -178,15 +177,45 @@ public class PlayerCharacter : CharacterBase
 					if (t_InteractionObj.interaction != null)
 					{
 						bool binteractable = true;
-						if (bTutorialTrigger0 == false)
+						if (TutorialManager.Instance != null)
 						{
-							if (TutorialManager.Instance != null)
+							if (TutorialManager.Instance.currentState == TutorialStates.N2)
+							{
+								if (t_InteractionObj.interactionGO.name != "Portal (2)")
+								{
+									PopUpSpeechBubble("짐부터 푼 뒤에 우편함을 열어보자.", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
+									binteractable = false;
+								}
+							}
+							else if (TutorialManager.Instance.currentState == TutorialStates.N6)
+							{
+								if (t_InteractionObj.interactionGO.name != "NoticeBoard")
+								{
+									PopUpSpeechBubble("우선 게시판부터 확인을 해보자.", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
+									binteractable = false;
+								}
+							}
+							else if (TutorialManager.Instance.currentState == TutorialStates.N7)
 							{
 								if (t_InteractionObj.interactionGO.name == "베일")
-								{ 
+								{
 									TutorialManager.EventPublish(TutorialStates.N8);
-									bTutorialTrigger0 = true;
 									binteractable = false;
+								}
+							}
+							else if(TutorialManager.Instance.currentState == TutorialStates.N9)
+							{
+								if (t_InteractionObj.interactionGO.name != "베일")
+								{
+									PopUpSpeechBubble("이러고 있을 시간이 없어. 내일 장사를 하기 위해서는 상인을 찾아가야 해.", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 3);
+									binteractable = false;
+								}
+								else if (t_InteractionObj.interactionGO.name == "베일")
+								{
+									TutorialManager.EventPublish(TutorialStates.N10);
 								}
 							}
 						}
