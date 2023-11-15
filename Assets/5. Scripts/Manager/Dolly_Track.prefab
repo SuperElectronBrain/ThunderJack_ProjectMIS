@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6779178687216199300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3781605521515861346}
+  - component: {fileID: 1621304022402089734}
+  m_Layer: 0
+  m_Name: Dolly_Track
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3781605521515861346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6779178687216199300}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.81, y: -1.81, z: 0.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1621304022402089734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6779178687216199300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a200b19ca1a9685429ed7e043c28e904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Resolution: 20
+  m_Appearance:
+    pathColor: {r: 0, g: 1, b: 0, a: 1}
+    inactivePathColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    width: 0.2
+  m_Looped: 1
+  m_Waypoints:
+  - position: {x: -1.3555398, y: 3.450025, z: -0.27941397}
+    roll: 0
+  - position: {x: -1.6678718, y: 2.1999822, z: -1.8251092}
+    roll: 0
+  - position: {x: -0.42591745, y: 1.7284968, z: -2.1366336}
+    roll: 0
+  - position: {x: 1.6270528, y: 1.7069724, z: -2.0346472}
+    roll: 0
+  - position: {x: 3.2250137, y: 2.4035873, z: -2.1541321}
+    roll: 0
+  - position: {x: 3.045996, y: 3.6005244, z: -0.5129196}
+    roll: 0
+  - position: {x: 1.8257577, y: 4.088802, z: 0.6132556}
+    roll: 0
+  - position: {x: -0.15579313, y: 4.2095356, z: 0.8795051}
+    roll: 0

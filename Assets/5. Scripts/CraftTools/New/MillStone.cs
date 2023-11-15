@@ -14,7 +14,7 @@ namespace RavenCraftCore
         [SerializeField]
         private bool isGrab;
 
-        [Header("MillStion Setting")]
+        [Header("MillStone Setting")]
         [SerializeField]
         private GameObject handle;
         [SerializeField]
@@ -30,7 +30,7 @@ namespace RavenCraftCore
 
         Cinemachine.DollyCartMove millStoneTrack;        
 
-        [Header("Crefting Tools")]
+        [Header("Crafting Tools")]
         [SerializeField]
         private Cup cup;
 
