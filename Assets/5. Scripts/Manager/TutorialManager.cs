@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public enum TutorialEventType { None,  }
-public enum TutorialStates { None, N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, }
+public enum TutorialStates { None, N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19 }
 
 [Serializable]
 public class TutorialEvent
@@ -186,6 +186,11 @@ public class TutorialManager : MonoBehaviour
 		finiteStateMachine.AddState(TutorialStates.N12, new TutorialCondition12());
 		finiteStateMachine.AddState(TutorialStates.N13, new TutorialCondition13());
 		finiteStateMachine.AddState(TutorialStates.N14, new TutorialCondition14());
+		finiteStateMachine.AddState(TutorialStates.N15, new TutorialCondition15());
+		finiteStateMachine.AddState(TutorialStates.N16, new TutorialCondition16());
+		finiteStateMachine.AddState(TutorialStates.N17, new TutorialCondition17());
+		finiteStateMachine.AddState(TutorialStates.N18, new TutorialCondition18());
+		finiteStateMachine.AddState(TutorialStates.N19, new TutorialCondition19());
 
 		GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
 		if(titleScreen != null)

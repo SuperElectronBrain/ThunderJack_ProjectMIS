@@ -474,7 +474,9 @@ public class TutorialCondition13 : BaseState<TutorialManager>
 		}, 8);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 9);
 		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 8);
-		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N14); }, 8);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("퓨퓨숲은 오른쪽 폭포 강 기슭에 있었을거야.", true); }, 8);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 11);
+		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N14); }, 11);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -486,7 +488,101 @@ public class TutorialCondition13 : BaseState<TutorialManager>
 	}
 }
 
+//퓨퓨숲 동상 앞에 갔을때
 public class TutorialCondition14 : BaseState<TutorialManager>
+{
+	private bool trigger0 = false;
+	public override void StateBegin(TutorialManager param)
+	{
+		param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication); }, 0);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(true, "기도하기", true); }, 0);
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+		if (Input.GetKeyDown(KeyCode.E) == true)
+		{
+			if (trigger0 == false)
+			{
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(false, ""); }, 0);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("기도를 했더니 무언가 보인다. 고급 장신구에 맞게 제작하면 될 것 같은 체인이 떨어져있다.", true); }, 0);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("이제 가게로 돌아가보자", true); }, 5);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 8);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable); }, 8);
+			}
+		}
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+
+//가게에 들어갔을 때
+public class TutorialCondition15 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("판매대 앞에서 장사를 시작해보자.", true); }, 0);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 3);
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+
+public class TutorialCondition16 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+
+public class TutorialCondition17 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+
+public class TutorialCondition18 : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+public class TutorialCondition19 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
