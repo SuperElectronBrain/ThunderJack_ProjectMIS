@@ -53,11 +53,11 @@ public class TimeTable : MonoBehaviour
             return;
 
         DataBase_Character dc = GameManager.Instance.CharacterDB;
-        GameTime gameTimet = GameManager.Instance.GameTime;
+        GameTime gameTime = GameManager.Instance.GameTime;
 
         for (int i = 1; i <= dc.GetCharacterCount(); i++)
         {
-            dc.GetNPC(i).SetSchedule(timeTableList[i - 1][gameTimet.GetTime()]);
+            dc.GetNPC(i).SetSchedule(timeTableList[i - 1][gameTime.GetTime()]);
         }
     }
 }

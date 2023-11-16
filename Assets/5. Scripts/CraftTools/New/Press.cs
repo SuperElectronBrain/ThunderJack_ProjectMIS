@@ -210,11 +210,16 @@ namespace RavenCraftCore
         {
             steam.Play();
             createEffect.Play();
-            var gem = GameManager.Instance.ItemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
+            var itemManager = GameManager.Instance.ItemManager; 
+            
+            var gem = itemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
 
-            if (GameManager.Instance.ItemManager.GetItemName(gem.itemID).Equals("돌맹이"))
+            bool isStone = false;
+            
+            if (itemManager.GetItemName(gem.itemID).Equals("돌맹이"))
             {
                 PlayerMonologue.craftDialog(MonologueType_Crafting.Failure, 1);
+                isStone = true;
             }
             else
             {
@@ -225,9 +230,9 @@ namespace RavenCraftCore
             
             Array.Sort(sortValue);
 
-            var perfection =
-                GameManager.Instance.ItemManager.GetItemPerfection(gem.itemID, sortValue[value.Length - 1], sortValue[value.Length - 2],
-                    sortValue[value.Length - 3]);
+            var perfection = itemManager.GetItemPerfection(gem.itemID, sortValue[value.Length - 1],
+                sortValue[value.Length - 2],
+                sortValue[value.Length - 3]);
 
             JewelryRank jewelryRank;
 
@@ -239,10 +244,14 @@ namespace RavenCraftCore
                 jewelryRank = JewelryRank.High;
             else
                 jewelryRank = JewelryRank.Perfect;
+
+            if (!isStone)
+            {
+                PlayerPrefs.SetFloat(itemManager.GetItemNameEg(gem.itemID)+"_JewelryPerfection", perfection);
+                PlayerPrefs.SetInt(itemManager.GetItemNameEg(gem.itemID) + "_JewelryRank", (int)jewelryRank);
+            }
             
-            
-            var completeItem =
-                GameManager.Instance.ItemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory());
+            var completeItem = itemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory());
 
             accessoryPlate.CompleteCraft(completeItem, perfection, jewelryRank);
         }

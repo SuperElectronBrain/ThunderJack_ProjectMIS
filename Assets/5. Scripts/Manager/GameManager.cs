@@ -176,7 +176,6 @@ public class Tools
 
 /*Todo
  
- 튜토리얼용 더미 도칸
  지역 이름 뜨게하는거
  주민 버그 수정
  재료 Fade 버그 수정
