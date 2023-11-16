@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum CharacterType
 {
-    Player, Normal, Merchant
+    Player, Normal, Merchant, PartTimer
 }
 public class DataBase_Character : MonoBehaviour
 {

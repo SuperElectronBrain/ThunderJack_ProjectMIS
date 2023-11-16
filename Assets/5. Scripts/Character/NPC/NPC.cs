@@ -77,7 +77,10 @@ public class NPC : Character, IInteraction
         states[((int)NPCBehaviour.Sitting)] = GetComponent<SittingState>();
         states[((int)NPCBehaviour.Rest)] = GetComponent<RestState>();
         states[((int)NPCBehaviour.Interaction)] = GetComponent<InteractionState>();
-        states[((int)NPCBehaviour.Business)] = GetComponent<BusinessState>();
+        if(characterData.characterType == CharacterType.PartTimer)
+            states[((int)NPCBehaviour.Business)] = GetComponent<BusinessState>();
+        else if(characterData.characterType == CharacterType.Merchant)            
+            states[((int)NPCBehaviour.Business)] = GetComponent<BusinessState>();
     }
 
     private void Start()
