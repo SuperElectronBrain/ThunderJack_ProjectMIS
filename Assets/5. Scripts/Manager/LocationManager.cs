@@ -25,6 +25,8 @@ public class LocationManager : MonoBehaviour
             float y = Tools.FloatParse(data["Location_2"]);
             float z = Tools.FloatParse(data["Location_3"]);
             LocationType locationType = (LocationType)Tools.IntParse(data["Location_Type"]);
+
+            Debug.Log("Lo: " + idx + " " + Tools.IntParse(data["Location_Type"]));
             locationList.Add(
                 new LocationData
                 {
