@@ -11,9 +11,6 @@ public enum SceneType
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField]
-    public readonly Transform Player;
-
     [Header("DB")]
     [SerializeField]
     DataBase dataBase;
@@ -133,22 +130,20 @@ public class GameManager : Singleton<GameManager>
 
     public void ExitShop()
     {
+        if (!isWork)
+            return;
         isWork = false;
 
-        for (int i = 1; i < characterDB.GetCharacterCount(); i++)
+        for (int i = 1; i <= characterDB.GetCharacterCount(); i++)
         {
-            characterDB.GetNPC(i).player = Player.gameObject;
+            characterDB.GetNPC(i).Init();
+            characterDB.GetNPC(i).FindPlayer();
         }
     }
 }
 
 public class Tools
 {
-    public static Transform GetPlayerTransform()
-    {
-        return GameManager.Instance.Player;
-    }
-
     public static float GetDistance(Transform myObj, Transform targetObj)
     {
         Vector3 myVector = myObj.position;
