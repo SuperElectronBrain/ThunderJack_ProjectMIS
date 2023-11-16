@@ -176,9 +176,56 @@ public class PlayerCharacter : CharacterBase
 					InteractableObject t_InteractionObj = GetInteractableObject();
 					if (t_InteractionObj.interaction != null)
 					{
-						t_InteractionObj.interaction.Interaction(gameObject);
-						m_InteractionTarget = t_InteractionObj.interactionGO.transform;
-						Vector3 t_Vector = GetInteractionDirection();
+						bool binteractable = true;
+						if (TutorialManager.Instance != null)
+						{
+							if (TutorialManager.Instance.currentState == TutorialStates.N2)
+							{
+								if (t_InteractionObj.interactionGO.name != "Portal (2)")
+								{
+									PopUpSpeechBubble("짐부터 푼 뒤에 우편함을 열어보자.", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
+									binteractable = false;
+								}
+							}
+							else if (TutorialManager.Instance.currentState == TutorialStates.N6)
+							{
+								if (t_InteractionObj.interactionGO.name != "NoticeBoard")
+								{
+									PopUpSpeechBubble("우선 게시판부터 확인을 해보자.", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
+									binteractable = false;
+								}
+							}
+							else if (TutorialManager.Instance.currentState == TutorialStates.N7)
+							{
+								if (t_InteractionObj.interactionGO.name == "베일")
+								{
+									TutorialManager.EventPublish(TutorialStates.N8);
+									binteractable = false;
+								}
+							}
+							else if(TutorialManager.Instance.currentState == TutorialStates.N9)
+							{
+								if (t_InteractionObj.interactionGO.name != "베일")
+								{
+									PopUpSpeechBubble("이러고 있을 시간이 없어. 내일 장사를 하기 위해서는 상인을 찾아가야 해.", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 3);
+									binteractable = false;
+								}
+								else if (t_InteractionObj.interactionGO.name == "베일")
+								{
+									TutorialManager.EventPublish(TutorialStates.N10);
+								}
+							}
+						}
+
+						if (binteractable == true)
+						{
+							t_InteractionObj.interaction.Interaction(gameObject);
+							m_InteractionTarget = t_InteractionObj.interactionGO.transform;
+							Vector3 t_Vector = GetInteractionDirection();
+						}
 					}
 					else if(t_InteractionObj.interaction == null)
 					{
