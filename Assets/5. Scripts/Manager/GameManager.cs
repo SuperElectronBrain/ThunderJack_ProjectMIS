@@ -82,7 +82,6 @@ public class GameManager : Singleton<GameManager>
     {
         PlayerPrefs.DeleteAll();
         EventManager.Subscribe(EventType.Enter, EnterShop);
-        EventManager.Subscribe(EventType.Exit, ExitShop);
     }
 
 
@@ -117,9 +116,9 @@ public class GameManager : Singleton<GameManager>
                 CameraEvent.Instance.Init();
                 GameEventManager.Init();
                 EventManager.Publish(EventType.Load);
+                ExitShop();
                 if(gameTime.IsNextDay)
                     gameTime.NewDay();
-                isWork = false;
                 gameTime.TimeStop(false);
                 break;
             case SceneType.InSide:
