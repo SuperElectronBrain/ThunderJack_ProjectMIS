@@ -505,9 +505,11 @@ public class TutorialCondition14 : BaseState<TutorialManager>
 			{
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(false, ""); }, 0);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("기도를 했더니 무언가 보인다. 고급 장신구에 맞게 제작하면 될 것 같은 체인이 떨어져있다.", true); }, 0);
+				param.WaitFewSeconds(() => { Inventory.main.AddAItem(1, 1, 1); }, 0);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("이제 가게로 돌아가보자", true); }, 5);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 8);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable); }, 8);
+				trigger0 = true;
 			}
 		}
 	}
