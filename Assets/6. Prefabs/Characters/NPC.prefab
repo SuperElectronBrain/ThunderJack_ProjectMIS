@@ -1045,9 +1045,10 @@ GameObject:
   - component: {fileID: 8138508947451609621}
   - component: {fileID: 3097852794441509403}
   - component: {fileID: 5004500615192490151}
-  - component: {fileID: 7220067010941359388}
   - component: {fileID: 4966393478467375630}
   - component: {fileID: 4267774433955039929}
+  - component: {fileID: 4280807968821378847}
+  - component: {fileID: 3901935982040910694}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -1203,18 +1204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068c6f11f281ce0489af5227f775c7b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7220067010941359388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8418965915492831595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 690b99b72adff8f4ca717e1fe5b49d8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &4966393478467375630
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1260,3 +1249,27 @@ CapsuleCollider:
   m_Height: 1.8544436
   m_Direction: 1
   m_Center: {x: 0, y: 0.42722178, z: 0}
+--- !u!114 &4280807968821378847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418965915492831595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcda32bd7c14a4646a4ff0af2a0235d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3901935982040910694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418965915492831595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 690b99b72adff8f4ca717e1fe5b49d8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PartTimeState : State<NPC>
 {
-    private bool isInit;
-    
     public override void Enter(NPC entity)
     {
         entity.agent.isStopped = true;
@@ -14,7 +12,7 @@ public class PartTimeState : State<NPC>
         entity.isSales = true;
         entity.curBehaviour = NPCBehaviour.Business;
 
-        entity.SkAni.AnimationName = "A_idle_F";
+        entity.SkAni.AnimationName = "A_work1_F";
 
         GetComponent<NPCShop>().enabled = true;
 
@@ -31,25 +29,6 @@ public class PartTimeState : State<NPC>
                 shopItems = GameManager.Instance.ItemManager.GetShopItemDataBySalesType(SalesItemType.Materials);
                 break;
         }
-
-        /*Todo
-         
-         Init 함수 만들고 하루가 끝나면  isInit false로 바꿔주기
-         
-         */
-        
-        if (isInit)
-        {
-            Inventory inventory = GetComponent<Inventory>();
-
-            inventory.CleanInventory();
-            for (int i = 0; i < shopItems.Count; i = i + 1)
-            {
-                inventory.AddAItem(shopItems[i].itemId, 1.0f, shopItems[i].buyValue, shopItems[i].sellValue);
-            }
-
-            isInit = true;
-        }
     }
 
     public override void Execute(NPC entity)
@@ -61,7 +40,6 @@ public class PartTimeState : State<NPC>
     {
         entity.agent.enabled = true;
         entity.agent.isStopped = false;
-        entity.isSales = false;
         entity.prevBehaviour = NPCBehaviour.Business;
     }
 
