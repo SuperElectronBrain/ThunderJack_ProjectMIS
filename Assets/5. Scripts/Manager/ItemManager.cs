@@ -220,6 +220,19 @@ public class ItemManager : MonoBehaviour
         return -1;
     }
 
+    public List<BasicItemData> GetItemListByType(ItemType itemType)
+    {
+        var returnList = new List<BasicItemData>();
+
+        for (int i = 0; i < basicItemData.Count; i++)
+        {
+            if (basicItemData[i].itemType == itemType)
+                returnList.Add(basicItemData[i]);
+        }
+
+        return returnList;
+    }
+
     public int GetItemIdByName(string itemName)
     {
         foreach(var item in basicItemData)
@@ -236,14 +249,14 @@ public class ItemManager : MonoBehaviour
         return basicItemData[itemID - 1].itemNameKo;
     }
 
+    public string GetItemNameEg(int itemID)
+    {
+        return basicItemData[itemID - 1].itemNameEg;
+    }
+
     public Sprite GetItemSprite(int itemID)
     {
         return basicItemData[itemID - 1].itemResourceImage;
-    }
-
-    public string GetItemText(int itemID)
-    {
-        return basicItemData[itemID - 1].itemText;
     }
 
     public ItemType GetItemType(int itemID)

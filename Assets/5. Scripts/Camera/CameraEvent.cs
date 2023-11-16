@@ -89,6 +89,14 @@ public class CameraEvent : Singleton<CameraEvent>
 
     void ConversationCamera()
     {
+        if (conversationCam.Follow == null)
+        {
+            var player = GameObject.FindObjectOfType<PlayerCharacter>().transform;
+
+            conversationCam.Follow = player;
+            conversationCam.LookAt = player;
+        }
+        
         liveCam = conversationCam;
         conversationCam.Priority = 100;
         StartCoroutine(OnBlendComplate());

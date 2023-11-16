@@ -11,9 +11,6 @@ public enum SceneType
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField]
-    public readonly Transform Player;
-
     [Header("DB")]
     [SerializeField]
     DataBase dataBase;
@@ -82,7 +79,6 @@ public class GameManager : Singleton<GameManager>
     {
         PlayerPrefs.DeleteAll();
         EventManager.Subscribe(EventType.Enter, EnterShop);
-        EventManager.Subscribe(EventType.Exit, ExitShop);
     }
 
 
@@ -117,9 +113,9 @@ public class GameManager : Singleton<GameManager>
                 CameraEvent.Instance.Init();
                 GameEventManager.Init();
                 EventManager.Publish(EventType.Load);
+                ExitShop();
                 if(gameTime.IsNextDay)
                     gameTime.NewDay();
-                isWork = false;
                 gameTime.TimeStop(false);
                 break;
             case SceneType.InSide:
@@ -134,22 +130,20 @@ public class GameManager : Singleton<GameManager>
 
     public void ExitShop()
     {
+        if (!isWork)
+            return;
         isWork = false;
 
-        for (int i = 1; i < characterDB.GetCharacterCount(); i++)
+        for (int i = 1; i <= characterDB.GetCharacterCount(); i++)
         {
-            characterDB.GetNPC(i).player = Player.gameObject;
+            characterDB.GetNPC(i).Init();
+            characterDB.GetNPC(i).FindPlayer();
         }
     }
 }
 
 public class Tools
 {
-    public static Transform GetPlayerTransform()
-    {
-        return GameManager.Instance.Player;
-    }
-
     public static float GetDistance(Transform myObj, Transform targetObj)
     {
         Vector3 myVector = myObj.position;
