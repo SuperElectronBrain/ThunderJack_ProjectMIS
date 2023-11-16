@@ -145,12 +145,12 @@ public class IllustratedGuideUIScript : UIScript
 						float elementPercent = t_MaterialItemData.elementPercent1 + t_MaterialItemData.elementPercent2 + t_MaterialItemData.elementPercent3;
 
 						Vector2 originSize = elements[2].rectTransform.sizeDelta;
-						originSize.x = elementBase.sizeDelta.x * (t_MaterialItemData.elementPercent1 / elementPercent);
+						originSize.x = elementBase.rect.width * (t_MaterialItemData.elementPercent1 / elementPercent);
 						elements[2].rectTransform.sizeDelta = originSize;
 						elements[2].color = elementColors[(t_MaterialItemData.elementType1 - 1) < 0 ? 0 : (t_MaterialItemData.elementType1 - 1)];
 
 						originSize = elements[1].rectTransform.sizeDelta;
-						originSize.x = elementBase.sizeDelta.x * ((t_MaterialItemData.elementPercent1 + t_MaterialItemData.elementPercent2) / elementPercent);
+						originSize.x = elementBase.rect.width * ((t_MaterialItemData.elementPercent1 + t_MaterialItemData.elementPercent2) / elementPercent);
 						elements[1].rectTransform.sizeDelta = originSize;
 						elements[1].color = elementColors[(t_MaterialItemData.elementType2 - 1) < 0 ? 0 : (t_MaterialItemData.elementType2 - 1)];
 

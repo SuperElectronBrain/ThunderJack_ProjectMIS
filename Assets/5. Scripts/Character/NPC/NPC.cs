@@ -97,6 +97,12 @@ public class NPC : Character, IInteraction
         fsm.InitNPC(this, states[((int)NPCBehaviour.Idle)]);
     }
 
+    public void InitObj()
+    {
+        player = null;
+        targetInteractionObj = null;
+    }
+
     public void InitDay()
     {
         isMeet = false;
@@ -129,6 +135,7 @@ public class NPC : Character, IInteraction
     {
         formal++;
         Debug.Log(characterData.characterEgName + "와 대화를 시작합니다");
+        FindPlayer();
         curInteractionObj = player;
         ChangeState(NPCBehaviour.Conversation);
         CameraEvent.Instance.onCamBlendComplate.AddListener(TalkEvent);
@@ -211,7 +218,7 @@ public class NPC : Character, IInteraction
 
     public void ChangeState(NPCBehaviour newBehaviour)
     {
-        if(newBehaviour != NPCBehaviour.Greeting)
+        if(curBehaviour != NPCBehaviour.Greeting || curBehaviour != NPCBehaviour.Conversation)
             prevBehaviour = curBehaviour;
         fsm.ChangeState(states[(int)newBehaviour]);
         curBehaviour = newBehaviour;

@@ -112,6 +112,11 @@ public class CharacterBase : MonoBehaviour
 		}
 	}
 	
+	public void Teleport(Vector3 location)
+	{
+		transform.position = location;
+	}
+
 	#region TranslateMove
 	protected virtual void HorizontalMove(float DeltaTime)
 	{
@@ -153,20 +158,20 @@ public class CharacterBase : MonoBehaviour
 	}
 	protected virtual void ForwardCheck()
 	{
-		isWall = false;
-
-		Vector3 startPosition = transform.position;
-		startPosition.y = startPosition.y - 0.5f;
-		Vector3 direction = m_CharacterInputVector;
-		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.6f);
-		
-		if (result == true)
-		{
-			if (raycastHit.collider.isTrigger == false)
-			{
-				isWall = true;
-			}
-		}
+		//isWall = false;
+		//
+		//Vector3 startPosition = transform.position;
+		//startPosition.y = startPosition.y - 0.5f;
+		//Vector3 direction = m_CharacterInputVector;
+		//bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.55f);
+		//
+		//if (result == true)
+		//{
+		//	if (raycastHit.collider.isTrigger == false)
+		//	{
+		//		isWall = true;
+		//	}
+		//}
 	}
 	#endregion
 

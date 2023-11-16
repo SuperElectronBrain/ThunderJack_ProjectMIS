@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Spine.Unity;
 using UnityEngine;
 
 namespace RavenCraftCore
@@ -9,16 +11,48 @@ namespace RavenCraftCore
         Justice, Wisdom, Nature, Mystic, Insight, End
     }
 
+    [Serializable]
+    public class BookPage
+    {
+        public string pageName;
+        public int page;
+        public float perfection;
+        public JewelryRank JewelryRank;
+    }
+
     public class Book : MonoBehaviour
     {
         [SerializeField]
         public ElementCircles elementCircles;
+        [SerializeField] private SkeletonAnimation skAni;
+
+        [SerializeField] private bool isFirst;
+        [SerializeField] private List<BookPage> bookPages;
+        [SerializeField] private int curPage;
+        [SerializeField] private string curPageName;
+        
+
+        void OnBecameVisible()
+        {
+            if (isFirst)
+                return;
+
+            isFirst = true;
+            skAni.AnimationName = "Open";
+            OpenBook();
+        }
+
+        private void Awake()
+        {
+            skAni = GetComponentInChildren<SkeletonAnimation>();
+        }
 
         // Start is called before the first frame update
         void Start()
         {
             elementCircles.Init();
             EventManager.Subscribe(EventType.CreateComplete, ResetBook);
+            EventManager.Subscribe(EventType.CreateComplete, UpdateBook);
         }
 
         void ResetBook()
@@ -29,6 +63,72 @@ namespace RavenCraftCore
         public void UpdateElementCircle(ElementType elementType, float updateValue)
         {
             elementCircles.UpdateElementCircle(elementType, updateValue);
+        }
+        
+        /*Todo
+         *�����Ǻ�
+         * ���۽� ����
+         * å���� �ε�
+         * 1. �����Ǻ� ���� �����۹�ȣ���� or ���ۼ���
+         */
+
+        private void OpenBook()
+        {
+            UpdateBook();
+
+            if (bookPages.Count == 0)
+                return;
+            
+            curPage = 0;
+            curPageName = bookPages[0].pageName;
+        }
+
+        private void UpdateBook()
+        {
+            var items = GameManager.Instance.ItemManager.GetItemListByType(ItemType.Gem);
+            bookPages = new();
+            var page = 0;
+            
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (!PlayerPrefs.HasKey(items[i].itemNameEg + "_JewelryPerfection")) continue;
+                bookPages.Add(
+                    new BookPage
+                    {
+                        pageName = items[i].itemNameEg,
+                        page = page,
+                        JewelryRank = (JewelryRank)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryRank"),
+                        perfection = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryPerfection")
+                    }
+                );
+                page++;
+            }
+
+            for (int i = 0; i < bookPages.Count; i++)
+            {
+                if (bookPages[i].pageName == curPageName)
+                {
+                    curPage = i + 1;
+                }
+            }
+        }
+
+        public void NextPage()
+        {
+            if (curPage >= bookPages.Count)
+                return;
+            
+            curPage++;
+            curPageName = bookPages[curPage + 1].pageName;
+        }
+
+        public void PrevPage()
+        {
+            if (curPage <= 0)
+                return;
+            
+            curPage--;
+            curPageName = bookPages[curPage - 1].pageName;
         }
 
         [System.Serializable]
