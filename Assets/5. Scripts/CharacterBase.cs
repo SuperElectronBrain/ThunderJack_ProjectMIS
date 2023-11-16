@@ -158,20 +158,23 @@ public class CharacterBase : MonoBehaviour
 	}
 	protected virtual void ForwardCheck()
 	{
-		//isWall = false;
-		//
-		//Vector3 startPosition = transform.position;
-		//startPosition.y = startPosition.y - 0.5f;
-		//Vector3 direction = m_CharacterInputVector;
-		//bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.55f);
-		//
-		//if (result == true)
-		//{
-		//	if (raycastHit.collider.isTrigger == false)
-		//	{
-		//		isWall = true;
-		//	}
-		//}
+		isWall = false;
+		
+		Vector3 startPosition = transform.position;
+		startPosition.y = startPosition.y - 0.5f;
+		Vector3 direction = m_CharacterInputVector;
+		bool result = Physics.Raycast(startPosition, direction, out RaycastHit raycastHit, 0.55f);
+		
+		if (result == true)
+		{
+			if (raycastHit.collider.isTrigger == false)
+			{
+				if(Vector3.Dot(direction.normalized, -raycastHit.normal) > 0.9)
+				{
+					isWall = true;
+				}
+			}
+		}
 	}
 	#endregion
 

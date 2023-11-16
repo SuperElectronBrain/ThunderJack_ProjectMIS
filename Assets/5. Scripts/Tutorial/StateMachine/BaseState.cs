@@ -537,15 +537,129 @@ public class TutorialCondition15 : BaseState<TutorialManager>
 	}
 }
 
+//장사를 시작했을 때
 public class TutorialCondition16 : BaseState<TutorialManager>
 {
+	int GuideState = 0;
 	public override void StateBegin(TutorialManager param)
 	{
-
+		GameManager.Instance.GameTime.enabled = false;
+		param.WaitFewSeconds(() =>
+		{ 
+			PlayerCharacterUIScript.main.PopupTutorialImage(0, true);
+			PlayerCharacterUIScript.main.PopupTutorialText(0, true);
+			GuideState = 1;
+		}, 3);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
+		if (Input.GetMouseButtonDown(0) == true)
+		{
+			if(GuideState == 1)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(0, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(0, false);
 
+				PlayerCharacterUIScript.main.PopupTutorialImage(1, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(1, true);
+				GuideState = 2;
+			}
+			else if (GuideState == 2)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(1, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(1, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialImage(2, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(2, true);
+				GuideState = 3;
+			}
+			else if (GuideState == 3)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(2, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(2, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialImage(3, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(3, true);
+				GuideState = 4;
+			}
+			else if (GuideState == 4)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(3, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(3, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialImage(4, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(4, true);
+				GuideState = 5;
+			}
+			else if (GuideState == 5)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(4, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(4, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialImage(5, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(5, true);
+				GuideState = 6;
+			}
+			else if (GuideState == 6)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(5, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(5, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialImage(6, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(6, true);
+				GuideState = 7;
+			}
+			else if (GuideState == 7)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(6, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(6, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialImage(7, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(7, true);
+				GuideState = 8;
+			}
+			else if (GuideState == 8)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialText(7, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialText(8, true);
+				GuideState = 9;
+			}
+			else if (GuideState == 9)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(7, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(8, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialImage(8, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(9, true);
+				GuideState = 10;
+			}
+			else if (GuideState == 10)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialText(9, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialText(10, true);
+				GuideState = 11;
+			}
+			else if (GuideState == 11)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(8, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(10, false);
+
+				PlayerCharacterUIScript.main.PopupTutorialImage(9, true);
+				PlayerCharacterUIScript.main.PopupTutorialText(11, true);
+				GuideState = 12;
+			}
+			else if (GuideState == 12)
+			{
+				PlayerCharacterUIScript.main.PopupTutorialImage(9, false);
+				PlayerCharacterUIScript.main.PopupTutorialText(11, false);
+				GuideState = 13;
+
+				GameManager.Instance.GameTime.enabled = true;
+				TutorialManager.EventPublish(TutorialStates.N17);
+			}
+		}
 	}
 	public override void StateEnd(TutorialManager param)
 	{
@@ -553,6 +667,7 @@ public class TutorialCondition16 : BaseState<TutorialManager>
 	}
 }
 
+//제작 가이드의 출력이 완료되었을 때
 public class TutorialCondition17 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)

@@ -97,6 +97,8 @@ public class PlayerCharacterUIScript : MonoBehaviour
 	public InteractionIcon m_InteractionIcon = new InteractionIcon();
 	public UnityEngine.UI.Image m_FadeUI;
 	public UnityEngine.UI.Image m_Title;
+	public RectTransform m_TutorialImagesParent;
+	public RectTransform m_TutorialTextsParent;
 
 	// Start is called before the first frame update
 	void Start()
@@ -186,6 +188,34 @@ public class PlayerCharacterUIScript : MonoBehaviour
 			if(m_Title.gameObject.activeSelf != param) 
 			{
 				m_Title.gameObject.SetActive(param);
+			}
+		}
+	}
+
+	public void PopupTutorialImage(int index, bool param)
+	{
+		if (m_TutorialImagesParent != null)
+		{
+			if(m_TutorialImagesParent.childCount > index)
+			{
+				if (m_TutorialImagesParent.GetChild(index).gameObject.activeSelf != param)
+				{
+					m_TutorialImagesParent.GetChild(index).gameObject.SetActive(param);
+				}
+			}
+		}
+	}
+
+	public void PopupTutorialText(int index, bool param)
+	{
+		if (m_TutorialTextsParent != null)
+		{
+			if (m_TutorialTextsParent.childCount > index)
+			{
+				if (m_TutorialTextsParent.GetChild(index).gameObject.activeSelf != param)
+				{
+					m_TutorialTextsParent.GetChild(index).gameObject.SetActive(param);
+				}
 			}
 		}
 	}
