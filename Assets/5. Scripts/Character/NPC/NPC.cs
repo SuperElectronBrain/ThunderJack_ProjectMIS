@@ -6,7 +6,7 @@ using TMPro;
 
 public enum NPCBehaviour
 {
-    Idle, Move, Conversation, Greeting, Sitting, Business, Interaction, Rest, Last
+    Idle, Move, Conversation, Greeting, Sitting, Business, PartTimer, Interaction, Rest, Last
 }
 
 public enum NPCScheduleType
@@ -64,8 +64,8 @@ public class NPC : Character, IInteraction
     protected override void Awake()
     {
         base.Awake();
-        player = GameObject.FindGameObjectWithTag("Player");        
-        fsm = new();        
+        player = GameObject.FindGameObjectWithTag("Player");
+        fsm = new();
         agent = GetComponent<NavMeshAgent>();
         states = new State<NPC>[((int)NPCBehaviour.Last)];
         //dialog = GetComponentInChildren<TextMeshPro>();
@@ -77,10 +77,8 @@ public class NPC : Character, IInteraction
         states[((int)NPCBehaviour.Sitting)] = GetComponent<SittingState>();
         states[((int)NPCBehaviour.Rest)] = GetComponent<RestState>();
         states[((int)NPCBehaviour.Interaction)] = GetComponent<InteractionState>();
-        if(characterData.characterType == CharacterType.PartTimer)
-            states[((int)NPCBehaviour.Business)] = GetComponent<BusinessState>();
-        else if(characterData.characterType == CharacterType.Merchant)            
-            states[((int)NPCBehaviour.Business)] = GetComponent<BusinessState>();
+        states[((int)NPCBehaviour.PartTimer)] = GetComponent<PartTimeState>();
+        states[((int)NPCBehaviour.Business)] = GetComponent<BusinessState>();
     }
 
     private void Start()
