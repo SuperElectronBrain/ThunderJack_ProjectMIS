@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public enum TutorialEventType { None,  }
-public enum TutorialStates { None, N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19 }
+public enum TutorialStates { None, N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, EndOfTutorial }
 
 [Serializable]
 public class TutorialEvent
@@ -139,8 +139,11 @@ public class TutorialManager : MonoBehaviour
 
 	public static void EventPublish(TutorialStates param)
 	{
-		Instance.currentState = param;
-		Instance.finiteStateMachine.ChangeState(param);
+		if (Instance.currentState != TutorialStates.EndOfTutorial)
+		{
+			Instance.currentState = param;
+			Instance.finiteStateMachine.ChangeState(param);
+		}
 	}
 
 	private void Awake()
@@ -191,6 +194,7 @@ public class TutorialManager : MonoBehaviour
 		finiteStateMachine.AddState(TutorialStates.N17, new TutorialCondition17());
 		finiteStateMachine.AddState(TutorialStates.N18, new TutorialCondition18());
 		finiteStateMachine.AddState(TutorialStates.N19, new TutorialCondition19());
+		finiteStateMachine.AddState(TutorialStates.EndOfTutorial, new EndOfTutorial());
 
 		GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
 		if(titleScreen != null)
@@ -202,6 +206,16 @@ public class TutorialManager : MonoBehaviour
 				if(button != null)
 				{
 					button.onClick.AddListener(StartTutorial);
+				}
+			}
+
+			GameObject loadButton = UniFunc.GetChildOfName(titleScreen, "LoadButton");
+			if (loadButton != null)
+			{
+				UnityEngine.UI.Button button = loadButton.GetComponent<UnityEngine.UI.Button>();
+				if (button != null)
+				{
+					button.onClick.AddListener(SkipTutorial);
 				}
 			}
 		}
@@ -238,6 +252,25 @@ public class TutorialManager : MonoBehaviour
 				if (button != null)
 				{
 					button.onClick.RemoveListener(StartTutorial);
+				}
+			}
+		}
+	}
+
+	private void SkipTutorial()
+	{
+		finiteStateMachine.ChangeState(TutorialStates.EndOfTutorial);
+
+		GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
+		if (titleScreen != null)
+		{
+			GameObject loadButton = UniFunc.GetChildOfName(titleScreen, "LoadButton");
+			if (loadButton != null)
+			{
+				UnityEngine.UI.Button button = loadButton.GetComponent<UnityEngine.UI.Button>();
+				if (button != null)
+				{
+					button.onClick.RemoveListener(SkipTutorial);
 				}
 			}
 		}

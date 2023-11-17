@@ -17,8 +17,11 @@ Material:
   - N_F_O_ON
   - N_F_RDC_ON
   - N_F_RELGI_ON
+  - N_F_SCT_ON
   - N_F_SS_ON
+  - N_F_ST_ON
   - N_F_TRANSAFFSHA_ON
+  - N_F_USETLB_ON
   m_InvalidKeywords:
   - N_F_TRANSAFFSHA
   - _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_OFF
@@ -42,7 +45,6 @@ Material:
   - _TEXTUREPATTERNSTYLE_OFF
   - _USESECONDARYCUTOUT_OFF
   - _VERTEXCOLORBLUEAFFECTOUTLINEWITDH_OFF
-  - _VERTEXCOLORGREENCONTROLSELFSHADOWTHRESHOLD_OFF
   - _VERTEXCOLORREDCONTROLSMOOTHOBJECTNORMAL_OFF
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 1
@@ -250,11 +252,11 @@ Material:
     - _N_F_R: 0
     - _N_F_RDC: 1
     - _N_F_RL: 0
-    - _N_F_SCT: 0
+    - _N_F_SCT: 1
     - _N_F_SL: 0
     - _N_F_SON: 0
     - _N_F_SS: 1
-    - _N_F_ST: 0
+    - _N_F_ST: 1
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
     - _NoisyOutlineIntensity: 0
@@ -266,7 +268,7 @@ Material:
     - _OutlineWidth: 0.5
     - _OutlineWidthAffectedByViewDistance: 0
     - _OutlineZPostionInCamera: 0
-    - _OverallShadowColorPower: 1
+    - _OverallShadowColorPower: 0.97
     - _PSGLOTEX: 0
     - _PTexturePower: 1
     - _Parallax: 0.005
@@ -274,7 +276,7 @@ Material:
     - _QueueOffset: 0
     - _RELG: 1
     - _ReceiveShadows: 1
-    - _ReduSha: 0.5
+    - _ReduSha: 0
     - _RefMetallic: 0
     - _RefVal: 0
     - _ReflectionIntensity: 0
@@ -294,9 +296,9 @@ Material:
     - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 0
+    - _SelfShadowRealtimeShadowIntensity: 1
     - _SelfShadowShadowTAtViewDirection: 0
-    - _SelfShadowThreshold: 0.93
+    - _SelfShadowThreshold: 0.798
     - _ShadowColorTexturePower: 0
     - _ShadowHardness: 0
     - _ShadowTColorPower: 1
@@ -322,9 +324,9 @@ Material:
     - _TransAffSha: 1
     - _TransparentThreshold: 0
     - _UseSecondaryCutout: 0
-    - _UseTLB: 0
+    - _UseTLB: 1
     - _VertexColorBlueAffectOutlineWitdh: 0
-    - _VertexColorGreenControlSelfShadowThreshold: 0
+    - _VertexColorGreenControlSelfShadowThreshold: 1
     - _VertexColorRedControlSmoothObjectNormal: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
@@ -344,8 +346,8 @@ Material:
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _SSAOColor: {r: 0, g: 0, b: 0, a: 0}
     - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SelfShadowRealTimeShadowColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowTColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SelfShadowRealTimeShadowColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadowTColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _XYZPosition: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
