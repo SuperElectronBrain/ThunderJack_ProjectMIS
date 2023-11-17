@@ -12,9 +12,11 @@ namespace RavenCraftCore
     }
 
     [Serializable]
-    public class BookPage
+    public class BookPageData
     {
         public string pageName;
+        public Sprite pageImage;
+        public string pageDescription;
         public int page;
         public float perfection;
         public JewelryRank JewelryRank;
@@ -27,10 +29,10 @@ namespace RavenCraftCore
         [SerializeField] private SkeletonAnimation skAni;
 
         [SerializeField] private bool isFirst;
-        [SerializeField] private List<BookPage> bookPages;
+        [SerializeField] private List<BookPageData> bookPages;
         [SerializeField] private int curPage;
         [SerializeField] private string curPageName;
-        
+        [SerializeField] private BookPage pageObject;
 
         void OnBecameVisible()
         {
@@ -39,7 +41,15 @@ namespace RavenCraftCore
 
             isFirst = true;
             skAni.AnimationName = "Open";
+            
             OpenBook();
+        }
+
+        void CompleteOpen(Spine.TrackEntry tr)
+        {
+            pageObject.gameObject.SetActive(true);
+            
+            skAni.state.Complete -= CompleteOpen;
         }
 
         private void Awake()
@@ -53,6 +63,14 @@ namespace RavenCraftCore
             elementCircles.Init();
             EventManager.Subscribe(EventType.CreateComplete, ResetBook);
             EventManager.Subscribe(EventType.CreateComplete, UpdateBook);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                OpenBook();
+            }
         }
 
         void ResetBook()
@@ -78,7 +96,10 @@ namespace RavenCraftCore
 
             if (bookPages.Count == 0)
                 return;
-            
+
+            pageObject.SetPageInfo("김영훈", "역겹다", 0, bookPages[0].pageImage);
+            pageObject.SetElementValues(100f, 72f, 32f);
+            skAni.state.Complete += CompleteOpen;
             curPage = 0;
             curPageName = bookPages[0].pageName;
         }
@@ -93,7 +114,7 @@ namespace RavenCraftCore
             {
                 if (!PlayerPrefs.HasKey(items[i].itemNameEg + "_JewelryPerfection")) continue;
                 bookPages.Add(
-                    new BookPage
+                    new BookPageData
                     {
                         pageName = items[i].itemNameEg,
                         page = page,
