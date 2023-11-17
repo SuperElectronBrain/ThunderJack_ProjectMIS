@@ -10,23 +10,17 @@ public class PartTimeState : State<NPC>
         entity.agent.enabled = false;
         entity.gameObject.transform.position = entity.destinationPos;
         entity.isSales = true;
-        entity.curBehaviour = NPCBehaviour.Business;
+        entity.curBehaviour = NPCBehaviour.PartTimer;
 
         entity.SkAni.AnimationName = "A_work1_F";
-
-        GetComponent<NPCShop>().enabled = true;
-
-        List<ShopItemData> shopItems = null;
 
         switch(entity.CharacterData.characterEgName)
         {
             case "Harry":
                 entity.shopDialog = "Furniture_Shop_Text_Master";
-                shopItems = GameManager.Instance.ItemManager.GetShopItemDataBySalesType(SalesItemType.Accessory);
                 break;
             case "Dokan":
                 entity.shopDialog = "Material_Shop_Text_Master";
-                shopItems = GameManager.Instance.ItemManager.GetShopItemDataBySalesType(SalesItemType.Materials);
                 break;
         }
     }
@@ -40,7 +34,7 @@ public class PartTimeState : State<NPC>
     {
         entity.agent.enabled = true;
         entity.agent.isStopped = false;
-        entity.prevBehaviour = NPCBehaviour.Business;
+        entity.prevBehaviour = NPCBehaviour.PartTimer;
     }
 
     public override void OnTransition(NPC entity)
