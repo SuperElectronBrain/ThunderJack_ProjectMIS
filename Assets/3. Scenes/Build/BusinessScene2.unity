@@ -8307,7 +8307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &626648257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13701,10 +13701,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6345590950169558943, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 189223351}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4571776762722403268, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1440696572}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
 --- !u!114 &976242110 stripped
 MonoBehaviour:
@@ -18235,48 +18232,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439466289}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1440696571 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4571776762722403268, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
-  m_PrefabInstance: {fileID: 976242109}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1440696572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1440696571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a6f98e4202808d478b80a4699eb4274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isImage: 1
-  isFadeOut: 1
-  duration: 2
-  idleDuration: 0
-  rewindDuration: 3
-  isEnable: 1
-  isIncludeChild: 1
-  isDestory: 0
-  childImage: []
-  childText: []
-  onFadeEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1440696571}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1442331837
 GameObject:
   m_ObjectHideFlags: 0
