@@ -12,6 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _DOUBLE_SIDED_LIGHTING
   - _RECEIVE_SHADOWS
   - _STRAIGHT_ALPHA_INPUT
   m_InvalidKeywords:
@@ -34,7 +35,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Cutoff: 0.1
-    - _DoubleSidedLighting: 0
+    - _DoubleSidedLighting: 1
     - _LightAffectsAdditive: 0
     - _OutlineMipLevel: 0
     - _OutlineOpaqueAlpha: 1
@@ -51,6 +52,6 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Black: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.13207549, g: 0.118816644, b: 0.006852974, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
