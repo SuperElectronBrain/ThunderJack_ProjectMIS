@@ -12,7 +12,7 @@ public class CustomCursor : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(0) == true)
 		{
-			Cursor.SetCursor(PressCursor, Vector2.zero, CursorMode.ForceSoftware);
+			Cursor.SetCursor(PressCursor, Vector2.up * PressCursor.height, CursorMode.ForceSoftware);
 		}
 		else if(Input.GetMouseButtonUp(0) == true)
 		{

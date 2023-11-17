@@ -41,6 +41,7 @@ public class TutorialCondition0 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
+		GameManager.Instance.GameTime.enabled = false;
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("먼길 오느라 잠깐 쉬었으니… 다시 출발해볼까 곧 도착할거야", true); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 5);
 	}
@@ -215,7 +216,6 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
-		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = false; }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 		param.WaitFewSeconds(() => 
 		{
@@ -258,8 +258,6 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", false);
 		}, 40);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 42);
-		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 43);
-
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -276,7 +274,6 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
-		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = false; }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 		param.WaitFewSeconds(() =>
 		{
@@ -327,7 +324,6 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", false);
 		}, 51);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 53);
-		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 54);
 		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N9); }, 54);
 		
 	}
@@ -543,7 +539,6 @@ public class TutorialCondition16 : BaseState<TutorialManager>
 	int GuideState = 0;
 	public override void StateBegin(TutorialManager param)
 	{
-		GameManager.Instance.GameTime.enabled = false;
 		param.WaitFewSeconds(() =>
 		{ 
 			PlayerCharacterUIScript.main.PopupTutorialImage(0, true);
@@ -672,7 +667,6 @@ public class TutorialCondition17 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
-
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -704,6 +698,22 @@ public class TutorialCondition19 : BaseState<TutorialManager>
 	public override void StateBegin(TutorialManager param)
 	{
 
+	}
+	public override void StateUpdate(TutorialManager param)
+	{
+
+	}
+	public override void StateEnd(TutorialManager param)
+	{
+
+	}
+}
+
+public class EndOfTutorial : BaseState<TutorialManager>
+{
+	public override void StateBegin(TutorialManager param)
+	{
+		GameManager.Instance.GameTime.enabled = true;
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
