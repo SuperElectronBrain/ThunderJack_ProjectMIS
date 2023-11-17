@@ -12,13 +12,13 @@ public class CustomCursor : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(0) == true)
 		{
-			Cursor.SetCursor(PressCursor, Vector2.up * PressCursor.height, CursorMode.ForceSoftware);
+			Cursor.SetCursor(PressCursor, new Vector2(PressCursor.width * 0.33333f, PressCursor.height * 0.83333f), CursorMode.ForceSoftware);
 		}
 		else if(Input.GetMouseButtonUp(0) == true)
 		{
 			if (NomalCursor != null)
 			{
-				Cursor.SetCursor(NomalCursor, Vector2.up * NomalCursor.height, CursorMode.ForceSoftware);
+				Cursor.SetCursor(NomalCursor, new Vector2(PressCursor.width * 0.33333f, PressCursor.height * 0.83333f), CursorMode.ForceSoftware);
 			}
 		}
 	}
