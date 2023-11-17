@@ -78,7 +78,8 @@ public class ItemManager : MonoBehaviour
         basicItemData = new();
         jewelryItemData = new();
 
-        var itemRecipe = GameManager.Instance.DataBase.Parser("Item_Master");
+        var itemRecipe = GameManager.Instance.DataBase.Parser("Item");
+        //var itemRecipe = GameManager.Instance.DataBase.Parser("Item_Master");
 
         foreach (var ir in itemRecipe)
         {

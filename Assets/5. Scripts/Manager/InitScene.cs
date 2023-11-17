@@ -19,6 +19,10 @@ public class InitScene : MonoBehaviour
                 onInitEventToOutSide?.Invoke();
                 break;
             case SceneType.InSide:
+                if (GameManager.Instance.GameTime.GetHour() >= 18)
+                    GameManager.Instance.isPM = true;
+                else
+                    GameManager.Instance.isPM = false;
                 onInitEventToInSide?.Invoke();
                 break;
             case SceneType.Bussiness:

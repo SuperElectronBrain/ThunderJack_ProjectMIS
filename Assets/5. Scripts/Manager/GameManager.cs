@@ -53,6 +53,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private NpcRequestManager npcRequestManager;
 
     public bool isWork;
+    public bool isPM;
 
     public DataBase DataBase { get { return dataBase; } }
     public DataBase_Character CharacterDB { get { return characterDB; } }
