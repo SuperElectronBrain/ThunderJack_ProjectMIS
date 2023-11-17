@@ -12,7 +12,15 @@ public class Entrance : MonoBehaviour, IInteraction, INpcOnly
         {
             if(npc.Schedule.aiParam1 == 2)
             {
-                npc.ChangeState(NPCBehaviour.Business);
+                switch (npc.CharacterData.characterType)
+                {
+                    case CharacterType.Merchant:
+                        npc.ChangeState(NPCBehaviour.Business);
+                        break;
+                    case CharacterType.PartTimer:
+                        npc.ChangeState(NPCBehaviour.PartTimer);
+                        break;
+                }
             }
             else if(npc.Schedule.aiParam1 == 3)
             {
