@@ -17,4 +17,9 @@ public class CreateWaterBall : MonoBehaviour
         go.transform.localScale = new Vector3(scale, scale, scale);
         return go;
     }
+
+    public void SetWaterColor(Color color)
+    {
+        waterBall.GetComponent<SpriteRenderer>().color = color;
+    }
 }
