@@ -2120,9 +2120,7 @@ MonoBehaviour:
   memo: {fileID: 0}
   rateInfo: {fileID: 0}
   pageImage: {fileID: 0}
-  element1: {fileID: 0}
-  element2: {fileID: 0}
-  element3: {fileID: 0}
+  element: {fileID: 0}
 --- !u!1 &189661269
 GameObject:
   m_ObjectHideFlags: 0
@@ -10863,13 +10861,14 @@ GameObject:
   m_Component:
   - component: {fileID: 801907665}
   - component: {fileID: 801907666}
+  - component: {fileID: 801907667}
   m_Layer: 0
   m_Name: Page
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &801907665
 Transform:
   m_ObjectHideFlags: 0
@@ -10909,9 +10908,32 @@ MonoBehaviour:
   memo: {fileID: 712203805}
   rateInfo: {fileID: 627328500}
   pageImage: {fileID: 378071190}
-  element1: {fileID: 0}
-  element2: {fileID: 0}
-  element3: {fileID: 0}
+  element: {fileID: 0}
+--- !u!114 &801907667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801907664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6f98e4202808d478b80a4699eb4274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImage: 0
+  isFadeOut: 1
+  duration: 1
+  idleDuration: 0
+  rewindDuration: 0
+  isEnable: 1
+  isIncludeChild: 1
+  isDestory: 0
+  childImage: []
+  childText: []
+  onFadeEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &835566421
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,9 +15,7 @@ public class BookPage : MonoBehaviour
     [SerializeField] private SpriteRenderer pageImage;
     private const string perfectionInit = "최고 완성도 ";
 
-    [SerializeField] private Sprite element1;
-    [SerializeField] private Sprite element2;
-    [SerializeField] private Sprite element3;
+    [SerializeField] private Sprite element;
 
     public void SetPageInfo(string name, string description, float perfectionValue, Sprite sprite)
     {
