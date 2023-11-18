@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Spine;
 using Spine.Unity;
 using UnityEditor;
+using UnityEditor.Build.Pipeline.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,6 +56,11 @@ namespace RavenCraftCore
             originPos = transform.position;
             zOffset = originPos.z;
             EventManager.Subscribe(EventType.CreateComplete, ResetCup);
+        }
+
+        public void SetColor(Color color)
+        {
+            cwb.SetWaterColor(color);
         }
 
         void ResetCup()

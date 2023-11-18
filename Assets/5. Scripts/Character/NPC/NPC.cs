@@ -219,7 +219,7 @@ public class NPC : Character, IInteraction
 
     public void ChangeState(NPCBehaviour newBehaviour)
     {
-        if(curBehaviour != NPCBehaviour.Greeting || curBehaviour != NPCBehaviour.Conversation)
+        if(curBehaviour != NPCBehaviour.Greeting && curBehaviour != NPCBehaviour.Conversation)
             prevBehaviour = curBehaviour;
         fsm.ChangeState(states[(int)newBehaviour]);
         curBehaviour = newBehaviour;

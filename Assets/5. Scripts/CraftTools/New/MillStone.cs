@@ -107,6 +107,7 @@ namespace RavenCraftCore
             ColorUtility.TryParseHtmlString("#"+
                 GameManager.Instance.ItemManager.GetBasicItemData(insertedItemID).accessoryColor,
                 out newColor);
+            cup.SetColor(newColor);
             materialColor.color = newColor;
             cup.SetInputItemID(insertedItemID);
         }
