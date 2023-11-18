@@ -12,7 +12,7 @@ public class BusinessState : State<NPC>
         entity.isSales = true;
         entity.curBehaviour = NPCBehaviour.Business;
 
-        entity.SkAni.AnimationName = "A_idle_F";
+        entity.ChangeAni("A_idle_F");
 
         GetComponent<NPCShop>().enabled = true;
 

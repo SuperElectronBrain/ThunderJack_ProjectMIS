@@ -11,8 +11,8 @@ public class PartTimeState : State<NPC>
         entity.gameObject.transform.position = entity.destinationPos;
         entity.isSales = true;
         entity.curBehaviour = NPCBehaviour.PartTimer;
-
-        entity.SkAni.AnimationName = "A_work1_F";
+        
+        entity.ChangeAni("A_work1_F");
 
         switch(entity.CharacterData.characterEgName)
         {

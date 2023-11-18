@@ -90,7 +90,7 @@ public class NPC : Character, IInteraction
         dialogBox.InitDialogBox(characterData.characterName);
         DontDestroyOnLoad(gameObject);
 
-        SkAni.Initialize(true);
+        SkeletonInitialize();
     }
 
     public void Init()
@@ -102,6 +102,12 @@ public class NPC : Character, IInteraction
     {
         player = null;
         targetInteractionObj = null;
+    }
+
+    public void ChangeAni(string aniName)
+    {
+        SkAni.AnimationName = aniName;
+        ShadowSkAni.AnimationName = aniName;
     }
 
     public void InitDay()

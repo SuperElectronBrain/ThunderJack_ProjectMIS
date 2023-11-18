@@ -29,9 +29,9 @@ public class ConversationState : State<NPC>
         entity.myTransform.localScale = newScale;
 
         if (entity.lookDir.isFront)
-            entity.SkAni.AnimationName = "A_talk1_F";
+            entity.ChangeAni("A_talk1_F");
         else
-            entity.SkAni.AnimationName = "A_talk1_B";
+            entity.ChangeAni("A_talk1_B");
 
         StartCoroutine(CTwinkling(entity, 1.5f));        
 
@@ -65,15 +65,19 @@ public class ConversationState : State<NPC>
 
     IEnumerator CTwinkling(NPC entity, float delay)
     {
-        Debug.Log("���� �� " + entity.SkAni.AnimationName);
         yield return new WaitForSeconds(delay);
 
         if (isTwinkling)
+        {
             entity.SkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("1", "2"), true, 0);
+            entity.ShadowSkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("1", "2"), true, 0);
+        }
         else
+        {
             entity.SkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("2", "1"), true, 0);
-
-        Debug.Log("���� �� " + entity.SkAni.AnimationName);
+            entity.ShadowSkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("2", "1"), true, 0);
+        }
+            
 
         isTwinkling = !isTwinkling;
 
