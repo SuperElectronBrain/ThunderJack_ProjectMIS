@@ -69,7 +69,11 @@ namespace RavenCraftCore
         {
             if (Input.GetKeyDown(KeyCode.T))
             {
-                OpenBook();
+                NextPage();
+            }
+            else if (Input.GetKeyDown(KeyCode.Y))
+            {
+                pageObject.GetComponent<FadeIO>().Rewind();
             }
         }
 
@@ -139,9 +143,12 @@ namespace RavenCraftCore
         {
             if (curPage >= bookPages.Count)
                 return;
-            
+            pageObject.GetComponent<FadeIO>().Rewind();
+            skAni.AnimationName = "Forward_1";
+            skAni.Initialize(true);
+            skAni.state.Complete += TurnThePage;
             curPage++;
-            curPageName = bookPages[curPage + 1].pageName;
+            
         }
 
         public void PrevPage()
@@ -151,6 +158,14 @@ namespace RavenCraftCore
             
             curPage--;
             curPageName = bookPages[curPage - 1].pageName;
+        }
+
+        void TurnThePage(Spine.TrackEntry te)
+        {
+            pageObject.gameObject.SetActive(true);
+            pageObject.SetPageInfo(bookPages[curPage].pageName, bookPages[curPage].pageDescription, bookPages[curPage].perfection,
+                bookPages[curPage].pageImage);
+            skAni.state.Complete -= TurnThePage;
         }
 
         [System.Serializable]

@@ -11,6 +11,7 @@ public class FadeIO : MonoBehaviour
     Image image;
     SpriteRenderer sr;
     Sequence sequence;
+    private Sequence rewindSequence;
 
     [SerializeField]
     bool isImage;
@@ -31,6 +32,8 @@ public class FadeIO : MonoBehaviour
     bool isEnable;
     [SerializeField]
     bool isIncludeChild;
+
+    [SerializeField] private bool isRewind;
     [SerializeField]
     bool isDestory;
 
@@ -38,6 +41,9 @@ public class FadeIO : MonoBehaviour
     List<Image> childImage = new();
     [SerializeField]
     List<TextMeshProUGUI> childText = new();
+
+    [SerializeField] private List<SpriteRenderer> childSr = new();
+    [SerializeField] private List<TextMeshPro> childTmp = new();
 
     [Header("Event")]
     public UnityEvent onFadeEvent;
@@ -68,14 +74,46 @@ public class FadeIO : MonoBehaviour
         else
             sequence.Append(image.DOFade(0, duration));
 
-        sequence.AppendInterval(idleDuration);
-
-        if (rewindDuration > 0)
+        if (isRewind)
         {
+            rewindSequence= DOTween.Sequence().Pause().SetAutoKill(false);
+            
             if (!isFadeOut)
-                sequence.Append(image.DOFade(1, rewindDuration));
+                rewindSequence.Append(image.DOFade(1, rewindDuration));
             else
-                sequence.Append(image.DOFade(0, rewindDuration));
+                rewindSequence.Append(image.DOFade(0, rewindDuration));
+            
+            if (isIncludeChild)
+            {
+                rewindSequence.OnUpdate(() =>
+                {
+                    for (int i = 0; i < childText.Count; i++)
+                    {
+                        Color c = childText[i].color;
+                        c.a = image.color.a;
+                        childText[i].color = c;
+                    }
+
+                    for (int i = 0; i < childImage.Count; i++)
+                    {
+                        Color c = childImage[i].color;
+                        c.a = image.color.a;
+                        childImage[i].color = c;
+                    }
+                });
+            }
+        }
+        else
+        {
+            sequence.AppendInterval(idleDuration);
+
+            if (rewindDuration > 0)
+            {
+                if (!isFadeOut)
+                    sequence.Append(image.DOFade(1, rewindDuration));
+                else
+                    sequence.Append(image.DOFade(0, rewindDuration));
+            }
         }
 
         foreach (TextMeshProUGUI text in GetComponentsInChildren<TextMeshProUGUI>())
@@ -118,6 +156,16 @@ public class FadeIO : MonoBehaviour
 
     void Sprite()
     {
+        foreach (TextMeshPro text in GetComponentsInChildren<TextMeshPro>())
+        {
+            childTmp.Add(text);
+        }
+
+        foreach (SpriteRenderer sprite in GetComponentsInChildren<SpriteRenderer>())
+        {
+            childSr.Add(sprite);
+        }
+        
         sr = GetComponent<SpriteRenderer>();
 
         sequence = DOTween.Sequence().Pause().SetAutoKill(false);
@@ -126,46 +174,73 @@ public class FadeIO : MonoBehaviour
             sequence.Append(sr.DOFade(1, duration));
         else
             sequence.Append(sr.DOFade(0, duration));
-
-        sequence.AppendInterval(idleDuration);
-
-        if (rewindDuration > 0)
+        
+        if (isRewind)
         {
+            rewindSequence= DOTween.Sequence().Pause().SetAutoKill(false);
+            
             if (!isFadeOut)
-                sequence.Append(sr.DOFade(1, rewindDuration));
+                rewindSequence.Append(sr.DOFade(1, rewindDuration));
             else
-                sequence.Append(sr.DOFade(0, rewindDuration));
+                rewindSequence.Append(sr.DOFade(0, rewindDuration));
+            
+            if (isIncludeChild)
+            {
+                rewindSequence.OnUpdate(() =>
+                {
+                    for (int i = 0; i < childTmp.Count; i++)
+                    {
+                        Color c = childTmp[i].color;
+                        c.a = sr.color.a;
+                        childTmp[i].color = c;
+                    }
+
+                    for (int i = 0; i < childSr.Count; i++)
+                    {
+                        Color c = childSr[i].color;
+                        c.a = sr.color.a;
+                        childSr[i].color = c;
+                    }
+                });
+            }
+            
+            rewindSequence.OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            });
+        }
+        else
+        {
+            sequence.AppendInterval(idleDuration);
+
+            if (rewindDuration > 0)
+            {
+                if (!isFadeOut)
+                    sequence.Append(sr.DOFade(1, rewindDuration));
+                else
+                    sequence.Append(sr.DOFade(0, rewindDuration));
+            }
         }
 
-/*        foreach (TextMeshProUGUI text in GetComponentsInChildren<TextMeshProUGUI>())
-        {
-            childText.Add(text);
-        }*/
-
-/*        foreach (SpriteRenderer sprite in GetComponentsInChildren<SpriteRenderer>())
-        {
-            childImage.Add(sprite);
-        }*/
-
-/*        if (isIncludeChild)
+        if (isIncludeChild)
         {
             sequence.OnUpdate(() =>
             {
-                for (int i = 0; i < childText.Count; i++)
+                for (int i = 0; i < childTmp.Count; i++)
                 {
-                    Color c = childText[i].color;
+                    Color c = childTmp[i].color;
                     c.a = sr.color.a;
-                    childText[i].color = c;
+                    childTmp[i].color = c;
                 }
 
-                for (int i = 0; i < childImage.Count; i++)
+                for (int i = 0; i < childSr.Count; i++)
                 {
-                    Color c = childImage[i].color;
+                    Color c = childSr[i].color;
                     c.a = sr.color.a;
-                    childImage[i].color = c;
+                    childSr[i].color = c;
                 }
             });
-        }*/
+        }
 
         sequence.OnComplete(() =>
         {
@@ -183,9 +258,9 @@ public class FadeIO : MonoBehaviour
             Sprite();
     }
 
-    public void ChangeText()
+    public void Rewind()
     {
-
+        rewindSequence.Restart();
     }
 
     public void ChangeImage(Sprite newSprite)

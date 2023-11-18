@@ -10862,6 +10862,7 @@ GameObject:
   - component: {fileID: 801907665}
   - component: {fileID: 801907666}
   - component: {fileID: 801907667}
+  - component: {fileID: 801907668}
   m_Layer: 0
   m_Name: Page
   m_TagString: Untagged
@@ -10925,15 +10926,70 @@ MonoBehaviour:
   isFadeOut: 1
   duration: 1
   idleDuration: 0
-  rewindDuration: 0
+  rewindDuration: 0.5
   isEnable: 1
   isIncludeChild: 1
+  isRewind: 1
   isDestory: 0
   childImage: []
   childText: []
+  childSr: []
+  childTmp: []
   onFadeEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!212 &801907668
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801907664}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &835566421
 GameObject:
   m_ObjectHideFlags: 0
@@ -34239,6 +34295,36 @@ MonoBehaviour:
     page: 0
     perfection: 0
     JewelryRank: 1
+  - pageName: "\uC774\uB300\uC6B4"
+    pageImage: {fileID: 21300000, guid: 378a19f83b6919a40a24fdf8d3c147a7, type: 3}
+    pageDescription: "\uB300\uC6B4\uC774\uB2E4"
+    page: 0
+    perfection: 0
+    JewelryRank: 1
+  - pageName: "\uC774\uB300\uC6B4"
+    pageImage: {fileID: 21300000, guid: c0a69d8984529a7419a643243c6d9171, type: 3}
+    pageDescription: "\uB300\uC6B4\uC774\uB2E4"
+    page: 0
+    perfection: 0
+    JewelryRank: 1
+  - pageName: "\uC774\uB300\uC6B4"
+    pageImage: {fileID: 21300000, guid: 00ac2847a9c1c8d4daa1c1aa39541b0f, type: 3}
+    pageDescription: "\uB300\uC6B4\uC774\uB2E4"
+    page: 0
+    perfection: 0
+    JewelryRank: 1
+  - pageName: "\uC774\uB300\uC6B4"
+    pageImage: {fileID: 21300000, guid: 9d32e0f0da1e16c469ff3bdb57fbe328, type: 3}
+    pageDescription: "\uB300\uC6B4\uC774\uB2E4"
+    page: 0
+    perfection: 0
+    JewelryRank: 1
+  - pageName: "\uC774\uB300\uC6B4"
+    pageImage: {fileID: 21300000, guid: bfd2099e6b29a8a4bb11edd4334a486b, type: 3}
+    pageDescription: "\uB300\uC6B4\uC774\uB2E4"
+    page: 0
+    perfection: 0
+    JewelryRank: 1
   curPage: 0
   curPageName: "\uAE40\uC601\uD6C8"
   pageObject: {fileID: 801907666}
@@ -35473,9 +35559,12 @@ MonoBehaviour:
   rewindDuration: 0
   isEnable: 1
   isIncludeChild: 1
+  isRewind: 0
   isDestory: 0
   childImage: []
   childText: []
+  childSr: []
+  childTmp: []
   onFadeEvent:
     m_PersistentCalls:
       m_Calls: []
