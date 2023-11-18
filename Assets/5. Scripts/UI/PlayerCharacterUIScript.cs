@@ -72,7 +72,7 @@ public class InteractionIcon
 
 	public Sprite m_Talk;
 	public Sprite m_Plants;
-	public Sprite m_Open;
+	public Sprite m_DoorOpen;
 	public Sprite m_Mail;
 	public Sprite m_Get;
 	public Sprite m_Fish;
