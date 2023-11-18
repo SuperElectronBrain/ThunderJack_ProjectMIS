@@ -109,7 +109,7 @@ namespace RavenCraftCore
         private void UpdateBook()
         {
             var items = GameManager.Instance.ItemManager.GetItemListByType(ItemType.Gem);
-            bookPages = new();
+            //bookPages = new();
             var page = 0;
             
             for (int i = 0; i < items.Count; i++)
