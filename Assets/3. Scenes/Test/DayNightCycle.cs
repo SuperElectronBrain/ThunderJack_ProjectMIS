@@ -6,6 +6,8 @@ using UnityEngine;
 public class DayNightCycle : MonoBehaviour
 {
     [SerializeField] private Light sun;
+
+    [SerializeField] private float sunRotationY;
     [SerializeField,Range(0,144)] private float timeOfDay;
     [Header("LightingPreset")]
     [SerializeField] private Gradient skyColor;
@@ -81,7 +83,7 @@ public class DayNightCycle : MonoBehaviour
     private void UpdateSunRotation()
     {
         float sunRotation = Mathf.Lerp(-90, 270, timeOfDay / 144f);
-        sun.transform.rotation=Quaternion.Euler(sunRotation,sun.transform.rotation.y,sun.transform.rotation.z);
+        sun.transform.rotation=Quaternion.Euler(sunRotation,sunRotationY,sun.transform.rotation.z);
     }
 
     private void UpdateLighting()
