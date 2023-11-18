@@ -24,39 +24,20 @@ public class Character : MonoBehaviour
     protected CharacterData characterData;
 
     SkeletonAnimation skAni;
+    private SkeletonAnimation shadowSkAni;
     [SerializeField]
     public Transform myTransform;
 
-    public SkeletonAnimation SkAni { get { return skAni; } }
+    public SkeletonAnimation SkAni => skAni;
+    public SkeletonAnimation ShadowSkAni => shadowSkAni;
 
     // Start is called before the first frame update
     protected virtual void Awake()
     {
-        animator= GetComponentInChildren<Animator>();
-        skAni = GetComponentInChildren<SkeletonAnimation>();
-
         myTransform = transform.Find("Body");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-/*    public void PlayAnimation(AnimationType newAnimationType)
-    {
-        animator.Play(newAnimationType.ToString());
-    }
-
-    public void PlayAnimation(int newAnimationType)
-    {
-        animator.Play(((AnimationType)newAnimationType).ToString());
-    }*/
-
-    public string GetDialogue()
-    {
-        return dialogueName;
+        animator= GetComponentInChildren<Animator>();
+        skAni = myTransform.GetComponent<SkeletonAnimation>();
+        shadowSkAni = transform.Find("Shadow").GetComponentInChildren<SkeletonAnimation>();
     }
 
     public void SetCharacterData(CharacterData cd)
@@ -68,6 +49,13 @@ public class Character : MonoBehaviour
     {
         //myTransform.GetComponent<MeshRenderer>().material = AddressableManager.LoadObject<Material>(characterInfo + "_Material");
         skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(characterInfo + "_Skeleton");
+        shadowSkAni.skeletonDataAsset = skAni.skeletonDataAsset;
         //skAni.Initialize(true);
-    }    
+    }
+
+    public void SkeletonInitialize()
+    {
+        skAni.Initialize(true);
+        shadowSkAni.Initialize(true);
+    }
 }

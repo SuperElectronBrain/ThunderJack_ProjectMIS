@@ -20,11 +20,11 @@ public class GreetingState : State<NPC>
 
         if (entity.lookDir.isFront)
         {
-            entity.SkAni.AnimationName = "A_hi_F";
+            entity.ChangeAni("A_hi_F");
         }
         else
         {
-            entity.SkAni.AnimationName = "A_hi_B";
+            entity.ChangeAni("A_hi_B");
         }
         
         entity.agent.isStopped = true;

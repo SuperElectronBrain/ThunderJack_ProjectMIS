@@ -15,9 +15,10 @@ public class IdleState : State<NPC>
         StartCoroutine(waitCo);
 
         if (entity.lookDir.isFront)
-            entity.SkAni.AnimationName = "A_idle_F";
+            entity.ChangeAni("A_idle_F");
         else
-            entity.SkAni.AnimationName = "A_idle_B";
+            entity.ChangeAni("A_idle_B");
+
     }
 
     public override void Execute(NPC entity)

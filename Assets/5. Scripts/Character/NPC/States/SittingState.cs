@@ -8,9 +8,9 @@ public class SittingState : State<NPC>
     {
         entity.agent.enabled = false;
         if (entity.lookDir.isFront)
-            entity.SkAni.AnimationName = "A_sit1_F";
+            entity.ChangeAni("A_sit1_F");
         else
-            entity.SkAni.AnimationName = "A_sit1_B";
+            entity.ChangeAni("A_sit1_B");
     }
 
     public override void Execute(NPC entity)
