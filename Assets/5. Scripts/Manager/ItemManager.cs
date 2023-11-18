@@ -78,14 +78,13 @@ public class ItemManager : MonoBehaviour
         basicItemData = new();
         jewelryItemData = new();
 
-        var itemRecipe = GameManager.Instance.DataBase.Parser("Item");
-        //var itemRecipe = GameManager.Instance.DataBase.Parser("Item_Master");
+        //var itemRecipe = GameManager.Instance.DataBase.Parser("Item");
+        var itemRecipe = GameManager.Instance.DataBase.Parser("Item_Master");
 
         foreach (var ir in itemRecipe)
         {
             int itemType = Tools.IntParse(ir["Item_Type"]);
             Sprite resourceImage = AddressableManager.LoadObject<Sprite>(ir["Item_Icon_Name"].ToString());
-            print(ir["Item_Color"].ToString());
 
             switch (itemType)
             {
@@ -170,6 +169,7 @@ public class ItemManager : MonoBehaviour
             }
             else
             {
+                Debug.Log(recipe["Item_ID"].ToString());
                 int itemComb1 = Tools.IntParse(recipe["Make_Material_1"]);
                 int itemComb2 = Tools.IntParse(recipe["Make_Material_2"]);
                 ((JewelryItemData)basicItemData[Tools.IntParse(recipe["Item_ID"]) - 1]).itemComb1 = itemComb1;
