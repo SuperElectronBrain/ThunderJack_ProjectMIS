@@ -30,8 +30,23 @@ public class SpineAnimationBehaviour : StateMachineBehaviour
 		}
 		if (clip != null)
 		{
-			trackEntry = animator.GetComponentInChildren<Spine.Unity.SkeletonAnimation>().state.SetAnimation(layerIndex, clip.name, stateInfo.loop);
-			trackEntry.TimeScale = stateInfo.speed;
+			Spine.Unity.SkeletonAnimation skeletonAnimation = animator.GetComponent<Spine.Unity.SkeletonAnimation>();
+			if(skeletonAnimation == null)
+			{ skeletonAnimation = animator.GetComponentInChildren<Spine.Unity.SkeletonAnimation>(); }
+			if (skeletonAnimation != null)
+			{ trackEntry = skeletonAnimation.state.SetAnimation(layerIndex, clip.name, stateInfo.loop); }
+
+			if(skeletonAnimation == null)
+			{
+				Spine.Unity.SkeletonGraphic skeletonGraphic = animator.GetComponent<Spine.Unity.SkeletonGraphic>();
+				if (skeletonGraphic == null)
+				{ skeletonGraphic = animator.GetComponentInChildren<Spine.Unity.SkeletonGraphic>(); }
+				if (skeletonGraphic != null)
+				{ trackEntry = skeletonGraphic.AnimationState.SetAnimation(layerIndex, clip.name, stateInfo.loop); }
+			}
+			
+			if (trackEntry != null)
+			{ trackEntry.TimeScale = stateInfo.speed; }
 		}
 	}
 

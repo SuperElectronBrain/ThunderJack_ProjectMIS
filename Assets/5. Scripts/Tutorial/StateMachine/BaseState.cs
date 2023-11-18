@@ -96,7 +96,7 @@ public class TutorialCondition3 : BaseState<TutorialManager>
 		param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("먼지가 가득 쌓였네…", true); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 3);
-		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(true, "청소하기", true); }, 3);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(true, new Vector2(Screen.width * 0.6f, Screen.height * 0.4f), "청소하기", true); }, 3);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -107,7 +107,7 @@ public class TutorialCondition3 : BaseState<TutorialManager>
 				trigger0 = true;
 				param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 2);
-				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(false, ""); }, 2);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero, ""); }, 2);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("작업대가 잘 작동되는지 시험해봐야 하는데… 아까 편지도 그렇고, 마을에서 재료를 구한 뒤 테스트 해봐야겠다.", true); }, 3);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 7);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable); }, 7);
@@ -226,7 +226,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			PlayerCharacter.main.transform.GetChild(0).gameObject.SetActive(false);
 			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(false);
 			GameObject.Find("도칸").transform.GetChild(0).gameObject.SetActive(false);
-			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", true);
+			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero, "", true);
 		}, 1);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 3);
 		param.WaitFewSeconds(() => { param.dokan.PopUpSpeechBubble("어라 레딘님이시죠? 안녕하세요! 전 도칸이라고 해요. 돌아오셨군요!", true); }, 4);
@@ -255,7 +255,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			PlayerCharacter.main.transform.GetChild(0).gameObject.SetActive(true);
 			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(true);
 			GameObject.Find("도칸").transform.GetChild(0).gameObject.SetActive(true);
-			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", false);
+			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero);
 		}, 40);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 42);
 	}
@@ -284,7 +284,7 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 			PlayerCharacter.main.transform.GetChild(0).gameObject.SetActive(false);
 			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(false);
 			GameObject.Find("베일").transform.GetChild(0).gameObject.SetActive(false);
-			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", true);
+			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero, "", true);
 		}, 1);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 3);
 		param.WaitFewSeconds(() => { param.beil.PopUpSpeechBubble("어서오십쇼!", true); }, 4);
@@ -321,7 +321,7 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 			PlayerCharacter.main.transform.GetChild(0).gameObject.SetActive(true);
 			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(true);
 			GameObject.Find("베일").transform.GetChild(0).gameObject.SetActive(true);
-			PlayerCharacter.main.PopUpInteractionIcon(false, "상호작용", false);
+			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero);
 		}, 51);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 53);
 		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N9); }, 54);
@@ -491,7 +491,7 @@ public class TutorialCondition14 : BaseState<TutorialManager>
 	public override void StateBegin(TutorialManager param)
 	{
 		param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Communication); }, 0);
-		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(true, "기도하기", true); }, 0);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(true, new Vector2(Screen.width * 0.6f, Screen.height * 0.4f), "기도하기", true); }, 0);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -499,7 +499,7 @@ public class TutorialCondition14 : BaseState<TutorialManager>
 		{
 			if (trigger0 == false)
 			{
-				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(false, ""); }, 0);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero); }, 0);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("기도를 했더니 무언가 보인다. 고급 장신구에 맞게 제작하면 될 것 같은 체인이 떨어져있다.", true); }, 0);
 				param.WaitFewSeconds(() => { Inventory.main.AddAItem(1, 1, 1); }, 0);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("이제 가게로 돌아가보자", true); }, 5);

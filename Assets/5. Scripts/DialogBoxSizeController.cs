@@ -28,7 +28,7 @@ public class DialogBoxSizeController : MonoBehaviour
 		Vector3 size = m_DialogBack.transform.localScale;
 		size.y = value0 + (value1 * Mathf.RoundToInt(m_DialogScript.rectTransform.rect.height / value2));
 		m_DialogBack.transform.localScale = size;
-
+		
 		Vector3 vector = m_DialogBack.transform.localPosition;
 		vector.y = (m_DialogBack.transform.localScale.y - 1) * ((m_DialogBack.sprite.rect.height / m_DialogBack.sprite.pixelsPerUnit) / 2);
 		m_DialogBack.transform.localPosition = vector;

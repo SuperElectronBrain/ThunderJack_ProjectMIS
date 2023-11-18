@@ -229,7 +229,7 @@ public class PlayerCharacter : CharacterBase
 					}
 					else if(t_InteractionObj.interaction == null)
 					{
-						PopUpInteractionIcon(false);
+						PopUpInteractionIcon(false, Vector2.zero);
 					}
 				}
 				if (Input.GetKeyDown(KeyCode.Q) == true)
@@ -456,7 +456,7 @@ public class PlayerCharacter : CharacterBase
 	}
 	private void FootStepSoundProcessor()
 	{
-		if (m_Velocity != 0)
+		if (m_Velocity > 0.1f)
 		{
 			if (isGround == true)
 			{
@@ -479,7 +479,7 @@ public class PlayerCharacter : CharacterBase
 				}
 			}
 		}
-		else if(m_Velocity == 0)
+		else if(m_Velocity < 0.1f)
 		{
 			if (m_FootStepSound != null)
 			{
@@ -560,7 +560,7 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 		
-		PopUpInteractionIcon(InteractableObjects.Count > 0);
+		PopUpInteractionIcon(InteractableObjects.Count > 0, Vector2.zero);
 	}
 	private void OnInteractableObjectExit(Collider other)
 	{
@@ -574,19 +574,19 @@ public class PlayerCharacter : CharacterBase
 			}
 		}
 
-		PopUpInteractionIcon(InteractableObjects.Count > 0);
+		PopUpInteractionIcon(InteractableObjects.Count > 0, Vector2.zero);
 	}
 	public virtual void CommunicationStart()
 	{
 		ChangeState(PlayerCharacterState.Communication);
-		PopUpInteractionIcon(false);
+		PopUpInteractionIcon(false, Vector2.zero);
 	}
 	public virtual void CommunicationEnd()
 	{
 		ChangeState(PlayerCharacterState.Moveable);
 		m_InteractionTarget = null;
 		//CloseNPCShop();
-		PopUpInteractionIcon(true);
+		PopUpInteractionIcon(true, Vector2.zero);
 	}
 	#endregion
 
@@ -794,7 +794,8 @@ public class PlayerCharacter : CharacterBase
 								FlowerPot t_FlowerPot = t_InteractableObject.interaction as FlowerPot;
 								if (t_Flower != null || t_FlowerPot != null)
 								{
-									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "수확하기";
+									if (t_Flower != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "수확하기"; }
+									else if (t_FlowerPot != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "밭 가꾸기"; }
 									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
 									{
 										if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants != null)
@@ -854,14 +855,14 @@ public class PlayerCharacter : CharacterBase
 	#endregion
 
 	#region UIControll
-	public void PopUpInteractionIcon(bool param , string pString = "상호작용", bool pCall = false)
+	public void PopUpInteractionIcon(bool param, Vector2 pVector, string pString = "상호작용", bool pCall = false)
 	{
+		isInteractionIconUsed = pCall;
 		if (m_PlayerCharacterUIScript != null)
 		{
 			if (m_PlayerCharacterUIScript.m_InteractionIcon != null)
 			{
-				isInteractionIconUsed = pCall;
-
+				m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.position = pVector;
 				if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.activeSelf != param)
 				{
 					m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionIconRect.gameObject.SetActive(param);
