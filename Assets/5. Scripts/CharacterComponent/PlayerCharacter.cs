@@ -79,6 +79,23 @@ public class PlayerCharacter : CharacterBase
 	//Interaction Item
 	private InteractionItem m_InteractionItem;
 
+	[Header("기본 상호작용")]
+	[SerializeField] private string m_InteractionIconDefaultText = "상호작용";
+	[Header("NPC 상호작용")]
+	[SerializeField] private string m_InteractionIconNPCText = "대화하기";
+	[Header("게시판 상호작용")]
+	[SerializeField] private string m_InteractionIconNoticeBoardText = "확인하기";
+	[Header("밭 상호작용")]
+	[SerializeField] private string m_InteractionIcondFlowerPotText = "밭 가꾸기";
+	[Header("작물 상호작용")]
+	[SerializeField] private string m_InteractionIcondHarvestText = "수확하기";
+	[Header("문 상호작용")]
+	[SerializeField] private string m_InteractionIcondDoorText = "이동하기";
+	[Header("우편함 상호작용")]
+	[SerializeField] private string m_InteractionIcondMailBoxText = "확인하기";
+	[Header("낚시 상호작용")]
+	[SerializeField] private string m_InteractionIcondFishingText = "낚시하기";
+
 	private GameObject m_GuideUI;
 	public static PlayerCharacter main
 	{ 
@@ -774,14 +791,14 @@ public class PlayerCharacter : CharacterBase
 
 							if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText != null)
 							{
-								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "상호작용";
+								m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = m_InteractionIconDefaultText;
 
 								NPC t_NPC = t_InteractableObject.interaction as NPC;
 								NoticeBoard t_NoticeBoard = t_InteractableObject.interaction as NoticeBoard;
 								if (t_NPC != null || t_NoticeBoard != null)
 								{
-									if (t_NPC != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "대화하기"; }
-									else if (t_NoticeBoard != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기"; }
+									if (t_NPC != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = m_InteractionIconNPCText; }
+									else if (t_NoticeBoard != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = m_InteractionIconNoticeBoardText; }
 									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
 									{
 										if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Talk != null)
@@ -794,8 +811,8 @@ public class PlayerCharacter : CharacterBase
 								FlowerPot t_FlowerPot = t_InteractableObject.interaction as FlowerPot;
 								if (t_Flower != null || t_FlowerPot != null)
 								{
-									if (t_Flower != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "수확하기"; }
-									else if (t_FlowerPot != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "밭 가꾸기"; }
+									if (t_Flower != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = m_InteractionIcondHarvestText; }
+									else if (t_FlowerPot != null) { m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = m_InteractionIcondFlowerPotText; }
 									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
 									{
 										if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Plants != null)
@@ -808,19 +825,19 @@ public class PlayerCharacter : CharacterBase
 								InteractablePortal t_Portal = t_InteractableObject.interaction as InteractablePortal;
 								if (t_Door != null || t_Portal != null)
 								{
-									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "이동하기";
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = m_InteractionIcondDoorText;
 									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
 									{
-										if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Open != null)
+										if (m_PlayerCharacterUIScript.m_InteractionIcon.m_DoorOpen != null)
 										{
-											m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_Open;
+											m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage.sprite = m_PlayerCharacterUIScript.m_InteractionIcon.m_DoorOpen;
 										}
 									}
 								}
 								Mailbox t_Mailbox = t_InteractableObject.interaction as Mailbox;
 								if (t_Mailbox != null)
 								{
-									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "확인하기";
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = m_InteractionIcondMailBoxText;
 									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
 									{
 										if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Mail != null)
@@ -832,7 +849,7 @@ public class PlayerCharacter : CharacterBase
 								FishingPointComponent t_Fish = t_InteractableObject.interaction as FishingPointComponent;
 								if (t_Fish != null)
 								{
-									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "낚시하기";
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = m_InteractionIcondFishingText;
 									if (m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionImage != null)
 									{
 										if (m_PlayerCharacterUIScript.m_InteractionIcon.m_Fish != null)

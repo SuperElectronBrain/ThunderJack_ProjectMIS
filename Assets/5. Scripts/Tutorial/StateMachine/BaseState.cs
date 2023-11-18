@@ -505,6 +505,7 @@ public class TutorialCondition14 : BaseState<TutorialManager>
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("이제 가게로 돌아가보자", true); }, 5);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 8);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable); }, 8);
+				GameManager.Instance.GameTime.enabled = true;
 				trigger0 = true;
 			}
 		}
@@ -539,6 +540,7 @@ public class TutorialCondition16 : BaseState<TutorialManager>
 	int GuideState = 0;
 	public override void StateBegin(TutorialManager param)
 	{
+		GameManager.Instance.GameTime.enabled = false;
 		param.WaitFewSeconds(() =>
 		{ 
 			PlayerCharacterUIScript.main.PopupTutorialImage(0, true);
