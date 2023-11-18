@@ -100,7 +100,6 @@ namespace RavenCraftCore
             pageObject.SetPageInfo(bookPages[0].pageName, bookPages[0].pageDescription, bookPages[0].perfection,
                 bookPages[0].pageImage);
             pageObject.SetElementValues(100f, 72f, 32f);
-            pageObject.gameObject.SetActive(true);
             skAni.state.Complete += CompleteOpen;
             curPage = 0;
             curPageName = bookPages[0].pageName;

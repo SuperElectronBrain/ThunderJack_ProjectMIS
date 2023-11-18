@@ -23,7 +23,7 @@ public class DialogueBox : MonoBehaviour
 
     public void SetDialog(string newDialog)
     {
-        dialogBox.text = newDialog;
+        dialogBox.text = newDialog.Replace("\\n", "\n");
     }
 
     public void SetAcceptButton(string newDialog)
