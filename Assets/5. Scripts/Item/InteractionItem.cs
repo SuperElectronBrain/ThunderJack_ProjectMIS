@@ -66,9 +66,9 @@ public class InteractionItem : MonoBehaviour
         skAni = returnItem.GetComponent<SkeletonAnimation>();
         skAni.skeletonDataAsset =
             AddressableManager.LoadObject<SkeletonDataAsset>(itemData.particlesName);
-        yield return new WaitForSeconds(0.02f);
+        yield return new WaitUntil(() => skAni.skeletonDataAsset != null);
         skAni.Initialize(true);
-        skAni.skeleton.SetSkin(itemData.accessoryColor.ToString());
+        skAni.skeleton.SetSkin(itemData.accessoryColor);
         skAni.skeleton.SetToSetupPose();
     }
 }
