@@ -58,7 +58,7 @@ public class GameTime : MonoBehaviour
                 minute = 0;
                 hour++;
 
-                if (hour == 9)
+                if (hour == 9 && day != 1)
                 {
                     EventManager.Publish(EventType.WorkTime);
                     isTimeStop = true;

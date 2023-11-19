@@ -120,29 +120,18 @@ namespace RavenCraftCore
         {
             var items = GameManager.Instance.ItemManager.GetItemListByType(ItemType.Gem);
             //bookPages = new();
-            var page = 0;
             
             for (int i = 0; i < items.Count; i++)
             {
                 if (!PlayerPrefs.HasKey(items[i].itemNameEg + "_JewelryPerfection")) continue;
-                bookPages.Add(
-                    new BookPageData
-                    {
-                        pageName = items[i].itemNameEg,
-                        page = page,
-                        JewelryRank = (JewelryRank)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryRank"),
-                        perfection = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryPerfection")
-                    }
-                );
-                page++;
-            }
 
-            for (int i = 0; i < bookPages.Count; i++)
-            {
-                if (bookPages[i].pageName == curPageName)
-                {
-                    curPage = i + 1;
-                }
+                bookPages[i].perfection = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryPerfection");
+                bookPages[i].eType1 = (ElementType)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryElement1");
+                bookPages[i].eType2 = (ElementType)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryElement2");
+                bookPages[i].eType3 = (ElementType)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryElement3");
+                bookPages[i].eValue1 = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryElementValue1");
+                bookPages[i].eValue2 = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryElementValue2");
+                bookPages[i].eValue3 = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryElementValue3");
             }
         }
 

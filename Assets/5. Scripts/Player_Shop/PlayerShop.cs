@@ -67,7 +67,7 @@ public class PlayerShop : MonoBehaviour
     {        
         var newGuest = guestData.GetRandomGuest();
         //var newRequest = sales.GetRequestData(newGuest.guestId);
-        var newRequest = sales.GetRequestData(1);
+        var newRequest = sales.GetRequestData(newGuest.guestId);
 
         guest.InitGuest(newGuest, newRequest);
         guest.EntryShop();
@@ -127,7 +127,7 @@ public class PlayerShop : MonoBehaviour
     {
         var request = guest.GetRequestData();
         
-        request = sales.GetRequestData(request.textNext1);
+        request = sales.NextRequestData(request.textNext1);
         guest.SetRequestData(request);
         dialogBox.SetAcceptButton(request.textAnswer1);
         dialogBox.SetRefusalButton(request.textAnswer2);
