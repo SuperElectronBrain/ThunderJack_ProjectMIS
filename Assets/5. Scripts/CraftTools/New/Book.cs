@@ -73,18 +73,6 @@ namespace RavenCraftCore
             CraftTableCameraController.main.m_OnCompleteMove.AddListener(ActiveArrow);
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                NextPage();
-            }
-            else if (Input.GetKeyDown(KeyCode.Y))
-            {
-                PrevPage();
-            }
-        }
-
         void ActiveArrow(string upDown)
         {
             if(upDown.Equals("Down"))
@@ -140,6 +128,8 @@ namespace RavenCraftCore
                 bookPages[i].eValue2 = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryElementValue2");
                 bookPages[i].eValue3 = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryElementValue3");
             }
+            
+            PageSetting();
         }
 
         public void NextPage()

@@ -94,14 +94,9 @@ public class PressAccessoryPlate : MonoBehaviour
         isActive = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsPutAccessory()
     {
-        if (!isActive)
-            return;
-
-        if (!isSelect)
-            return;
+        return itemID != 0;
     }
 
     private void OnDestroy()
