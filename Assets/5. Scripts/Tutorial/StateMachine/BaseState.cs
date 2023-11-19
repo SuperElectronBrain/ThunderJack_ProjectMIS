@@ -256,6 +256,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(true);
 			GameObject.Find("µµÄ­").transform.GetChild(0).gameObject.SetActive(true);
 			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero);
+			PlayerCharacter.main.PopUpSpeechBubble("", false);
 		}, 40);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 42);
 		//param.WaitFewSeconds(() => { GameManager.Instance.GameTime.TimeStop(false); }, 43);
@@ -324,6 +325,7 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(true);
 			GameObject.Find("º£ÀÏ").transform.GetChild(0).gameObject.SetActive(true);
 			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero);
+			PlayerCharacter.main.PopUpSpeechBubble("", false);
 		}, 51);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 53);
 		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N9); }, 54);
