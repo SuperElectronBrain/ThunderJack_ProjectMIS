@@ -256,6 +256,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(true);
 			GameObject.Find("도칸").transform.GetChild(0).gameObject.SetActive(true);
 			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero);
+			PlayerCharacter.main.PopUpSpeechBubble("", false);
 		}, 40);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 42);
 		//param.WaitFewSeconds(() => { GameManager.Instance.GameTime.TimeStop(false); }, 43);
@@ -324,6 +325,7 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 			PlayerCharacter.main.transform.GetChild(2).gameObject.SetActive(true);
 			GameObject.Find("베일").transform.GetChild(0).gameObject.SetActive(true);
 			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero);
+			PlayerCharacter.main.PopUpSpeechBubble("", false);
 		}, 51);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 53);
 		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N9); }, 54);
@@ -465,12 +467,13 @@ public class TutorialCondition13 : BaseState<TutorialManager>
 			if (trigger0 == false)
 			{
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero); }, 0);
-
-				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("기도를 했더니 무언가 보인다. 고급 장신구에 맞게 제작하면 될 것 같은 체인이 떨어져있다.", true); }, 0);
-				param.WaitFewSeconds(() => { Inventory.main.AddAItem(1, 1, 1); }, 0);
-				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("이제 가게로 돌아가보자", true); }, 5);
-				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 8);
-				param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable); }, 8);
+				param.WaitFewSeconds(() => { param.coinThrowingEffect.Play(); }, 0);
+				param.WaitFewSeconds(() => { param.coinDonationEffect.Play(); }, 2);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("기도를 했더니 무언가 보인다. 고급 장신구에 맞게 제작하면 될 것 같은 체인이 떨어져있다.", true); }, 3);
+				param.WaitFewSeconds(() => { Inventory.main.AddAItem(1, 1, 1); }, 3);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("이제 가게로 돌아가보자", true); }, 8);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 11);
+				param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable); }, 11);
 				//GameManager.Instance.GameTime.TimeStop(false);
 				trigger0 = true;
 			}
