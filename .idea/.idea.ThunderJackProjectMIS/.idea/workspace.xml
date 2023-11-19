@@ -54,6 +54,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Editor/UI/ButtonEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Editor/UI/SelectableEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/UIBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Selectable.cs" root0="SKIP_HIGHLIGHTING" />
@@ -139,10 +140,10 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="41608">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="41608" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -195,7 +196,9 @@
       <workItem from="1700047061645" duration="27826000" />
       <workItem from="1700277274248" duration="21000" />
       <workItem from="1700277352930" duration="659000" />
-      <workItem from="1700372151271" duration="6680000" />
+      <workItem from="1700372151271" duration="11978000" />
+      <workItem from="1700390875091" duration="122000" />
+      <workItem from="1700391077072" duration="2637000" />
     </task>
     <servers />
   </component>
@@ -280,23 +283,23 @@
           <line>115</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\Guest.cs" initialLine="114" containingFunctionPresentation="메서드 'CheckItem'">
             <startOffsets>
-              <option value="2939" />
+              <option value="2973" />
             </startOffsets>
             <endOffsets>
-              <option value="3022" />
+              <option value="3056" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop_Sales.cs</url>
-          <line>92</line>
+          <line>108</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop_Sales.cs" initialLine="88" containingFunctionPresentation="메서드 'PriceCalc'">
             <startOffsets>
-              <option value="3217" />
+              <option value="3595" />
             </startOffsets>
             <endOffsets>
-              <option value="3241" />
+              <option value="3619" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="63" />
@@ -406,19 +409,6 @@
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/DB/DialogueBox.cs</url>
-          <line>30</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\DB\DialogueBox.cs" initialLine="30" containingFunctionPresentation="메서드 'SetAcceptButton'">
-            <startOffsets>
-              <option value="646" />
-            </startOffsets>
-            <endOffsets>
-              <option value="673" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="91" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/UI/UI_Animation/FadeIO.cs</url>
           <line>262</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\UI\UI_Animation\FadeIO.cs" initialLine="260" containingFunctionPresentation="메서드 'Rewind'">
@@ -456,6 +446,58 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/DB/DialogueBox.cs</url>
+          <line>31</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\DB\DialogueBox.cs" initialLine="31" containingFunctionPresentation="메서드 'SetAcceptButton'">
+            <startOffsets>
+              <option value="686" />
+            </startOffsets>
+            <endOffsets>
+              <option value="755" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop.cs</url>
+          <line>78</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop.cs" initialLine="78" containingFunctionPresentation="메서드 'ShowDialog'">
+            <startOffsets>
+              <option value="2094" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2134" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop.cs</url>
+          <line>69</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop.cs" initialLine="69" containingFunctionPresentation="메서드 'EntryGuset'">
+            <startOffsets>
+              <option value="1863" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1919" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop.cs</url>
+          <line>163</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop.cs" initialLine="163" containingFunctionPresentation="메서드 'AcceptSales'">
+            <startOffsets>
+              <option value="4590" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4591" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="103" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

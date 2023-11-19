@@ -52,9 +52,9 @@ public class BookPage : MonoBehaviour
 
     public void SetElementValues(float per1, float per2, float per3)
     {
-        elementMaterial.SetFloat(materialProperty1, per1);
-        elementMaterial.SetFloat(materialProperty2, per2);
-        elementMaterial.SetFloat(materialProperty3, per3);
+        elementMaterial.SetFloat(materialProperty1, per1 * 0.01f);
+        elementMaterial.SetFloat(materialProperty2, per2 * 0.01f);
+        elementMaterial.SetFloat(materialProperty3, per3 * 0.01f);
     }
 
     public void SetElement(ElementType et1, ElementType et2, ElementType et3)
