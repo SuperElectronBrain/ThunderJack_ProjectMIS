@@ -71,10 +71,18 @@ public class CraftTableCameraController : MonoBehaviour
 		transform.rotation = Quaternion.Slerp(transform.rotation, m_NextRotation, 5 * DeltaTime);
 		if(m_IsCompleteMove == false)
 		{
-			if (Mathf.Abs(transform.rotation.eulerAngles.magnitude - m_NextRotation.eulerAngles.magnitude) < 0.01f)
+			if(m_NextRotation == Quaternion.Euler(m_DownRotation))
+			{
+				if (Mathf.Abs(transform.rotation.eulerAngles.magnitude - m_NextRotation.eulerAngles.magnitude) < 0.01f)
+				{
+					m_IsCompleteMove = true;
+					m_OnCompleteMove.Invoke("Down");
+				}
+			}
+			else if(m_NextRotation == m_OriginRotation)
 			{
 				m_IsCompleteMove = true;
-				m_OnCompleteMove.Invoke(m_NextRotation == m_OriginRotation ? "Up" : "Down");
+				m_OnCompleteMove.Invoke("Up");
 			}
 		}
 	}
