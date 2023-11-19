@@ -17,8 +17,15 @@ namespace RavenCraftCore
         public string pageName;
         public Sprite pageImage;
         public string pageDescription;
+        [TextArea] public string memo;
         public int page;
         public float perfection;
+        public float eValue1;
+        public float eValue2;
+        public float eValue3;
+        public ElementType eType1;
+        public ElementType eType2;
+        public ElementType eType3;
         public JewelryRank JewelryRank;
     }
 
@@ -73,7 +80,7 @@ namespace RavenCraftCore
             }
             else if (Input.GetKeyDown(KeyCode.Y))
             {
-                pageObject.GetComponent<FadeIO>().Rewind();
+                PrevPage();
             }
         }
 
@@ -102,7 +109,7 @@ namespace RavenCraftCore
                 return;
 
             pageObject.SetPageInfo(bookPages[0].pageName, bookPages[0].pageDescription, bookPages[0].perfection,
-                bookPages[0].pageImage);
+                bookPages[0].pageImage, bookPages[0].memo);
             pageObject.SetElementValues(100f, 72f, 32f);
             skAni.state.Complete += CompleteOpen;
             curPage = 0;
@@ -141,14 +148,14 @@ namespace RavenCraftCore
 
         public void NextPage()
         {
-            if (curPage >= bookPages.Count)
+            if (curPage > bookPages.Count)
                 return;
             pageObject.GetComponent<FadeIO>().Rewind();
             skAni.AnimationName = "Forward_1";
             skAni.Initialize(true);
             skAni.state.Complete += TurnThePage;
-            curPage++;
             
+            curPage++;
         }
 
         public void PrevPage()
@@ -156,15 +163,24 @@ namespace RavenCraftCore
             if (curPage <= 0)
                 return;
             
+            pageObject.GetComponent<FadeIO>().Rewind();
+            skAni.AnimationName = "Backward_2";
+            skAni.Initialize(true);
+            skAni.state.Complete += TurnThePage;
+            
             curPage--;
-            curPageName = bookPages[curPage - 1].pageName;
         }
 
         void TurnThePage(Spine.TrackEntry te)
         {
             pageObject.gameObject.SetActive(true);
-            pageObject.SetPageInfo(bookPages[curPage].pageName, bookPages[curPage].pageDescription, bookPages[curPage].perfection,
-                bookPages[curPage].pageImage);
+            pageObject.SetPageInfo(bookPages[curPage].pageName, bookPages[curPage].pageDescription,
+                bookPages[curPage].perfection,
+                bookPages[curPage].pageImage, bookPages[curPage].memo);
+            pageObject.SetElement(bookPages[curPage].eType1, bookPages[curPage].eType2,
+                bookPages[curPage].eType3);
+            pageObject.SetElementValues(bookPages[curPage].eValue1, bookPages[curPage].eValue2,
+                bookPages[curPage].eValue3);
             skAni.state.Complete -= TurnThePage;
         }
 
