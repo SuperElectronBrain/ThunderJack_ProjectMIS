@@ -137,7 +137,7 @@ public class PlayerShop : MonoBehaviour
     { 
         var request = guest.GetRequestData();
         
-        request = sales.GetRequestData(request.success);
+        request = sales.NextRequestData(request.success);
         guest.SetRequestData(request);
         dialogBox.SetAcceptButton("-1");
         dialogBox.SetRefusalButton("-1");
@@ -150,7 +150,7 @@ public class PlayerShop : MonoBehaviour
     {
         var request = guest.GetRequestData();
         
-        request = sales.GetRequestData(request.fail);
+        request = sales.NextRequestData(request.fail);
         guest.SetRequestData(request);
         
         dialogBox.SetDialog(request.requestScript);
@@ -185,7 +185,7 @@ public class PlayerShop : MonoBehaviour
             case 2:
                 var request = guest.GetRequestData();
         
-                request = sales.GetRequestData(request.textNext2);
+                request = sales.NextRequestData(request.textNext2);
                 guest.SetRequestData(request);
         
                 dialogBox.SetDialog(request.requestScript);

@@ -84,6 +84,8 @@ namespace RavenCraftCore
         {
             if (!isUsed)
                 return;
+            if (!accessoryPlate.IsPutAccessory())
+                return;
             isGrab = true;
             CursorManager.SetCursorPosition(handleObject.position);
             prevPos = CursorManager.GetCursorPosition();
