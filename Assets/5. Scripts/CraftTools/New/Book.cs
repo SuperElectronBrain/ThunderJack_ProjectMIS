@@ -37,6 +37,7 @@ namespace RavenCraftCore
         [SerializeField] private List<BookPageData> bookPages;
         [SerializeField] private int curPage;
         [SerializeField] private BookPage pageObject;
+        [SerializeField] private GameObject bookPageArrow;
 
         void OnBecameVisible()
         {
@@ -68,6 +69,8 @@ namespace RavenCraftCore
             EventManager.Subscribe(EventType.CreateComplete, ResetBook);
             EventManager.Subscribe(EventType.CreateComplete, UpdateBook);
             pageObject.Init();
+            bookPageArrow.SetActive(false);
+            CraftTableCameraController.main.m_OnCompleteMove.AddListener(ActiveArrow);
         }
 
         private void Update()
@@ -80,6 +83,11 @@ namespace RavenCraftCore
             {
                 PrevPage();
             }
+        }
+
+        void ActiveArrow()
+        {
+            bookPageArrow.SetActive(true);
         }
 
         void ResetBook()
@@ -135,6 +143,8 @@ namespace RavenCraftCore
         {
             if (curPage > bookPages.Count)
                 return;
+            
+            bookPageArrow.SetActive(false);
             pageObject.GetComponent<FadeIO>().Rewind();
             skAni.AnimationName = "Forward_1";
             skAni.Initialize(true);
@@ -148,6 +158,7 @@ namespace RavenCraftCore
             if (curPage <= 0)
                 return;
             
+            bookPageArrow.SetActive(false);
             pageObject.GetComponent<FadeIO>().Rewind();
             skAni.AnimationName = "Backward_2";
             skAni.Initialize(true);
@@ -160,6 +171,7 @@ namespace RavenCraftCore
         {
             pageObject.gameObject.SetActive(true);
             PageSetting();
+            bookPageArrow.SetActive(true);
             skAni.state.Complete -= TurnThePage;
         }
 
