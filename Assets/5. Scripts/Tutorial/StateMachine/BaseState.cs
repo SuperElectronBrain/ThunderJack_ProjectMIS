@@ -41,7 +41,6 @@ public class TutorialCondition0 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
-		GameManager.Instance.GameTime.enabled = false;
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("먼길 오느라 잠깐 쉬었으니… 다시 출발해볼까 곧 도착할거야", true); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 5);
 	}
@@ -216,6 +215,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
+		//GameManager.Instance.GameTime.TimeStop(true);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 		param.WaitFewSeconds(() => 
 		{
@@ -258,6 +258,7 @@ public class TutorialCondition7 : BaseState<TutorialManager>
 			PlayerCharacter.main.PopUpInteractionIcon(false, Vector2.zero);
 		}, 40);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 42);
+		//param.WaitFewSeconds(() => { GameManager.Instance.GameTime.TimeStop(false); }, 43);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -274,6 +275,7 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
+		//param.WaitFewSeconds(() => { GameManager.Instance.GameTime.TimeStop(true); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 		param.WaitFewSeconds(() =>
 		{
@@ -325,7 +327,8 @@ public class TutorialCondition8 : BaseState<TutorialManager>
 		}, 51);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 53);
 		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N9); }, 54);
-		
+		//param.WaitFewSeconds(() => { GameManager.Instance.GameTime.TimeStop(false); }, 54);
+
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -342,6 +345,7 @@ public class TutorialCondition9 : BaseState<TutorialManager>
 {
 	public override void StateBegin(TutorialManager param)
 	{
+		GameObject.Find("베일").GetComponent<NPC>().ChangeState(NPCBehaviour.Business);
 		param.wall7.SetActive(true);
 		param.wall8.SetActive(true);
 	}
@@ -396,6 +400,7 @@ public class TutorialCondition11 : BaseState<TutorialManager>
 	{
 		PlayerCharacter.main.PopUpSpeechBubble("이제 장신구를 구매해볼까?", true);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 3);
+		GameObject.Find("가가").GetComponent<NPC>().ChangeState(NPCBehaviour.Business);
 
 		param.WaitFewSeconds(() => {
 			Canvas canvas = UnityEngine.Object.FindObjectOfType<Canvas>();
@@ -450,7 +455,7 @@ public class TutorialCondition13 : BaseState<TutorialManager>
 	public override void StateBegin(TutorialManager param)
 	{
 		param.wall9.SetActive(true);
-		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = false; }, 0);
+		//param.WaitFewSeconds(() => { GameManager.Instance.GameTime.TimeStop(true); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeOut(1); }, 0);
 		param.WaitFewSeconds(() =>
 		{
@@ -469,10 +474,9 @@ public class TutorialCondition13 : BaseState<TutorialManager>
 			PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable);
 		}, 8);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.FadeIn(1); }, 9);
-		param.WaitFewSeconds(() => { GameManager.Instance.GameTime.enabled = true; }, 8);
+		//param.WaitFewSeconds(() => { GameManager.Instance.GameTime.TimeStop(false); }, 8);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("퓨퓨숲은 오른쪽 폭포 강 기슭에 있었을거야.", true); }, 8);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 11);
-		param.WaitFewSeconds(() => { TutorialManager.EventPublish(TutorialStates.N14); }, 11);
 	}
 	public override void StateUpdate(TutorialManager param)
 	{
@@ -505,7 +509,7 @@ public class TutorialCondition14 : BaseState<TutorialManager>
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("이제 가게로 돌아가보자", true); }, 5);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 8);
 				param.WaitFewSeconds(() => { PlayerCharacter.main.ChangeState(PlayerCharacterState.Moveable); }, 8);
-				GameManager.Instance.GameTime.enabled = true;
+				//GameManager.Instance.GameTime.TimeStop(false);
 				trigger0 = true;
 			}
 		}
@@ -540,7 +544,7 @@ public class TutorialCondition16 : BaseState<TutorialManager>
 	int GuideState = 0;
 	public override void StateBegin(TutorialManager param)
 	{
-		GameManager.Instance.GameTime.enabled = false;
+		GameManager.Instance.GameTime.TimeStop(true);
 		param.WaitFewSeconds(() =>
 		{ 
 			PlayerCharacterUIScript.main.PopupTutorialImage(0, true);
@@ -653,7 +657,7 @@ public class TutorialCondition16 : BaseState<TutorialManager>
 				PlayerCharacterUIScript.main.PopupTutorialText(11, false);
 				GuideState = 13;
 
-				GameManager.Instance.GameTime.enabled = true;
+				GameManager.Instance.GameTime.TimeStop(false);
 				TutorialManager.EventPublish(TutorialStates.N17);
 			}
 		}
