@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FishingPointComponent : MonoBehaviour, IInteraction
 {
-	[SerializeField] private KeyCode fishingKey;
+	[SerializeField] private KeyCode fishingKey = KeyCode.E;
 	[SerializeField] float firstImpactTimeMin = 0.0f;
 	[SerializeField] float firstImpactTimeMax = 3.0f;
 	[SerializeField] float IdleTimeMin = 0.0f;
