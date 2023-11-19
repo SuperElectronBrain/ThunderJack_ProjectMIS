@@ -6159,7 +6159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &514320373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12592,7 +12592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1674779974240467610, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 397.59998
+      value: -57
       objectReference: {fileID: 0}
     - target: {fileID: 1889948212997598927, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchorMax.y
@@ -12739,7 +12739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2616843844959642510, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -131.09998
+      value: 57
       objectReference: {fileID: 0}
     - target: {fileID: 2697819678241303768, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: isImage
@@ -12829,6 +12829,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -204.16666
       objectReference: {fileID: 0}
+    - target: {fileID: 2951727230995436589, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 132
+      objectReference: {fileID: 0}
     - target: {fileID: 2967653970988559811, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 356
@@ -12859,7 +12863,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3003909433646340627, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3014776560742931358, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_SizeDelta.x
@@ -12943,7 +12947,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3665344430129173389, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 303.80005
+      value: 201
       objectReference: {fileID: 0}
     - target: {fileID: 3717274040276098412, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       propertyPath: m_IsActive
@@ -19777,7 +19781,7 @@ MonoBehaviour:
   m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e42f8db00ac99f941af1812bd6352a89, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 342512153b2528345b03a49d7801849a, type: 2}
+  m_sharedMaterial: {fileID: 8816840341892955692, guid: e42f8db00ac99f941af1812bd6352a89, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -19866,7 +19870,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 342512153b2528345b03a49d7801849a, type: 2}
+  - {fileID: 8816840341892955692, guid: e42f8db00ac99f941af1812bd6352a89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22195,6 +22199,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba040b1e2432f3441a50d600ecf7c73f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guestData:
+    guestId: 0
+    guestNameEg: 
+    guestNameKo: 
+    guestGrade: 0
+    guestRate: 0
+  request:
+    requestStuff1: 0
+    requestStuff2: 0
+    requestId: 0
+    guestId: 0
+    requestType: 0
+    requestScript: 
+    textAnswer1: 
+    textAnswer2: 
+    textNext1: 0
+    textNext2: 0
+    success: 0
+    fail: 0
   answerWatingDuration: 9999
   craftWaitingDuration: 9999
 --- !u!114 &1847984249
