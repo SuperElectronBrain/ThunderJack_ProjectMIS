@@ -18,7 +18,6 @@ namespace RavenCraftCore
         public Sprite pageImage;
         public string pageDescription;
         [TextArea] public string memo;
-        public int page;
         public float perfection;
         public float eValue1;
         public float eValue2;
@@ -26,7 +25,6 @@ namespace RavenCraftCore
         public ElementType eType1;
         public ElementType eType2;
         public ElementType eType3;
-        public JewelryRank JewelryRank;
     }
 
     public class Book : MonoBehaviour
@@ -38,7 +36,6 @@ namespace RavenCraftCore
         [SerializeField] private bool isFirst;
         [SerializeField] private List<BookPageData> bookPages;
         [SerializeField] private int curPage;
-        [SerializeField] private string curPageName;
         [SerializeField] private BookPage pageObject;
 
         void OnBecameVisible()
@@ -70,6 +67,7 @@ namespace RavenCraftCore
             elementCircles.Init();
             EventManager.Subscribe(EventType.CreateComplete, ResetBook);
             EventManager.Subscribe(EventType.CreateComplete, UpdateBook);
+            pageObject.Init();
         }
 
         private void Update()
@@ -110,10 +108,8 @@ namespace RavenCraftCore
 
             pageObject.SetPageInfo(bookPages[0].pageName, bookPages[0].pageDescription, bookPages[0].perfection,
                 bookPages[0].pageImage, bookPages[0].memo);
-            pageObject.SetElementValues(100f, 72f, 32f);
             skAni.state.Complete += CompleteOpen;
             curPage = 0;
-            curPageName = bookPages[0].pageName;
         }
 
         private void UpdateBook()
@@ -163,6 +159,12 @@ namespace RavenCraftCore
         void TurnThePage(Spine.TrackEntry te)
         {
             pageObject.gameObject.SetActive(true);
+            PageSetting();
+            skAni.state.Complete -= TurnThePage;
+        }
+
+        void PageSetting()
+        {
             pageObject.SetPageInfo(bookPages[curPage].pageName, bookPages[curPage].pageDescription,
                 bookPages[curPage].perfection,
                 bookPages[curPage].pageImage, bookPages[curPage].memo);
@@ -170,7 +172,6 @@ namespace RavenCraftCore
                 bookPages[curPage].eType3);
             pageObject.SetElementValues(bookPages[curPage].eValue1, bookPages[curPage].eValue2,
                 bookPages[curPage].eValue3);
-            skAni.state.Complete -= TurnThePage;
         }
 
         [System.Serializable]
