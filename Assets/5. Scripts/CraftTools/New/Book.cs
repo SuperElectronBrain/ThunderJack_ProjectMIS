@@ -85,9 +85,12 @@ namespace RavenCraftCore
             }
         }
 
-        void ActiveArrow()
+        void ActiveArrow(string upDown)
         {
-            bookPageArrow.SetActive(true);
+            if(upDown.Equals("Down"))
+                bookPageArrow.SetActive(true);
+            else
+                bookPageArrow.SetActive(false);
         }
 
         void ResetBook()
