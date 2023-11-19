@@ -30,11 +30,6 @@ public class BookPage : MonoBehaviour
     private readonly string materialProperty5 = "_Element2_Color";
     private readonly string materialProperty6 = "_Element3_Color";
 
-    public void Init()
-    {
-        rateInfo.SetActive(false);
-    }
-    
     public void SetPageInfo(string name, string description, float perfectionValue, Sprite sprite, string memoText = "")
     {
         if (perfectionValue == 0)
@@ -50,19 +45,16 @@ public class BookPage : MonoBehaviour
         }
         
         pageName.text = name;
-        pageDescription.text = description.Replace("\\n", "\n");
+        pageDescription.text = description;
         perfection.text = perfectionInit + perfectionValue + "%";
         pageImage.sprite = sprite;
     }
 
     public void SetElementValues(float per1, float per2, float per3)
     {
-        Debug.Log(per1);
-        Debug.Log(per2);
-        Debug.Log(per3);
-        elementMaterial.SetFloat(materialProperty1, per1 * 0.01f);
-        elementMaterial.SetFloat(materialProperty2, per2 * 0.01f);
-        elementMaterial.SetFloat(materialProperty3, per3 * 0.01f);
+        elementMaterial.SetFloat(materialProperty1, per1);
+        elementMaterial.SetFloat(materialProperty2, per2);
+        elementMaterial.SetFloat(materialProperty3, per3);
     }
 
     public void SetElement(ElementType et1, ElementType et2, ElementType et3)

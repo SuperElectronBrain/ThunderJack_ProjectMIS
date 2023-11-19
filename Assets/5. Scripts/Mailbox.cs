@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public struct AdvencedQuestData
@@ -52,16 +51,10 @@ public class Mailbox : MonoBehaviour, IInteraction
 	[SerializeField] private Animator m_Animator;
 	[SerializeField] private AudioSource m_InteractionSound;
 
-	private Vector2 m_PewpewOriginPosition;
-
 	// Start is called before the first frame update
 	void Start()
     {
-		if (m_SD != null) 
-		{
-			m_PewpewOriginPosition = m_SD.transform.localPosition;
-			m_SD.SetActive(false); 
-		}
+		if (m_SD != null) { m_SD.SetActive(false); }
 		//하루가 지날때마다 퀘스트를 생성함
 		EventManager.Subscribe(EventType.Day, GenerateQuest);
 	}
@@ -152,11 +145,7 @@ public class Mailbox : MonoBehaviour, IInteraction
 		if (m_QuestData.questID != 0)
 		{
 			//퓨퓨를 활성화함
-			if (m_SD != null) 
-			{
-				m_SD.transform.localPosition = m_PewpewOriginPosition;
-				m_SD.SetActive(true);
-			}
+			if (m_SD != null) { m_SD.SetActive(true); }
 		}
 	}
 
@@ -242,23 +231,10 @@ public class Mailbox : MonoBehaviour, IInteraction
 
 		if (m_Animator != null) { m_Animator.SetTrigger("Fly"); }
 		Invoke("Deactivate", 3.0f);
-		InvokeRepeating("GoAwayes", 0, 0.02f);
-		
 	}
 
 	void Deactivate()
 	{
-		CancelInvoke("GoAwayes");
 		if (m_SD != null) { m_SD.SetActive(false); }
-	}
-
-	void GoAwayes()
-	{
-		if (m_SD != null)
-		{
-			Vector2 nextPosition = m_SD.transform.localPosition;
-			nextPosition.y = nextPosition.y + 0.02f;
-			m_SD.transform.localPosition = nextPosition;
-		}
 	}
 }

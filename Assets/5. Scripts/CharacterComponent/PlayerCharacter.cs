@@ -200,7 +200,7 @@ public class PlayerCharacter : CharacterBase
 							{
 								if (t_InteractionObj.interactionGO.name != "Portal (2)")
 								{
-									PopUpSpeechBubble("짐정리를 먼저하자.", true);
+									PopUpSpeechBubble("짐부터 푼 뒤에 우편함을 열어보자.", true);
 									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
 									binteractable = false;
 								}
@@ -477,14 +477,11 @@ public class PlayerCharacter : CharacterBase
 		{
 			if (isGround == true)
 			{
-				if (m_HorizontalMove != 0 || m_VerticalMove != 0)
+				if (m_FootStepSound != null)
 				{
-					if (m_FootStepSound != null)
+					if (m_FootStepSound.isPlaying == false)
 					{
-						if (m_FootStepSound.isPlaying == false)
-						{
-							m_FootStepSound.Play();
-						}
+						m_FootStepSound.Play();
 					}
 				}
 			}

@@ -9,11 +9,10 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Redin_SD_Material
   m_Shader: {fileID: 4800000, guid: b77e51f117177954ea863bdb422344fb, type: 3}
-  m_Parent: {fileID: 2100000, guid: 0418a32b225e71841bfe294e5a55c5a9, type: 2}
-  m_ModifiedSerializedProperties: 12
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DOUBLE_SIDED_LIGHTING
-  - _RECEIVE_SHADOWS
   - _STRAIGHT_ALPHA_INPUT
   m_InvalidKeywords:
   - _USE8NEIGHBOURHOOD_ON
@@ -34,9 +33,24 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Cutoff: 0.1
     - _DoubleSidedLighting: 1
+    - _LightAffectsAdditive: 0
+    - _OutlineMipLevel: 0
+    - _OutlineOpaqueAlpha: 1
+    - _OutlineReferenceTexWidth: 1024
+    - _OutlineSmoothness: 1
+    - _OutlineWidth: 3
+    - _ReceiveShadows: 0
+    - _StencilComp: 8
+    - _StencilRef: 1
     - _StraightAlphaInput: 1
+    - _ThresholdEnd: 0.25
+    - _TintBlack: 0
+    - _Use8Neighbourhood: 1
     - _ZWrite: 1
     m_Colors:
+    - _Black: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0.13207549, g: 0.118816644, b: 0.006852974, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []

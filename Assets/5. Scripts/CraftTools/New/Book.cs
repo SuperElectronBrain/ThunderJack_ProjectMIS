@@ -18,6 +18,7 @@ namespace RavenCraftCore
         public Sprite pageImage;
         public string pageDescription;
         [TextArea] public string memo;
+        public int page;
         public float perfection;
         public float eValue1;
         public float eValue2;
@@ -25,6 +26,7 @@ namespace RavenCraftCore
         public ElementType eType1;
         public ElementType eType2;
         public ElementType eType3;
+        public JewelryRank JewelryRank;
     }
 
     public class Book : MonoBehaviour
@@ -36,8 +38,8 @@ namespace RavenCraftCore
         [SerializeField] private bool isFirst;
         [SerializeField] private List<BookPageData> bookPages;
         [SerializeField] private int curPage;
+        [SerializeField] private string curPageName;
         [SerializeField] private BookPage pageObject;
-        [SerializeField] private GameObject bookPageArrow;
 
         void OnBecameVisible()
         {
@@ -68,17 +70,18 @@ namespace RavenCraftCore
             elementCircles.Init();
             EventManager.Subscribe(EventType.CreateComplete, ResetBook);
             EventManager.Subscribe(EventType.CreateComplete, UpdateBook);
-            pageObject.Init();
-            bookPageArrow.SetActive(false);
-            CraftTableCameraController.main.m_OnCompleteMove.AddListener(ActiveArrow);
         }
 
-        void ActiveArrow(string upDown)
+        private void Update()
         {
-            if(upDown.Equals("Down"))
-                bookPageArrow.SetActive(true);
-            else
-                bookPageArrow.SetActive(false);
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                NextPage();
+            }
+            else if (Input.GetKeyDown(KeyCode.Y))
+            {
+                PrevPage();
+            }
         }
 
         void ResetBook()
@@ -107,37 +110,46 @@ namespace RavenCraftCore
 
             pageObject.SetPageInfo(bookPages[0].pageName, bookPages[0].pageDescription, bookPages[0].perfection,
                 bookPages[0].pageImage, bookPages[0].memo);
+            pageObject.SetElementValues(100f, 72f, 32f);
             skAni.state.Complete += CompleteOpen;
             curPage = 0;
+            curPageName = bookPages[0].pageName;
         }
 
         private void UpdateBook()
         {
             var items = GameManager.Instance.ItemManager.GetItemListByType(ItemType.Gem);
             //bookPages = new();
+            var page = 0;
             
             for (int i = 0; i < items.Count; i++)
             {
                 if (!PlayerPrefs.HasKey(items[i].itemNameEg + "_JewelryPerfection")) continue;
-
-                bookPages[i].perfection = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryPerfection");
-                bookPages[i].eType1 = (ElementType)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryElement1");
-                bookPages[i].eType2 = (ElementType)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryElement2");
-                bookPages[i].eType3 = (ElementType)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryElement3");
-                bookPages[i].eValue1 = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryElementValue1");
-                bookPages[i].eValue2 = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryElementValue2");
-                bookPages[i].eValue3 = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryElementValue3");
+                bookPages.Add(
+                    new BookPageData
+                    {
+                        pageName = items[i].itemNameEg,
+                        page = page,
+                        JewelryRank = (JewelryRank)PlayerPrefs.GetInt(items[i].itemNameEg + "_JewelryRank"),
+                        perfection = PlayerPrefs.GetFloat(items[i].itemNameEg + "_JewelryPerfection")
+                    }
+                );
+                page++;
             }
-            
-            PageSetting();
+
+            for (int i = 0; i < bookPages.Count; i++)
+            {
+                if (bookPages[i].pageName == curPageName)
+                {
+                    curPage = i + 1;
+                }
+            }
         }
 
         public void NextPage()
         {
             if (curPage > bookPages.Count)
                 return;
-            
-            bookPageArrow.SetActive(false);
             pageObject.GetComponent<FadeIO>().Rewind();
             skAni.AnimationName = "Forward_1";
             skAni.Initialize(true);
@@ -151,7 +163,6 @@ namespace RavenCraftCore
             if (curPage <= 0)
                 return;
             
-            bookPageArrow.SetActive(false);
             pageObject.GetComponent<FadeIO>().Rewind();
             skAni.AnimationName = "Backward_2";
             skAni.Initialize(true);
@@ -163,13 +174,6 @@ namespace RavenCraftCore
         void TurnThePage(Spine.TrackEntry te)
         {
             pageObject.gameObject.SetActive(true);
-            PageSetting();
-            bookPageArrow.SetActive(true);
-            skAni.state.Complete -= TurnThePage;
-        }
-
-        void PageSetting()
-        {
             pageObject.SetPageInfo(bookPages[curPage].pageName, bookPages[curPage].pageDescription,
                 bookPages[curPage].perfection,
                 bookPages[curPage].pageImage, bookPages[curPage].memo);
@@ -177,6 +181,7 @@ namespace RavenCraftCore
                 bookPages[curPage].eType3);
             pageObject.SetElementValues(bookPages[curPage].eValue1, bookPages[curPage].eValue2,
                 bookPages[curPage].eValue3);
+            skAni.state.Complete -= TurnThePage;
         }
 
         [System.Serializable]

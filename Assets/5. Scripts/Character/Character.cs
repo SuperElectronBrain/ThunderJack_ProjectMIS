@@ -24,10 +24,12 @@ public class Character : MonoBehaviour
     protected CharacterData characterData;
 
     SkeletonAnimation skAni;
+    private SkeletonAnimation shadowSkAni;
     [SerializeField]
     public Transform myTransform;
 
     public SkeletonAnimation SkAni => skAni;
+    public SkeletonAnimation ShadowSkAni => shadowSkAni;
 
     // Start is called before the first frame update
     protected virtual void Awake()
@@ -35,6 +37,7 @@ public class Character : MonoBehaviour
         myTransform = transform.Find("Body");
         animator= GetComponentInChildren<Animator>();
         skAni = myTransform.GetComponent<SkeletonAnimation>();
+        shadowSkAni = transform.Find("Shadow").GetComponentInChildren<SkeletonAnimation>();
     }
 
     public void SetCharacterData(CharacterData cd)
@@ -46,11 +49,13 @@ public class Character : MonoBehaviour
     {
         //myTransform.GetComponent<MeshRenderer>().material = AddressableManager.LoadObject<Material>(characterInfo + "_Material");
         skAni.skeletonDataAsset = AddressableManager.LoadObject<SkeletonDataAsset>(characterInfo + "_Skeleton");
+        shadowSkAni.skeletonDataAsset = skAni.skeletonDataAsset;
         //skAni.Initialize(true);
     }
 
     public void SkeletonInitialize()
     {
         skAni.Initialize(true);
+        shadowSkAni.Initialize(true);
     }
 }
