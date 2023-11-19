@@ -12147,6 +12147,7 @@ GameObject:
   - component: {fileID: 913643433}
   - component: {fileID: 913643432}
   - component: {fileID: 913643431}
+  - component: {fileID: 913643434}
   m_Layer: 5
   m_Name: Book_Left
   m_TagString: Untagged
@@ -12161,11 +12162,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 913643429}
-  m_LocalRotation: {x: 0, y: 0, z: -0.13052624, w: 0.9914449}
+  m_LocalRotation: {x: -0, y: -0, z: -0.13052624, w: 0.9914449}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1865695309}
   m_Father: {fileID: 721993162}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -15}
@@ -12217,7 +12219,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 913643432}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7796541760225592520}
+        m_TargetAssemblyTypeName: RavenCraftCore.Book, Assembly-CSharp
+        m_MethodName: PrevPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &913643432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12231,7 +12245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12256,6 +12270,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 913643429}
   m_CullTransparentMesh: 1
+--- !u!114 &913643434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913643429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6f98e4202808d478b80a4699eb4274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isImage: 1
+  isFadeOut: 1
+  duration: 1
+  idleDuration: 0
+  rewindDuration: 0
+  isEnable: 1
+  isIncludeChild: 1
+  isRewind: 0
+  isDestory: 0
+  childImage: []
+  childText: []
+  childSr: []
+  childTmp: []
+  onFadeEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &915295022
 GameObject:
   m_ObjectHideFlags: 0
@@ -14980,9 +15022,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6345590950169558943, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 913643430}
-    - targetCorrespondingSourceObject: {fileID: 6345590950169558943, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1865695309}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46551c591cb4ad14cb177867e51a2ddb, type: 3}
 --- !u!114 &976242110 stripped
@@ -16621,7 +16660,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1126807021}
   m_LocalRotation: {x: -0.18223555, y: -0, z: -0, w: 0.9832549}
-  m_LocalPosition: {x: 5.9341197, y: 4.9906282, z: 1.5007259}
+  m_LocalPosition: {x: 5.93412, y: 4.9906282, z: 1.500726}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21723,7 +21762,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1635762590}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.967384, y: -0.8053663, z: 0}
+  m_LocalPosition: {x: -9.967383, y: -0.80536616, z: 0}
   m_LocalScale: {x: 0.731, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23944,17 +23983,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1865695308}
-  m_LocalRotation: {x: 0, y: 0, z: -0.13052624, w: 0.9914449}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 721993162}
+  m_Father: {fileID: 913643430}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -15}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 673, y: 156}
+  m_AnchoredPosition: {x: 593.8141, y: 28.667267}
   m_SizeDelta: {x: 49, y: 79}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1865695310
@@ -24000,7 +24039,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1865695311}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7796541760225592520}
+        m_TargetAssemblyTypeName: RavenCraftCore.Book, Assembly-CSharp
+        m_MethodName: NextPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1865695311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24014,7 +24065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -35057,6 +35108,7 @@ MonoBehaviour:
     eType3: 0
   curPage: 0
   pageObject: {fileID: 801907666}
+  bookPageArrow: {fileID: 913643429}
 --- !u!212 &7796541760225592521
 SpriteRenderer:
   m_ObjectHideFlags: 0
