@@ -861,6 +861,11 @@ public class PlayerCharacter : CharacterBase
 										}
 									}
 								}
+								Lamp t_Lamp = t_InteractableObject.interaction as Lamp;
+								if (t_Lamp != null)
+								{
+									m_PlayerCharacterUIScript.m_InteractionIcon.m_InteractionText.text = "하루 마무리";
+								}
 							}
 						}
 						else if (t_InteractableObject.interaction == null)
