@@ -1074,7 +1074,7 @@ GameObject:
   - component: {fileID: 1016496045938947752}
   m_Layer: 0
   m_Name: PlayerCharacter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1169,7 +1169,7 @@ MonoBehaviour:
   m_SD: {fileID: 1205948370745725669}
   m_CPAComponent: {fileID: 0}
   m_Inventory: {fileID: 0}
-  m_MoveAnimationSpeed: 3
+  m_MoveAnimationSpeed: 1
   m_CollisionComponent: {fileID: 6007753278028999201}
   m_RecipeBook: {fileID: 1813622840504543691}
   m_QuestComponet: {fileID: 134507900064649756}
@@ -1200,6 +1200,14 @@ MonoBehaviour:
   m_FootStepEffectOutdoor: {fileID: 3311319695955121886}
   m_ShadowAnimator: {fileID: 1206579156184758949}
   m_FootStepSound: {fileID: 6868825969044065742}
+  m_InteractionIconDefaultText: "\uC0C1\uD638\uC791\uC6A9"
+  m_InteractionIconNPCText: "\uB300\uD654\uD558\uAE30"
+  m_InteractionIconNoticeBoardText: "\uD655\uC778\uD558\uAE30"
+  m_InteractionIcondFlowerPotText: "\uBC2D \uAC00\uAFB8\uAE30"
+  m_InteractionIcondHarvestText: "\uC218\uD655\uD558\uAE30"
+  m_InteractionIcondDoorText: "\uC774\uB3D9\uD558\uAE30"
+  m_InteractionIcondMailBoxText: "\uD655\uC778\uD558\uAE30"
+  m_InteractionIcondFishingText: "\uB09A\uC2DC\uD558\uAE30"
 --- !u!114 &3498382288381705809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1696,7 +1704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486684789330713284, guid: 80f8b6dccaa5cfb47bd58c5446aa4f3a, type: 3}
       propertyPath: zSpacing
-      value: -0.01
+      value: -0.001
       objectReference: {fileID: 0}
     - target: {fileID: 2486684789330713284, guid: 80f8b6dccaa5cfb47bd58c5446aa4f3a, type: 3}
       propertyPath: _animationName
