@@ -40,7 +40,7 @@ public class NpcDialog : MonoBehaviour
         text.text = null;
         text.DOText(script, 1f).OnUpdate(() =>
         {
-            this.script.text = text.text;
+            this.script.text = text.text.Replace("\\n", "\n");;
         });
     }
 }
