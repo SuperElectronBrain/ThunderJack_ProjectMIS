@@ -10,8 +10,8 @@ public class Guest : MonoBehaviour
     SkeletonAnimation skAni;
     MeshRenderer mr;
 
-    GuestData guestData;
-    RequestData request;
+    [SerializeField] GuestData guestData;
+    [SerializeField] RequestData request;
     PlayerShop playerShop;
 
     [SerializeField]

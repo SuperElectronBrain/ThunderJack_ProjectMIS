@@ -84,6 +84,8 @@ namespace RavenCraftCore
         {
             if (!isUsed)
                 return;
+            if (!accessoryPlate.IsPutAccessory())
+                return;
             isGrab = true;
             CursorManager.SetCursorPosition(handleObject.position);
             prevPos = CursorManager.GetCursorPosition();
@@ -248,7 +250,12 @@ namespace RavenCraftCore
             if (!isStone)
             {
                 PlayerPrefs.SetFloat(itemManager.GetItemNameEg(gem.itemID)+"_JewelryPerfection", perfection);
-                PlayerPrefs.SetInt(itemManager.GetItemNameEg(gem.itemID) + "_JewelryRank", (int)jewelryRank);
+                PlayerPrefs.SetInt(itemManager.GetItemNameEg(gem.itemID) + "_JewelryElement1", (int)rankElement[0]);
+                PlayerPrefs.SetInt(itemManager.GetItemNameEg(gem.itemID) + "_JewelryElement2", (int)rankElement[1]);
+                PlayerPrefs.SetInt(itemManager.GetItemNameEg(gem.itemID) + "_JewelryElement3", (int)rankElement[2]);
+                PlayerPrefs.SetFloat(itemManager.GetItemNameEg(gem.itemID) + "_JewelryElementValue1", sortValue[value.Length - 1]);
+                PlayerPrefs.SetFloat(itemManager.GetItemNameEg(gem.itemID) + "_JewelryElementValue2", sortValue[value.Length - 2]);
+                PlayerPrefs.SetFloat(itemManager.GetItemNameEg(gem.itemID) + "_JewelryElementValue3", sortValue[value.Length - 3]);
             }
             
             var completeItem = itemManager.GetCombinationItem(gem.itemID, accessoryPlate.GetAccessory());

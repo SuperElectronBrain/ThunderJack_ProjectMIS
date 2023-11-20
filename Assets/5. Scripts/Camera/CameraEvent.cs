@@ -91,7 +91,7 @@ public class CameraEvent : Singleton<CameraEvent>
     {
         if (conversationCam.Follow == null)
         {
-            var player = GameObject.FindObjectOfType<PlayerCharacter>().transform;
+            var player = GameObject.FindObjectOfType<PlayerCharacter>().transform.GetChild(0).transform;
 
             conversationCam.Follow = player;
             conversationCam.LookAt = player;

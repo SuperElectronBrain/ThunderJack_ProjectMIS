@@ -70,12 +70,10 @@ public class ConversationState : State<NPC>
         if (isTwinkling)
         {
             entity.SkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("1", "2"), true, 0);
-            entity.ShadowSkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("1", "2"), true, 0);
         }
         else
         {
             entity.SkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("2", "1"), true, 0);
-            entity.ShadowSkAni.AnimationState.AddAnimation(0, entity.SkAni.AnimationName.Replace("2", "1"), true, 0);
         }
             
 

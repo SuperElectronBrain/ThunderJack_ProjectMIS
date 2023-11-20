@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CraftTableCameraController : MonoBehaviour
 {
-	//private Vector3 m_OriginPosition;
 	private Quaternion m_OriginRotation;
-	//[SerializeField] private Vector3 m_LeftPosition;
 	[SerializeField] private Vector3 m_DownRotation;
-	//Vector3 m_NextPosition;
 	private Quaternion m_NextRotation;
+	private bool m_IsCompleteMove = true;
+
+	[HideInInspector] public UnityEvent<string> m_OnCompleteMove = new UnityEvent<string>();
+	public static CraftTableCameraController main
+	{	
+		get { return FindObjectOfType<CraftTableCameraController>(); }
+		set {; }
+	}
 
 	// Start is called before the first frame update
 	void Start()
     {
-		//m_OriginPosition = transform.position;
-		//m_NextPosition = transform.position;
 		m_OriginRotation = transform.rotation;
 		m_NextRotation = transform.rotation;
 	}
@@ -37,6 +41,7 @@ public class CraftTableCameraController : MonoBehaviour
 					{
 						if (m_NextRotation != m_OriginRotation)
 						{
+							m_IsCompleteMove = false;
 							m_NextRotation = m_OriginRotation;
 						}
 					}
@@ -59,17 +64,32 @@ public class CraftTableCameraController : MonoBehaviour
 		//}
 
 		CameraMovement(DeltaTime);
-
 	}
 
 	void CameraMovement(float DeltaTime)
 	{
-		//transform.position = Vector3.Lerp(transform.position, m_NextPosition, 5 * DeltaTime);
 		transform.rotation = Quaternion.Slerp(transform.rotation, m_NextRotation, 5 * DeltaTime);
+		if(m_IsCompleteMove == false)
+		{
+			if(m_NextRotation == Quaternion.Euler(m_DownRotation))
+			{
+				if (Mathf.Abs(transform.rotation.eulerAngles.magnitude - m_NextRotation.eulerAngles.magnitude) < 0.01f)
+				{
+					m_IsCompleteMove = true;
+					m_OnCompleteMove.Invoke("Down");
+				}
+			}
+			else if(m_NextRotation == m_OriginRotation)
+			{
+				m_IsCompleteMove = true;
+				m_OnCompleteMove.Invoke("Up");
+			}
+		}
 	}
 
 	public void GoToCraft()
 	{
+		m_IsCompleteMove = false;
 		m_NextRotation = Quaternion.Euler(m_DownRotation);
 	}
 }

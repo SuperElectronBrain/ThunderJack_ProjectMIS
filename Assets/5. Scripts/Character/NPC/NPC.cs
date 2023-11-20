@@ -107,7 +107,6 @@ public class NPC : Character, IInteraction
     public void ChangeAni(string aniName)
     {
         SkAni.AnimationName = aniName;
-        ShadowSkAni.AnimationName = aniName;
     }
 
     public void InitDay()
