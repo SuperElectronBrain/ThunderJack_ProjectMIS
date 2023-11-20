@@ -115,8 +115,20 @@ namespace RavenCraftCore
         {
             putInValue += inputValue;
 
-            value[putInItemData.elementType1 - 1] = Mathf.Lerp(0, putInItemData.elementPercent1, putInValue * 0.01f);
-            value[putInItemData.elementType2 - 1] = Mathf.Lerp(0, putInItemData.elementPercent2, putInValue * 0.01f);
+            var v1 = value[putInItemData.elementType1 - 1];
+            var v2 = value[putInItemData.elementType2 - 1];
+            
+            value[putInItemData.elementType1 - 1] = Mathf.Lerp(0, putInItemData.elementPercent1, putInValue * 0.01f) + v1;
+            value[putInItemData.elementType2 - 1] = Mathf.Lerp(0, putInItemData.elementPercent2, putInValue * 0.01f) + v2;
+
+            if (value[putInItemData.elementType1 - 1] < v1)
+            {
+                value[putInItemData.elementType1 - 1] = Mathf.Lerp(0, putInItemData.elementPercent1, (v1 / putInItemData.elementPercent1) + putInValue * 0.01f);
+            }
+            if (value[putInItemData.elementType2 - 1] < v2)
+            {
+                value[putInItemData.elementType2 - 1] = Mathf.Lerp(0, putInItemData.elementPercent2, (v2 / putInItemData.elementPercent2) + putInValue * 0.01f);
+            }
         }
 
         public void SetAccessoryData(int accessoryID)
@@ -127,6 +139,7 @@ namespace RavenCraftCore
         public void SetItemData(int itemID)
         {
             putInItemData = GameManager.Instance.ItemManager.GetMaterialItem(itemID);
+            putInValue = 0;
         }
 
         Vector3 prevPos;

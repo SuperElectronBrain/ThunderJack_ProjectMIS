@@ -39,6 +39,7 @@ public class PlayerShop : MonoBehaviour
 
     public PlayerShop_Sales Sales { get { return sales; } }
     public SalesResult SalesResult { get { return salesResult; } }
+    [SerializeField] private Memo memo;
 
     // Start is called before the first frame update
     void Start()
@@ -131,6 +132,7 @@ public class PlayerShop : MonoBehaviour
         guest.SetRequestData(request);
         dialogBox.SetAcceptButton(request.textAnswer1);
         dialogBox.SetRefusalButton(request.textAnswer2);
+        dialogBox.SetDialog(request.requestScript);
     }
 
     public void SalesSuccess(SalesData salesData, SalesResult sr)
@@ -162,17 +164,20 @@ public class PlayerShop : MonoBehaviour
 
     public void AcceptSales()
     {
+        var request = guest.GetRequestData();
+        
         switch(guest.GetRequestData().requestType)
         {
             case 1:
                 NextDialog();
-                var request = guest.GetRequestData();
-                dialogBox.SetDialog(request.requestScript);
+                
+                
                 //dialogBox.SetAcceptButton(request.textAnswer1);
                 break;
             case 2:
                 Camera.main.GetComponent<CraftTableCameraController>().GoToCraft();
                 dialogBox.ShowDialogBox(false);
+                memo.UpdateOrderSheet(request.requestScript);
                 guest.AcceptSales();
                 break;
         }
