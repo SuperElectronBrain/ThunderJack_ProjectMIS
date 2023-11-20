@@ -195,6 +195,12 @@ namespace RavenCraftCore
             private readonly int power4 = Shader.PropertyToID("_Power4");
             private readonly int power5 = Shader.PropertyToID("_Power2");
 
+            [SerializeField] private Material mat1; 
+            [SerializeField] private Material mat2; 
+            [SerializeField] private Material mat3; 
+            [SerializeField] private Material mat4; 
+            [SerializeField] private Material mat5; 
+
             public void Init()
             {
                 for (int i = 0; i < ((int)ElementType.End); i++)
@@ -203,6 +209,12 @@ namespace RavenCraftCore
                     elementCircleValue[i] = 0;
                     elementCircleParticles[i].Init();
                 }
+
+                mat1.SetFloat("_Element1_Amount", 0);
+                mat2.SetFloat("_Element1_Amount", 0);
+                mat3.SetFloat("_Element1_Amount", 0);
+                mat4.SetFloat("_Element1_Amount", 0);
+                mat5.SetFloat("_Element1_Amount", 0);
             }
 
             public void UpdateElementCircle(ElementType elementType, float updateValue)
@@ -216,18 +228,23 @@ namespace RavenCraftCore
                 {
                     case ElementType.Justice:
                         magicCircleMaterial.SetFloat(power1, circlePowerValue);
+                        mat1.SetFloat("_Element1_Amount", updateValue * 0.01f);
                         break;
                     case ElementType.Wisdom:
                         magicCircleMaterial.SetFloat(power2, circlePowerValue);
+                        mat2.SetFloat("_Element1_Amount", updateValue * 0.01f);
                         break;
                     case ElementType.Nature:
                         magicCircleMaterial.SetFloat(power3, circlePowerValue);
+                        mat3.SetFloat("_Element1_Amount", updateValue * 0.01f);
                         break;
                     case ElementType.Mystic:
                         magicCircleMaterial.SetFloat(power4, circlePowerValue);
+                        mat4.SetFloat("_Element1_Amount", updateValue * 0.01f);
                         break;
                     case ElementType.Insight:
                         magicCircleMaterial.SetFloat(power5, circlePowerValue);
+                        mat5.SetFloat("_Element1_Amount", updateValue * 0.01f);
                         break;
                 }
                 

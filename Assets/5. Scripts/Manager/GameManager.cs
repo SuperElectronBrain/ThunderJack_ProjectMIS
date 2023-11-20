@@ -113,7 +113,9 @@ public class GameManager : Singleton<GameManager>
             case SceneType.OutSide:
                 CameraEvent.Instance.Init();
                 GameEventManager.Init();
+                locationManager.CreateLocation();
                 EventManager.Publish(EventType.Load);
+                EventManager.Publish(EventType.Minute);
                 ExitShop();
                 if(gameTime.IsNextDay)
                     gameTime.NewDay();
