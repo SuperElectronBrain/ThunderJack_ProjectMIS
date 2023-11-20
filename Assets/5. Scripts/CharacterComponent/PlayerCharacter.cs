@@ -523,6 +523,16 @@ public class PlayerCharacter : CharacterBase
 		return direction; 
 	}
 
+	public void SetMovable()
+	{
+		ChangeState(PlayerCharacterState.Moveable);
+	}
+
+	public void SetUnMovable()
+	{
+		ChangeState(PlayerCharacterState.Communication);
+	}
+
 	//가장 가깝고 카메라가 바라보는 각도와 가장 많이 일지하는 위치에 있는 상호작용 대상의 참조를 찾는 함수
 	public InteractableObject GetInteractableObject()
 	{
