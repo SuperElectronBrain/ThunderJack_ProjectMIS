@@ -35,8 +35,6 @@ public class LocationManager : MonoBehaviour
                     locationPosition = new Vector3(x, y, z)
                 });
         }
-        
-        CreateLocation();
     }
 
     public void CreateLocation()
