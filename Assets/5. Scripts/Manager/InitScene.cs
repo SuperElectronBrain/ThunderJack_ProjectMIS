@@ -9,6 +9,8 @@ public class InitScene : MonoBehaviour
     public UnityEvent onInitEventToOutSide;
     public UnityEvent onInitEventToInSide;
     public UnityEvent onInitEventToBusiness;
+    public UnityEvent onInitEventNight;
+    public UnityEvent onInitEventMorning;
 
     private void Start()
     {
@@ -28,6 +30,15 @@ public class InitScene : MonoBehaviour
             case SceneType.Bussiness:
                 onInitEventToBusiness?.Invoke();
                 break;
+        }
+
+        if (GameManager.Instance.GameTime.GetHour() >= 18)
+        {
+            onInitEventNight?.Invoke();
+        }
+        else
+        {
+            onInitEventMorning?.Invoke();
         }
     }
 }

@@ -34,16 +34,24 @@ public class LocationManager : MonoBehaviour
                     locationType = locationType,
                     locationPosition = new Vector3(x, y, z)
                 });
-            GameObject locationObj = Instantiate(locationPrefab, locationList[idx].locationPosition, Quaternion.identity);
-            if(locationType == LocationType.Entrance)
+        }
+        
+        CreateLocation();
+    }
+
+    public void CreateLocation()
+    {
+        foreach (var location in locationList)
+        {
+            GameObject locationObj = Instantiate(locationPrefab, location.locationPosition, Quaternion.identity);
+            if(location.locationType == LocationType.Entrance)
             {
                 locationObj.layer = LayerMask.NameToLayer("Entrance");
                 locationObj.AddComponent<BoxCollider>().isTrigger = true;
                 locationObj.AddComponent<Entrance>();
             }
-
-
-            locationObj.name = locationList[idx].locationName;
+            
+            locationObj.name = location.locationName;
         }
     }
 
