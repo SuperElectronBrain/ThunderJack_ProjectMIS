@@ -330,12 +330,50 @@ public class ItemManager : MonoBehaviour
         if (gemRecipe == null)
             return 0;
 
-        var mp1 = gemRecipe.materialPercent1 * 100;
-        var mp2 = gemRecipe.materialPercent2 * 100;
-        var mp3 = gemRecipe.materialPercent3 * 100;
+        var mp1 = 0f;
+        var mp2 = 0f;
+        var mp3 = 0f;
+
+        var r1 = 0f;
+        var r2 = 0f;
+        var r3 = 0f;
+
+        if (elementValue1 >= (gemRecipe.materialPercent1 * 100))
+        {
+            mp1 = 100 - (gemRecipe.materialPercent1 * 100);
+            r1 = (elementValue1 - gemRecipe.materialPercent1) / (mp1 / 100);
+        }
+        else
+        {
+            mp1 = 100 - (100 - (gemRecipe.materialPercent1 * 100));
+            r1 = (gemRecipe.materialPercent1 - elementValue1) / (mp1 / 100);
+        }
+
+
+        if (elementValue2 >= (gemRecipe.materialPercent2 * 100))
+        {
+            mp2 = 100 - (gemRecipe.materialPercent2 * 100);
+            r2 = (elementValue2 - gemRecipe.materialPercent2) / (mp2 / 100); 
+        }
+        else
+        {
+            mp2 = 100 - (100 - (gemRecipe.materialPercent2 * 100));
+            r2 = (gemRecipe.materialPercent2 - elementValue2) / (mp2 / 100);
+        }
+
+        if (elementValue3 >= (gemRecipe.materialPercent3 * 100))
+        {
+            mp3 = 100 - (gemRecipe.materialPercent3 * 100);
+            r3 = (elementValue3 - gemRecipe.materialPercent3) / (mp3 / 100);
+        }
+        else
+        {
+            mp3 = 100 - (100 - (gemRecipe.materialPercent3 * 100));
+            r3 = (gemRecipe.materialPercent3 - elementValue3) / (mp3 / 100);
+        }
         
         
-        var errorValue1 = 100 - ((mp1 - elementValue1) / mp1) * 100;
+        /*var errorValue1 = 100 - ((mp1 - elementValue1) / mp1) * 100;
         var errorValue2 = 100 - ((mp2 - elementValue2) / mp2) * 100;
         var errorValue3 = 100 - ((mp3 - elementValue3) / mp3) * 100;
 
@@ -356,9 +394,10 @@ public class ItemManager : MonoBehaviour
 
         errorValue1 = (errorValue1 / 3); 
         errorValue2 = (errorValue2 / 3); 
-        errorValue3 = (errorValue3 / 3);
+        errorValue3 = (errorValue3 / 3);*/
 
-        var resultPerfection = 100f + (errorValue1 + errorValue2 + errorValue3);
+        //var resultPerfection = 100f + (errorValue1 + errorValue2 + errorValue3);
+        var resultPerfection = (r1 + r2 + r3) / 3 / 100;
 
         return resultPerfection;
     }
