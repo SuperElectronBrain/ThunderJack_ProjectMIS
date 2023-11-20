@@ -129,19 +129,14 @@ public class TutorialCondition4 : BaseState<TutorialManager>
 			AdvencedQuestData advencedQuestData = new AdvencedQuestData();
 			advencedQuestData.questID = 1;
 			advencedQuestData.questScript =
-			"레딘에게\n" +
-			"\n" +
-			"도칸\n" +
+			"To. 레딘\n" +
 			"\n" +
 			"이전 세공사분꼐서 자리를 비운 뒤 가게를 운영하지 않는 것 같아 편지를 통해 남깁니다.\n" +
-			"\n" +
 			"혹시 편지를 읽게되신다면 저를 찾아와주세요.\n" +
-			"\n" +
 			"당신에게 드릴게 있습니다. 제가 없을 때를 대비하여 보석상인인 베일씨에게 물건을 맡겨뒀습니다.\n" +
+			"From. 도칸\n" +
 			"\n" +
-			"보상\n" +
-			"\n" +
-			"다이아몬드 x 1";
+			"보상 : 임의의 재료 x 1";
 			Mailbox.main.AddQuest(advencedQuestData);
 		}, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("마을에 들리기전에… 혹시 자리가 비어있는 동안 누군가 다녀갔으려나…", true); }, 0);
