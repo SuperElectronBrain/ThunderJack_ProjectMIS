@@ -117,8 +117,8 @@ namespace RavenCraftCore
         {
             putInValue += inputValue;
 
-            value[putInItemData.elementType1 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent1, putInValue * 0.01f);
-            value[putInItemData.elementType2 - 1] = Mathf.Lerp(0, 100 * putInItemData.elementPercent2, putInValue * 0.01f);
+            value[putInItemData.elementType1 - 1] = Mathf.Lerp(0, putInItemData.elementPercent1, putInValue * 0.01f);
+            value[putInItemData.elementType2 - 1] = Mathf.Lerp(0, putInItemData.elementPercent2, putInValue * 0.01f);
         }
 
         public void SetAccessoryData(int accessoryID)
