@@ -16,6 +16,12 @@ public class PressAccessoryPlate : MonoBehaviour
     [SerializeField] private float perfection;
     [SerializeField] private JewelryRank jewelryRank;
     
+    [SerializeField] ParticleSystem createEffect;
+    [SerializeField] ParticleSystem failEffect;
+    
+    [SerializeField] private AudioSource complateSound;
+    [SerializeField] private AudioSource failSound;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -82,10 +88,16 @@ public class PressAccessoryPlate : MonoBehaviour
         jewelryRank = jr;
         var completeItem = GameManager.Instance.ItemManager.GetBasicItemData(completeItemID);
         
-        if (completeItem == null)
+        if (completeItem.accessoryColor == "N")
         {
             //실패 이펙트
-            return;
+            failEffect.Play();
+            failSound.Play();
+        }
+        else
+        {
+            createEffect.Play();
+            complateSound.Play();
         }
 
         //이펙트
