@@ -39,6 +39,7 @@ namespace RavenCraftCore
         [SerializeField] private BookPage pageObject;
         [SerializeField] private GameObject bookPageArrow;
         [SerializeField] private AudioSource pageSound;
+        [SerializeField] private AudioSource bookSound;
 
         void OnBecameVisible()
         {
@@ -47,6 +48,7 @@ namespace RavenCraftCore
 
             isFirst = true;
             skAni.AnimationName = "Open";
+            bookSound.Play();
             
             OpenBook();
         }
