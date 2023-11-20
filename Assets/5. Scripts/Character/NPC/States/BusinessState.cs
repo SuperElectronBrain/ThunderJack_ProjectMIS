@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class BusinessState : State<NPC>
 {
+    private bool isChange;
+
+    public void Init()
+    {
+        isChange = false;
+    }
+    
     public override void Enter(NPC entity)
     {
         entity.agent.isStopped = true;
@@ -30,12 +37,16 @@ public class BusinessState : State<NPC>
                 break;
         }
 
-        Inventory inventory = GetComponent<Inventory>();
-
-        inventory.CleanInventory();
-        for (int i = 0; i < shopItems.Count; i = i + 1)
+        if (!isChange)
         {
-            inventory.AddAItem(shopItems[i].itemId, 1.0f, shopItems[i].buyValue, shopItems[i].sellValue);
+            Inventory inventory = GetComponent<Inventory>();
+
+            inventory.CleanInventory();
+            for (int i = 0; i < shopItems.Count; i = i + 1)
+            {
+                inventory.AddAItem(shopItems[i].itemId, 1.0f, shopItems[i].buyValue, shopItems[i].sellValue);
+            }
+            isChange = true;
         }
     }
 
