@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
+using Unity.Mathematics;
+using UnityEngine.AI;
 
 namespace Test
 {
@@ -18,29 +20,44 @@ namespace Test
         SkeletonAnimation skAni;
 
         public B b;
+        public bool isTarget;
         B cb;
 
         public Transform player;
+        public NavMeshAgent nma;
+        private Camera c;
 
-        // Start is called before the first frame update
+       // Start is called before the first frame update
         void Start()
         {
+            c = Camera.main;
+            nma = GetComponent<NavMeshAgent>();
             dir = new LookDir();
             skAni = GetComponentInChildren<SkeletonAnimation>();
             b = B.idle;
             cb = B.idle;
+            dir.Init(transform, c);
             ChangeAni();
-            skAni.AnimationState.Complete += Loop;
+            //skAni.AnimationState.Complete += Loop;
         }
 
         // Update is called once per frame
         void Update()
         {
-            dir.SetDir(transform.position, player.transform.position);
-            if(b != cb)
+            transform.rotation = Quaternion.Euler(0, c.transform.eulerAngles.y, 0);
+            ChangeAni();
+            if (isTarget)
             {
-                cb = b;
-                ChangeAni();
+                dir.SetDir(transform.position, player.transform.position);
+                if(b != cb)
+                {
+                    cb = b;
+                    ChangeAni();
+                }                
+            }
+            else
+            {
+                dir.SetDir(nma.velocity);
             }
         }
 
@@ -73,23 +90,28 @@ namespace Test
         public bool isFront;
         public bool isRight;
         public bool isSideWalk;
+        
+        private Camera cam;
+        private Transform t;
+    
+        public void Init(Transform myT, Camera mainCam)
+        {
+            cam = mainCam;
+            t = myT;
+        }
 
         public void SetDir(Vector3 velocity)
         {
-            if (velocity.x >= 0)
-                isRight = true;
-            else
-                isRight = false;
+            var pos = t.position;
+            pos.y = 0f;
+            velocity += pos;
+            velocity.y = 0f;
+            var dir = (pos - velocity).normalized;
+            var cross = Vector3.Cross(t.forward, dir);
+            var dot = Vector3.Dot(t.forward, dir);
 
-            if (velocity.z <= 0)
-                isFront = true;
-            else
-                isFront = false;
-
-            if (Mathf.Abs(velocity.x) >= Mathf.Abs(velocity.z))
-                isSideWalk = true;
-            else
-                isSideWalk = false;
+            isRight = cross.y <= 0;
+            isFront = dot >= 0;
         }
         public void SetDir(Vector3 myPos, Vector3 targetPos)
         {

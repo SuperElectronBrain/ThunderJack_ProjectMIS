@@ -90,6 +90,7 @@ public class NPC : Character, IInteraction
         dialogBox.InitDialogBox(characterData.characterName);
         DontDestroyOnLoad(gameObject);
 
+        lookDir.Init(transform);
         SkeletonInitialize();
     }
 
@@ -280,10 +281,17 @@ public class LookDir
     public bool isFront;
     public bool isRight;
     public bool isSideWalk;
+    private Camera cam;
+    private Transform t;
+    
+    public void Init(Transform myT)
+    {
+        t = myT;
+    }
 
     public void SetDir(Vector3 velocity)
     {        
-        if (velocity.x >= 0)
+        /*if (velocity.x >= 0)
             isRight = true;
         else
             isRight = false;
@@ -296,7 +304,18 @@ public class LookDir
         if (Mathf.Abs(velocity.x) >= Mathf.Abs(velocity.z))
             isSideWalk = true;
         else
-            isSideWalk = false;
+            isSideWalk = false;*/
+
+        var pos = t.position;
+        pos.y = 0f;
+        velocity += pos;
+        velocity.y = 0f;
+        var dir = (pos - velocity).normalized;
+        var cross = Vector3.Cross(t.forward, dir);
+        var dot = Vector3.Dot(t.forward, dir);
+
+        isRight = cross.y <= 0;
+        isFront = dot >= 0;
     }
     public void SetDir(Transform myPos, Vector3 targetPos)
     {
