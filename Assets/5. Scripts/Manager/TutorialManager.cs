@@ -77,6 +77,10 @@ public class TutorialManager : MonoBehaviour
 	public GameObject wall8;
 	public GameObject wall9;
 
+	[Header("Effect")]
+	public ParticleSystem coinThrowingEffect;
+	public ParticleSystem coinDonationEffect;
+
 	public static bool EventSubscribe(TutorialEventType pEventType, UnityEngine.Events.UnityAction pAction)
     {
 		bool bSuccessed = false;

@@ -45,7 +45,23 @@ public class PlayerShop_Sales : MonoBehaviour
 
     public RequestData GetRequestData(int guestId)
     {
-        return requestList[guestId - 1];
+        var returnData = new RequestData();
+        
+        for (int i = 0; i < requestList.Count; i++)
+        {
+            if (requestList[i].guestId == guestId)
+            {
+                returnData = requestList[i]; 
+                break;
+            }
+        }
+
+        return returnData;
+    }
+
+    public RequestData NextRequestData(int nextRequestID)
+    {
+        return requestList[nextRequestID - 1];
     }
 
     public void SalesSuccess(SalesData salesData, SalesResult salesResult)
