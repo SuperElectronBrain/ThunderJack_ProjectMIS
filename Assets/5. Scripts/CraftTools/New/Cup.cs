@@ -49,6 +49,8 @@ namespace RavenCraftCore
         [SerializeField] private Transform waterBall;
         [SerializeField] private Transform tempWaterBall;
 
+        [SerializeField] private AudioSource cupSound;
+
         private void Start()
         {
             originPos = transform.position;
@@ -156,6 +158,12 @@ namespace RavenCraftCore
                 if(cwb.enabled)
                     cwb.Create(pos.position).transform.SetParent(tempWaterBall);
                 InputSoultion();
+                if (!cupSound.isPlaying)
+                    cupSound.Play();
+            }
+            else
+            {
+                cupSound.Stop();
             }
 
             var newPos = CursorManager.GetCursorPosition();

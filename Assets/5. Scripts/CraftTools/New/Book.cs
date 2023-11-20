@@ -38,6 +38,7 @@ namespace RavenCraftCore
         [SerializeField] private int curPage;
         [SerializeField] private BookPage pageObject;
         [SerializeField] private GameObject bookPageArrow;
+        [SerializeField] private AudioSource pageSound;
 
         void OnBecameVisible()
         {
@@ -137,6 +138,7 @@ namespace RavenCraftCore
             if (curPage > bookPages.Count)
                 return;
             
+            pageSound.Play();
             bookPageArrow.SetActive(false);
             pageObject.GetComponent<FadeIO>().Rewind();
             skAni.AnimationName = "Forward_1";
@@ -151,6 +153,7 @@ namespace RavenCraftCore
             if (curPage <= 0)
                 return;
             
+            pageSound.Play();
             bookPageArrow.SetActive(false);
             pageObject.GetComponent<FadeIO>().Rewind();
             skAni.AnimationName = "Backward_2";

@@ -47,9 +47,7 @@ namespace RavenCraftCore
         [SerializeField]
         Cinemachine.DollyCartMove track;
         SkeletonAnimation skAni;
-
-        [SerializeField]
-        ParticleSystem createEffect;
+        
         [SerializeField]
         ParticleSystem steam;
         
@@ -211,7 +209,6 @@ namespace RavenCraftCore
         void CheckGemRecipe()
         {
             steam.Play();
-            createEffect.Play();
             var itemManager = GameManager.Instance.ItemManager; 
             
             var gem = itemManager.GetGemRecipe(rankElement[0], rankElement[1], rankElement[2]);
