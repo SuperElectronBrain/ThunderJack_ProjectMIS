@@ -200,29 +200,29 @@ public class TutorialManager : MonoBehaviour
 		finiteStateMachine.AddState(TutorialStates.N19, new TutorialCondition19());
 		finiteStateMachine.AddState(TutorialStates.EndOfTutorial, new EndOfTutorial());
 
-		GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
-		if(titleScreen != null)
-		{
-			GameObject startButton = UniFunc.GetChildOfName(titleScreen, "StartButton");
-			if(startButton != null)
-			{
-				UnityEngine.UI.Button button = startButton.GetComponent<UnityEngine.UI.Button>();
-				if(button != null)
-				{
-					button.onClick.AddListener(StartTutorial);
-				}
-			}
-
-			GameObject loadButton = UniFunc.GetChildOfName(titleScreen, "LoadButton");
-			if (loadButton != null)
-			{
-				UnityEngine.UI.Button button = loadButton.GetComponent<UnityEngine.UI.Button>();
-				if (button != null)
-				{
-					button.onClick.AddListener(SkipTutorial);
-				}
-			}
-		}
+		//GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
+		//if(titleScreen != null)
+		//{
+		//	GameObject startButton = UniFunc.GetChildOfName(titleScreen, "StartButton");
+		//	if(startButton != null)
+		//	{
+		//		UnityEngine.UI.Button button = startButton.GetComponent<UnityEngine.UI.Button>();
+		//		if(button != null)
+		//		{
+		//			button.onClick.AddListener(StartTutorial);
+		//		}
+		//	}
+		//
+		//	GameObject loadButton = UniFunc.GetChildOfName(titleScreen, "LoadButton");
+		//	if (loadButton != null)
+		//	{
+		//		UnityEngine.UI.Button button = loadButton.GetComponent<UnityEngine.UI.Button>();
+		//		if (button != null)
+		//		{
+		//			button.onClick.AddListener(SkipTutorial);
+		//		}
+		//	}
+		//}
 	}
 
 	private void Update()
@@ -242,41 +242,41 @@ public class TutorialManager : MonoBehaviour
 		pAction.Invoke();
 	}
 
-	private void StartTutorial()
+	public void StartTutorial()
 	{
 		finiteStateMachine.ChangeState(TutorialStates.N0);
 
-		GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
-		if (titleScreen != null)
-		{
-			GameObject startButton = UniFunc.GetChildOfName(titleScreen, "StartButton");
-			if (startButton != null)
-			{
-				UnityEngine.UI.Button button = startButton.GetComponent<UnityEngine.UI.Button>();
-				if (button != null)
-				{
-					button.onClick.RemoveListener(StartTutorial);
-				}
-			}
-		}
+		//GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
+		//if (titleScreen != null)
+		//{
+		//	GameObject startButton = UniFunc.GetChildOfName(titleScreen, "StartButton");
+		//	if (startButton != null)
+		//	{
+		//		UnityEngine.UI.Button button = startButton.GetComponent<UnityEngine.UI.Button>();
+		//		if (button != null)
+		//		{
+		//			button.onClick.RemoveListener(StartTutorial);
+		//		}
+		//	}
+		//}
 	}
 
-	private void SkipTutorial()
+	public void SkipTutorial()
 	{
 		finiteStateMachine.ChangeState(TutorialStates.EndOfTutorial);
 
-		GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
-		if (titleScreen != null)
-		{
-			GameObject loadButton = UniFunc.GetChildOfName(titleScreen, "LoadButton");
-			if (loadButton != null)
-			{
-				UnityEngine.UI.Button button = loadButton.GetComponent<UnityEngine.UI.Button>();
-				if (button != null)
-				{
-					button.onClick.RemoveListener(SkipTutorial);
-				}
-			}
-		}
+		//GameObject titleScreen = GameObject.Find("TitleScreenBackGround");
+		//if (titleScreen != null)
+		//{
+		//	GameObject loadButton = UniFunc.GetChildOfName(titleScreen, "LoadButton");
+		//	if (loadButton != null)
+		//	{
+		//		UnityEngine.UI.Button button = loadButton.GetComponent<UnityEngine.UI.Button>();
+		//		if (button != null)
+		//		{
+		//			button.onClick.RemoveListener(SkipTutorial);
+		//		}
+		//	}
+		//}
 	}
 }
