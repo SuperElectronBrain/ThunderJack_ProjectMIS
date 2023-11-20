@@ -57,17 +57,18 @@ public class InteractionAccessory : MonoBehaviour
         {
             if (target != null)
             {
-                switch(target.tag)
+                switch (target.tag)
                 {
                     case "Guest":
                         target.GetComponent<Guest>().CheckItem(itemID, perfection, jewelryRank);
                         break;
                     case "Press":
-                        
-                            target.GetComponent<PressAccessoryPlate>().SetAccessory(itemID);
+                        target.GetComponent<PressAccessoryPlate>().SetAccessory(itemID);
                         break;
-                    
-                }                
+                    case "Trashcan":
+                        FindObjectOfType<PressAccessoryPlate>().ResetPlate();
+                        break;
+                }
             }
             else
             {
