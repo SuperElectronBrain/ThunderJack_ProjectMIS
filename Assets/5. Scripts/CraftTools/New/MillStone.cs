@@ -72,6 +72,8 @@ namespace RavenCraftCore
         [SerializeField] private float liquidFlowSpeed;
         [SerializeField] private const string aniFLoatProperty = "Velocity";
 
+        [SerializeField] private AudioSource millStoneSound;
+
         private void Start()
         {
             millStoneTrack = GetComponentInChildren<Cinemachine.DollyCartMove>();
@@ -137,7 +139,6 @@ namespace RavenCraftCore
             deg = prevTheta;
             
             StartCoroutine(InitMousePosition());
-
         }
 
         void GetMousePosToDeg()
@@ -191,6 +192,7 @@ namespace RavenCraftCore
                     isGrab = false;
                     skAni.AnimationName = "HandOff";
                     prevTheta = deg;
+                    millStoneSound.Stop();
                     return;
                 }
 
@@ -201,8 +203,19 @@ namespace RavenCraftCore
                     if (deg - prevTheta > 355f) ;
                     else
                     {
+                        millStoneSound.Stop();
                         return;
                     }
+                }
+
+                if (deg - prevTheta == 0)
+                {
+                    millStoneSound.Stop();
+                }
+                else
+                {
+                    if(!millStoneSound.isPlaying)
+                        millStoneSound.Play();
                 }
             }
             
