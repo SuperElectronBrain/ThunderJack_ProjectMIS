@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CutSceneProcessorComponent : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class CutSceneProcessorComponent : MonoBehaviour
 	[SerializeField] private string triggerName;
 	[SerializeField] private KeyCode keyCode = KeyCode.E;
 	[SerializeField] private int count = 0;
+
+	public UnityEvent m_OnCutSceneEnd = new UnityEvent();
 
 	private void Start()
 	{
@@ -29,7 +32,7 @@ public class CutSceneProcessorComponent : MonoBehaviour
 			}
 			else
 			{
-				gameObject.SetActive(false);
+				m_OnCutSceneEnd.Invoke();
 			}
 		}
 	}
