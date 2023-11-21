@@ -43,7 +43,7 @@ public class TutorialCondition0 : BaseState<TutorialManager>
 	{
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("먼길 오느라 잠깐 쉬었으니… 다시 출발해볼까?", true); }, 0);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 4);
-		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("왼쪽 길로 가다 보면 마을에 곧 도착할거야", true); }, 4);
+		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("오른쪽 길로 가다 보면 마을에 곧 도착할거야", true); }, 4);
 		param.WaitFewSeconds(() => { PlayerCharacter.main.PopUpSpeechBubble("", false); }, 7);
 		param.WaitFewSeconds(() => { UniFunc.GetChildOfName(PlayerCharacterUIScript.main.gameObject, "OptionPanel").SetActive(true); }, 7);
 	}
