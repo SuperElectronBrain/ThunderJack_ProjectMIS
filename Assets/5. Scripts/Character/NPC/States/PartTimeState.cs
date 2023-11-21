@@ -13,16 +13,6 @@ public class PartTimeState : State<NPC>
         entity.curBehaviour = NPCBehaviour.PartTimer;
         
         entity.ChangeAni("A_work1_F");
-
-        switch(entity.CharacterData.characterEgName)
-        {
-            case "Harry":
-                entity.shopDialog = "Furniture_Shop_Text_Master";
-                break;
-            case "Dokan":
-                entity.shopDialog = "Material_Shop_Text_Master";
-                break;
-        }
     }
 
     public override void Execute(NPC entity)

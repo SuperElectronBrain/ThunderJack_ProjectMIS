@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public enum GameEventType
 {
-    None, Fame, OrePrice, Collect , AppearDemonLord = 6
+    None, Fame, OrePrice , AppearDemonLord = 6
 }
 
 public class GameEventManager : MonoBehaviour
@@ -43,8 +43,23 @@ public class GameEventManager : MonoBehaviour
                 eventType = Tools.IntParse(e["Event_Type"]),
                 eventEffectType = Tools.IntParse(e["Event_Effect_Type"]),
                 eventValue = Tools.FloatParse(e["Event_Value"]),
-                eventIllust = AddressableManager.LoadObject<Sprite>(e["Event_Resource"].ToString())
+                eventIllust = AddressableManager.LoadObject<Sprite>(e["Event_Resource"].ToString()),
             }
+            );  
+        }
+
+        foreach (var e in eventData)
+        {
+            var eId = (e["Event_ID"]).ToString();
+            gameEventData.Add(new EventData
+                {
+                    eventName = e["Event_Name"].ToString(),
+                    eventScript = e["Event_Script"].ToString(),
+                    eventType = Tools.IntParse(e["Event_Type"]),
+                    eventEffectType = Tools.IntParse(e["Event_Effect_Type"]),
+                    eventValue = Tools.FloatParse(e["Event_Value"]),
+                    eventIllust = AddressableManager.LoadObject<Sprite>(e["Event_Resource"].ToString()),
+                }
             );
         }
 
@@ -67,11 +82,11 @@ public class GameEventManager : MonoBehaviour
         int randomEventIdx = -1;
         foreach (EventData eventData in gameEventData)
         {
-            if(eventData.eventEffectType <= 3)
+            if(eventData.eventType >= 3)
             {
                 if(eventData.eventEffectType == GameManager.Instance.GameTime.GetDay())
                 {
-                    randomEventIdx = eventData.eventType;
+                    randomEventIdx = eventData.eventEffectType;
                 }                
             }
         }
@@ -81,7 +96,7 @@ public class GameEventManager : MonoBehaviour
         switch ((GameEventType)gameEventData[randomEventIdx].eventType)
         {
             case GameEventType.None:
-                dayGameEvent = new RandomGameEvent.OreEvent();
+                dayGameEvent = new RandomGameEvent.Sunny();
                 break;
             case GameEventType.Fame:
                 dayGameEvent = new RandomGameEvent.FameEvent();
@@ -89,11 +104,8 @@ public class GameEventManager : MonoBehaviour
             case GameEventType.OrePrice:
                 dayGameEvent = new RandomGameEvent.OreEvent();
                 break;
-            case GameEventType.Collect:
-                dayGameEvent = new RandomGameEvent.OreEvent();
-                break;
             case GameEventType.AppearDemonLord:
-                dayGameEvent = new RandomGameEvent.OreEvent();
+                dayGameEvent = new RandomGameEvent.AppearDemonLoad();
                 break;
         }
         dayGameEvent.InitEvent(this, gameEventData[randomEventIdx]);
