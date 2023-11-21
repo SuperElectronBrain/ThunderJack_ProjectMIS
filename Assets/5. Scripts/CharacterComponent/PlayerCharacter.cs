@@ -200,7 +200,16 @@ public class PlayerCharacter : CharacterBase
 							{
 								if (t_InteractionObj.interactionGO.name != "Portal (2)")
 								{
-									PopUpSpeechBubble("짐정리를 먼저하자.", true);
+									PopUpSpeechBubble("집에 들어가서 짐 정리를 먼저하자.", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
+									binteractable = false;
+								}
+							}
+							else if (TutorialManager.Instance.currentState == TutorialStates.N4)
+							{
+								if (t_InteractionObj.interactionGO.name != "Prefab_Mailbox")
+								{
+									PopUpSpeechBubble("우편함을 먼저 확인해보자.", true);
 									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
 									binteractable = false;
 								}
@@ -209,24 +218,32 @@ public class PlayerCharacter : CharacterBase
 							{
 								if (t_InteractionObj.interactionGO.name != "NoticeBoard")
 								{
-									PopUpSpeechBubble("우선 게시판부터 확인을 해보자.", true);
-									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
+									PopUpSpeechBubble("우선 게시판부터 확인을 해보자. 게시판은 마을 오는길의 왼쪽에 있었지?", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 3);
 									binteractable = false;
 								}
 							}
 							else if (TutorialManager.Instance.currentState == TutorialStates.N7)
 							{
-								if (t_InteractionObj.interactionGO.name == "베일")
+								if (t_InteractionObj.interactionGO.name != "베일")
+								{
+									PopUpSpeechBubble("곰 상인 베일에게 먼저 말을 걸어보자.", true);
+									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 2);
+									binteractable = false;
+								}
+								else if (t_InteractionObj.interactionGO.name == "베일")
 								{
 									TutorialManager.EventPublish(TutorialStates.N8);
 									binteractable = false;
 								}
 							}
+							else if (TutorialManager.Instance.currentState == TutorialStates.N8)
+							{ binteractable = false; }
 							else if(TutorialManager.Instance.currentState == TutorialStates.N9)
 							{
 								if (t_InteractionObj.interactionGO.name != "베일")
 								{
-									PopUpSpeechBubble("이러고 있을 시간이 없어. 내일 장사를 하기 위해서는 상인을 찾아가야 해.", true);
+									PopUpSpeechBubble("장사를 하기 위해서는 곰 상인 베일에게 재료를 사야해.", true);
 									TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 3);
 									binteractable = false;
 								}
@@ -235,7 +252,16 @@ public class PlayerCharacter : CharacterBase
 									TutorialManager.EventPublish(TutorialStates.N10);
 								}
 							}
+							else if (TutorialManager.Instance.currentState == TutorialStates.N12)
+							{
+								PopUpSpeechBubble("퓨퓨 동상 앞에서 기도를 한번 해보자.", true);
+								TutorialManager.Instance.WaitFewSeconds(() => { PopUpSpeechBubble("", false); }, 3);
+								binteractable = false;
+							}
 						}
+
+						if (UniFunc.GetChildOfName(PlayerCharacterUIScript.main.gameObject, "NPCStoreUI").activeSelf == true)
+						{ binteractable = false; }
 
 						if (binteractable == true)
 						{

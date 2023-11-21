@@ -20,7 +20,7 @@ public class CutSceneProcessorComponent : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-		if (Input.GetKeyDown(keyCode) == true)
+		if (Input.GetKeyDown(keyCode) == true || Input.anyKeyDown)
 		{
 			if(count > 0)
 			{
