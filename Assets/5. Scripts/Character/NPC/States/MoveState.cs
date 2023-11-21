@@ -10,6 +10,7 @@ public class MoveState : State<NPC>
 
     public override void Enter(NPC entity)
     {
+        entity.agent.enabled = true;
         entity.agent.isStopped = false;
         entity.agent.SetDestination(entity.destinationPos);
         StartCoroutine(MoveCheck(entity));
