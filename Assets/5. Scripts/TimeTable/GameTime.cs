@@ -15,7 +15,7 @@ public class GameTime : MonoBehaviour
     [SerializeField]
     int gameTime2RealTime;
     [SerializeField]
-    float gameSpeed;
+    public float gameSpeed;
 
     [SerializeField]
     float timer = 0;

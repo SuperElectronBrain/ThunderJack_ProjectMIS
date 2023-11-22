@@ -137,7 +137,7 @@ namespace RavenCraftCore
 
         public void NextPage()
         {
-            if (curPage > bookPages.Count)
+            if (curPage == bookPages.Count - 1)
                 return;
             
             pageSound.Play();
@@ -152,7 +152,7 @@ namespace RavenCraftCore
 
         public void PrevPage()
         {
-            if (curPage <= 0)
+            if (curPage == 0)
                 return;
             
             pageSound.Play();

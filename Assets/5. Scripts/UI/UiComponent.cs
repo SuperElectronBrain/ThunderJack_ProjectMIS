@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class UiComponent : MonoBehaviour
@@ -9,6 +11,14 @@ public class UiComponent : MonoBehaviour
     private void Start()
     {
         sequence = GetComponent<UI_Sequence>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            InactiveUI();
+        }
     }
 
     public virtual void ActiveUI()

@@ -78,11 +78,6 @@ Addressables.LoadAssetAsync<T>(loadObjectName)
             else
                 loadObjectName = "Stone";
         }
-        else
-        {
-            Debug.Log("¼º°ø");
-        }
-
 
         var op = Addressables.LoadAssetAsync<T>(loadObjectName);
 
