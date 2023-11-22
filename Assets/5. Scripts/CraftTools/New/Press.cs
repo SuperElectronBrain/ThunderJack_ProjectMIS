@@ -159,7 +159,6 @@ namespace RavenCraftCore
             {
                 isGrab = false;
                 track.m_Position = 0;
-                //handleObject.position = originHandlePos;
                 buttonPosition.position = originHandlePos;
 
                 skAni.skeleton.SetSkin("NoHand");
@@ -170,6 +169,14 @@ namespace RavenCraftCore
 
             if (track.m_Position >= 0.99f && !isCreate)
             {
+                isGrab = false;
+                track.m_Position = 0;
+                buttonPosition.position = originHandlePos;
+
+                skAni.skeleton.SetSkin("NoHand");
+                skAni.skeleton.SetSlotsToSetupPose();
+                skAni.timeScale = 0;
+                skAni.AnimationName = "HandOff";
                 isCreate = true;
                 PressHandle();                
             }

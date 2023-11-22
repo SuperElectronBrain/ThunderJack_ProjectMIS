@@ -111,6 +111,11 @@ public class PressAccessoryPlate : MonoBehaviour
         return itemID != 0;
     }
 
+    public bool IsCompleteCheck()
+    {
+        return GameManager.Instance.ItemManager.GetItemType(itemID) == ItemType.Jewelry;
+    }
+
     private void OnDestroy()
     {
         EventManager.Unsubscribe(EventType.SalesSuccess, ResetPlate);

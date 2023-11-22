@@ -48,6 +48,8 @@ public class GameEventManager : MonoBehaviour
             );  
         }
 
+        gameEventData.Clear();
+        
         foreach (var e in eventData)
         {
             var eId = (e["Event_ID"]).ToString();
@@ -70,6 +72,8 @@ public class GameEventManager : MonoBehaviour
     public void Init()
     {
         noticeBoard = FindObjectOfType<NoticeBoard>();
+        dayGameEvent?.InitEvent(this, gameEventData[0]);
+        dayGameEvent?.EventActive();
     }
 
     public void Notice(NoticeData noticeData)
@@ -79,7 +83,7 @@ public class GameEventManager : MonoBehaviour
 
     public void NewDayEvent()
     {
-        int randomEventIdx = -1;
+        /*int randomEventIdx = -1;
         foreach (EventData eventData in gameEventData)
         {
             if(eventData.eventType >= 3)
@@ -91,7 +95,8 @@ public class GameEventManager : MonoBehaviour
             }
         }
 
-        randomEventIdx = randomEventIdx == -1 ? Random.Range(0, gameEventData.Count) : randomEventIdx;
+        randomEventIdx = randomEventIdx == -1 ? Random.Range(0, gameEventData.Count) : randomEventIdx;*/
+        var randomEventIdx = 0;
 
         switch ((GameEventType)gameEventData[randomEventIdx].eventType)
         {

@@ -134,8 +134,6 @@ public class ItemManager : MonoBehaviour
                     );
                     break;
             }
-
-            print(basicItemData[^1].accessoryColor);
         }
     }
     #endregion
@@ -440,11 +438,22 @@ public class ItemManager : MonoBehaviour
 
     public SalesData GetSalesData(int itemID)
     {
-        return new SalesData
+        var returnData = new SalesData();
+        
+        for (int i = 0; i < shopItemList.Count; i++)
         {
-            money = shopItemList[itemID - 1].sellValue,
-            fame = shopItemList[itemID - 1].sellFame
-        };
+            if (itemID == shopItemList[i].itemId)
+            {
+                returnData = new SalesData
+                {
+                    money = shopItemList[i].sellValue,
+                    fame = shopItemList[i].sellFame
+                };
+                break;
+            }
+        }
+
+        return returnData;
     }
 
     public List<ShopItemData> GetShopItemDataBySalesType(SalesItemType salesItemType)

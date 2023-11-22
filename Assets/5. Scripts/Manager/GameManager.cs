@@ -79,16 +79,18 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         PlayerPrefs.DeleteAll();
+        
+        var items = GameManager.Instance.ItemManager.GetItemListByType(ItemType.Gem);
+        //bookPages = new();
         EventManager.Subscribe(EventType.Enter, EnterShop);
+        debugPanel.AddBasicItem();
     }
 
 
     [SerializeField] private float perfection;
     private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-            EventManager.Publish(EventType.Day);
-        else if (Input.GetKeyDown(KeyCode.F3))
+    { 
+        if (Input.GetKeyDown(KeyCode.F3))
             debugPanel.ActiveUI();
     }
 
@@ -111,6 +113,7 @@ public class GameManager : Singleton<GameManager>
         switch(sceneType)
         {
             case SceneType.OutSide:
+                gameTime.gameSpeed = 3;
                 CameraEvent.Instance.Init();
                 GameEventManager.Init();
                 locationManager.CreateLocation();
@@ -127,6 +130,7 @@ public class GameManager : Singleton<GameManager>
                 break;
             case SceneType.Bussiness:
                 gameTime.TimeStop(false);
+                gameTime.gameSpeed = 7;
                 break;
         }
     }

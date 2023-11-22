@@ -17,6 +17,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17484a9af6b944dea5cd9be4dbb0da2c171c00/04/24c25293/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17484a9af6b944dea5cd9be4dbb0da2c171c00/0d/f6e9bd45/Debug.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17484a9af6b944dea5cd9be4dbb0da2c171c00/45/e7819b56/Camera.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17484a9af6b944dea5cd9be4dbb0da2c171c00/67/20ec571b/PlayerPrefs.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17484a9af6b944dea5cd9be4dbb0da2c171c00/8d/c1e8b20b/UnitySynchronizationContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17484a9af6b944dea5cd9be4dbb0da2c171c00/9d/4f21e67e/GameObject.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17484a9af6b944dea5cd9be4dbb0da2c171c00/f7/b6d4043f/CustomYieldInstruction.cs" root0="SKIP_HIGHLIGHTING" />
@@ -145,10 +146,10 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="3672">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="3672" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -205,6 +206,7 @@
       <workItem from="1700390875091" duration="122000" />
       <workItem from="1700391077072" duration="12915000" />
       <workItem from="1700504005153" duration="13557000" />
+      <workItem from="1700607817939" duration="7035000" />
     </task>
     <servers />
   </component>
@@ -272,45 +274,6 @@
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/CraftTools/New/MillStone.cs</url>
-          <line>106</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\CraftTools\New\MillStone.cs" initialLine="78" containingFunctionPresentation="메서드 'SetInputItem'">
-            <startOffsets>
-              <option value="2759" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2774" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/Guest.cs</url>
-          <line>115</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\Guest.cs" initialLine="114" containingFunctionPresentation="메서드 'CheckItem'">
-            <startOffsets>
-              <option value="2973" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3056" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop_Sales.cs</url>
-          <line>108</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop_Sales.cs" initialLine="88" containingFunctionPresentation="메서드 'PriceCalc'">
-            <startOffsets>
-              <option value="3595" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3619" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/Character/NPC/States/ConversationState.cs</url>
           <line>27</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Character\NPC\States\ConversationState.cs" initialLine="27" containingFunctionPresentation="메서드 'Enter'">
@@ -325,55 +288,42 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/Manager/GameManager.cs</url>
-          <line>141</line>
+          <line>145</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Manager\GameManager.cs" initialLine="139" containingFunctionPresentation="메서드 'ExitShop'">
             <startOffsets>
-              <option value="3891" />
+              <option value="4036" />
             </startOffsets>
             <endOffsets>
-              <option value="3913" />
+              <option value="4058" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="72" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/Manager/ItemManager.cs</url>
-          <line>441</line>
+          <line>439</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Manager\ItemManager.cs" initialLine="401" containingFunctionPresentation="메서드 'GetSalesData'">
             <startOffsets>
-              <option value="13940" />
+              <option value="13886" />
             </startOffsets>
             <endOffsets>
-              <option value="13941" />
+              <option value="13887" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="73" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/CraftTools/New/Press.cs</url>
-          <line>224</line>
+          <line>231</line>
           <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\CraftTools\New\Press.cs" initialLine="212" containingFunctionPresentation="메서드 'CheckGemRecipe'">
             <startOffsets>
-              <option value="6519" />
+              <option value="6780" />
             </startOffsets>
             <endOffsets>
-              <option value="6570" />
+              <option value="6831" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="85" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Manager/ItemManager.cs</url>
-          <line>318</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Manager\ItemManager.cs" initialLine="318" containingFunctionPresentation="메서드 'GetItemPerfection'">
-            <startOffsets>
-              <option value="10439" />
-            </startOffsets>
-            <endOffsets>
-              <option value="10466" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="88" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/5. Scripts/DB/Dialogue.cs</url>
@@ -389,82 +339,43 @@
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/UI/UI_Animation/FadeIO.cs</url>
-          <line>262</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\UI\UI_Animation\FadeIO.cs" initialLine="260" containingFunctionPresentation="메서드 'Rewind'">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/CraftTools/PressAccessoryPlate.cs</url>
+          <line>83</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\CraftTools\PressAccessoryPlate.cs" initialLine="83" containingFunctionPresentation="메서드 'CompleteCraft'">
             <startOffsets>
-              <option value="6782" />
+              <option value="2483" />
             </startOffsets>
             <endOffsets>
-              <option value="6807" />
+              <option value="2484" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="92" />
+          <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/UI/UI_Animation/FadeIO.cs</url>
-          <line>192</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\UI\UI_Animation\FadeIO.cs" initialLine="192" containingFunctionPresentation="람다 식 내부 메서드 'Sprite'">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/CraftTools/New/Press.cs</url>
+          <line>233</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\CraftTools\New\Press.cs" initialLine="233" containingFunctionPresentation="메서드 'CheckGemRecipe'">
             <startOffsets>
-              <option value="5006" />
+              <option value="6858" />
             </startOffsets>
             <endOffsets>
-              <option value="5034" />
+              <option value="6941" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="94" />
+          <option name="timeStamp" value="106" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/DB/DialogueBox.cs</url>
-          <line>31</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\DB\DialogueBox.cs" initialLine="31" containingFunctionPresentation="메서드 'SetAcceptButton'">
+          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Manager/ItemManager.cs</url>
+          <line>316</line>
+          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Manager\ItemManager.cs" initialLine="316" containingFunctionPresentation="메서드 'GetItemPerfection'">
             <startOffsets>
-              <option value="686" />
+              <option value="10385" />
             </startOffsets>
             <endOffsets>
-              <option value="755" />
+              <option value="10412" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="98" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop.cs</url>
-          <line>79</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop.cs" initialLine="78" containingFunctionPresentation="메서드 'ShowDialog'">
-            <startOffsets>
-              <option value="2134" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2174" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="99" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop.cs</url>
-          <line>70</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop.cs" initialLine="69" containingFunctionPresentation="메서드 'EntryGuset'">
-            <startOffsets>
-              <option value="1903" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1959" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="100" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/5. Scripts/Player_Shop/PlayerShop.cs</url>
-          <line>165</line>
-          <properties documentPath="D:\Unity Projects\ThunderJackProjectMIS\Assets\5. Scripts\Player_Shop\PlayerShop.cs" initialLine="163" containingFunctionPresentation="메서드 'AcceptSales'">
-            <startOffsets>
-              <option value="4684" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4685" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="103" />
+          <option name="timeStamp" value="107" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
